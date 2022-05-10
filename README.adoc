@@ -9,3 +9,4 @@ V1 2022-05-10
 > 将所有业务运行在 Kubernetes 上
 
 include::./01-install/README.adoc[]
+image::./img.jpg[]
