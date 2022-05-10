@@ -1,12 +1,18 @@
 = All In Kubernetes
 Exploding Dragon <ExplodingFKL@gmail.com>
-V1 2022-05-10
+v.1
 
-:toc: 
+:toc:
 
 :homepage: https://git.open-edgn.cn/Document/all-in-kubernetes
 
 > 将所有业务运行在 Kubernetes 上
 
-include::./01-install/README.adoc[]
-image::./img.jpg[]
+include::./00-init/README.adoc[初始化]
+
+include::./01-install/README.adoc[安装]
+
+include::./02-storage/README.adoc[配置存储]
+
+
+
