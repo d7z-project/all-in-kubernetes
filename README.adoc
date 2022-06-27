@@ -1,22 +1,28 @@
 = All In Kubernetes
-Exploding Dragon <ExplodingFKL@gmail.com>
+Exploding Dragon <ExplodingFKL#gmail.com>
 v.1
-
-:toc:
 
 :homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
 
-> 将所有业务运行在 Kubernetes 上，此文档持续更新...
+> All-In-One（[.line-through]#all in boom#）。
+
+== 开始
+
+此项目致力于简化家庭部署 Kubernetes 流程 ，致力于将家庭中分散的机器组合在一起，提高设备利用率。
+
+*注意*： 此文档首发于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我;如果你有新的想法可 Pull request。
+
+*免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任！硬盘有价，数据无价，请一定做好数据备份！
 
 == 环境介绍
 
+仅对测试环境做介绍，并非项目的最低环境要求。
+
+include::Z_CONTAINER.adoc[部署环境介绍]
+
 == 部署流程
 
-=== 基础环境部署
-
-1. link:./00-init/README.adoc[初始化]
-2. link:./01-install/README.adoc[安装]
-3. link:./02-storage/README.adoc[配置存储]
+include::Z_DEPLOY.adoc[部署流程导入]
 
 == LICENSE
 

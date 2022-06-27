@@ -1,0 +1,33 @@
+=== 物理机
+
+针对测试物理环境做简单的介绍
+
+==== 物理机器一
+
+特性：此机器带有ECC内存纠错和磁盘冗余外加UPS断电保护，所有数据敏感业务均运行会在此机器上。
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|CPU | E3-1230v3 | 4核心8线程
+|内存 |32G | DDR3 ECC 内存 （8Gx4）
+|磁盘 | 2T | 3.5寸 SAS RAID1
+|网络 | 1Gx6 | Intel
+|系统 | Proxmox | Proxmox 7.x
+|===
+
+==== 物理机器二
+
+特性：此机器带有较新的GPU，适合做音视频硬解，同时硬盘 IOPS 较高，适合跑一些IO密集型任务。
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|CPU | Pentium-4415U | 4核心4线程
+|内存 |32G | DDR4 2133 内存 （16Gx2）
+|磁盘 | 128G | mSATA SSD
+|网络 | 1Gx6 | Intel
+|系统 | Proxmox | Proxmox 7.x
+|===
+
+=== Kubernetes 部署机器

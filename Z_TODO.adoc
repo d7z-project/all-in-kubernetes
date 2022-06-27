@@ -2,40 +2,47 @@
 
 > 注：所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理
 
-== 底层组件
+== 组件部署
+
+=== 底层组件
 
 - [ ] 安装 Kubernetes(official)/验证
 - [ ] 配置 共享存储(rook-nfs)/验证
 - [ ] 部署 Cert-Manager/验证
 - [ ] 部署 Ingress(Nginx)/验证
 
-== 核心组件 (core-system)
+=== 核心组件 (core-system)
 
 - [ ] 部署 OpenLDAP HA/验证
 - [ ] 部署 php-LDAP-admin/验证
 
-== 核心中间件 (core-middleware)
+=== 核心中间件 (core-middleware)
 
 - [ ] 部署 MariaDB/验证
 - [ ] 部署 Redis/验证
 - [ ] 部署 ElasticSearch/验证
 - [ ] 部署 PostgreSQL/验证
 
-== 核心应用 (core-app)
+=== 核心应用 (core-app)
 
 - [ ] 部署 Nexus3/验证
 - [ ] 部署 Gitlab/验证
 - [ ] 部署 Gitea/验证
 
-== 扩展应用 (share-app)
+=== 扩展应用 (share-app)
 
 - [ ] 部署 Gitlab-Runner/验证
 - [ ] 部署 Jellyfin/验证
 - [ ] 部署 V2ray/验证
 
-== 集群监控 (monitor)
+=== 集群监控 (monitor)
 
 - [ ] 部署 Prometheus/验证
 - [ ] 部署 AlertManager/验证
 - [ ] 部署 Grafana/验证
 - [ ] 部署 NodeExporter/验证
+
+== 自动化测试
+
+- [ ] 使用 Gitlab Actions 做自动化测试
+- [ ] 使用 Gitlab Runner 做自动化测试
