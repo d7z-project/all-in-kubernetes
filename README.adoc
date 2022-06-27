@@ -14,8 +14,10 @@ v.1
 
 === 基础环境部署
 
-
-
 1. link:./00-init/README.adoc[初始化]
 2. link:./01-install/README.adoc[安装]
 3. link:./02-storage/README.adoc[配置存储]
+
+== LICENSE
+
+此文档/工程/仓库使用 link:https://creativecommons.org/licenses/by/4.0/[CC BY 4.0]，具体细节请查看 link:./LICENSE[LICENSE] 文件.
