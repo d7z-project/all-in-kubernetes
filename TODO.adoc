@@ -1,0 +1,16 @@
+= TODO 文档
+
+== 底层组件
+
+- [ ] 安装kubernetes(官方版本)/验证
+- [ ] 安装kubernetes(k3s版本)/验证
+- [ ] 配置共享存储/验证
+- [ ] 部署cert-manager/验证
+- [ ] 部署Ingress/验证
+
+== 核心组件
+
+- [ ] 部署openldap3/验证
+- [ ] 部署nexus3/验证
+
+== 核心
