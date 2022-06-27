@@ -4,7 +4,7 @@
 
 ==== 物理机器一
 
-特性：此机器带有ECC内存纠错、磁盘冗余设计和UPS断电保护，所有数据敏感业务均运行会在此机器上。
+此机器带有ECC内存纠错、磁盘冗余设计和UPS断电保护，所有数据敏感业务均运行会在此机器上。
 
 [cols="1,2,3",options="header"]
 |===
@@ -18,7 +18,7 @@
 
 ==== 物理机器二
 
-特性：此机器带有较新的 *GPU*，适合做音视频硬解；同时硬盘 *IOPS* 较高，适合跑一些IO密集型任务。
+此机器带有较新的 *GPU*，适合做音视频硬解；同时硬盘 *IOPS* 较高，适合跑一些IO密集型任务。
 
 [cols="1,2,3",options="header"]
 |===
@@ -31,3 +31,13 @@
 |===
 
 === Kubernetes 部署机器
+
+所有机器均采用 link:https://www.debian.org/releases/bullseye/[Debian "bullseye"] 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 link:00-init/SYSTEM.adoc[Debian 系统配置]。
+
+==== Kubernetes 部署机器一
+
+==== Kubernetes 部署机器二
+
+==== Kubernetes 部署机器三
+
+//TODO
