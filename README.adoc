@@ -4,15 +4,18 @@ v.1
 
 :toc:
 
-:homepage: https://git.open-edgn.cn/Document/all-in-kubernetes
+:homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
 
-> 将所有业务运行在 Kubernetes 上
+> 将所有业务运行在 Kubernetes 上，此文档持续更新...
 
-include::./00-init/README.adoc[初始化]
+== 环境介绍
 
-include::./01-install/README.adoc[安装]
+== 部署流程
 
-include::./02-storage/README.adoc[配置存储]
+=== 基础环境部署
 
 
 
+1. link:./00-init/README.adoc[初始化]
+2. link:./01-install/README.adoc[安装]
+3. link:./02-storage/README.adoc[配置存储]
