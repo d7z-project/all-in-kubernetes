@@ -2,24 +2,36 @@
 
 本项目使用 Debian "bullseye" 作底层操作系统，具体的配置情况如下：
 
-== 软件安装
+== 基础软件安装
 
 === 安装 OpenSSH Server
 
-=== 安装 Cloud Init (可选)
-
-=== 安装 Qemu Guest Agent (可选)
-
-== 环境配置
-
-=== 修改 APT 远程仓库地址 (可选)
-
-受地域影响，默认的 APT 下载可能会非常慢，可以更改成相对比较快的地址，例如：
+OpenSSH 能极大的方便远程调试，建议安装。
 
 [source,bash]
 ----
-mv /etc/apt/sources.list /etc/apt/sources.list.bak
-cat << EOF > /etc/apt/sources.list
+$ sudo apt-get install openssh-server
+----
+
+=== 安装 VM tools (可选)
+
+在KVM虚拟机环境下，某些工具包能极大提升部署效率，建议安装。
+
+[source,bash]
+----
+$ sudo apt-get install qemu-guest-agent cloud-init
+----
+
+== 基础环境配置
+
+=== 修改 APT 远程仓库地址 (可选)
+
+受地域影响，默认的 APT 下载可能会非常慢，可根据实际需求更改为合适的地址，例如：
+
+[source,bash]
+----
+$ mv /etc/apt/sources.list /etc/apt/sources.list.bak
+$ cat << EOF > /etc/apt/sources.list
 deb https://mirrors.ustc.edu.cn/debian/ bullseye main contrib non-free
 
 deb https://mirrors.ustc.edu.cn/debian/ bullseye-updates main contrib non-free
@@ -32,11 +44,13 @@ EOF
 
 === 修改OpenSSH 配置
 
-如
+关闭密钥登陆可提高服务器安全性;同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 `2222` ，如果没有使用需求则可以跳过。
+
+*注意*：在关闭密码登陆之前请 *务必* 将公钥复制到指定位置，可以使用 `ssh-copy-id <user>@<address>` 快速复制。
 
 [source,bash]
 ----
-cat << EOF > /etc/ssh/sshd_config.d/security.conf
+$ cat << EOF > /etc/ssh/sshd_config.d/security.conf
 # 修改默认SSH端口
 Port 2222
 # 开启公钥登陆

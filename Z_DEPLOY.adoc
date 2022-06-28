@@ -1,5 +1,5 @@
 === 基础环境部署
-
-1. link:./00-init/README.adoc[初始化]
-2. link:./01-install/README.adoc[安装]
-3. link:./02-storage/README.adoc[配置存储]
+1. link:./Z_CONTAINER.adoc[部署环境介绍]
+2. link:./00-init/README.adoc[初始化部署环境]
+3. link:./01-install/README.adoc[安装 Kubernetes]
+4. link:./02-storage/README.adoc[配置 rook-nfs 存储]
