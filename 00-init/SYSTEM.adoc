@@ -10,7 +10,7 @@ OpenSSH 能极大的方便远程调试，建议安装。
 
 [source,bash]
 ----
-$ sudo apt-get install openssh-server
+include::./script/soft-install-openssh.sh[openssh]
 ----
 
 === 安装 VM tools (可选)
@@ -19,7 +19,7 @@ $ sudo apt-get install openssh-server
 
 [source,bash]
 ----
-$ sudo apt-get install qemu-guest-agent cloud-init
+include::./script/soft-install-vm-tools.sh[vm tools]
 ----
 
 == 基础环境配置
@@ -30,16 +30,7 @@ $ sudo apt-get install qemu-guest-agent cloud-init
 
 [source,bash]
 ----
-$ mv /etc/apt/sources.list /etc/apt/sources.list.bak
-$ cat << EOF > /etc/apt/sources.list
-deb https://mirrors.ustc.edu.cn/debian/ bullseye main contrib non-free
-
-deb https://mirrors.ustc.edu.cn/debian/ bullseye-updates main contrib non-free
-
-deb https://mirrors.ustc.edu.cn/debian/ bullseye-backports main contrib non-free
-
-deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main contrib non-free
-EOF
+include::./script/conf-update-apt-source.sh[apt-mirrors]
 ----
 
 === 修改OpenSSH 配置
@@ -50,15 +41,5 @@ EOF
 
 [source,bash]
 ----
-$ cat << EOF > /etc/ssh/sshd_config.d/security.conf
-# 修改默认SSH端口
-Port 2222
-# 开启公钥登陆
-PubkeyAuthentication yes
-# 指定公钥位置
-AuthorizedKeysFile     .ssh/authorized_keys
-# 关闭密码登陆
-PasswordAuthentication no
-EOF
-systemctl restart ssh
+include::./script/conf-update-openssh-server.sh[ssh-security]
 ----

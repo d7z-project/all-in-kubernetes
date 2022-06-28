@@ -1,1 +1,13 @@
-== 初始化环境
+= 初始化环境
+
+== 验证机器属性
+
+确保每个节点上 *MAC* 地址和 `product_uuid` 的唯一性 你可以使用命令 `ip link` 或 `ifconfig -a` 来获取网络接口的 MAC 地址。 可以使用 `sudo cat /sys/class/dmi/id/product_uuid` 命令对 `product_uuid` 校验 一般来讲，硬件设备会拥有唯一的地址，但是有些虚拟机的地址可能会重复。 Kubernetes 使用这些值来唯一确定集群中的节点。 如果这些值在每个节点上不唯一，可能会导致安装失败。
+
+== 验证网络环境
+
+如果你有一个以上的网络适配器，同时你的 Kubernetes 组件通过默认路由不可达，我们建议你预先添加 IP 路由规则，这样 Kubernetes 集群就可以通过对应的适配器完成连接。
+
+== 参考
+
+- [1] link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[安装 kubeadm]
