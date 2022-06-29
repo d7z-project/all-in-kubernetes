@@ -1,6 +1,4 @@
 = All In Kubernetes
-Exploding Dragon <ExplodingFKL#gmail.com>
-v.1
 
 :homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
 :experimental:
@@ -8,25 +6,29 @@ v.1
 
 > All-In-One（[.line-through]#all in boom#）。
 
-== 开始
+此项目致力于简化家庭部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。项目仓库位于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可 Pull request。
 
-此项目致力于简化家庭部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。
+== 特性
 
-TIP: 此文档首发于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我;如果你有新的想法可 Pull request。
+- 统一化应用管理，降低传统的硬件虚拟化带来的应用碎片化问题 -
 
-WARNING: *免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任。硬盘有价，数据无价，请一定做好数据备份！
+== 入门
 
-== 部署流程
+你可以使用此推荐方案部署，此方案已应用于本人的测试环境中，未来可能会替换本人现有的部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下：
 
-整个项目的部署流程如下：
+TIP: Github 的预览效果可能不太好，可前往 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[Gitlab] 查看。
 
-TIP: Github 的预览效果可能不太好，可使用 Gitlab 查看。
-
-关于实例部署环境可参考 link:./Z_CONTAINER.adoc[此文档]。
+关于实例部署环境可参考 link:./zz-document/other/Z_CONTAINER.adoc[此文档]。
 
 include::Z_DEPLOY.adoc[]
 
 == 文档参考
+
+== 注意事项
+
+WARNING: *免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任。硬盘有价，数据无价，请一定做好数据备份！
+
+CAUTION: 由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请勿直接复制粘贴。
 
 == LICENSE
 

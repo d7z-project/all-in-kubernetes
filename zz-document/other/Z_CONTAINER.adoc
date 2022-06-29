@@ -1,3 +1,5 @@
+== 部署环境概览
+
 === 物理机机器
 
 *注意*：非特殊情况，请不要直接使用物理机器部署，否则一旦因为某些问题导致系统崩溃，在没有IPMI、iLO等其他类似硬件的环境下很难远程恢复。
@@ -32,7 +34,7 @@
 
 === Kubernetes 部署机器
 
-所有机器均采用 link:https://www.debian.org/releases/bullseye/[Debian "bullseye"] 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 link:./00-deploy-core/00-check-node/SYSTEM.adoc[Debian 系统配置]。
+所有机器均采用 link:https://www.debian.org/releases/bullseye/[Debian "bullseye"] 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 link:../../00-deploy-core/00-check-node/SYSTEM.adoc[Debian 系统配置]。
 
 ==== Kubernetes 部署机器一
 
@@ -88,7 +90,7 @@
 |===
 |配置指标 |配置值 |备注
 |宿主机 | 物理机器二 | 此机器作为数据节点
-|CPU | Host+AES | 四核心
+|CPU | Host | 四核心
 |虚拟化| LXC | Proxmox CGroup2
 |内存 | 4G | -
 |系统磁盘 | 20G | 此机器作为数据节点
