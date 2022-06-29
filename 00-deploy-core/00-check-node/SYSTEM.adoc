@@ -12,7 +12,7 @@ OpenSSH 能极大的方便远程调试，建议安装。
 
 [source,bash]
 ----
-include::./script/soft-install-openssh.sh[lines=2..]
+include::./script/soft-install-openssh.sh[lines=2..-1]
 ----
 
 === 安装 VM tools (可选)
@@ -21,7 +21,7 @@ include::./script/soft-install-openssh.sh[lines=2..]
 
 [source,bash]
 ----
-include::./script/soft-install-vm-tools.sh[lines=2..]
+include::./script/soft-install-vm-tools.sh[lines=2..-1]
 ----
 
 == 基础环境配置
@@ -32,7 +32,7 @@ include::./script/soft-install-vm-tools.sh[lines=2..]
 
 [source,bash]
 ----
-include::./script/conf-update-apt-source.sh[lines=2..]
+include::./script/conf-update-apt-source.sh[lines=2..-1]
 ----
 
 === 修改OpenSSH 配置
@@ -43,5 +43,5 @@ CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到目标服务�
 
 [source,bash]
 ----
-include::./script/conf-update-openssh-server.sh[lines=2..]
+include::./script/conf-update-openssh-server.sh[lines=2..-1]
 ----
