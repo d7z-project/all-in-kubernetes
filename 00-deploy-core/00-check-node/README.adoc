@@ -8,7 +8,7 @@
 
 [source,bash]
 ----
-include::./script/info-hardware-info-uuid.sh[lines=2..]
+include::./script/info-hardware-info-uuid.sh[lines=2..-1]
 ----
 
 === 验证网络联通性
