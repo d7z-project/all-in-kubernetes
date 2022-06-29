@@ -3,6 +3,8 @@ Exploding Dragon <ExplodingFKL#gmail.com>
 v.1
 
 :homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
+:experimental:
+:icons: font
 
 > All-In-One（[.line-through]#all in boom#）。
 
@@ -10,17 +12,21 @@ v.1
 
 此项目致力于简化家庭部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。
 
-*注意*： 此文档首发于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我;如果你有新的想法可 Pull request。
+TIP: 此文档首发于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我;如果你有新的想法可 Pull request。
 
-*免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任。硬盘有价，数据无价，请一定做好数据备份！
+WARNING: *免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任。硬盘有价，数据无价，请一定做好数据备份！
 
 == 部署流程
 
 整个项目的部署流程如下：
 
-*注意*：Github 的预览效果可能不太好，可使用 Gitlab 查看。
+TIP: Github 的预览效果可能不太好，可使用 Gitlab 查看。
 
-include::Z_DEPLOY.adoc[部署流程导入]
+关于实例部署环境可参考 link:./Z_CONTAINER.adoc[此文档]。
+
+include::Z_DEPLOY.adoc[]
+
+== 文档参考
 
 == LICENSE
 

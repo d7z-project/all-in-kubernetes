@@ -1,3 +1,5 @@
+:icons: font
+
 = Debian 系统环境配置
 
 本项目使用 Debian "bullseye" 作底层操作系统，具体的配置情况如下：
@@ -37,7 +39,7 @@ include::./script/conf-update-apt-source.sh[apt-mirrors]
 
 关闭密钥登陆可提高服务器安全性;同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 `2222` ，如果没有使用需求则可以跳过。
 
-*注意*：在关闭密码登陆之前请 *务必* 将公钥复制到指定位置，可以使用 `ssh-copy-id <user>@<address>` 快速复制。
+CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到指定位置,否则将导致无法远程登陆，可以使用 `ssh-copy-id <user>@<address>` 快速复制。
 
 [source,bash]
 ----

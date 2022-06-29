@@ -1,5 +1,6 @@
-=== 基础环境部署
-1. link:./Z_CONTAINER.adoc[部署环境介绍]
-2. link:./00-init/README.adoc[初始化部署环境]
-3. link:./01-install/README.adoc[安装 Kubernetes]
-4. link:./02-storage/README.adoc[配置 rook-nfs 存储]
+=== 核心环境部署
+
+. link:./00-deploy-core/00-check-node/SYSTEM.adoc[环境配置]
+. link:./00-deploy-core/00-check-node/README.adoc[初始化部署环境]
+. link:./00-deploy-core/01-install-kubernetes/README.adoc[安装 Kubernetes]
+. link:./00-deploy-core/02-install-rook-nfs/README.adoc[配置 rook-nfs 存储]

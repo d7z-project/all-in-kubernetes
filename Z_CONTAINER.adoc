@@ -32,7 +32,7 @@
 
 === Kubernetes 部署机器
 
-所有机器均采用 link:https://www.debian.org/releases/bullseye/[Debian "bullseye"] 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 link:00-init/SYSTEM.adoc[Debian 系统配置]。
+所有机器均采用 link:https://www.debian.org/releases/bullseye/[Debian "bullseye"] 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 link:./00-deploy-core/00-check-node/SYSTEM.adoc[Debian 系统配置]。
 
 ==== Kubernetes 部署机器一
 

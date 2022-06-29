@@ -1,0 +1,22 @@
+= 初始化环境
+
+== 环境验证
+
+=== 验证机器属性
+
+安装 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上不唯一，可能会导致安装失败。可使用如下命令确认：
+
+[source,bash]
+----
+include::./script/info-hardware-info-uuid.sh[UUID]
+----
+
+=== 验证网络联通性
+
+各个节点之间需要相互通信
+
+==
+
+== 参考
+
+- [1] link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[安装 kubeadm]
