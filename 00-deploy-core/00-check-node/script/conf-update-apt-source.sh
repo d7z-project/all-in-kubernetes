@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 备份旧的配置
 mv /etc/apt/sources.list /etc/apt/sources.list.bak
 # 覆盖新的配置文件

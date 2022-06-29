@@ -12,7 +12,7 @@ OpenSSH 能极大的方便远程调试，建议安装。
 
 [source,bash]
 ----
-include::./script/soft-install-openssh.sh[openssh]
+include::./script/soft-install-openssh.sh[lines=2..]
 ----
 
 === 安装 VM tools (可选)
@@ -21,7 +21,7 @@ include::./script/soft-install-openssh.sh[openssh]
 
 [source,bash]
 ----
-include::./script/soft-install-vm-tools.sh[vm tools]
+include::./script/soft-install-vm-tools.sh[lines=2..]
 ----
 
 == 基础环境配置
@@ -32,16 +32,16 @@ include::./script/soft-install-vm-tools.sh[vm tools]
 
 [source,bash]
 ----
-include::./script/conf-update-apt-source.sh[apt-mirrors]
+include::./script/conf-update-apt-source.sh[lines=2..]
 ----
 
 === 修改OpenSSH 配置
 
-关闭密钥登陆可提高服务器安全性;同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 `2222` ，如果没有使用需求则可以跳过。
+关闭密码登陆可提高服务器安全性。同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 `2222` ，如果没有使用需求则可以跳过。
 
-CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到指定位置,否则将导致无法远程登陆，可以使用 `ssh-copy-id <user>@<address>` 快速复制。
+CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到目标服务器，否则可能会导致无法使用SSH远程登陆，可以使用 `ssh-copy-id <user>@<address>` 快速复制本机的公钥到目标服务器下。
 
 [source,bash]
 ----
-include::./script/conf-update-openssh-server.sh[ssh-security]
+include::./script/conf-update-openssh-server.sh[lines=2..]
 ----

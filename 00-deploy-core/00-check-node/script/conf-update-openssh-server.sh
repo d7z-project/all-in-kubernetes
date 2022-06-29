@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 # 更新OpenSSH 配置文件
 cat << "EOF" > /etc/ssh/sshd_config.d/security.conf
 # 修改默认SSH端口
