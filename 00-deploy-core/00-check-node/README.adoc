@@ -13,9 +13,44 @@ include::./script/info-hardware-info-uuid.sh[lines=2..-1]
 
 === 验证网络联通性
 
-各个节点之间需要相互通信
+各个节点之间需要能够相互通信,你可以 使用 `ping` 或者 `traceroute` 等工具进行测试。
 
-==
+== 配置系统
+
+=== 启用内核模块
+
+kubernetes 需要 `br_netfilter` 模块才能工作，装入以下配置强制加载
+
+[source,bash]
+----
+include::./script/conf-modprobe.sh[lines=2..-1]
+----
+
+=== 配置内核参数
+
+为了让节点上的 `iptables` 能够正确地查看桥接流量，你需要确保 `sysctl` 配置中将 net.bridge.bridge-nf-call-iptables 设置为 1。
+
+[source,bash]
+----
+include::./script/conf-sysctl.sh[lines=2..-1]
+----
+
+=== 安装容器运行时
+
+Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 link:https://containerd.io/[containerd]。
+
+[source,bash]
+----
+include::./script/soft-install-containerd.sh[lines=2..-1]
+----
+
+=== 安装 kubeadm、kubelet 和 kubectl
+
+你需要在每台机器上安装以下的软件包：
+
+* `kubeadm` ：用来初始化集群的指令。
+* `kubelet` ：在集群中的每个节点上用来启动 Pod 和容器等。
+* `kubectl` ：用来与集群通信的命令行工具。
 
 == 参考
 
