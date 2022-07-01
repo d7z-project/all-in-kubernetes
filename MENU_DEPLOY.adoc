@@ -1,4 +1,4 @@
-=== 核心环境部署
+= 核心环境部署菜单
 
 . link:./00-deploy-core/00-check-node/SYSTEM.adoc[环境配置]
 . link:./00-deploy-core/00-check-node/README.adoc[初始化部署环境]

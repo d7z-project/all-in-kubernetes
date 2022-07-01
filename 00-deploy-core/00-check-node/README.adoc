@@ -1,4 +1,9 @@
+:experimental:
+:icons: font
+
 = 初始化环境
+
+安装 `kubernetes` 需要对系统进行某些必要的配置。
 
 == 环境验证
 
@@ -19,7 +24,7 @@ include::./script/info-hardware-info-uuid.sh[lines=2..-1]
 
 === 启用内核模块
 
-kubernetes 需要 `br_netfilter` 模块才能工作，装入以下配置强制加载
+kubernetes 需要 `br_netfilter` 模块才能工作，debian 内核中已默认启用，可使用 `lsmod | grep br_netfilter` 验证，装入以下配置以显示加载模块。
 
 [source,bash]
 ----
@@ -51,6 +56,13 @@ include::./script/soft-install-containerd.sh[lines=2..-1]
 * `kubeadm` ：用来初始化集群的指令。
 * `kubelet` ：在集群中的每个节点上用来启动 Pod 和容器等。
 * `kubectl` ：用来与集群通信的命令行工具。
+
+TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问题，请自备代理工具或者使用镜像地址。注意：对于 *导入证书等操作一定要再三确认*，谨防link:https://zh.m.wikipedia.org/zh/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB[中间人攻击]。
+
+[source,bash]
+----
+include::./script/soft-install-kubeadm.sh[lines=2..-1]
+----
 
 == 参考
 

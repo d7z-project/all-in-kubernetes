@@ -1,11 +1,11 @@
-= TODO List
+= 文档任务
 
-> 注：所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理
+> 注：所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理，非必要情况绝不暴露内部端口。
 
 == 环境介绍
 
-- [x] 介绍物理机环境
-- [x] 介绍部署机器环境
+- [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍物理机环境]
+- [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍部署机器环境]
 
 == 组件部署
 

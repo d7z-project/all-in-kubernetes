@@ -6,7 +6,9 @@
 
 > All-In-One（[.line-through]#all in boom#）。
 
-此项目致力于简化家庭部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。项目仓库位于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可 Pull request。
+此项目致力于简化个人部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。人生苦短，我用 k8s。
+
+项目仓库位于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可 Pull request。
 
 == 特性
 
@@ -18,9 +20,11 @@
 
 TIP: Github 的预览效果可能不太好，可前往 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[Gitlab] 查看。
 
-关于实例部署环境可参考 link:./zz-document/other/Z_CONTAINER.adoc[此文档]。
+关于实例部署环境可参考 link:./zz-document/other/HARDWARE_INFO.adoc[此文档]。
 
-include::Z_DEPLOY.adoc[]
+=== 核心环境部署
+
+include::MENU_DEPLOY.adoc[lines=3..-1]
 
 == 文档参考
 
