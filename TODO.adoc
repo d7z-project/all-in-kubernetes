@@ -11,10 +11,13 @@
 
 === 底层组件
 
-* [ ] 安装 Kubernetes(official)/验证
+* [x] 安装 Kubernetes(google)/验证
 ** [x] 初始化部署环境
 ** [x] 安装 `containerd`
 ** [x] 安装 `kubeadm`
+** [x] 部署控制节点
+** [x] 配置CNI 插件
+** [x] 部署工作节点
 * [ ] 配置 共享存储(rook-nfs)/验证
 * [ ] 部署 Cert-Manager/验证
 * [ ] 部署 Ingress(Nginx)/验证
