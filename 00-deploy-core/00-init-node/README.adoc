@@ -24,7 +24,7 @@ include::./script/info-hardware-info-uuid.sh[lines=2..-1]
 
 === 启用内核模块
 
-kubernetes 需要 `br_netfilter` 模块才能工作，debian 内核中已默认启用，可使用 `lsmod | grep br_netfilter` 验证，装入以下配置以显示加载模块。
+kubernetes 需要 `br_netfilter` 模块才能工作，Debian 内核已带有此模块，可使用 `lsmod | grep br_netfilter` 验证是否加载，装入以下配置以显示加载模块。
 
 [source,bash]
 ----
@@ -62,6 +62,31 @@ TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问
 [source,bash]
 ----
 include::./script/soft-install-kubeadm.sh[lines=2..-1]
+----
+
+=== 预下载运行时镜像
+
+为防止因网络问题导致镜像下载失败致使 `kubernetes` 安装失败，可将所有 `kubernetes` 所用到的镜像预下载到本地。
+
+[source,bash]
+----
+include::./script/k8s-pull-image-init.sh[lines=2..-1]
+----
+
+=== 添加 TAB 命令补全 （可选）
+
+对常用命令增加补全功能可极大提升效率。此功能需要安装 `bash-completion` 软件包。
+
+[source,bash]
+----
+include::./script/k8s-shell-completion-bash.sh[lines=2..-1]
+----
+
+如果你想创建 `kubectl` 的别名的话可使用如下命令添加命令补全功能。
+
+[source,bash]
+----
+include::./script/k8s-shell-alias.sh[lines=2..-1]
 ----
 
 == 参考

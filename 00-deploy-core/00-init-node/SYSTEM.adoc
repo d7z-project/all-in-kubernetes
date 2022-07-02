@@ -6,9 +6,18 @@
 
 == 基础软件安装
 
+=== 安装 Bash Completion
+
+*Bash Completion* 可为 Shell 添加 *TAB* 补全功能，建议安装。
+
+[source,bash]
+----
+include::./script/soft-install-bash-completion.sh[lines=2..-1]
+----
+
 === 安装 OpenSSH Server
 
-OpenSSH 能极大的方便远程调试，建议安装。
+*OpenSSH* 能极大的方便远程调试，建议安装。
 
 [source,bash]
 ----
@@ -17,7 +26,7 @@ include::./script/soft-install-openssh.sh[lines=2..-1]
 
 === 安装 VM tools (可选)
 
-在KVM虚拟机环境下，某些工具包能极大提升部署效率，建议安装。
+在 *KVM* 虚拟机环境下，某些工具包能极大提升部署效率，建议安装。
 
 [source,bash]
 ----
