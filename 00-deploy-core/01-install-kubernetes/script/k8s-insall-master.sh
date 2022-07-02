@@ -4,3 +4,5 @@ kubeadm init \
     --upload-certs \
     --pod-network-cidr 10.254.0.0/16 \
     --node-name node-master
+echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
+source ~/.bashrc

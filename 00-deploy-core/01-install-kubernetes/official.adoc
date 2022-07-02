@@ -26,24 +26,13 @@ TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问
 include::./script/soft-install-kubeadm.sh[lines=2..-1]
 ----
 
-=== 配置 `containerd` 网络代理
+=== 配置 `containerd` 网络代理 (可选)
 
 在某些情况下，镜像可能因为网络原因无法拉取。
 
 [source,bash]
 ----
-mkdir /etc/systemd/system/containerd.service.d
-cat << "EOF" > /etc/systemd/system/containerd.service.d/http_proxy.conf
-[Service]
-# 此处配置为可用的 HTTP 代理地址
-Environment="HTTP_PROXY=http://10.0.0.2:8080"
-# 此处配置为可用的 HTTP 代理地址
-Environment="HTTPS_PROXY=http://10.0.0.2:8080"
-# 此处配置为跳过代理的地址
-Environment="NO_PROXY=localhost,127.0.0.1,10.0.0.0/8"
-EOF
-systemctl daemon-reload
-systemctl restart containerd.service
+include::./script/conf-containerd-http-proxy.sh[lines=2..-1]
 ----
 
 === 预下载运行时镜像 (可选)
@@ -73,9 +62,18 @@ include::./script/k8s-shell-alias.sh[lines=2..-1]
 
 == 安装 kubernetes
 
-一切环境准备完成后，即可开始安装 kubernetes
+一切环境准备完成后，即可开始安装 kubernetes。
 
-== 安装控制节点
+=== 重置 kubernetes (可选)
+
+如果安装失败，可尝试重置 `kubernetes` 后重新安装。
+
+[source,bash]
+----
+include::./script/k8s-reset.sh[lines=2..-1]
+----
+
+=== 安装控制节点
 
 控制节点安装在 `dragon-k8s-master` 机器上，SSH 连接机器，执行以下命令：
 

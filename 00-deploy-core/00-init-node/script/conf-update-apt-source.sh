@@ -8,3 +8,4 @@ deb https://mirrors.ustc.edu.cn/debian/ bullseye-updates main contrib non-free
 deb https://mirrors.ustc.edu.cn/debian/ bullseye-backports main contrib non-free
 deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main contrib non-free
 EOF
+apt-get update
