@@ -18,6 +18,7 @@
 ** [x] 部署控制节点
 ** [x] 配置CNI 插件
 ** [x] 部署工作节点
+* [ ] 安装 Kubernetes(k3s)/验证
 * [ ] 配置 共享存储(rook-nfs)/验证
 * [ ] 部署 Cert-Manager/验证
 * [ ] 部署 Ingress(Nginx)/验证
