@@ -142,7 +142,19 @@ kube-system   kube-scheduler-node-master            1/1     Running   2         
 
 === 部署工作节点
 
-在部署控制节点时，`kubeadm` 已将部署工作节点的命令展示到控制台，你还可以使用   `tail -n 2 /tmp/kubectl-installer.log` 查看命令。
+在部署控制节点时，`kubeadm` 已将部署工作节点的命令展示到控制台，你还可以使用   `tail -n 2 /tmp/kubectl-installer.log` 查看命令。注意：Token 过期时间为 24小时，如果超过24小时，可在控制节点执行 `kubeadm token create` 重新生成 token.
+
+在加入集群时，需为每个节点添加唯一标识，使用参数 `--node-name` 即可。 部署完成后，执行 `kubectl get nodes` ，控制台回显如下：
+
+[source,text]
+----
+NAME             STATUS   ROLES           AGE    VERSION
+node-master      Ready    control-plane   46m    v1.24.2
+node-worker-01   Ready    <none>          13m    v1.24.2
+node-worker-02   Ready    <none>          105s   v1.24.2
+----
+
+至此，kubernetes (Google) 安装完成。
 
 == 参考
 

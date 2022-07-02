@@ -2,6 +2,6 @@
 
 . link:./00-deploy-core/00-init-node/SYSTEM.adoc[系统环境配置]
 . link:./00-deploy-core/00-init-node/README.adoc[初始化部署环境]
-. link:./00-deploy-core/01-install-kubernetes/official.adoc[安装 Kubernetes(Google)]
-. link:./00-deploy-core/01-install-kubernetes/official.adoc[安装 Kubernetes(K3s)]
+. link:./00-deploy-core/01-install-kubernetes/k8s.adoc[安装 Kubernetes(Google)]
+. link:./00-deploy-core/01-install-kubernetes/k3s.adoc[安装 Kubernetes(K3s)]
 . link:./00-deploy-core/02-install-rook-nfs/README.adoc[配置 rook-nfs 存储]
