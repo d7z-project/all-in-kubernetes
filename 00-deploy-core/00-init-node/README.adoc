@@ -24,7 +24,7 @@ include::./script/info-hardware-info-uuid.sh[lines=2..-1]
 
 === 启用内核模块
 
-kubernetes 需要 `br_netfilter` 模块才能工作，Debian 内核已带有此模块，可使用 `lsmod | grep br_netfilter` 验证是否加载，装入以下配置以显示加载模块。
+kubernetes 需要 `br_netfilter` 模块才能工作，Debian 内核已带有此模块，可使用 `lsmod | grep br_netfilter` 验证是否加载，装入以下配置以显式加载模块。
 
 [source,bash]
 ----
