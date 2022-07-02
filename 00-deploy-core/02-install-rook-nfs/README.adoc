@@ -1,1 +1,15 @@
-== 配置全局存储
+= 配置全局存储 (rook-nfs)
+
+== 导入规则
+
+[source,bash]
+----
+cat << "EOF" > /tmp/rook-system.yaml
+include::./conf/crds.yaml[]
+---
+include::./conf/operator.yaml[]
+---
+include::./conf/rbac.yaml[]
+EOF
+kubectl apply -f /tmp/rook-system.yaml
+----
