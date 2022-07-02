@@ -3,13 +3,13 @@
 
 = 初始化环境
 
-安装 `kubernetes` 需要对系统进行某些必要的配置。
+安装 `kubernetes` 需要对系统进行某些必要的配置，此文档适用于所有需要安装 `kubernetes` 节点。
 
 == 环境验证
 
 === 验证机器属性
 
-安装 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上不唯一，可能会导致安装失败。可使用如下命令确认：
+安装 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上一致，可能会导致安装失败。可使用如下命令确认：
 
 [source,bash]
 ----
@@ -71,6 +71,15 @@ include::./script/soft-install-kubeadm.sh[lines=2..-1]
 [source,bash]
 ----
 include::./script/k8s-pull-image-init.sh[lines=2..-1]
+----
+
+=== 安装附加软件包
+
+`kubernetes` 部分组件在运行中需要某些软件支撑，否则将导致 kubernetes 无法正常运行。
+
+[source,bash]
+----
+include::./script/soft-install-k8s-extra.sh[lines=2..-1]
 ----
 
 === 添加 TAB 命令补全 （可选）

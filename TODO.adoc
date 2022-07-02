@@ -13,6 +13,7 @@
 
 * [ ] 安装 Kubernetes(official)/验证
 ** [x] 初始化部署环境
+** [x] 安装 `containerd`
 ** [x] 安装 `kubeadm`
 * [ ] 配置 共享存储(rook-nfs)/验证
 * [ ] 部署 Cert-Manager/验证

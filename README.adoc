@@ -26,8 +26,6 @@ TIP: Github 的预览效果可能不太好，可前往 link:https://gitlab.open-
 
 include::MENU_DEPLOY.adoc[lines=3..-1]
 
-== 文档参考
-
 == 注意事项
 
 WARNING: *免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任。硬盘有价，数据无价，请一定做好数据备份！
