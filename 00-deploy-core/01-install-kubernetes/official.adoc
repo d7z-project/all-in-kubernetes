@@ -1,0 +1,89 @@
+= 安装 Kubernetes (Google)
+
+== 安装软件包
+
+=== 安装容器运行时
+
+Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 link:https://containerd.io/[containerd]。
+
+[source,bash]
+----
+include::./script/soft-install-containerd.sh[lines=2..-1]
+----
+
+=== 安装 kubeadm、kubelet 和 kubectl
+
+你需要在每台机器上安装以下的软件包：
+
+* `kubeadm` ：用来初始化集群的指令。
+* `kubelet` ：在集群中的每个节点上用来启动 Pod 和容器等。
+* `kubectl` ：用来与集群通信的命令行工具。
+
+TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问题，请自备代理工具或者使用镜像地址。注意：对于 *导入证书等操作一定要再三确认*，谨防link:https://zh.m.wikipedia.org/zh/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB[中间人攻击]。
+
+[source,bash]
+----
+include::./script/soft-install-kubeadm.sh[lines=2..-1]
+----
+
+=== 配置 `containerd` 网络代理
+
+在某些情况下，镜像可能因为网络原因无法拉取。
+
+[source,bash]
+----
+mkdir /etc/systemd/system/containerd.service.d
+cat << "EOF" > /etc/systemd/system/containerd.service.d/http_proxy.conf
+[Service]
+# 此处配置为可用的 HTTP 代理地址
+Environment="HTTP_PROXY=10.0.0.2:8080"
+# 此处配置为可用的 HTTP 代理地址
+Environment="HTTPS_PROXY=http://10.0.0.2:8080"
+# 此处配置为跳过代理的地址
+Environment="NO_PROXY=localhost,127.0.0.1,10.0.0.0/8"
+EOF
+systemctl daemon-reload
+systemctl restart containerd.service
+----
+
+=== 预下载运行时镜像 (可选)
+
+为防止因网络问题导致镜像下载失败致使 `kubernetes` 安装失败，可将所有 `kubernetes` 所用到的镜像预下载到本地。
+
+[source,bash]
+----
+include::./script/k8s-pull-image-init.sh[lines=2..-1]
+----
+
+=== 添加 TAB 命令补全 （可选）
+
+对常用命令增加补全功能可极大提升效率。此功能需要安装 `bash-completion` 软件包。
+
+[source,bash]
+----
+include::./script/k8s-shell-completion-bash.sh[lines=2..-1]
+----
+
+如果你想创建 `kubectl` 的别名的话可使用如下命令添加命令补全功能。
+
+[source,bash]
+----
+include::./script/k8s-shell-alias.sh[lines=2..-1]
+----
+
+== 安装 kubernetes
+
+一切环境准备完成后，即可开始安装 kubernetes
+
+== 安装控制节点
+
+控制节点安装在 `dragon-k8s-master` 机器上，SSH 连接机器，执行以下命令：
+
+[source,bash]
+----
+include::./script/k8s-insall-master.sh[lines=2..-1]
+----
+
+== 参考
+
+- [1] link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[安装 kubeadm]

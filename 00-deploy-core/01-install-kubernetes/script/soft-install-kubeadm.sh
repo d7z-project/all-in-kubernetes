@@ -6,6 +6,11 @@ curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
 apt-get update
 # 安装 kubeadm
-apt-get install -y kubelet kubeadm kubectl
+apt-get install -y kubelet kubeadm kubectl cri-tools
 # 锁定 kubernetes 版本
-apt-mark hold kubelet kubeadm kubectl
+apt-mark hold kubelet kubeadm kubectl cri-tools
+# 配置 cri-tools
+cat << EOF | tee /etc/crictl.yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+EOF
