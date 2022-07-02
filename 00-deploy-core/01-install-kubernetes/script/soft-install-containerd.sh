@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# 此脚本参考至 https://github.com/kubernetes/kubernetes/issues/106464#issuecomment-1142563656
 # 配置运行时版本
 ## https://github.com/containerd/containerd
 CONTAINERD_VERSION=1.6.6
@@ -15,6 +16,7 @@ wget https://github.com/containerd/containerd/releases/download/v$CONTAINERD_VER
 tar Cxzvf /usr/local /tmp/containerd.tgz
 mkdir /etc/containerd/
 containerd config default >/etc/containerd/config.toml
+# 备注：在 Debian Bullseye 下已经默认启用 cgroup v2
 sed -i 's|SystemdCgroup = false|SystemdCgroup = true|' /etc/containerd/config.toml
 
 # 部署 runc
