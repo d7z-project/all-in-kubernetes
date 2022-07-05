@@ -158,4 +158,4 @@ node-worker-02   Ready    <none>          105s   v1.24.2
 
 == 参考
 
-- [1] link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[部署 kubeadm]
+. link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[部署 kubeadm]
