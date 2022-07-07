@@ -87,7 +87,7 @@ include::./conf/local-pvc.yml[]
 EOF
 kubectl apply -f /tmp/local-pvc.yml
 # 查看创建的 PVC
-kubectl get pvc
+kubectl get pvc  -n rook-nfs
 ----
 
 == 创建NFS Server
@@ -121,3 +121,20 @@ kubectl apply -f /tmp/nfs-sc.yml
 ----
 
 == 验证部署情况
+
+执行以下命令创建测试 pod
+
+[source,bash]
+----
+kubectl apply -f - <<EOF
+include::./conf/nfs-test.yml[]
+EOF
+
+----
+
+执行完成后使用 `kubectl get pods` 查看创建情况。创建完成后，执行以下命令，有数据返回则表示成功：
+
+[source,bash]
+----
+echo; kubectl exec $(kubectl get pod -l app=nfs-demo,role=busybox -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://$(kubectl get services nfs-web -o jsonpath='{.spec.clusterIP}'); echo
+----
