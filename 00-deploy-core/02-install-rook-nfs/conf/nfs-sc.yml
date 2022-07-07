@@ -2,24 +2,12 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   labels:
-    app: rook-nfs
-  name: rook-nfs-share
+    app: nfs-server
+  name: cluster-share
 parameters:
   exportName: local-share
-  nfsServerName: rook-nfs
+  nfsServerName: nfs-server
   nfsServerNamespace: rook-nfs
 provisioner: nfs.rook.io/rook-nfs-provisioner
 reclaimPolicy: Delete
 volumeBindingMode: Immediate
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: rook-nfs-pv-claim
-spec:
-  storageClassName: rook-nfs-share
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10Gi

@@ -1,7 +1,7 @@
 apiVersion: nfs.rook.io/v1alpha1
 kind: NFSServer
 metadata:
-  name: rook-nfs
+  name: nfs-server
   namespace: rook-nfs
 spec:
   replicas: 1
@@ -10,7 +10,6 @@ spec:
       server:
         accessMode: ReadWrite
         squash: "none"
-      # A Persistent Volume Claim must be created before creating NFS CRD instance.
       persistentVolumeClaim:
         claimName: nfs-local-pvc-share
   annotations:

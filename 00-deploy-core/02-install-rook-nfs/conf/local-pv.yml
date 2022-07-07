@@ -18,6 +18,6 @@ spec:
               operator: In
               values:
                 - node-worker-01 # 指定部署在 node-worker-01 节点上，可根据实际需求更改
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs-local-sc-share
   volumeMode: Filesystem
