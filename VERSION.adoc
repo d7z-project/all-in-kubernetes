@@ -6,4 +6,5 @@
 | debian | 11/bullseye | -
 | kubernetes | 1.24.2 | -
 | containerd | 1.6.6 | -
+| rook-nfs | 1.7.3 | -
 |===
