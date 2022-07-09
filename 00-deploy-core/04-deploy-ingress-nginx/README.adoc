@@ -1,0 +1,35 @@
+:experimental:
+:icons: font
+
+= 安装 Ingress Controller 组件实现 (Nginx)
+
+项目地址：link:https://github.com/kubernetes/ingress-nginx/[ingress-nginx]
+
+== 导入资源
+
+由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/ingress-nginx.yaml[conf/ingress-nginx.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
+
+或者你可以使用以下命令在线导入资源：
+
+[source,bash]
+----
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
+
+----
+
+Nginx Ingress Controller 需要以下镜像：
+
+[source,bash]
+----
+crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
+crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
+----
+
+导入完成后使用以下命令查看结果：
+
+[source,bash]
+----
+kubectl get service,pods -n ingress-nginx -o wide
+----
+
+如果一切无误，则会启动 `ingress-nginx-controller`,同时如果配置了 LoadBalancer ，则此时 LoadBalancer 也将绑定外部地址 。

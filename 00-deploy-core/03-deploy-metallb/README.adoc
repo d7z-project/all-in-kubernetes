@@ -75,3 +75,7 @@ kubectl get service -o jsonpath='{.items[*].status.loadBalancer.ingress[*].ip}'
 ----
 
 如果一切无误，将看到 Pod 启动完成且 Service 有 EXTERNAL-IP，浏览器可正常访问此地址。测试完成后执行 `kubectl apply -f /tmp/l2-test.yaml` 删除测试数据。
+
+== 扩展
+
+. link:https://metallb.universe.tf/usage/#ip-address-sharing[不同服务使用同一IP]
