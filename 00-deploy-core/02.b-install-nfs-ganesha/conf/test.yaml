@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: cluster-test-pvc
 spec:
-  storageClassName: nfs
+  storageClassName: cluster-share
   accessModes:
     - ReadWriteMany
   resources:
