@@ -3,9 +3,9 @@
 
 = 配置全局存储 (rook-nfs)
 
-kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录
+kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
 
-WARNING: rook-nfs 项目已经link:https://github.com/rook/nfs#deprecated[过时]，未来此文档可能会被替换,正在寻找替代方案，暂不考虑 `rook-ceph` 。
+WARNING: rook-nfs 项目已经link:https://github.com/rook/nfs#deprecated[过时]，未来此文档可能会被替换,正在寻找替代方案，如果你有好的方案可告诉我，暂不考虑 `Ceph` 等类似的块存储方案 。
 
 == 导入规则
 
