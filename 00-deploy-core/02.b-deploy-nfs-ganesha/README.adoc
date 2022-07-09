@@ -26,7 +26,7 @@ EOF
 
 == 映射节点目录
 
-具体步骤可参考 link:../02.a-install-rook-nfs/README.adoc[RookNFS] , 此处仅放置最终执行命令。
+具体步骤可参考 link:../02.a-deploy-rook-nfs/README.adoc[RookNFS] , 此处仅放置最终执行命令。
 
 .点击展开部署命令
 [%collapsible]

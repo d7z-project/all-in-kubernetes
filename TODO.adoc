@@ -23,10 +23,10 @@
 ** [x] 共享 `/share`
 ** [x] 创建 NFS Server
 ** [x] 测试
-* [ ] 配置 共享存储(nfs-ganesha)/验证
-** [ ] 共享 `/share`
-** [ ] 创建 NFS Server
-** [ ] 测试
+* [x] 配置 共享存储(nfs-ganesha)/验证
+** [x] 共享 `/share`
+** [x] 创建 NFS Server
+** [x] 测试
 * [ ] 部署 Cert-Manager/验证
 * [ ] 部署 Ingress(Nginx)/验证
 
