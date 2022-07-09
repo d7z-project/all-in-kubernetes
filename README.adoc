@@ -6,21 +6,27 @@
 
 > All-In-One（[.line-through]#all in boom#）。
 
-此项目致力于简化个人部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。人生苦短，我用 k8s。
+此项目致力于简化个人部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。
+
+WARNING: 此项目需要你有 Kubernetes 的基础知识，可前往 link:https://kubernetes.io/zh-cn/docs/home/[Kubernetes 文档] 在线学习。
 
 项目仓库位于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可 Pull request。
 
 == 特性
 
-- 统一化应用管理，降低传统的硬件虚拟化带来的应用碎片化问题 -
+* 统一化应用管理，降低传统的硬件虚拟化带来的应用碎片化问题
+* 整合账户系统，使用LDAP来管理用户
+* 完全使用 yaml 配置来管理和部署集群
 
 == 入门
 
-你可以使用此推荐方案部署，此方案已应用于本人的测试环境中，未来可能会替换本人现有的部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下：
+你可以使用此推荐方案部署，此方案已应用于本人的测试环境中，未来可能会替换本人现有的部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中非数字序号的文章表示多选一）：
 
-TIP: Github 的预览效果可能不太好，可前往 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[Gitlab] 查看。
+TIP: Github 的预览效果可能不太好，可前往 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[Gitlab主站] 在线预览。你还可以克隆此项目到本地后使用 Visual Studio Code 预览。
 
 关于实例部署环境可参考 link:./zz-document/other/HARDWARE_INFO.adoc[此文档]。
+
+TIP:  由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请勿直接复制粘贴内容。
 
 === 核心环境部署
 
@@ -28,9 +34,7 @@ include::MENU_DEPLOY.adoc[lines=3..-1]
 
 == 注意事项
 
-WARNING: *免责声明*：如果你因为此项目导致任何数据丢失、机器损坏等不可挽回的问题，此项目的贡献者均不会承担任何责任。硬盘有价，数据无价，请一定做好数据备份！
-
-CAUTION: 由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请勿直接复制粘贴。
+WARNING: 如果你因为此项目导致 *数据丢失* 、*机器损坏* 等不可挽回的问题，此项目的贡献者均 *不会承担任何责任* ，但你可向其咨询以寻求解决方案 。*数据无价，请一定做好数据备份* ！
 
 == LICENSE
 
