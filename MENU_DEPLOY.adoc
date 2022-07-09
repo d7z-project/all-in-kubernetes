@@ -6,4 +6,5 @@
 .. link:./00-deploy-core/01-install-kubernetes/k8s.adoc[基于 Kubernetes(Google)]
 .. link:./00-deploy-core/01-install-kubernetes/k3s.adoc[基于 Kubernetes(K3s)]
 . 配置共享存储
-.. link:./00-deploy-core/02.a-install-rook-nfs/README.adoc[基于rook-nfs配置存储]
+.. link:./00-deploy-core/02.a-install-rook-nfs/README.adoc[基于 rook-nfs 配置存储]
+.. link:./00-deploy-core/02.b-install-nfs-ganesha/README.adoc[基于 nfs-ganesha 配置存储]
