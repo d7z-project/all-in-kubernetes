@@ -8,4 +8,6 @@
 . 配置共享存储
 .. link:./00-deploy-core/02.a-deploy-rook-nfs/README.adoc[基于 rook-nfs 配置存储]
 .. link:./00-deploy-core/02.b-deploy-nfs-ganesha/README.adoc[基于ganesha 配置存储]
-. link:00-deploy-core/03-deploy-cert-manager/README.adoc[部署 CertManager]
+. link:00-deploy-core/03-deploy-metallb/README.adoc[部署 LoadBalancer 实现 (metallb)]
+. link:00-deploy-core/04-deploy-ingress-nginx/README.adoc[部署 Nginx Ingress]
+. link:00-deploy-core/05-deploy-cert-manager/README.adoc[部署 CertManager]

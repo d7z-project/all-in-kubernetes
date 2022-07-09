@@ -1,0 +1,33 @@
+:experimental:
+:icons: font
+
+= 部署 CertManager
+
+项目地址： link:https://cert-manager.io[cert-manager]
+
+== 导入资源
+
+由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/cert-manager.yaml[conf/cert-manager.yaml] 推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml` 导入资源。
+
+或者你可以使用以下命令在线导入资源：
+
+[source,bash]
+----
+ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+----
+
+CertManager 需要以下镜像：
+
+[source,bash]
+----
+crictl pull quay.io/jetstack/cert-manager-cainjector:v1.8.2
+crictl pull quay.io/jetstack/cert-manager-controller:v1.8.2
+crictl pull quay.io/jetstack/cert-manager-webhook:v1.8.2
+----
+
+导入完成后使用以下命令查看结果：
+
+[source,bash]
+----
+kubectl get pods -n cert-manager
+----

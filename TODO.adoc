@@ -27,8 +27,12 @@
 ** [x] 共享 `/share`
 ** [x] 创建 NFS Server
 ** [x] 测试
-* [ ] 部署 Cert-Manager/验证
+* [x] 部署 LoadBalancer实现(metallb)/验证
+** [x] 部署
+** [x] 分配IP池
+** [x] 验证
 * [ ] 部署 Ingress(Nginx)/验证
+* [ ] 部署 Cert-Manager/验证
 
 === 核心组件 (core-system)
 
