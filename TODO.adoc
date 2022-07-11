@@ -31,8 +31,9 @@
 ** [x] 部署LoadBalancer
 ** [x] 分配IP池
 ** [x] 验证LoadBalancer
-* [ ] 部署 Ingress(Nginx)/验证
-** [x] 部署Ingress
+* [x] 部署 Ingress(Nginx)/验证
+** [x] 部署 Ingress(Nginx)
+** [x] 测试 Ingress(Nginx)
 * [ ] 部署 Cert-Manager/验证
 
 === 核心组件 (core-system)

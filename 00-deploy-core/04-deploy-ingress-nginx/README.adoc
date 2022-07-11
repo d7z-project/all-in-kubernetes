@@ -33,3 +33,30 @@ kubectl get service,pods -n ingress-nginx -o wide
 ----
 
 如果一切无误，则会启动 `ingress-nginx-controller`,同时如果配置了 LoadBalancer ，则此时 LoadBalancer 也将绑定外部地址 。
+
+== 测试
+
+安装完成后可使用以下配置进行测试
+
+[source,bash]
+----
+# 导入测试用例配置
+cat << "EOF" > /tmp/ingress-test.sh
+include::./conf/test.yml[]
+EOF
+kubectl apply -f /tmp/ingress-test.sh
+# 获取 Nginx 绑定的 loadBalancer ip
+CLIENT_IP=$(kubectl get service -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[*].ip}')
+# 查询路径一绑定的Service - Pod
+curl http://$CLIENT_IP/first
+# 查询路径二绑定的Service - Pod
+curl http://$CLIENT_IP/second
+----
+
+如果一切无误，则控制台会展示如下结果,注意，此测试需要你配置 `LoadBalancer` 。
+
+[source,text]
+----
+first web demo.
+second web demo.
+----
