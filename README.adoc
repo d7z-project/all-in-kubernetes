@@ -30,7 +30,11 @@ TIP:  由于技术在不断更新迭代，我们无法保证此项目/文档的�
 
 === 核心环境部署
 
-include::MENU_DEPLOY.adoc[lines=3..-1]
+include::MENU_SYS.adoc[lines=3..-1]
+
+=== 核心应用部署
+
+include::MENU_CORE.adoc[lines=3..-1]
 
 == 注意事项
 
