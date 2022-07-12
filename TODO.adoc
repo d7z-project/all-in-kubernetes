@@ -1,6 +1,11 @@
 = 文档任务
+:experimental:
+:icons: font
+:source-highlighter: rouge
 
-> 注：所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理，非必要情况绝不暴露内部端口。
+TIP: 所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理，非必要情况绝不暴露内部端口。
+
+WARNING: 不要使用 `bitnami` 归属的镜像包。
 
 == 环境介绍
 

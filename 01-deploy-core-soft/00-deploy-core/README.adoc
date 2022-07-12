@@ -1,0 +1,16 @@
+= 核心环境安装准备
+
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+== 创建 Namespace
+
+[source%linenums,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: core-system
+----
