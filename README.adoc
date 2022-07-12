@@ -1,8 +1,8 @@
 = All In Kubernetes
-
 :homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
 :experimental:
 :icons: font
+:toc: left
 
 > All-In-One（[.line-through]#all in boom#）。
 
@@ -20,7 +20,7 @@ WARNING: 此项目需要你有 Kubernetes 的基础知识，可前往 link:https
 
 == 入门
 
-你可以使用此推荐方案部署，此方案已应用于本人的测试环境中，未来可能会替换本人现有的部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中非数字序号的文章表示多选一）：
+你可以使用此推荐方案部署，此方案已应用于测试环境中，未来可能会替换现有的虚拟机部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中非数字序号的文章表示多选一）：
 
 TIP: Github 的预览效果可能不太好，可前往 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[Gitlab主站] 在线预览。你还可以克隆此项目到本地后使用 Visual Studio Code 预览。
 
@@ -34,7 +34,7 @@ include::MENU_DEPLOY.adoc[lines=3..-1]
 
 == 注意事项
 
-WARNING: 如果你因为此项目导致 *数据丢失* 、*机器损坏* 等不可挽回的问题，此项目的贡献者均 *不会承担任何责任* ，但你可向其咨询以寻求解决方案 。*数据无价，请一定做好数据备份* ！
+WARNING: 如果你因为此项目导致 *数据丢失* 、*机器损坏* 等不可挽回的问题，此项目的贡献者均 *不会承担任何责任* ，你可向我们提供你的部署流程以供我们帮你以寻求解决方案 。*数据无价，请一定做好数据备份* ！
 
 == LICENSE
 

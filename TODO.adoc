@@ -34,7 +34,9 @@
 * [x] 部署 Ingress(Nginx)/验证
 ** [x] 部署 Ingress(Nginx)
 ** [x] 测试 Ingress(Nginx)
-* [ ] 部署 Cert-Manager/验证
+* [x] 部署 Cert-Manager/验证
+** [x] 导入资源
+** [x] 测试 CertManager
 
 === 核心组件 (core-system)
 

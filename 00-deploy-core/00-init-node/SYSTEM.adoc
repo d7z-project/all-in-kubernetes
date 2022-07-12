@@ -1,8 +1,10 @@
-:icons: font
-
 = Debian 系统环境配置
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
 
-本项目使用 Debian "bullseye" 作底层操作系统，具体的配置情况如下：
+本项目使用 link:https://www.debian.org/releases/bullseye/["Debian bullseye"] 作底层操作系统，在系统安装完成后的具体的配置情况如下：
 
 == 基础软件安装
 
@@ -10,7 +12,7 @@
 
 *Bash Completion* 可为 Shell 添加 *TAB* 补全功能，建议安装。
 
-[source,bash]
+[source%linenums,bash]
 ----
 include::./script/soft-install-bash-completion.sh[lines=2..-1]
 ----
@@ -19,7 +21,7 @@ include::./script/soft-install-bash-completion.sh[lines=2..-1]
 
 *OpenSSH* 能极大的方便远程调试，建议安装。
 
-[source,bash]
+[source%linenums,bash]
 ----
 include::./script/soft-install-openssh.sh[lines=2..-1]
 ----
@@ -28,7 +30,7 @@ include::./script/soft-install-openssh.sh[lines=2..-1]
 
 在 *KVM* 虚拟机环境下，某些工具包能极大提升部署效率，建议安装。
 
-[source,bash]
+[source%linenums,bash]
 ----
 include::./script/soft-install-vm-tools.sh[lines=2..-1]
 ----
@@ -39,7 +41,7 @@ include::./script/soft-install-vm-tools.sh[lines=2..-1]
 
 受地域影响，默认的 APT 下载可能会非常慢，可根据实际需求更改为合适的地址，例如：
 
-[source,bash]
+[source%linenums,bash]
 ----
 include::./script/conf-update-apt-source.sh[lines=2..-1]
 ----
@@ -50,7 +52,7 @@ include::./script/conf-update-apt-source.sh[lines=2..-1]
 
 CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到目标服务器，否则可能会导致无法使用SSH远程登陆。可以使用 `ssh-copy-id <user>@<address>` 快速复制本机的公钥到目标服务器下。
 
-[source,bash]
+[source%linenums,bash]
 ----
 include::./script/conf-update-openssh-server.sh[lines=2..-1]
 ----

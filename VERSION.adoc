@@ -8,5 +8,7 @@
 | containerd | 1.6.6 | -
 | rook-nfs | 1.7.3 | -
 | nfs-ganesha | 1.4.0 | -
+| metallb | 0.13.3 | -
+| ingress-nginx | 1.2.1 | -
 | cert-manager | 1.8.2 | -
 |===

@@ -1,1 +1,5 @@
 = 部署 Kubernetes (k3s)
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge

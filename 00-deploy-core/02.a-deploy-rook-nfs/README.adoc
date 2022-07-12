@@ -1,7 +1,8 @@
+= 配置全局存储 (rook-nfs)
 :experimental:
 :icons: font
-
-= 配置全局存储 (rook-nfs)
+:toc: left
+:source-highlighter: rouge
 
 kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
 
@@ -15,7 +16,7 @@ WARNING: rook-nfs 项目已经link:https://github.com/rook/nfs#deprecated[过时
 [%collapsible]
 ====
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << "EOF" > /tmp/rook-system.yaml
 include::./conf/crds.yaml[]
@@ -41,7 +42,7 @@ kubectl get pods -n rook-nfs-system
 
 接下来,定义 `PersistentVolume`, 如下所示:
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << "EOF" | tee /tmp/local-pv.yml
 include::./conf/local-pv.yml[]
@@ -61,7 +62,7 @@ kubectl get pv
 
 通过 StorageClass 描述刚刚创建的PV, 如下所示:
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << "EOF" | tee /tmp/local-sc.yml
 include::./conf/local-sc.yml[]
@@ -80,7 +81,7 @@ kubectl get sc
 
 创建 PVC ，供之后创建的 NFS Server 使用。
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << "EOF" | tee /tmp/local-pvc.yml
 include::./conf/local-pvc.yml[]
@@ -94,7 +95,7 @@ kubectl get pvc  -n rook-nfs
 
 我们可以通过创建 `nfsservers.nfs.rook.io` 资源的实例来创建NFS服务器的实例。
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << "EOF" | tee /tmp/nfs-server.yml
 include::./conf/nfs-server.yml[]
@@ -112,7 +113,7 @@ kubectl get nfsservers.nfs.rook.io -n rook-nfs
 部署 *Operator* 和 *NFS Server* 实例之后,.
 须创建 `StrorageClass` 来动态配置 `Volume`
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << "EOF" | tee /tmp/nfs-sc.yml
 include::./conf/nfs-sc.yml[]
@@ -124,9 +125,9 @@ kubectl apply -f /tmp/nfs-sc.yml
 
 执行以下命令创建测试 pod
 
-[source,bash]
+[source%linenums,bash]
 ----
-kubectl apply -f - <<EOF
+kubectl apply -f - << "EOF"
 include::./conf/nfs-test.yml[]
 EOF
 
@@ -136,7 +137,7 @@ EOF
 
 TIP: 如果返回403错误，可能是因为文件系统权限问题，可通过 `kubectl exec` 手动查看。
 
-[source,bash]
+[source%linenums,bash]
 ----
 echo; kubectl exec $(kubectl get pod -l app=nfs-demo,role=busybox -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://$(kubectl get services nfs-web -o jsonpath='{.spec.clusterIP}'); echo
 ----

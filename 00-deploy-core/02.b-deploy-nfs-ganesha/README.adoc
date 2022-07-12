@@ -1,7 +1,8 @@
+= 配置全局存储 (nfs-ganesha)
 :experimental:
 :icons: font
-
-= 配置全局存储 (nfs-ganesha)
+:toc: left
+:source-highlighter: rouge
 
 项目地址：link:https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner[nfs-ganesha-server-and-external-provisioner]
 
@@ -15,7 +16,7 @@ kubernetes 安装后可选择一个节点的某个目录作为集群数据存储
 [%collapsible]
 ====
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl apply -f - << EOF
 include::./conf/nfs-rbac.yaml[]
@@ -32,7 +33,7 @@ EOF
 [%collapsible]
 ====
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl apply -f - << EOF
 include::./conf/local-storage.yaml[]
@@ -51,7 +52,7 @@ kubectl get sc
 [%collapsible]
 ====
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl apply -f - << EOF
 include::./conf/nfs-server.yaml[]
@@ -65,7 +66,7 @@ kubectl get sc
 
 执行以下命令创建测试 pod
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl apply -f - <<EOF
 include::./conf/test.yaml[]
@@ -77,7 +78,7 @@ EOF
 
 TIP: 如果返回403错误，可能是因为文件系统权限问题，可通过 `kubectl exec` 手动查看。
 
-[source,bash]
+[source%linenums,bash]
 ----
 echo; kubectl exec $(kubectl get pod -l app=nfs-demo,role=busybox -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://$(kubectl get services nfs-web -o jsonpath='{.spec.clusterIP}'); echo
 ----

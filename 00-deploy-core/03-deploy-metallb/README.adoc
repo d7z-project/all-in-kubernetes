@@ -1,7 +1,8 @@
+= 安装 LoadBalancer 组件实现 (MetalLB)
 :experimental:
 :icons: font
-
-= 安装 LoadBalancer 组件实现 (MetalLB)
+:toc: left
+:source-highlighter: rouge
 
 项目地址：link:https://metallb.universe.tf/[MetalLB]
 
@@ -13,7 +14,7 @@
 
 执行如下命令完成配置：
 
-[source,bash]
+[source%linenums,bash]
 ----
 include::./script/ipvs-patch.sh[lines=3..-1]
 ----
@@ -24,14 +25,14 @@ include::./script/ipvs-patch.sh[lines=3..-1]
 
 或者你可以使用以下命令在线导入资源：
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
 ----
 
 MetalLB 需要以下镜像：
 
-[source,bash]
+[source%linenums,bash]
 ----
 crictl pull quay.io/metallb/controller:v0.13.3
 crictl pull quay.io/metallb/speaker:v0.13.3
@@ -39,7 +40,7 @@ crictl pull quay.io/metallb/speaker:v0.13.3
 
 导入完成后使用以下命令查看结果：
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl get pods -n metallb-system -o wide
 ----
@@ -52,7 +53,7 @@ kubectl get pods -n metallb-system -o wide
 
 TIP: 由于是小型化部署，所以 L2 模式已经够用，当然，不排除自建机房，使用 BGP 的方案可自行查阅文档。
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << EOF > /tmp/l2-network.yaml
 include::./conf/l2-netwok.yaml[]
@@ -64,7 +65,7 @@ kubectl apply -f /tmp/l2-network.yaml
 
 执行以下命令，验证部署结果。
 
-[source,bash]
+[source%linenums,bash]
 ----
 cat << EOF > /tmp/l2-test.yaml
 include::./conf/test.yml[]

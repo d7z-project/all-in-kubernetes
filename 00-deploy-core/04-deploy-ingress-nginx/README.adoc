@@ -1,7 +1,8 @@
+= 安装 Ingress Controller 组件实现 (Nginx)
 :experimental:
 :icons: font
-
-= 安装 Ingress Controller 组件实现 (Nginx)
+:toc: left
+:source-highlighter: rouge
 
 项目地址：link:https://github.com/kubernetes/ingress-nginx/[ingress-nginx]
 
@@ -11,7 +12,7 @@
 
 或者你可以使用以下命令在线导入资源：
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
 
@@ -19,7 +20,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 Nginx Ingress Controller 需要以下镜像：
 
-[source,bash]
+[source%linenums,bash]
 ----
 crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
 crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
@@ -27,7 +28,7 @@ crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 
 导入完成后使用以下命令查看结果：
 
-[source,bash]
+[source%linenums,bash]
 ----
 kubectl get service,pods -n ingress-nginx -o wide
 ----
@@ -38,7 +39,7 @@ kubectl get service,pods -n ingress-nginx -o wide
 
 安装完成后可使用以下配置进行测试
 
-[source,bash]
+[source%linenums,bash]
 ----
 # 导入测试用例配置
 cat << "EOF" > /tmp/ingress-test.sh
@@ -55,7 +56,7 @@ curl http://$CLIENT_IP/second
 
 如果一切无误，则控制台会展示如下结果,注意，此测试需要你配置 `LoadBalancer` 。
 
-[source,text]
+[source%linenums,text]
 ----
 first web demo.
 second web demo.
