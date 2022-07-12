@@ -65,10 +65,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - dev.open-edgn.cn
-      secretName: dev-open-edgn-cn-tls
+        - example.cn
+      secretName: example-com-tls
   rules:
-    - host: dev.open-edgn.cn
+    - host: example.cn
       http:
         paths:
           - path: /
