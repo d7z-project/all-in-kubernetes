@@ -11,5 +11,5 @@ metadata:
 data:
   ldap_org: 'example team' # <2>
   ldap_domain: 'example.com' # <3>
-  ldap_host: 'ldap-sv.core-system.svc.cluster.local' # <4>
-  ldap_url: 'ldap://ldap-sv.core-system.svc.cluster.local:389' # <5>
+  ldap_host: 'service-ldap.core-system.svc.cluster.local' # <4>
+  ldap_url: 'ldap://service-ldap.core-system.svc.cluster.local:389' # <5>
