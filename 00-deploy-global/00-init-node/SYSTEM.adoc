@@ -14,7 +14,7 @@
 
 [source%linenums,bash]
 ----
-include::./script/soft-install-bash-completion.sh[lines=2..-1]
+include::./script/00.c-soft-install-bash-completion.sh[lines=2..-1]
 ----
 
 === 安装 OpenSSH Server
@@ -23,7 +23,7 @@ include::./script/soft-install-bash-completion.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/soft-install-openssh.sh[lines=2..-1]
+include::./script/00.b-soft-install-openssh.sh[lines=2..-1]
 ----
 
 === 安装 VM tools (可选)
@@ -32,7 +32,7 @@ include::./script/soft-install-openssh.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/soft-install-vm-tools.sh[lines=2..-1]
+include::./script/00.e-soft-install-vm-tools.sh[lines=2..-1]
 ----
 
 == 基础环境配置
@@ -43,10 +43,10 @@ include::./script/soft-install-vm-tools.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/conf-update-apt-source.sh[lines=2..-1]
+include::./script/00.a-conf-update-apt-source.sh[lines=2..-1]
 ----
 
-=== 修改OpenSSH 配置
+=== 修改OpenSSH 配置 (可选)
 
 关闭密码登陆可提高服务器安全性。同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 `2222` ，如果没有使用需求则可以跳过。
 
@@ -54,5 +54,5 @@ CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到目标服务�
 
 [source%linenums,bash]
 ----
-include::./script/conf-update-openssh-server.sh[lines=2..-1]
+include::./script/00.f-conf-update-openssh-server.sh[lines=2..-1]
 ----

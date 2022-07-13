@@ -14,7 +14,7 @@
 
 [source%linenums,bash]
 ----
-include::./script/info-hardware-info-uuid.sh[lines=2..-1]
+include::./script/03-info-hardware-info-uuid.sh[lines=2..-1]
 ----
 
 === 验证网络联通性
@@ -29,7 +29,7 @@ kubernetes 需要 `br_netfilter` 模块才能工作，Debian 内核已带有此�
 
 [source%linenums,bash]
 ----
-include::./script/conf-modprobe.sh[lines=2..-1]
+include::./script/01-conf-modprobe.sh[lines=2..-1]
 ----
 
 === 配置内核参数
@@ -38,7 +38,7 @@ include::./script/conf-modprobe.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/conf-sysctl.sh[lines=2..-1]
+include::./script/02-conf-sysctl.sh[lines=2..-1]
 ----
 
 === 安装附加软件包
@@ -47,5 +47,5 @@ include::./script/conf-sysctl.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/soft-install-k8s-extra.sh[lines=2..-1]
+include::./script/00.d-soft-install-k8s-extra.sh[lines=2..-1]
 ----
