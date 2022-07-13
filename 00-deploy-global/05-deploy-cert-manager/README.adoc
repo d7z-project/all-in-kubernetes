@@ -9,7 +9,7 @@
 
 == 导入资源
 
-由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/cert-manager.yaml[conf/cert-manager.yaml] 和 link:conf/reflector.yaml[conf/reflector.yaml] 推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml -f reflector.yaml` 导入资源。
+由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-cert-manager.yaml[conf/cert-manager.yaml] 和 link:conf/01-reflector.yaml[conf/reflector.yaml] 推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml -f reflector.yaml` 导入资源。
 
 * 注： Reflector 用于同步证书到各个 `namespace` 。
 

@@ -8,7 +8,7 @@
 
 == 导入资源
 
-由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/ingress-nginx.yaml[conf/ingress-nginx.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
+由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-ingress-nginx.yaml[conf/ingress-nginx.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
 
 或者你可以使用以下命令在线导入资源：
 
@@ -37,24 +37,28 @@ kubectl get service,pods -n ingress-nginx -o wide
 
 == 测试
 
-安装完成后可使用以下配置进行测试
+=== 导入测试配置
+
+将以下配置导入到 `kubernetes` 下：
+
+[source%linenums,yaml]
+----
+include::./conf/t-00-test.yml[]
+----
+
+=== 验证测试结果
+
+导入完成后，执行以下命令验证部署结果。
 
 [source%linenums,bash]
 ----
-# 导入测试用例配置
-cat << "EOF" > /tmp/ingress-test.sh
-include::./conf/test.yml[]
-EOF
-kubectl apply -f /tmp/ingress-test.sh
-# 获取 Nginx 绑定的 loadBalancer ip
-CLIENT_IP=$(kubectl get service -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[*].ip}')
-# 查询路径一绑定的Service - Pod
-curl http://$CLIENT_IP/first
-# 查询路径二绑定的Service - Pod
-curl http://$CLIENT_IP/second
+include::./script/t-00-test.sh[lines=2...-1]
 ----
 
-如果一切无误，则控制台会展示如下结果,注意，此测试需要你配置 `LoadBalancer` 。
+.其中：
+<1> 需要配置了LoadBalancer此命令才可用
+
+如果一切无误，则控制台会展示如下结果。
 
 [source%linenums,text]
 ----
