@@ -20,7 +20,8 @@ jobs:
           fetch-depth: 0
       - name: Init Build Env
         run: |
-          apt install asciidoctor -y
+          sudo apt-get update
+          sudo apt install asciidoctor -y
           gem install rouge
           chmod +x build-html.sh
       - name: Build
