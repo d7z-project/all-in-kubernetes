@@ -59,6 +59,7 @@ stringData:
   api-token: '<CLOUDFLARE API TOKEN>' # <1>
 ----
 
+.其中:
 <1> 此处填写你 CloudFlare API Token
 
 将此文件保存至 `api.yaml` 后执行 `kubectl apply -f api.yaml` 即可。
@@ -124,6 +125,7 @@ spec:
   secretName: example-com-tls
 ----
 
+.其中:
 <1> 允许控制的命名空间
 <2> 允许创建反射
 <3> 自动为匹配的命名空间创建反射

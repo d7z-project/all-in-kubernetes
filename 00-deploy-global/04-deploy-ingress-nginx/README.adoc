@@ -41,10 +41,15 @@ kubectl get service,pods -n ingress-nginx -o wide
 
 将以下配置导入到 `kubernetes` 下：
 
+.点击展开配置
+[%collapsible]
+====
+
 [source%linenums,yaml]
 ----
 include::./conf/t-00-test.yml[]
 ----
+====
 
 === 验证测试结果
 
