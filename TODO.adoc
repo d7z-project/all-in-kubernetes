@@ -1,11 +1,12 @@
 = 文档任务
 :experimental:
 :icons: font
+:toc: left
 :source-highlighter: rouge
 
-TIP: 所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理，非必要情况绝不暴露内部端口。
+TIP: 所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理。
 
-WARNING: 不要使用 `bitnami` 归属的镜像包。
+WARNING: 避免使用 `bitnami` 打包的镜像。
 
 == 环境介绍
 
@@ -50,7 +51,11 @@ WARNING: 不要使用 `bitnami` 归属的镜像包。
 ** [x] 创建PVC
 ** [x] 安装 OpenLDAP
 ** [x] 验证
-* [ ] 部署 ldap-account-manager/验证
+* [x] 部署 ldap-account-manager/验证
+** [x] 部署 APP
+** [x] 部署 Service
+** [x] 部署 Ingress
+** [x] 验证
 
 === 核心中间件 (core-middleware)
 
