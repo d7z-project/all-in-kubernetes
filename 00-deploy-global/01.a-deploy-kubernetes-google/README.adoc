@@ -16,7 +16,7 @@ Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 link:https://co
 
 [source%linenums,bash]
 ----
-include::./script/soft-install-containerd.sh[lines=2..-1]
+include::./script/00-soft-install-containerd.sh[lines=2..-1]
 ----
 
 ====
@@ -33,7 +33,7 @@ TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问
 
 [source%linenums,bash]
 ----
-include::./script/soft-install-kubeadm.sh[lines=2..-1]
+include::./script/01-soft-install-kubeadm.sh[lines=2..-1]
 ----
 
 === 配置 `containerd` 网络代理 (可选)
@@ -42,14 +42,14 @@ include::./script/soft-install-kubeadm.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/conf-containerd-http-proxy.sh[lines=2..-1]
+include::./script/02.a-conf-containerd-http-proxy.sh[lines=2..-1]
 ----
 
 取消代理可执行以下命令:
 
 [source%linenums,bash]
 ----
-include::./script/conf-containerd-clear-http-proxy.sh[lines=2..-1]
+include::./script/02.b-conf-containerd-clear-http-proxy.sh[lines=2..-1]
 ----
 
 === 预下载运行时镜像 (可选)
@@ -58,7 +58,7 @@ include::./script/conf-containerd-clear-http-proxy.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/k8s-pull-image-init.sh[lines=2..-1]
+include::./script/04-k8s-pull-image-init.sh[lines=2..-1]
 ----
 
 === 添加 TAB 命令补全 （可选）
@@ -67,14 +67,14 @@ include::./script/k8s-pull-image-init.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/k8s-shell-completion-bash.sh[lines=2..-1]
+include::./script/06-k8s-shell-completion-bash.sh[lines=2..-1]
 ----
 
 如果你想创建 `kubectl` 的别名的话可使用如下命令添加命令补全功能。
 
 [source%linenums,bash]
 ----
-include::./script/k8s-shell-alias.sh[lines=2..-1]
+include::./script/07-k8s-shell-alias.sh[lines=2..-1]
 ----
 
 == 部署 kubernetes
@@ -87,7 +87,7 @@ include::./script/k8s-shell-alias.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/k8s-reset.sh[lines=2..-1]
+include::./script/03-k8s-reset.sh[lines=2..-1]
 ----
 
 === 部署控制节点
@@ -96,7 +96,7 @@ include::./script/k8s-reset.sh[lines=2..-1]
 
 [source%linenums,bash]
 ----
-include::./script/k8s-insall-master.sh[lines=2..-1]
+include::./script/05-k8s-insall-master.sh[lines=2..-1]
 ----
 
 如果一切无误，则执行 `kubectl get nodes` 命令时会显示如下内容:
