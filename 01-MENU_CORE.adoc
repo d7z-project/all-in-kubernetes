@@ -1,3 +1,0 @@
-= 核心应用部署菜单
-
-. link:01-deploy-core-soft/01-deploy-openldap/README.adoc[部署OpenLDAP]

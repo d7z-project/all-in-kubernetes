@@ -1,0 +1,75 @@
+= 部署 OpenLDAP
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+== 导入配置
+
+OpenLDAP 需要一些初始化配置才能工作。
+
+=== 创建共享配置
+
+我们可创建一个共享的 ConfigMap 以供系统使用。
+
+[source%linenums,yaml]
+----
+include::conf/01-config-map.yaml[]
+----
+
+.其中：
+<1> 复制此 ConfigMap 到各个 namespace 下 （reflector 提供）
+<2> LDAP 配置：组织名称
+<3> LDAP 配置：dc 地址
+<4> 共享配置：LDAP 服务器地址
+<5> 共享配置：带URL 的 LDAP 服务器地址
+
+=== 创建 Secret
+
+部署 OpenLDAP 前，需要配置管理员密码和共享用户密码。
+
+[source%linenums,yaml]
+----
+include::./conf/02-secret.yaml[]
+----
+
+.其中：
+<1> 设置管理员密码
+<2> 配置共享用户秘密共享
+<3> 共享用户用户名
+<4> 共享用户密码
+
+WARNING: 生产环境安装一定要更改为复杂的密码！
+
+== 安装 OpenLDAP
+
+=== 创建 `pvc`
+
+OpenLDAP 运行过程中需要存储数据。使用以下 YAML 创建，注意，此处需要用到之前教程创建的 `StroageClass` 。
+
+[source%linenums,yaml]
+----
+include::./conf/03-pvc.yaml[]
+----
+
+=== 部署 OpenLDAP 服务
+
+现在可以部署 LDAP 服务了，导入以下配置即可。
+
+[source%linenums,yaml]
+----
+include::conf/04-deploy-server.yaml[]
+----
+
+== 验证
+
+部署完成后，执行以下命令验证部署的完整性。
+
+[source%linenums,bash]
+----
+# 检查配置是否同步到 default 命名空间
+kubectl get secrets,configmaps
+kubectl get pods,service -n core-system
+----
+
+确认 Pod 状态均为 `Running` 且未多次重启即表示安装无误。

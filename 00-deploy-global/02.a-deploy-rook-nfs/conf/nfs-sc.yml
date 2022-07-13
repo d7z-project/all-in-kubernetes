@@ -9,5 +9,5 @@ parameters:
   nfsServerName: rook-nfs
   nfsServerNamespace: rook-nfs
 provisioner: nfs.rook.io/rook-nfs-provisioner
-reclaimPolicy: Delete
+reclaimPolicy: Retain
 volumeBindingMode: Immediate

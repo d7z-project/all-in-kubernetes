@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ldap-system
+  namespace: core-system
+  labels:
+    app: ldap-system
+spec:
+  serviceName: ldap-system
+  selector:
+    matchLabels:
+      app: ldap-system
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ldap-system
+    spec:
+      containers:
+        - name: ldap-system
+          image: osixia/openldap:1.5.0
+          volumeMounts:
+            - name: ldap-data
+              mountPath: /var/lib/ldap
+            - name: ldap-config
+              mountPath: /etc/ldap/slapd.d
+          ports:
+            - containerPort: 389
+              name: openldap
+          env:
+            - name: LDAP_LOG_LEVEL
+              value: "256"
+            - name: LDAP_ORGANISATION
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_org
+            - name: LDAP_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_domain
+            - name: LDAP_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-secret-admin
+                  key: password
+            - name: LDAP_CONFIG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-secret-admin
+                  key: password
+            - name: LDAP_READONLY_USER
+              value: "true"
+            - name: LDAP_READONLY_USER_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-secret-service
+                  key: user
+            - name: LDAP_READONLY_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-secret-service
+                  key: password
+            - name: LDAP_RFC2307BIS_SCHEMA
+              value: "false"
+            - name: LDAP_BACKEND
+              value: "mdb"
+            - name: LDAP_TLS
+              value: "false"
+            - name: LDAP_REPLICATION
+              value: "false"
+            - name: KEEP_EXISTING_CONFIG
+              value: "false"
+            - name: LDAP_REMOVE_CONFIG_AFTER_SETUP
+              value: "true"
+      volumes:
+        - name: ldap-data
+          persistentVolumeClaim:
+            claimName: pvc-ldap-data
+        - name: ldap-config
+          persistentVolumeClaim:
+            claimName: pvc-ldap-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: service-ldap
+  name: service-ldap
+  namespace: core-system
+spec:
+  ports:
+    - port: 389
+  selector:
+    app: ldap-system

@@ -3,6 +3,11 @@ kind: ConfigMap
 metadata:
   name: ldap-global-conf
   namespace: core-system
+  annotations:
+    reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
 data:
   ldap_org: 'example team'
   ldap_domain: 'example.com'

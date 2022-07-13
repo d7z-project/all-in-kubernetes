@@ -1,5 +1,0 @@
-= 部署 OpenLDAP
-:experimental:
-:icons: font
-:toc: left
-:source-highlighter: rouge
