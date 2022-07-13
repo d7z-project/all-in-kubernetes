@@ -1,0 +1,151 @@
+= 部署 CertManager
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+:project-home: https://cert-manager.io
+
+项目地址： link:{project-home}[cert-manager]
+
+== 导入资源
+
+由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-cert-manager.yaml[conf/cert-manager.yaml] 和 link:conf/01-reflector.yaml[conf/reflector.yaml] 推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml -f reflector.yaml` 导入资源。
+
+* 注： Reflector 用于同步证书到各个 `namespace` 。
+
+或者你可以使用以下命令在线导入资源：
+
+[source%linenums,bash]
+----
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+kubectl apply -n kube-system -f https://github.com/emberstack/kubernetes-reflector/releases/download/v6.1.47/reflector.yaml
+----
+
+CertManager 需要以下镜像：
+
+[source%linenums,bash]
+----
+crictl pull quay.io/jetstack/cert-manager-cainjector:v1.8.2
+crictl pull quay.io/jetstack/cert-manager-controller:v1.8.2
+crictl pull quay.io/jetstack/cert-manager-webhook:v1.8.2
+crictl pull emberstack/kubernetes-reflector:6.1.47
+----
+
+导入完成后使用以下命令查看结果：
+
+[source%linenums,bash]
+----
+kubectl get pods -n cert-manager
+----
+
+== 验证结果
+
+WARNING: 此次测试需要有一个域名，同时需要 Cert-Manager 支持此域名服务商的 DNS API。
+
+=== 创建ApiKey
+
+添加 *Cloudflare Api* 到 *Secret* 下
+
+[source%linenums,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloudflare-api-token-secret
+  namespace: cert-manager
+type: Opaque
+stringData:
+  # 需要
+  api-token: '<CLOUDFLARE API TOKEN>' # <1>
+----
+
+.其中:
+<1> 此处填写你 CloudFlare API Token
+
+将此文件保存至 `api.yaml` 后执行 `kubectl apply -f api.yaml` 即可。
+
+=== 绑定 Issuer
+
+将 Cloudflare API 绑定至 ClusterIssuer。
+
+[source%linenums,yaml]
+----
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: issuer-dns01-cloudflare-1
+  namespace: cert-manager
+spec:
+  acme:
+    privateKeySecretRef:
+      name: lets-encrypt-dns01
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - dns01:
+          cloudflare:
+            email: <EMAIL> # <1>
+            apiTokenSecretRef:
+              name: cloudflare-api-token-secret # <2>
+              key: api-token
+----
+
+<1> 此处填写你的 Cloudflare Email
+<2> 关联的 Cloudflare Token
+
+将此文件保存至 `issuer.yaml` 后执行 `kubectl apply -f issuer.yaml` 即可。
+
+=== 签发证书
+
+[source%linenums,yaml]
+----
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-example-com
+  namespace: cert-manager
+spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app" # <1>
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  # <2>
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"  # <3>
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"  # <4>
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  dnsNames:  # <5>
+    - example.com
+    - '*.example.com'
+  issuerRef:
+    kind: ClusterIssuer
+    name: issuer-dns01-cloudflare-1  # <6>
+  secretName: example-com-tls
+----
+
+.其中:
+<1> 允许控制的命名空间
+<2> 允许创建反射
+<3> 自动为匹配的命名空间创建反射
+<4> 自动控制的命名空间
+<5> 配置证书下的 `dns.01` 内容，可添加通配符证书
+<6> 选择对应的 Issuer
+
+=== 验证
+
+执行以下命令，查看对应证书的签发状态
+
+[source%linenums,bash]
+----
+# 查看证书签发状态
+kubectl get certificate -n cert-manager
+----
+
+如果 `READY` 项为 `True`，则表明证书签发成功。
+
+[source%linenums,text]
+----
+NAME               READY   SECRET                 AGE
+cert-example-com   True    example-com-tls        18h
+----
+
+WARNING: 注意，需要填充的内容必须真实有效

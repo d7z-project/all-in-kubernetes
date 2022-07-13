@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-local-pv-share
+  namespace: rook-nfs
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1000Gi
+  local:
+    path: /share # <1>
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - node-worker-01  # <2>
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: nfs-local-sc-share
+  volumeMode: Filesystem

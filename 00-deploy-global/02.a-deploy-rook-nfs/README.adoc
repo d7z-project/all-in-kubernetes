@@ -1,0 +1,113 @@
+= 配置全局存储 (rook-nfs)
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
+
+WARNING: rook-nfs 项目已经link:https://github.com/rook/nfs#deprecated[过时]，未来此文档可能会被替换,正在寻找替代方案，如果你有好的方案可告诉我，暂不考虑 `Ceph` 等类似的块存储方案 。
+
+== 导入规则
+
+在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 `rook/nfs:v1.7.3`,同时需要集群上每个节点安装有 `nfs-common` 软件包。
+
+.点击展开配置
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/00-rook-nfs-rbac.yaml[]
+----
+
+====
+
+部署完成后， 执行 `kubectl get pods -n rook-nfs-system`  命令查看部署结果。
+
+== 映射节点目录
+
+=== 创建 Local PV
+
+首先在集群的宿主机创建挂载点，这里使用的是 `/share`。使用以下配置创建 `PersistentVolume`, 如下所示:
+
+[source%linenums,yaml]
+----
+include::./conf/01-local-pv.yml[]
+----
+
+.其中:
+<1> 表明这是 *Persistent Volume* , `path` 字段指定的正是这个 PV 对应的本地磁盘的路径，即 `/share`
+<2> 指定此 PV 位于 `node-worker-01` 节点上，节点名称可通过 `kubectl get nodes` 查看。
+
+创建完成后使用 `kubectl get pv` 查看创建结果。
+
+=== 创建 Host StorageClass
+
+创建 StorageClass 关联刚刚创建的PV, 创建配置如下:
+
+[source%linenums,yaml]
+----
+include::./conf/02-local-sc.yml[]
+----
+
+.其中：
+<1> `provisioner`: 我们使用 `no-provisioner`, 这是因为 *Local Persistent Volume* 目前尚不支持 link:https://kubernetes.io/docs/concepts/storage/dynamic-provisioning[*Dynamic Provisioning*]，所以它没办法在用户创建 PVC 的时候,就自动创建出对应的PV。
+<2> `volumeBindingMode: WaitForFirstConsumer` 指定了延迟绑定。因为 *Local Persistent* 需要等到调度时才可以进行绑定操作。
+
+=== 创建 Host PersistentVolumeClaim
+
+创建 PVC，供之后创建的 NFS Server 使用。可使用以下配置创建：
+
+[source%linenums,yaml]
+----
+include::./conf/03-local-pvc.yml[]
+----
+
+配置导入完成后使用 `kubectl get pvc  -n rook-nfs` 查看导入结果。
+
+== 创建NFS Server
+
+我们可以通过创建 `nfsservers.nfs.rook.io` 资源的实例来创建NFS服务器的实例。
+
+[source%linenums,yaml]
+----
+include::./conf/04-nfs-server.yml[]
+----
+
+创建完成后，可使用 `kubectl get pods  -n rook-nfs` 和 `kubectl get nfsservers.nfs.rook.io -n rook-nfs` 查看 Server 状态，如果 Pod 结果为 `RUN` 则表明创建成功。
+
+== 创建NFS Storage Class 关联
+
+部署 *Operator* 和 *NFS Server* 实例之后, 须创建 `StrorageClass` 来动态配置 `Volume`。
+
+[source%linenums,yaml]
+----
+include::./conf/05-nfs-sc.yml[]
+----
+
+== 验证部署情况
+
+=== 导入测试配置
+
+导入以下配置以创建测试 Pod。
+
+.点击展开配置
+[%collapsible]
+====
+[source%linenums,bash]
+----
+include::./conf/t-00-nfs-test-1.yml[]
+----
+====
+
+=== 验证测试
+
+执行完成后使用 `kubectl get pods` 查看创建情况。创建完成后，执行以下命令，有数据返回则表示成功：
+
+[source%linenums,bash]
+----
+echo; kubectl exec $(kubectl get pod -l app=nfs-demo,role=busybox -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://$(kubectl get services nfs-web -o jsonpath='{.spec.clusterIP}'); echo
+----
+
+TIP: 如果返回403错误，可能是因为文件系统权限问题，可通过 `kubectl exec` 手动查看。

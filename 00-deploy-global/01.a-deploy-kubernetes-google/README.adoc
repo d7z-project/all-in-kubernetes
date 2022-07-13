@@ -1,0 +1,165 @@
+= 部署 Kubernetes (Google)
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+== 部署软件包
+
+=== 部署容器运行时
+
+Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 link:https://containerd.io/[containerd]。
+
+.点击展开部署命令
+[%collapsible]
+====
+
+[source%linenums,bash]
+----
+include::./script/00-soft-install-containerd.sh[lines=2..-1]
+----
+
+====
+
+=== 部署 kubeadm、kubelet 和 kubectl
+
+你需要在每台机器上部署以下的软件包：
+
+* `kubeadm` ：用来初始化集群的指令。
+* `kubelet` ：在集群中的每个节点上用来启动 Pod 和容器等。
+* `kubectl` ：用来与集群通信的命令行工具。
+
+TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问题，请自备代理工具或者使用镜像地址。注意：对于 *导入证书等操作一定要再三确认*，谨防link:https://zh.m.wikipedia.org/zh/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB[中间人攻击]。
+
+[source%linenums,bash]
+----
+include::./script/01-soft-install-kubeadm.sh[lines=2..-1]
+----
+
+=== 配置 `containerd` 网络代理 (可选)
+
+在某些情况下，镜像可能因为网络原因无法拉取,此时可为 `containerd` 配置代理。
+
+[source%linenums,bash]
+----
+include::./script/02.a-conf-containerd-http-proxy.sh[lines=2..-1]
+----
+
+取消代理可执行以下命令:
+
+[source%linenums,bash]
+----
+include::./script/02.b-conf-containerd-clear-http-proxy.sh[lines=2..-1]
+----
+
+=== 预下载运行时镜像 (可选)
+
+为防止因网络问题导致镜像下载失败致使 `kubernetes` 部署失败，可将所有 `kubernetes` 所用到的镜像预下载到本地。
+
+[source%linenums,bash]
+----
+include::./script/04-k8s-pull-image-init.sh[lines=2..-1]
+----
+
+=== 添加 TAB 命令补全 （可选）
+
+对常用命令增加补全功能可极大提升效率。此功能需要部署 `bash-completion` 软件包。
+
+[source%linenums,bash]
+----
+include::./script/06-k8s-shell-completion-bash.sh[lines=2..-1]
+----
+
+如果你想创建 `kubectl` 的别名的话可使用如下命令添加命令补全功能。
+
+[source%linenums,bash]
+----
+include::./script/07-k8s-shell-alias.sh[lines=2..-1]
+----
+
+== 部署 kubernetes
+
+一切环境准备完成后，即可开始部署 kubernetes。
+
+=== 重置 kubernetes (可选)
+
+如果部署失败，可尝试重置 `kubernetes` 后重新部署。
+
+[source%linenums,bash]
+----
+include::./script/03-k8s-reset.sh[lines=2..-1]
+----
+
+=== 部署控制节点
+
+控制节点部署在 `dragon-k8s-master` 机器上，SSH 连接机器，执行以下命令：
+
+[source%linenums,bash]
+----
+include::./script/05-k8s-insall-master.sh[lines=2..-1]
+----
+
+如果一切无误，则执行 `kubectl get nodes` 命令时会显示如下内容:
+
+[source%linenums,text]
+----
+NAME          STATUS     ROLES           AGE     VERSION
+node-master   NotReady   control-plane   7m54s   v1.24.2
+----
+
+=== 部署 CNI 插件
+
+kubernetes 控制节点部署完成后，需要配置CNI网络插件实现各个节点之间的通信。
+
+.点击展开部署命令
+[%collapsible]
+====
+
+[source%linenums,bash]
+----
+cat << "EOF" > /tmp/kube-flannel.yml
+include::./conf/kube-flannel.yml[]
+EOF
+kubectl apply -f /tmp/kube-flannel.yml
+kubectl get pods --all-namespaces
+----
+
+====
+
+执行命令 `watch kubectl get pods --all-namespaces`, 直到出现类似于如下示例的回显即表示安装成功。
+
+[source%linenums,text]
+----
+NAMESPACE     NAME                                  READY   STATUS    RESTARTS      AGE
+kube-system   coredns-6d4b75cb6d-5tmll              1/1     Running   0             15m
+kube-system   coredns-6d4b75cb6d-j98fd              1/1     Running   0             15m
+kube-system   etcd-node-master                      1/1     Running   2             15m
+kube-system   kube-apiserver-node-master            1/1     Running   2 (16m ago)   16m
+kube-system   kube-controller-manager-node-master   1/1     Running   2             16m
+kube-system   kube-flannel-ds-d54gd                 1/1     Running   0             3m33s
+kube-system   kube-proxy-n95j9                      1/1     Running   0             15m
+kube-system   kube-scheduler-node-master            1/1     Running   2             16m
+
+----
+
+此时你可以使用 `wg` 命令查看部署的 `flannel`。
+
+=== 部署工作节点
+
+在部署控制节点时，`kubeadm` 已将部署工作节点的命令展示到控制台，你还可以使用   `tail -n 2 /tmp/kubectl-installer.log` 查看命令。注意：Token 过期时间为 24小时，如果超过24小时，可在控制节点执行 `kubeadm token create` 重新生成 token.
+
+在加入集群时，需为每个节点添加唯一标识，使用参数 `--node-name` 即可。 部署完成后，执行 `kubectl get nodes` ，控制台回显如下：
+
+[source%linenums,text]
+----
+NAME             STATUS   ROLES           AGE    VERSION
+node-master      Ready    control-plane   46m    v1.24.2
+node-worker-01   Ready    <none>          13m    v1.24.2
+node-worker-02   Ready    <none>          105s   v1.24.2
+----
+
+至此，kubernetes (Google) 安装完成。
+
+== 参考
+
+. link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[部署 kubeadm]

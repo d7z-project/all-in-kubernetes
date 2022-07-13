@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ldap-account-manager
+  namespace: core-system
+  labels:
+    app: ldap-account-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ldap-account-manager
+  template:
+    metadata:
+      labels:
+        app: ldap-account-manager
+    spec:
+      containers:
+        - name: ldap-account-manager
+          image: ldapaccountmanager/lam:8.0.1
+          ports:
+            - containerPort: 80
+          env:
+            - name: LAM_SKIP_PRCONFIGURE
+              value: "true"
+            - name: LDAP_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_domain
+            - name: LDAP_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_url
+            - name: LAM_LANG
+              value: zh_CN
+            - name: LAM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-secret-admin
+                  key: password

@@ -1,0 +1,82 @@
+= 配置全局存储 (nfs-ganesha)
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+项目地址：link:https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner[nfs-ganesha-server-and-external-provisioner]
+
+kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
+
+== 导入 RBAC 规则和初始化
+
+在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 `k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0`,同时需要集群上每个节点安装有 `nfs-common` 软件包。
+
+.点击展开部署命令
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/00-nfs-rbac.yaml[]
+----
+
+====
+
+== 映射节点目录
+
+具体步骤可参考 link:../02.a-deploy-rook-nfs/README.adoc[RookNFS] , 此处仅放置最终配置。
+
+.点击展开配置
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/01-local-storage.yaml[]
+----
+
+====
+
+== 安装 NFS Server
+
+将上一操作创建的 PVC 绑定至 StatefulSet,然后通过 Service 暴露对应的端口，最后将目标绑定在 SC 即可 ,在此配置中，Provisioner 为 `nfs.3rd.storage.k8s.io/nfs-server-provisioner` 。
+
+.点击展开配置
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/02-nfs-server.yaml[]
+----
+
+====
+
+== 验证部署情况
+
+=== 导入测试配置
+
+导入以下配置以创建测试 Pod。
+
+.点击展开配置
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/t-00-nfs-2-test.yaml[]
+----
+
+====
+
+=== 验证测试
+
+导入完成后使用 `kubectl get pods` 查看创建情况。创建完成后，执行以下命令，有数据返回则表示成功：
+
+[source%linenums,bash]
+----
+include::./script/t-00-test-nfs-2.sh[lines=2..-1]
+----
+
+TIP: 如果返回403错误，可能是因为文件系统权限问题，可通过 `kubectl exec` 手动查看。

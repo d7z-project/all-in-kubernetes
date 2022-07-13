@@ -1,0 +1,89 @@
+= 文档任务
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+TIP: 所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理。
+
+WARNING: 避免使用 `bitnami` 打包的镜像。
+
+== 环境介绍
+
+* [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍物理机环境]
+* [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍部署机器环境]
+
+== 组件部署
+
+=== 底层组件
+
+* [x] 安装 Kubernetes(google)/验证
+** [x] 初始化部署环境
+** [x] 安装 `containerd`
+** [x] 安装 `kubeadm`
+** [x] 部署控制节点
+** [x] 配置CNI 插件
+** [x] 部署工作节点
+* [ ] 安装 Kubernetes(k3s)/验证
+* [x] 配置 共享存储(rook-nfs)/验证
+** [x] 共享 `/share`
+** [x] 创建 NFS Server
+** [x] 测试
+* [x] 配置 共享存储(nfs-ganesha)/验证
+** [x] 共享 `/share`
+** [x] 创建 NFS Server
+** [x] 测试
+* [x] 部署 LoadBalancer实现(metallb)/验证
+** [x] 部署LoadBalancer
+** [x] 分配IP池
+** [x] 验证LoadBalancer
+* [x] 部署 Ingress(Nginx)/验证
+** [x] 部署 Ingress(Nginx)
+** [x] 测试 Ingress(Nginx)
+* [x] 部署 Cert-Manager/验证
+** [x] 导入资源
+** [x] 测试 CertManager
+
+=== 核心组件 (core-system)
+
+* [x] 部署 OpenLDAP/验证
+** [x] 导入配置
+** [x] 创建PVC
+** [x] 安装 OpenLDAP
+** [x] 验证
+* [x] 部署 ldap-account-manager/验证
+** [x] 部署 APP
+** [x] 部署 Service
+** [x] 部署 Ingress
+** [x] 验证
+
+=== 核心中间件 (core-middleware)
+
+* [ ] 部署 MariaDB/验证
+* [ ] 部署 Redis/验证
+* [ ] 部署 ElasticSearch/验证
+* [ ] 部署 PostgreSQL/验证
+
+=== 核心应用 (core-app)
+
+* [ ] 部署 Nexus3/验证
+* [ ] 部署 Gitlab/验证
+* [ ] 部署 Gitea/验证
+
+=== 扩展应用 (share-app)
+
+* [ ] 部署 Gitlab-Runner/验证
+* [ ] 部署 Jellyfin/验证
+* [ ] 部署 V2ray/验证
+
+=== 集群监控 (monitor-app)
+
+* [ ] 部署 Prometheus/验证
+* [ ] 部署 AlertManager/验证
+* [ ] 部署 Grafana/验证
+* [ ] 部署 NodeExporter/验证
+
+== 自动化部署测试
+
+* [ ] 使用 Gitlab Actions 做自动化测试
+* [ ] 使用 Gitlab Runner 做自动化测试

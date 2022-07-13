@@ -1,0 +1,14 @@
+= 部署版本速查
+
+[cols="1,2,3",options="header"]
+|===
+|组件名称 |版本 |历史版本
+| debian | 11/bullseye | -
+| kubernetes | 1.24.2 | -
+| containerd | 1.6.6 | -
+| rook-nfs | 1.7.3 | -
+| nfs-ganesha | 1.4.0 | -
+| metallb | 0.13.3 | -
+| ingress-nginx | 1.2.1 | -
+| cert-manager | 1.8.2 | -
+|===
