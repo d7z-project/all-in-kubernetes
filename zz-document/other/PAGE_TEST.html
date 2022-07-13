@@ -5,8 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<meta name="author" content="ExplodingDragon">
-<title>Kubernetes YAML 模板</title>
+<title>内容测试</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -436,117 +435,33 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-left">
 <div id="header">
-<h1>Kubernetes YAML 模板</h1>
-<div class="details">
-<span id="author" class="author">ExplodingDragon</span><br>
-<span id="email" class="email">email#examplecom</span><br>
-<span id="revnumber">version 1.0-1.24.2,</span>
-<span id="revdate">2022-07-11</span>
-</div>
-<div id="toc" class="toc">
+<h1>内容测试</h1>
+<div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_kubernetes_official">Kubernetes official</a>
-<ul class="sectlevel2">
-<li><a href="#_namespace">Namespace</a></li>
-<li><a href="#_configmap">ConfigMap</a></li>
-</ul>
-</li>
+<li><a href="#_plantuml">Plantuml</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_kubernetes_official">Kubernetes official</h2>
+<h2 id="_plantuml">Plantuml</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_namespace">Namespace</h3>
-<details open>
-<summary class="title">配置文件如下</summary>
+<div class="imageblock kroki">
 <div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: v1
-kind: Namespace
-metadata:
-  # NameSpace 的名称
-  name: test
-  labels:
-    name: test</code></pre>
+<img src="https://kroki.io/plantuml/svg/eNpzKC5JLCopzc3hStTVtUvickjNSwHyAGCDB_E=" alt="Diagram">
 </div>
-</div>
-</div>
-</details>
-</div>
-<div class="sect2">
-<h3 id="_configmap">ConfigMap</h3>
-<div class="paragraph">
-<p>你可以使用四种方式来使用 <code>ConfigMap</code> 配置 <strong>Pod</strong> 中的容器：</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>在容器命令和参数内</p>
-</li>
-<li>
-<p>容器的环境变量</p>
-</li>
-<li>
-<p>在只读卷里面添加一个文件，让应用来读取</p>
-</li>
-<li>
-<p>编写代码在 <strong>Pod</strong> 中运行，使用 <strong>Kubernetes API</strong> 来读取 <code>ConfigMap</code></p>
-</li>
-</ol>
-</div>
-<details open>
-<summary class="title">配置文件如下</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-yaml" data-lang="yaml">apiVersion: v1
-kind: ConfigMap
-# 不可变更的 ConfigMap
-immutable: false
-metadata:
-  name: config-demo
-data:
-  # 类属性键；每一个键都映射到一个简单的值
-  player_initial_lives: "3"
-  ui_properties_file_name: "user-interface.properties"
-
-  # 类文件键
-  game.properties: |
-    enemy.types=aliens,monsters
-    player.maximum-lives=5
-  user-interface.properties: |
-    color.good=purple
-    color.bad=yellow
-    allow.textmode=true
-  index.html: |
-    &lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;first&lt;/title&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-    &lt;h1&gt;first web site&lt;/h1&gt;
-    &lt;/body&gt;
-    &lt;/html&gt;</code></pre>
-</div>
-</div>
-</div>
-</details>
 </div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0-1.24.2<br>
-Last updated 2022-07-13 16:34:36 UTC
+Last updated 2022-07-13 16:50:07 UTC
 </div>
 </div>
 </body>

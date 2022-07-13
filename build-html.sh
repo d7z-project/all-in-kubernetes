@@ -21,7 +21,7 @@ for data in **/*.adoc; do
     DIST_FILE_NAME=${SRC_FILE_NAME//.adoc/.html}
     mkdir -p "$SRC_DIRECTORY" || : 2>/dev/null
 #    echo $SRC_DIRECTORY
-    asciidoctor --safe-mode unsafe --out-file "$SRC_DIRECTORY/$DIST_FILE_NAME" "$SRC_DIRECTORY/$SRC_FILE_NAME"
+    asciidoctor --safe-mode unsafe -r asciidoctor-kroki --out-file "$SRC_DIRECTORY/$DIST_FILE_NAME" "$SRC_DIRECTORY/$SRC_FILE_NAME"
     sed -i 's/.adoc">/.html">/g' "$SRC_DIRECTORY/$DIST_FILE_NAME"
 done
 mv "$OLD_BUILD_DIR"/* "$BUILD_DIR"/
