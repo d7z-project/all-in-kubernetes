@@ -21,7 +21,7 @@ jobs:
       - name: Init Build Env
         run: |
           sudo apt-get update
-          sudo apt install asciidoctor -y
+          sudo apt install asciidoctor zsh -y
           sudo gem install rouge
           chmod +x build-html.sh
       - name: Build
