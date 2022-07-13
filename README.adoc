@@ -34,6 +34,11 @@ include::00-MENU_GLOBAL.adoc[lines=3..-1]
 
 include::01-MENU_CORE_SYSTEM.adoc[lines=3..-1]
 
+=== 文档编写相关
+
+* link:TODO.adoc[待完成列表]
+* link:zz-document/other/PAGE_TEST.adoc[页面渲染测试]
+
 == 注意事项
 
 WARNING: 如果你因为此项目导致 *数据丢失* 、*机器损坏* 等不可挽回的问题，此项目的贡献者均 *不会承担任何责任* ，你可提交你的部署流程帮助我们分析并解决问题 。*数据无价，请一定做好数据备份* ！
