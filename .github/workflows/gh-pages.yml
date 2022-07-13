@@ -22,7 +22,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt install asciidoctor -y
-          gem install rouge
+          sudo gem install rouge
           chmod +x build-html.sh
       - name: Build
         run: ./build-html.sh
