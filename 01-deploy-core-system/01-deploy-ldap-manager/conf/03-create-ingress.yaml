@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ldap-ingress
+  namespace: core-system
+  annotations:
+    # 重写路径
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - example.com # <1>
+      secretName: example-com-tls  # <2>
+  rules:
+    - host: example.com  # <3>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: lam  # <4>
+                port:
+                  number: 80
