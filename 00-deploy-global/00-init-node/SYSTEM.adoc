@@ -1,7 +1,9 @@
 = Debian 系统环境配置
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 本项目使用 link:https://www.debian.org/releases/bullseye/["Debian bullseye"] 作底层操作系统，在系统安装完成后的具体的配置情况如下：

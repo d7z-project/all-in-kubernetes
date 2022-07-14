@@ -2,7 +2,9 @@
 :homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 
 > All-In-One（[.line-through]#all in boom#）。
 
@@ -10,7 +12,9 @@
 
 WARNING: 此项目需要你有 Kubernetes 的基础知识，可前往 link:https://kubernetes.io/zh-cn/docs/home/[Kubernetes 文档] 在线学习。
 
-项目仓库位于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，并实时同步到 link:https://github.com/d7z-project/all-in-kubernetes[d7z-project/all-in-kubernetes]，如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可提 *Pull request* ，如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[Github Pages] 或者 link:https://all-in-kubernetes.docs.d7z.net[all-in-kubernetes.docs.d7z.net]。
+项目发布于 link:https://gitlab.open-edgn.cn/document/all-in-kubernetes[document/all-in-kubernetes] ，且实时同步到 link:https://github.com/d7z-project/all-in-kubernetes[d7z-project/all-in-kubernetes]。
+
+如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可提 *Pull request* ，如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[d7z-project.github.io/all-in-kubernetes] 或者是 link:https://all-in-kubernetes.docs.d7z.net[all-in-kubernetes.docs.d7z.net]。
 
 == 特性
 
@@ -20,24 +24,13 @@ WARNING: 此项目需要你有 Kubernetes 的基础知识，可前往 link:https
 
 == 入门
 
-你可以使用此推荐方案部署，此方案已应用于测试环境中，未来可能会替换现有的虚拟机部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中非数字序号的文章表示多选一）：
+你可以使用此推荐方案部署，此方案已应用于测试环境中，未来可能会替换现有的虚拟机部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中二级菜单的文章表示部署多选一）：
 
 关于实例部署环境可参考 link:./zz-document/other/HARDWARE_INFO.adoc[此文档]。
 
 TIP:  由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请在阅读文档内容后谨慎使用。
 
-=== 核心环境部署
-
-include::00-MENU_GLOBAL.adoc[lines=3..-1]
-
-=== 核心系统应用部署
-
-include::01-MENU_CORE_SYSTEM.adoc[lines=3..-1]
-
-=== 文档编写相关
-
-* link:TODO.adoc[待完成列表]
-* link:zz-document/other/PAGE_TEST.adoc[页面渲染测试]
+include::zz-MENU.adoc[lines=2..-1]
 
 == 注意事项
 

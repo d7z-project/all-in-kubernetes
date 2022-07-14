@@ -437,18 +437,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article toc2 toc-left">
+<body class="article toc2 toc-right">
 <div id="header">
 <h1>All In Kubernetes</h1>
 <div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">目录</div>
 <ul class="sectlevel1">
 <li><a href="#_特性">特性</a></li>
 <li><a href="#_入门">入门</a>
 <ul class="sectlevel2">
 <li><a href="#_核心环境部署">核心环境部署</a></li>
 <li><a href="#_核心系统应用部署">核心系统应用部署</a></li>
-<li><a href="#_文档编写相关">文档编写相关</a></li>
+<li><a href="#_中间件应用部署">中间件应用部署</a></li>
+<li><a href="#_文档相关归档">文档相关归档</a></li>
 </ul>
 </li>
 <li><a href="#_注意事项">注意事项</a></li>
@@ -482,7 +483,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="paragraph">
-<p>项目仓库位于 <a href="https://gitlab.open-edgn.cn/document/all-in-kubernetes">document/all-in-kubernetes</a> ，并实时同步到 <a href="https://github.com/d7z-project/all-in-kubernetes">d7z-project/all-in-kubernetes</a>，如有问题可在 <a href="https://github.com/d7z-project/all-in-kubernetes/issues">Github</a> 提问或发送邮件给我。如果你有新的想法可提 <strong>Pull request</strong> ，如需在线阅读请访问 <a href="https://d7z-project.github.io/all-in-kubernetes/">Github Pages</a> 或者 <a href="https://all-in-kubernetes.docs.d7z.net">all-in-kubernetes.docs.d7z.net</a>。</p>
+<p>项目发布于 <a href="https://gitlab.open-edgn.cn/document/all-in-kubernetes">document/all-in-kubernetes</a> ，且实时同步到 <a href="https://github.com/d7z-project/all-in-kubernetes">d7z-project/all-in-kubernetes</a>。</p>
+</div>
+<div class="paragraph">
+<p>如有问题可在 <a href="https://github.com/d7z-project/all-in-kubernetes/issues">Github</a> 提问或发送邮件给我。如果你有新的想法可提 <strong>Pull request</strong> ，如需在线阅读请访问 <a href="https://d7z-project.github.io/all-in-kubernetes/">d7z-project.github.io/all-in-kubernetes</a> 或者是 <a href="https://all-in-kubernetes.docs.d7z.net">all-in-kubernetes.docs.d7z.net</a>。</p>
 </div>
 </div>
 </div>
@@ -508,7 +512,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_入门">入门</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>你可以使用此推荐方案部署，此方案已应用于测试环境中，未来可能会替换现有的虚拟机部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中非数字序号的文章表示多选一）：</p>
+<p>你可以使用此推荐方案部署，此方案已应用于测试环境中，未来可能会替换现有的虚拟机部署方案，当然，你可以根据你的需求裁剪部分内容，具体的部署流程如下 （其中二级菜单的文章表示部署多选一）：</p>
 </div>
 <div class="paragraph">
 <p>关于实例部署环境可参考 <a href="./zz-document/other/HARDWARE_INFO.html">此文档</a>。</p>
@@ -590,7 +594,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
-<h3 id="_文档编写相关">文档编写相关</h3>
+<h3 id="_中间件应用部署">中间件应用部署</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="02-deploy-core-middleware/README.html">核心中间件部署准备</a></p>
+</li>
+<li>
+<p><a href="02-deploy-core-middleware/00-deplpy-mariadb/README.html">MariaDB 部署</a></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_文档相关归档">文档相关归档</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -632,7 +649,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-07-14 15:51:37 UTC
+Last updated 2022-07-14 16:45:12 UTC
 </div>
 </div>
 </body>

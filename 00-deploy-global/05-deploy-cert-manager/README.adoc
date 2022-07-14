@@ -1,7 +1,9 @@
 = 部署 CertManager
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 :project-home: https://cert-manager.io
 

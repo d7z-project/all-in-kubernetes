@@ -1,7 +1,9 @@
 = 文档任务
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 TIP: 所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理。

@@ -1,7 +1,9 @@
 = 部署 LDAP 管理器
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 == 简介
