@@ -1,0 +1,52 @@
+= 部署 MariaDB
+:experimental:
+:icons: font
+:toc: left
+:source-highlighter: rouge
+
+WARNING: 此项目采用单实例部署，切勿在生产环境使用！
+
+== 创建 PVC
+
+导入以下配置，创建PVC。
+
+[source%linenums,yaml]
+----
+include::conf/00-create-pvc.yaml[]
+----
+
+== 管理员用户配置
+
+将管理员用户配置导入到 Secret 中。
+
+[source%linenums,yaml]
+----
+include::conf/01-create-secret.yaml[]
+----
+
+== 创建 MariaDB 服务器
+
+使用以下配置创建 MariaDB 服务器。
+
+[source%linenums,yaml]
+----
+include::conf/02-deploy-mariadb.yaml[]
+----
+
+== 关联Service
+
+将 MariaDB 服务关联到 Service 下。
+
+[source%linenums,yaml]
+----
+include::conf/03-link-mariadb-service.yaml[]
+----
+
+== 测试
+
+使用以下命令查看实例部署情况：
+
+[source%linenums,bash]
+----
+kubectl get pods,secrets,services,deployments,pvc -n core-middle
+----

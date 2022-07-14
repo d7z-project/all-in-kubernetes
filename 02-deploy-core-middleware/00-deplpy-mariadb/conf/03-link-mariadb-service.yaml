@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mariadb-server
+  name: mariadb
+  namespace: core-middle
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: mariadb-server
