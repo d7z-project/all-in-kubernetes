@@ -1,4 +1,0 @@
-= 核心中间件部署菜单
-
-. link:02-deploy-core-middleware/README.adoc[核心中间件部署准备]
-. link:02-deploy-core-middleware/00-deplpy-mariadb/README.adoc[MariaDB 部署]
