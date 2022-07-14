@@ -1,7 +1,9 @@
 = 部署 Kubernetes (Google)
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 == 部署软件包

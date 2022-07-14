@@ -1,7 +1,9 @@
 = 部署 MariaDB
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 WARNING: 此项目采用单实例部署，切勿在生产环境使用！

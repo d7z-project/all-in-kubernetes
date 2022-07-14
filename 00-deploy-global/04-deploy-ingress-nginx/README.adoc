@@ -1,7 +1,9 @@
 = 安装 Ingress Controller 组件实现 (Nginx)
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 项目地址：link:https://github.com/kubernetes/ingress-nginx/[ingress-nginx]

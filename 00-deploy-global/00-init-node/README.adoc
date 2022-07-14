@@ -1,7 +1,9 @@
 = 初始化环境
 :experimental:
 :icons: font
-:toc: left
+:toc: right
+:toc-title: 目录
+:toclevels: 4
 :source-highlighter: rouge
 
 安装 `kubernetes` 需要对系统进行某些必要的配置，此文档适用于所有需要安装 `kubernetes` 节点。

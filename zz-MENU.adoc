@@ -1,0 +1,18 @@
+== 菜单
+
+=== 核心环境部署
+
+include::00-MENU_GLOBAL.adoc[lines=3..-1]
+
+=== 核心系统应用部署
+
+include::01-MENU_CORE_SYSTEM.adoc[lines=3..-1]
+
+=== 中间件应用部署
+
+include::02-MENU_MIDDLE.adoc[lines=3..-1]
+
+=== 文档相关归档
+
+* link:TODO.adoc[待完成列表]
+* link:zz-document/other/PAGE_TEST.adoc[页面渲染测试]
