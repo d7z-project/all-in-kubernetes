@@ -30,5 +30,6 @@ asciidoctor --safe-mode unsafe -r asciidoctor-kroki --no-header-footer \
 sed -i 's/.adoc">/.html">/g' "$OLD_BUILD_DIR"/zz-MENU.html
 sed -i 's/<a href="/<a target="dist" href="/g' "$OLD_BUILD_DIR"/zz-MENU.html
 sed -i 's|src="./build/|src="./|g' "$OLD_BUILD_DIR"/index.html
+sed -i 's|href="./build/|href="./|g' "$OLD_BUILD_DIR"/index.html
 mv "$OLD_BUILD_DIR"/* "$BUILD_DIR"/
 echo "build finish ！ dist dir : $BUILD_DIR"/ .
