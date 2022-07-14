@@ -25,6 +25,7 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 ** [x] 配置CNI 插件
 ** [x] 部署工作节点
 * [ ] 安装 Kubernetes(k3s)/验证
+//TODO
 * [x] 配置 共享存储(rook-nfs)/验证
 ** [x] 共享 `/share`
 ** [x] 创建 NFS Server
@@ -57,10 +58,15 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 ** [x] 部署 Service
 ** [x] 部署 Ingress
 ** [x] 验证
+* [ ] 部署 Velero
+//TODO
 
 === 核心中间件 (core-middleware)
 
-* [ ] 部署 MariaDB/验证
+* [x] 部署 MariaDB/验证
+** [x] 创建PVC
+** [x] 创建服务及绑定
+** [x] 测试部署
 * [ ] 部署 Redis/验证
 * [ ] 部署 ElasticSearch/验证
 * [ ] 部署 PostgreSQL/验证
@@ -69,7 +75,6 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 
 * [ ] 部署 Nexus3/验证
 * [ ] 部署 Gitlab/验证
-* [ ] 部署 Gitea/验证
 
 === 扩展应用 (share-app)
 

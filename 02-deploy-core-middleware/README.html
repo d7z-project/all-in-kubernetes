@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>初始化环境</title>
+<title>核心中间件安装准备</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,124 +439,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>初始化环境</h1>
+<h1>核心中间件安装准备</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_环境验证">环境验证</a>
-<ul class="sectlevel2">
-<li><a href="#_验证机器属性">验证机器属性</a></li>
-<li><a href="#_验证网络联通性">验证网络联通性</a></li>
-</ul>
-</li>
-<li><a href="#_配置系统">配置系统</a>
-<ul class="sectlevel2">
-<li><a href="#_启用内核模块">启用内核模块</a></li>
-<li><a href="#_配置内核参数">配置内核参数</a></li>
-<li><a href="#_安装附加软件包">安装附加软件包</a></li>
-</ul>
-</li>
+<li><a href="#_创建_namespace">创建 Namespace</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
-<div class="sectionbody">
-<div class="paragraph">
-<p>安装 <code>kubernetes</code> 需要对系统进行某些必要的配置，此文档适用于所有需要安装 <code>kubernetes</code> 节点。</p>
-</div>
-</div>
-</div>
 <div class="sect1">
-<h2 id="_环境验证">环境验证</h2>
+<h2 id="_创建_namespace">创建 Namespace</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_验证机器属性">验证机器属性</h3>
 <div class="paragraph">
-<p>安装 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上一致，可能会导致安装失败。可使用如下命令确认：</p>
+<p>核心系统应用需要独立的 namespace，使用以下 <code>YAML</code> 创建即可。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
-</pre></td><td class="code"><pre><span class="c"># 查看硬件 UUID</span>
-<span class="nb">cat</span> /sys/class/dmi/id/product_uuid
-<span class="c"># 查看网卡 MAC</span>
-ip <span class="nb">link</span>
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Namespace</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">core-middle</span>
 </pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_验证网络联通性">验证网络联通性</h3>
-<div class="paragraph">
-<p>各个节点之间需要能够相互通信,你可以 使用 <code>ping</code> 或者 <code>traceroute</code> 等工具进行测试。</p>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_配置系统">配置系统</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_启用内核模块">启用内核模块</h3>
-<div class="paragraph">
-<p>kubernetes 需要 <code>br_netfilter</code> 模块才能工作，Debian 内核已带有此模块，可使用 <code>lsmod | grep br_netfilter</code> 验证是否加载，装入以下配置以显式加载模块。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="code"><pre><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee /etc/modules-load.d/kubernetes.conf
-br_netfilter
-</span><span class="no">EOF
-</span>modprobe br_netfilter
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_配置内核参数">配置内核参数</h3>
-<div class="paragraph">
-<p>为了让节点上的 <code>iptables</code> 能够正确地查看桥接流量，你需要确保 <code>sysctl</code> 配置中将 net.bridge.bridge-nf-call-iptables 设置为 1。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="code"><pre><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee /etc/sysctl.d/zz-kubernetes.conf
-net.ipv4.ip_forward = 1
-net.ipv6.conf.all.forwarding = 1
-net.bridge.bridge-nf-call-ip6tables = 1
-net.bridge.bridge-nf-call-iptables = 1
-</span><span class="no">EOF
-</span>sysctl <span class="nt">--system</span>
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_安装附加软件包">安装附加软件包</h3>
-<div class="paragraph">
-<p><code>kubernetes</code> 部分组件在运行中需要某些软件支撑，否则将导致 kubernetes 无法正常运行。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-</pre></td><td class="code"><pre><span class="c"># cni 插件 需要 wireguard 软件包，rook-nfs 需要 nfs-common 软件包</span>
-apt-get <span class="nb">install</span> <span class="nt">-y</span> wireguard wireguard-tools nfs-common
-</pre></td></tr></tbody></table></code></pre>
-</div>
 </div>
 </div>
 </div>
