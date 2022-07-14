@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <title>All In Kubernetes</title>
@@ -64,23 +64,39 @@
             padding: 20px 0;
         }
 
+        .footer {
+            text-align: center;
+            border-top: black 1px solid;
+            padding: 10px 0;
+
+        }
+
         .right-menu {
             display: none;
+        }
+
+        .s-text {
+            font-size: small;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="left">
-        <a href="./README.html" target="dist" title="首页">
+        <a href="./build/README.html" target="dist" title="首页">
             <h1 class="main-menu">
                 All In Kubernetes
             </h1>
         </a>
         <iframe class="iframe" src="./zz-MENU.html"></iframe>
+        <div class="footer">
+            <p class="s-text">本项目使用 <a href="https://asciidoc.org/" target="_blank">AsciiDoc</a> 编写,
+                <a href="https://asciidoctor.org" target="_blank">asciidoctor</a> 渲染</p>
+            <p class="s-text">Copyright &copy;2022 Dragon's Zone. </p>
+        </div>
     </div>
     <div class="right">
-        <a href="./README.html" target="dist" title="首页">
+        <a href="./build/README.html" target="dist" title="首页">
             <h1 class="main-menu right-menu">
                 All In Kubernetes 主页
             </h1>

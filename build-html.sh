@@ -21,7 +21,7 @@ for data in **/*.adoc; do
     DIST_FILE_NAME=${SRC_FILE_NAME//.adoc/.html}
     mkdir -p "$SRC_DIRECTORY" || : 2>/dev/null
     #    echo $SRC_DIRECTORY
-    asciidoctor --safe-mode unsafe -r asciidoctor-kroki --out-file "$SRC_DIRECTORY/$DIST_FILE_NAME" "$SRC_DIRECTORY/$SRC_FILE_NAME"
+    asciidoctor -a nofooter --safe-mode unsafe -r asciidoctor-kroki --out-file "$SRC_DIRECTORY/$DIST_FILE_NAME" "$SRC_DIRECTORY/$SRC_FILE_NAME"
     sed -i 's/.adoc">/.html">/g' "$SRC_DIRECTORY/$DIST_FILE_NAME"
 done
 /bin/rm -f "$OLD_BUILD_DIR"/zz-MENU.html
@@ -29,8 +29,6 @@ asciidoctor --safe-mode unsafe -r asciidoctor-kroki --no-header-footer \
     --out-file "$OLD_BUILD_DIR"/zz-MENU.html "$OLD_BUILD_DIR"/zz-MENU.adoc
 sed -i 's/.adoc">/.html">/g' "$OLD_BUILD_DIR"/zz-MENU.html
 sed -i 's/<a href="/<a target="dist" href="/g' "$OLD_BUILD_DIR"/zz-MENU.html
-
-
+sed -i 's|src="./build/|src="./|g' "$OLD_BUILD_DIR"/index.html
 mv "$OLD_BUILD_DIR"/* "$BUILD_DIR"/
-#cp "$BUILD_DIR"/README.html "$BUILD_DIR"/index.html
 echo "build finish ！ dist dir : $BUILD_DIR"/ .

@@ -1,5 +1,0 @@
-= 核心系统应用部署菜单
-
-. link:01-deploy-core-system/README.adoc[核心系统应用部署准备]
-. link:01-deploy-core-system/00-deploy-openldap/README.adoc[部署OpenLDAP]
-. link:01-deploy-core-system/01-deploy-ldap-manager/README.adoc[部署 LDAP Account Manager]
