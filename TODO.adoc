@@ -50,6 +50,7 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 ** [x] 导入配置
 ** [x] 创建PVC
 ** [x] 安装 OpenLDAP
+** [x] 添加 MemberOf 支持
 ** [x] 验证
 * [x] 部署 ldap-account-manager/验证
 ** [x] 部署 APP

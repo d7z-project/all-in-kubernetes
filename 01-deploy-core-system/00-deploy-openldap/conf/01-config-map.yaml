@@ -13,3 +13,6 @@ data:
   ldap_domain: 'example.com' # <3>
   ldap_host: 'service-ldap.core-system.svc.cluster.local' # <4>
   ldap_url: 'ldap://service-ldap.core-system.svc.cluster.local:389' # <5>
+  ldap_base_dn: 'dc=example,dc=com' # <6>
+  ldap_user_dn: 'ou=people,dc=example,dc=com' # <7>
+  ldap_group_dn: 'ou=groups,dc=example,dc=com' # <8>

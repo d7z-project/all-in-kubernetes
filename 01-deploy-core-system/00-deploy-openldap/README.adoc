@@ -20,9 +20,12 @@ include::conf/01-config-map.yaml[]
 .其中：
 <1> 复制此 ConfigMap 到各个 namespace 下 （reflector 提供）
 <2> LDAP 配置：组织名称
-<3> LDAP 配置：dc 地址
+<3> LDAP 配置：DC 地址
 <4> 共享配置：LDAP 服务器地址
 <5> 共享配置：带URL 的 LDAP 服务器地址
+<6> 共享配置：BaseDN 地址
+<7> 共享配置：User DN 地址
+<8> 共享配置：Group DN 地址
 
 === 创建 Secret
 
@@ -61,6 +64,27 @@ include::./conf/03-pvc.yaml[]
 include::conf/04-deploy-server.yaml[]
 ----
 
+== 导入LDAP配置
+
+使用以下命令登陆 LDAP 控制台，导入LDAP配置。
+
+[source%linenums,bash]
+----
+kubectl exec -it -n core-system pods/ldap-system-0 -- /bin/bash
+----
+
+=== 导入 MemberOf 配置
+
+MemberOf 能非常方便的绑定用户和组的关系。进入 LDAP 控制台，执行以下命令：
+
+[source%linenums,bash]
+----
+cat << "EOF" > mem.ldif
+include::./conf/05-import-memberof.ldif[]
+EOF
+ldapadd -Y EXTERNAL -H ldapi:/// -f ./mem.ldif
+----
+
 == 验证
 
 部署完成后，执行以下命令验证部署的完整性。
@@ -68,7 +92,7 @@ include::conf/04-deploy-server.yaml[]
 [source%linenums,bash]
 ----
 # 检查配置是否同步到 default 命名空间
-kubectl get secrets,configmaps
+kubectl get secrets,configmaps  -n core-system
 kubectl get pods,service -n core-system
 ----
 
