@@ -11,8 +11,10 @@
             color: white;
         }
     </style>
-    <p class="custom-footer">此文档编译于 ${DATE} . 提交代号:
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/${GIT_COMMIT_ID}"
-           target="_blank">${GIT_COMMIT_SHORT_ID}</a>
+    <p class="custom-footer">此文件更新于 ${GIT_CURRENT_FILE_DATE} | 此文件提交哈希
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/${GIT_CURRENT_FILE_HASH}"
+           target="_blank">${GIT_CURRENT_FILE_SHORT_HASH}</a> |
+        项目提交哈希 <a href="https://github.com/d7z-project/all-in-kubernetes/tree/${GIT_COMMIT_ID}"
+                  target="_blank">${GIT_COMMIT_SHORT_ID}</a> | 源码 <a href="./${SRC_NAME}">${SRC_NAME}</a>
     </p>
 </div>

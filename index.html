@@ -59,10 +59,14 @@
 
         }
 
+        .left-top {
+            border-bottom: black 1px solid;
+
+        }
+
         .main-menu {
             color: black;
             text-align: center;
-            border-bottom: black 1px solid;
             padding: 20px 0;
         }
 
@@ -77,25 +81,27 @@
             display: none;
         }
 
-        .s-text {
-            font-size: small;
+        .left-top-commit {
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="left">
-        <a href="./build/MAIN.html" target="dist" title="首页">
-            <h1 class="main-menu">
-                All In Kubernetes
-            </h1>
-        </a>
-        <iframe class="iframe" src="./build/zz-MENU.html"></iframe>
-        <div class="footer">
-            <p class="s-text">本项目使用 <a href="https://asciidoc.org/" target="_blank">AsciiDoc</a> 编写,
-                <a href="https://asciidoctor.org" target="_blank">asciidoctor</a> 渲染</p>
-            <p class="s-text">Copyright &copy;2022 Dragon's Zone. </p>
+        <div class="left-top">
+            <a href="./build/MAIN.html" target="dist" title="首页">
+                <h1 class="main-menu">
+                    All In Kubernetes
+                </h1>
+            </a>
+            <p class="s-text left-top-commit"> 当前版本：
+                <a href="https://github.com/d7z-project/all-in-kubernetes/tree/${GIT_COMMIT_ID}"
+                   target="_blank">#${GIT_COMMIT_SHORT_ID}</a></p>
         </div>
+
+        <iframe class="iframe" src="./build/zz-MENU.html"></iframe>
+
     </div>
     <div class="right">
         <a href="./build/MAIN.html" target="dist" title="首页">
@@ -108,8 +114,9 @@
 </div>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
       rel="stylesheet"/>
-<a class="github-fork-ribbon" data-ribbon="Fork me on GitHub" href="https://github.com/d7z-project/all-in-kubernetes"
-   title="Fork me on GitHub">Fork me on GitHub</a>
+<a class="github-fork-ribbon" data-ribbon="Star me on GitHub" href="https://github.com/d7z-project/all-in-kubernetes"
+   target="_blank"
+   title="Fork me on GitHub">Star me on GitHub</a>
 
 </body>
 </html>

@@ -1,5 +1,3 @@
-== 文档菜单
-
 === 核心环境部署
 
 . link:./00-deploy-global/00-init-node/SYSTEM.adoc[系统环境配置]
