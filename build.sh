@@ -8,17 +8,27 @@ BUILD_DIR="$PROJECT_HOME/build"
 FOOTER_TEMPLATE_PATH="$BUILD_DIR/docinfo-footer.html"
 SRC_FOOTER_TEMPLATE_PATH="$PROJECT_HOME/docinfo-footer.html"
 
+# shellcheck disable=SC2120
 generate_info() {
-# shellcheck disable=SC2155
+    # shellcheck disable=SC2155
     export GIT_COMMIT_ID=$(git rev-parse HEAD || :)
-# shellcheck disable=SC2155
+    # shellcheck disable=SC2155
     export GIT_COMMIT_SHORT_ID=$(git rev-parse --short HEAD || :)
-# shellcheck disable=SC2155
+    # shellcheck disable=SC2155
     export DATE=$(date)
+    if [ "$1" ]; then
+        # shellcheck disable=SC2155
+        export GIT_CURRENT_FILE_DATE=$(git log -1 --format=%cd "$1")
+        export GIT_CURRENT_FILE_HASH=$(git log -1 --format=%H "$1")
+        export GIT_CURRENT_FILE_SHORT_HASH=$(git log -1 --format=%h "$1")
+        export SRC_NAME=$(basename $1)
+    fi
     envsubst <"$SRC_FOOTER_TEMPLATE_PATH" >"$FOOTER_TEMPLATE_PATH"
 }
 
 setup_build() {
+    # shellcheck disable=SC1110
+    git config log.date "format:%Y年%m月%d日 %H时%M分%S秒"
     OLD_BUILD_DIR="$PROJECT_HOME/.build"
     if [ "$OLD_BUILD_DIR" ] && [ "$OLD_BUILD_DIR" != "/" ] && [ -d "$OLD_BUILD_DIR" ]; then
         /bin/rm -rf "$OLD_BUILD_DIR"
@@ -47,6 +57,8 @@ build_doc() {
     DIST_DIRECTORY="$(dirname "${DIST_PATH}")"
     # 创建导出目录
     mkdir -p "$DIST_DIRECTORY" || : 2>/dev/null
+    # 更新配置
+    generate_info "${SRC_PATH//\/build/}"
     # 编译文件
     asciidoctor \
         --attribute "nofooter" \
@@ -70,14 +82,19 @@ build_article() {
 build_menu() {
     /bin/rm -f "$BUILD_DIR"/zz-MENU.html
     asciidoctor --safe-mode unsafe \
-            --attribute "docinfo=menu" \
-        -r asciidoctor-kroki --no-header-footer  \
+        --attribute "docinfo=menu" \
+        -r asciidoctor-kroki --no-header-footer \
         --out-file "$BUILD_DIR"/zz-MENU.html "$BUILD_DIR"/zz-MENU.adoc
     sed -i 's/.adoc">/.html">/g' "$BUILD_DIR"/zz-MENU.html
     sed -i 's/<a href="/<a target="dist" href="/g' "$BUILD_DIR"/zz-MENU.html
 }
 
 build_index() {
+    # shellcheck disable=SC2155
+    export GIT_COMMIT_ID=$(git rev-parse HEAD || :)
+    # shellcheck disable=SC2155
+    export GIT_COMMIT_SHORT_ID=$(git rev-parse --short HEAD || :)
+    envsubst <"$PROJECT_HOME/index.html" >"$BUILD_DIR/index.html"
     sed -i 's|src="./build/|src="./|g' "$BUILD_DIR"/index.html
     sed -i 's|href="./build/|href="./|g' "$BUILD_DIR"/index.html
 }
@@ -85,10 +102,12 @@ build_index() {
 case $1 in
 menu)
     build_menu
+    build_index
     ;;
 main)
     generate_info
     build_doc "$BUILD_DIR/MAIN.adoc"
+    build_index
     ;;
 *)
     setup_build
