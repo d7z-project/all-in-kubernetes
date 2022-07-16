@@ -21,7 +21,7 @@ jobs:
       - name: 编译项目
         run: |
           sudo apt install -y wget
-          wget https://github.com/d7z-team/asciidoc-static-pages/raw/main/setub-deb.sh -O /tmp/setup.sh
+          wget https://raw.githubusercontent.com/d7z-team/asciidoc-static-pages/main/setup-deb.sh -O /tmp/setup.sh
           chmod +x /tmp/setup.sh
           /tmp/setup.sh `pwd`
       - name: 发布 Web 页面
