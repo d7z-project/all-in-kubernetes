@@ -1,7 +1,0 @@
-= 部署 Kubernetes (k3s)
-:experimental:
-:icons: font
-:toc: right
-:toc-title: 目录
-:toclevels: 4
-:source-highlighter: rouge
