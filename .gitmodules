@@ -1,3 +1,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/d7z-team/public-assets
+[submodule ".doc"]
+	path = .doc
+	url = https://github.com/d7z-team/asciidoc-static-pages
