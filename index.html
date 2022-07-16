@@ -6,6 +6,164 @@
     <meta charset="UTF-8">
     <title>All In Kubernetes</title>
     <style>
+/* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+
+@import url(//fonts.googleapis.com/css?family=Noto+Sans);
+@import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
+
+/* CUSTOMISATIONS */
+/* Change the values in root for quick customisation. If you want even more fine grain... venture further. */
+:root {
+    --maincolor: #282c34;
+    --primarycolor: #f39c12;
+    --secondarycolor: #03a9f4;
+    --tertiarycolor: #4db6ac;
+    --sidebarbackground: #21252b;
+    --linkcolor: #f44336;
+    --linkcoloralternate: #ff9800;
+    --white: #FFFFFF;
+}
+
+/* Text styles */
+
+body {
+    font-family: "Noto Sans", sans-serif;
+    background-color: var(--maincolor);
+    color: var(--white);
+}
+
+h1 {
+    color: var(--primarycolor) !important;
+    font-family: "Noto Sans", sans-serif;
+}
+
+h2, h3, h4, h5, h6 {
+    color: var(--secondarycolor) !important;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.title {
+    color: var(--white) !important;
+    font-family: "Noto Sans", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+p {
+    font-family: "Noto Sans", sans-serif ! important
+}
+
+#toc.toc2 a:link {
+    color: var(--linkcolor);
+}
+
+blockquote {
+    color: var(--tertiarycolor) !important
+}
+
+.quoteblock {
+    color: var(--white)
+}
+
+code {
+    color: var(--linkcoloralternate);
+    background-color: var(--sidebarbackground) !important
+}
+
+
+/* Table styles */
+th {
+    background-color: var(--maincolor);
+    color: var(--white) !important;
+}
+
+td {
+    background-color: var(--maincolor);
+    color: var(--linkcoloralternate) !important
+}
+
+
+#toc.toc2 {
+    background-color: var(--sidebarbackground);
+}
+
+#toctitle {
+    color: var(--white);
+}
+
+/* Responsiveness fixes */
+video {
+    max-width: 100%;
+}
+
+.exampleblock > .content {
+    background-color: var(--maincolor);
+}
+
+a {
+    color: var(--secondarycolor);
+}
+
+.admonitionblock td.icon .icon-tip::before {
+    text-shadow: none;
+    color: var(--white);
+}
+
+.admonitionblock td.icon .icon-note::before {
+    color: var(--tertiarycolor);
+}
+
+.admonitionblock td.icon .icon-important::before {
+    color: var(--linkcolor);
+}
+
+/*.admonitionblock td.icon .icon-caution::before {
+  color: var(--linkcoloralternate);
+}*/
+.admonitionblock td.icon .icon-warning::before {
+    color: var(--primarycolor);
+}
+
+#preamble > .sectionbody > .paragraph:first-of-type p {
+    color: var(--white);
+}
+
+.quoteblock blockquote::before {
+    color: var(--primarycolor);
+}
+
+.quoteblock .attribution cite, .verseblock .attribution cite {
+    color: var(--white);
+}
+
+.verseblock pre {
+    color: var(--white);
+}
+
+.quoteblock blockquote, .quoteblock blockquote p {
+    color: var(--white);
+}
+
+.sidebarblock {
+    background: var(--sidebarbackground);
+}
+
+.literalblock pre, .listingblock pre:not(.highlight), .listingblock pre[class="highlight"], .listingblock pre[class^="highlight "], .listingblock pre.CodeRay, .listingblock pre.prettyprint {
+    background: var(--sidebarbackground);
+    color: var(--white);
+}
+
+#header .details {
+    color: var(--white);
+}
+
+#header .details span.email a {
+    color: var(--linkcoloralternate);
+}
+
+.rouge.highlight {
+    background-color: var(--sidebarbackground);
+}
         * {
             margin: 0;
             padding: 0;
@@ -35,7 +193,6 @@
             display: flex;
             flex-direction: column;
             border-right: black 1px solid;
-
         }
 
         @media screen and (max-width: 730px) {
@@ -61,31 +218,25 @@
 
         .left-top {
             border-bottom: black 1px solid;
-
+            padding: 10px;
         }
 
-        .main-menu {
-            color: black;
+        .logo-text {
             text-align: center;
-            padding: 20px 0;
+            padding: 15px 0;
+            margin: 0;
         }
 
-        .footer {
-            text-align: center;
-            border-top: black 1px solid;
-            padding: 10px 0;
-
-        }
-        .s-text{
-            font-size: small;
-        }
         .right-menu {
             display: none;
+            text-align: center;
+            border-bottom: 1px black solid;
         }
 
-        .left-top-commit {
-            text-align: center;
+        a {
+            text-decoration: none;
         }
+
     </style>
 </head>
 <body>
@@ -93,24 +244,19 @@
     <div class="left">
         <div class="left-top">
             <a href="./MAIN.html" target="dist" title="首页">
-                <h1 class="main-menu">
+                <h1 class="logo-text">
                     All In Kubernetes
                 </h1>
             </a>
-            <p class="s-text left-top-commit"> 当前版本：
-                <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4fe47173f06ba880282fd1520088c52356b24add/"
-                   target="_blank">#4fe4717</a></p>
-            <p class="s-text left-top-commit">编译日期：
-                2022-07-16 09:21:55
-            </p>
         </div>
+
 
         <iframe class="iframe" src=".//zz-MENU.html"></iframe>
 
     </div>
     <div class="right">
         <a href=".//MAIN.html" target="dist" title="首页">
-            <h1 class="main-menu right-menu">
+            <h1 class="right-menu">
                 All In Kubernetes 主页
             </h1>
         </a>
@@ -119,9 +265,9 @@
 </div>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/github-fork-ribbon-css/0.2.3/gh-fork-ribbon.min.css"
       rel="stylesheet"/>
-<a class="github-fork-ribbon" data-ribbon="Star me on GitHub" href="http://github.com/d7z-project/all-in-kubernetes"
+<a class="github-fork-ribbon" data-ribbon="Fork me on GitHub" href="http://github.com/d7z-project/all-in-kubernetes"
    target="_blank"
-   title="Fork me on GitHub">Star me on GitHub</a>
+   title="Fork me on GitHub">Fork me on GitHub</a>
 
 </body>
 </html>
