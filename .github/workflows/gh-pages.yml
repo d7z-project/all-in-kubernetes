@@ -20,13 +20,13 @@ jobs:
           fetch-depth: 0
       - name: 编译项目
         run: |
-          chmod +x ./.doc/doc.sh
-          sudo ./.doc/doc.sh toolchain
-          ./.doc/doc.sh build `pwd`
+          sudo apt install -y wget
+          wget https://github.com/d7z-team/asciidoc-static-pages/raw/main/setub-deb.sh -O /tmp/setup.sh
+          chmod +x /tmp/setup.sh
+          /tmp/setup.sh `pwd`
       - name: 发布 Web 页面
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-          cname: all-in-kubernetes.docs.d7z.net
