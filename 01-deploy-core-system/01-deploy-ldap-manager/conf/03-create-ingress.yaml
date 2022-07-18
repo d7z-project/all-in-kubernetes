@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: ldap-ingress
   namespace: core-system
+  labels:
+    type: ldap
   annotations:
     # 重写路径
     nginx.ingress.kubernetes.io/rewrite-target: /
@@ -10,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - example.com # <1>
-      secretName: example-com-tls  # <2>
+        - lam.d7z.net # <1>
+      secretName: d7z-net-tls  # <2>
   rules:
-    - host: example.com  # <3>
+    - host: lam.d7z.net  # <3>
       http:
         paths:
           - path: /

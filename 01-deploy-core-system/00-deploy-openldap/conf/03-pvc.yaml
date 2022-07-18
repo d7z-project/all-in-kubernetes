@@ -3,6 +3,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-ldap-config
   namespace: core-system
+  labels:
+    type: ldap
 spec:
   storageClassName: cluster-share
   accessModes:
@@ -16,6 +18,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: pvc-ldap-data
   namespace: core-system
+  labels:
+    type: ldap
 spec:
   storageClassName: cluster-share
   accessModes:

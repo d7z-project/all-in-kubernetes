@@ -104,6 +104,9 @@ body{
 <li>
 <p><a target="dist" href="02-deploy-core-middleware/00-deplpy-mariadb/README.html">MariaDB 部署</a></p>
 </li>
+<li>
+<p><a target="dist" href="02-deploy-core-middleware/01-deplpy-redis/README.html">Redis部署</a></p>
+</li>
 </ol>
 </div>
 </div>

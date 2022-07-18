@@ -72,24 +72,28 @@
 16
 17
 18
+19
+20
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">annotations</span><span class="pi">:</span> <i class="conum" data-value="1"></i><b>(1)</b>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
 <span class="na">data</span><span class="pi">:</span>
-  <span class="na">ldap_org</span><span class="pi">:</span> <span class="s1">'</span><span class="s">example</span><span class="nv"> </span><span class="s">team'</span> <i class="conum" data-value="2"></i><b>(2)</b>
-  <span class="na">ldap_domain</span><span class="pi">:</span> <span class="s1">'</span><span class="s">example.com'</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="na">ldap_org</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Dragon's</span><span class="nv"> </span><span class="s">Zone</span><span class="nv"> </span><span class="s">Team"</span> <i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="na">ldap_domain</span><span class="pi">:</span> <span class="s1">'</span><span class="s">d7z.net'</span> <i class="conum" data-value="3"></i><b>(3)</b>
   <span class="na">ldap_host</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service-ldap.core-system.svc.cluster.local'</span> <i class="conum" data-value="4"></i><b>(4)</b>
   <span class="na">ldap_url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ldap://service-ldap.core-system.svc.cluster.local:389'</span> <i class="conum" data-value="5"></i><b>(5)</b>
-  <span class="na">ldap_base_dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dc=example,dc=com'</span> <i class="conum" data-value="6"></i><b>(6)</b>
-  <span class="na">ldap_user_dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=people,dc=example,dc=com'</span> <i class="conum" data-value="7"></i><b>(7)</b>
-  <span class="na">ldap_group_dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=groups,dc=example,dc=com'</span> <i class="conum" data-value="8"></i><b>(8)</b>
+  <span class="na">ldap_base_dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dc=d7z,dc=net'</span> <i class="conum" data-value="6"></i><b>(6)</b>
+  <span class="na">ldap_user_dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=people,dc=d7z,dc=net'</span> <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">ldap_group_dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=groups,dc=d7z,dc=net'</span> <i class="conum" data-value="8"></i><b>(8)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -161,11 +165,17 @@
 21
 22
 23
+24
+25
+26
+27
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-admin</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="na">password</span><span class="pi">:</span> <span class="s">admin</span> <i class="conum" data-value="1"></i><b>(1)</b>
@@ -175,6 +185,8 @@
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-service</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">annotations</span><span class="pi">:</span> <i class="conum" data-value="2"></i><b>(2)</b>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
@@ -258,11 +270,17 @@
 23
 24
 25
+26
+27
+28
+29
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-ldap-config</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
@@ -276,6 +294,8 @@
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-ldap-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
@@ -390,6 +410,9 @@
 94
 95
 96
+97
+98
+99
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -397,6 +420,7 @@
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-system</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">serviceName</span><span class="pi">:</span> <span class="s">ldap-system</span>
   <span class="na">selector</span><span class="pi">:</span>
@@ -407,6 +431,7 @@
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
         <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-system</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-system</span>
@@ -479,6 +504,7 @@
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">service-ldap</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">service-ldap</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
 <span class="na">spec</span><span class="pi">:</span>
@@ -820,8 +846,8 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月15日 00时44分35秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/2a195a69753b48f4ec7d238fd5bc58235e80bfe5//01-deploy-core-system/00-deploy-openldap/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2a195a69753b48f4ec7d238fd5bc58235e80bfe5/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/8158d99ca0dbc14c3481aca753483333d44e1297//01-deploy-core-system/00-deploy-openldap/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/8158d99ca0dbc14c3481aca753483333d44e1297/"
             target="_blank">#84f7d5d</a>
 </div>
 </body>

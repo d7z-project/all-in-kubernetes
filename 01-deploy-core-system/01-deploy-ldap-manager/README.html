@@ -89,6 +89,8 @@
 40
 41
 42
+43
+44
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -96,6 +98,7 @@
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">selector</span><span class="pi">:</span>
@@ -105,6 +108,7 @@
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
         <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
@@ -156,11 +160,13 @@
 10
 11
 12
+13
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">lam</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
 <span class="na">spec</span><span class="pi">:</span>
@@ -207,11 +213,15 @@
 23
 24
 25
+26
+27
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-ingress</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="c1"># 重写路径</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
@@ -219,10 +229,10 @@
   <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">example.com</span> <i class="conum" data-value="1"></i><b>(1)</b>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">example-com-tls</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="pi">-</span> <span class="s">lam.d7z.net</span> <i class="conum" data-value="1"></i><b>(1)</b>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">d7z-net-tls</span>  <i class="conum" data-value="2"></i><b>(2)</b>
   <span class="na">rules</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">example.com</span>  <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">lam.d7z.net</span>  <i class="conum" data-value="3"></i><b>(3)</b>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
@@ -269,7 +279,19 @@
 <h2 id="_验证">验证</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>访问地址 <code><a target="_blank" href="https://example.com" class="bare">https://example.com</a></code> , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明安装正确。</p>
+<p>访问地址 <code><a target="_blank" href="https://lam.d7z.net" class="bare">https://lam.d7z.net</a></code> , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明安装正确。</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+在测试时，你需要将 <code>lam.d7z.net</code> 改为实际的地址
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -503,11 +525,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月15日 00时44分35秒 |
+        最后编辑于 2022年07月18日 15时35分35秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/2a195a69753b48f4ec7d238fd5bc58235e80bfe5//01-deploy-core-system/01-deploy-ldap-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2a195a69753b48f4ec7d238fd5bc58235e80bfe5/"
-            target="_blank">#84f7d5d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/8158d99ca0dbc14c3481aca753483333d44e1297//01-deploy-core-system/01-deploy-ldap-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/8158d99ca0dbc14c3481aca753483333d44e1297/"
+            target="_blank">#8158d99</a>
 </div>
 </body>
 </html>

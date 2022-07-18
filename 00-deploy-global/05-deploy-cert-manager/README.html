@@ -130,7 +130,7 @@ crictl pull emberstack/kubernetes-reflector:6.1.47
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="c1"># 需要</span>
+  <span class="c1"># 需要修改为实际数据</span>
   <span class="na">api-token</span><span class="pi">:</span> <span class="s1">'</span><span class="s">&lt;CLOUDFLARE</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">TOKEN&gt;'</span> <i class="conum" data-value="1"></i><b>(1)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -210,6 +210,9 @@ crictl pull emberstack/kubernetes-reflector:6.1.47
 </div>
 <div class="sect2">
 <h3 id="_签发证书">签发证书</h3>
+<div class="paragraph">
+<p>接下来使用测试域名 <code>d7z.net</code> 签发证书。</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -237,7 +240,7 @@ crictl pull emberstack/kubernetes-reflector:6.1.47
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">cert-example-com</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cert-d7z-net</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">secretTemplate</span><span class="pi">:</span>
@@ -249,13 +252,13 @@ crictl pull emberstack/kubernetes-reflector:6.1.47
   <span class="na">privateKey</span><span class="pi">:</span>
     <span class="na">algorithm</span><span class="pi">:</span> <span class="s">RSA</span>
     <span class="na">size</span><span class="pi">:</span> <span class="m">4096</span>
-  <span class="na">dnsNames</span><span class="pi">:</span>  <i class="conum" data-value="5"></i><b>(5)</b>
-    <span class="pi">-</span> <span class="s">example.com</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.example.com'</span>
+  <span class="na">dnsNames</span><span class="pi">:</span> <i class="conum" data-value="5"></i><b>(5)</b>
+    <span class="pi">-</span> <span class="s">d7z.net</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.d7z.net'</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>  <i class="conum" data-value="6"></i><b>(6)</b>
-  <span class="na">secretName</span><span class="pi">:</span> <span class="s">example-com-tls</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s">d7z-net-tls</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -311,7 +314,7 @@ kubectl get certificate <span class="nt">-n</span> cert-manager
 <pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>NAME               READY   SECRET                 AGE
-cert-example-com   True    example-com-tls        18h
+cert-d7z-net       True    d7z-net-tls            18h
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -322,7 +325,7 @@ cert-example-com   True    example-com-tls        18h
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-注意，需要填充的内容必须真实有效
+注意，需要填充的内容必须真实有效，否则将导致签发失败。
 </td>
 </tr>
 </table>
@@ -560,11 +563,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月15日 00时44分35秒 |
+        最后编辑于 2022年07月18日 15时35分35秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/2a195a69753b48f4ec7d238fd5bc58235e80bfe5//00-deploy-global/05-deploy-cert-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2a195a69753b48f4ec7d238fd5bc58235e80bfe5/"
-            target="_blank">#84f7d5d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/8158d99ca0dbc14c3481aca753483333d44e1297//00-deploy-global/05-deploy-cert-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/8158d99ca0dbc14c3481aca753483333d44e1297/"
+            target="_blank">#8158d99</a>
 </div>
 </body>
 </html>

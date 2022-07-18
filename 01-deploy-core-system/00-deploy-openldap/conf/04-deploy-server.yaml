@@ -5,6 +5,7 @@ metadata:
   namespace: core-system
   labels:
     app: ldap-system
+    type: ldap
 spec:
   serviceName: ldap-system
   selector:
@@ -15,6 +16,7 @@ spec:
     metadata:
       labels:
         app: ldap-system
+        type: ldap
     spec:
       containers:
         - name: ldap-system
@@ -87,6 +89,7 @@ kind: Service
 metadata:
   labels:
     app: service-ldap
+    type: ldap
   name: service-ldap
   namespace: core-system
 spec:
