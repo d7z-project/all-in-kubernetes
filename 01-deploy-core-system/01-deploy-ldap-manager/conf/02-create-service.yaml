@@ -3,6 +3,7 @@ kind: Service
 metadata:
   labels:
     app: lam
+    type: ldap
   name: lam
   namespace: core-system
 spec:

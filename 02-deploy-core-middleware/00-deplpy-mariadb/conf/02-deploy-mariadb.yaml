@@ -5,6 +5,7 @@ metadata:
   namespace: core-middle
   labels:
     app: mariadb-server
+    type: mariadb
 spec:
   serviceName: mariadb-server
   selector:
@@ -15,6 +16,7 @@ spec:
     metadata:
       labels:
         app: mariadb-server
+        type: mariadb
     spec:
       containers:
         - name: mariadb-server

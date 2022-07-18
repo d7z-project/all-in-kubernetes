@@ -50,15 +50,7 @@ WARNING: 此次测试需要有一个域名，同时需要 Cert-Manager 支持此
 
 [source%linenums,yaml]
 ----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cloudflare-api-token-secret
-  namespace: cert-manager
-type: Opaque
-stringData:
-  # 需要
-  api-token: '<CLOUDFLARE API TOKEN>' # <1>
+include::./conf/02-dnsapi-cloudflare-apikey.yaml[]
 ----
 
 .其中:
@@ -72,23 +64,7 @@ stringData:
 
 [source%linenums,yaml]
 ----
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: issuer-dns01-cloudflare-1
-  namespace: cert-manager
-spec:
-  acme:
-    privateKeySecretRef:
-      name: lets-encrypt-dns01
-    server: https://acme-v02.api.letsencrypt.org/directory
-    solvers:
-      - dns01:
-          cloudflare:
-            email: <EMAIL> # <1>
-            apiTokenSecretRef:
-              name: cloudflare-api-token-secret # <2>
-              key: api-token
+include::./conf/03-cloudflare-issuer.yaml[]
 ----
 
 <1> 此处填写你的 Cloudflare Email
@@ -98,30 +74,11 @@ spec:
 
 === 签发证书
 
+接下来使用测试域名 `d7z.net` 签发证书。
+
 [source%linenums,yaml]
 ----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: cert-example-com
-  namespace: cert-manager
-spec:
-  secretTemplate:
-    annotations:
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app" # <1>
-      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  # <2>
-      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"  # <3>
-      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"  # <4>
-  privateKey:
-    algorithm: RSA
-    size: 4096
-  dnsNames:  # <5>
-    - example.com
-    - '*.example.com'
-  issuerRef:
-    kind: ClusterIssuer
-    name: issuer-dns01-cloudflare-1  # <6>
-  secretName: example-com-tls
+include::./conf/04-cert-d7z-net.yaml[]
 ----
 
 .其中:
@@ -147,7 +104,7 @@ kubectl get certificate -n cert-manager
 [source%linenums,text]
 ----
 NAME               READY   SECRET                 AGE
-cert-example-com   True    example-com-tls        18h
+cert-d7z-net       True    d7z-net-tls            18h
 ----
 
-WARNING: 注意，需要填充的内容必须真实有效
+WARNING: 注意，需要填充的内容必须真实有效，否则将导致签发失败。

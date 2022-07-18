@@ -41,7 +41,7 @@ include::conf/02-deploy-mariadb.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/03-link-mariadb-service.yaml[]
+include::conf/03-mariadb-service.yaml[]
 ----
 
 == 测试
@@ -50,5 +50,24 @@ include::conf/03-link-mariadb-service.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl get pods,secrets,services,deployments,pvc -n core-middle
+kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=mariadb
+----
+
+如果一切无误的话可使用以下命令测试 MariaDB ，输出结果如下所示。
+
+.测试命令
+[source%linenums,bash]
+----
+MYSQL_PASSWD=$(kubectl get secrets -n core-middle  secret-mariadb-root -o jsonpath='{.data.password}' | base64 -d)
+kubectl exec -it -n core-middle pods/mariadb-server-0 -- mysql -uroot -p$MYSQL_PASSWD -e "select 1;"
+----
+
+.输出结果
+[source%linenums,text]
+----
++---+
+| 1 |
++---+
+| 1 |
++---+
 ----
