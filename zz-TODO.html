@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>文档任务</title>
+<title>任务列表 &amp; 贡献者指南</title>
 <style>
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans);
 @import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
@@ -15,13 +15,21 @@
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>文档任务</h1>
+<h1>任务列表 &amp; 贡献者指南</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_贡献者指南">贡献者指南</a>
+<ul class="sectlevel2">
+<li><a href="#_文档编写指南">文档编写指南</a></li>
+<li><a href="#_注意事项">注意事项</a></li>
+</ul>
+</li>
+<li><a href="#_任务列表">任务列表</a>
+<ul class="sectlevel2">
 <li><a href="#_环境介绍">环境介绍</a></li>
 <li><a href="#_组件部署">组件部署</a>
-<ul class="sectlevel2">
+<ul class="sectlevel3">
 <li><a href="#_底层组件">底层组件</a></li>
 <li><a href="#_核心组件_core_system">核心组件 (core-system)</a></li>
 <li><a href="#_核心中间件_core_middleware">核心中间件 (core-middleware)</a></li>
@@ -32,40 +40,74 @@
 </li>
 <li><a href="#_自动化部署测试">自动化部署测试</a></li>
 </ul>
+</li>
+</ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_贡献者指南">贡献者指南</h2>
 <div class="sectionbody">
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理。
-</td>
-</tr>
-</table>
+<div class="sect2">
+<h3 id="_文档编写指南">文档编写指南</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>所有文档需使用 <a target="_blank" href="https://asciidoc.org/">AsciiDoc</a> 编写。</p>
+</li>
+<li>
+<p>对于代码引用需单独保存至文件，并使用 <code>include::path/to/file[]</code> 引入。</p>
+</li>
+<li>
+<p>过长的代码块需要用折叠块折叠。</p>
+</li>
+<li>
+<p>所有文档均需要有简单的测试说明。</p>
+</li>
+<li>
+<p>对于引用他人文档需注意版权问题，且需要在文档末尾注明引用来源。</p>
+</li>
+<li>
+<p>编写的文档需要在 <code>zz-MENU.adoc</code> 内存在引用菜单。</p>
+</li>
+<li>
+<p>文档命名需按照部署流程排序: <code>00 - zz</code> 。</p>
+</li>
+<li>
+<p>如果需要拉取镜像则需要在文档内注明所需的镜像地址，方便读者离线部署。</p>
+</li>
+<li>
+<p>所有从网络加载的 <code>kubernetes</code> 的  <code>yaml</code> 配置文件均需在本地留有备份 （仅可修改 namespace）。</p>
+</li>
+</ol>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-避免使用 <code>bitnami</code> 打包的镜像。
-</td>
-</tr>
-</table>
+</div>
+<div class="sect2">
+<h3 id="_注意事项">注意事项</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>请 <strong>不要使用任何闭源的软件或镜像</strong>。</p>
+</li>
+<li>
+<p>所有组件除特殊说明的除外均为单实例部署，系统内所有账户尽量采用LDAP来统一管理。</p>
+</li>
+<li>
+<p>避免使用 <code>bitnami</code> 打包的镜像。</p>
+</li>
+<li>
+<p>对于 Java 相关的应用部署，需避免引入带 <a target="_blank" href="https://www.cve.org/CVERecord?id=CVE-2021-44228">Log4Shell</a> 漏洞的镜像。</p>
+</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_环境介绍">环境介绍</h2>
+<h2 id="_任务列表">任务列表</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_环境介绍">环境介绍</h3>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -77,12 +119,10 @@
 </ul>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_组件部署">组件部署</h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_底层组件">底层组件</h3>
+<h3 id="_组件部署">组件部署</h3>
+<div class="sect3">
+<h4 id="_底层组件">底层组件</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -190,8 +230,8 @@
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_核心组件_core_system">核心组件 (core-system)</h3>
+<div class="sect3">
+<h4 id="_核心组件_core_system">核心组件 (core-system)</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -241,8 +281,8 @@
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_核心中间件_core_middleware">核心中间件 (core-middleware)</h3>
+<div class="sect3">
+<h4 id="_核心中间件_core_middleware">核心中间件 (core-middleware)</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -273,8 +313,8 @@
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_核心应用_core_app">核心应用 (core-app)</h3>
+<div class="sect3">
+<h4 id="_核心应用_core_app">核心应用 (core-app)</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -286,8 +326,8 @@
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_扩展应用_share_app">扩展应用 (share-app)</h3>
+<div class="sect3">
+<h4 id="_扩展应用_share_app">扩展应用 (share-app)</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -302,8 +342,8 @@
 </ul>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_集群监控_monitor_app">集群监控 (monitor-app)</h3>
+<div class="sect3">
+<h4 id="_集群监控_monitor_app">集群监控 (monitor-app)</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -322,10 +362,8 @@
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_自动化部署测试">自动化部署测试</h2>
-<div class="sectionbody">
+<div class="sect2">
+<h3 id="_自动化部署测试">自动化部署测试</h3>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
@@ -335,6 +373,7 @@
 <p><i class="fa fa-square-o"></i> 使用 Gitlab Runner 做自动化测试</p>
 </li>
 </ul>
+</div>
 </div>
 </div>
 </div>
@@ -353,11 +392,11 @@
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月19日 14时06分34秒 |
+        最后编辑于 2022年07月19日 22时08分12秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/ed17600b2e409c44343b592c4991d10ba230d6e8//zz-TODO.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ed17600b2e409c44343b592c4991d10ba230d6e8/"
-            target="_blank">#e45ddf4</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/bf0421eac7c16eb1b8dd78be7e794cb724831993//zz-TODO.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/bf0421eac7c16eb1b8dd78be7e794cb724831993/"
+            target="_blank">#b8fc56b</a>
 </div>
 </body>
 </html>

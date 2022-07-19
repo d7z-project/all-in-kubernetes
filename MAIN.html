@@ -25,6 +25,7 @@
 <li><a href="#_核心环境部署">核心环境部署</a></li>
 <li><a href="#_核心系统应用部署">核心系统应用部署</a></li>
 <li><a href="#_系统中间件应用部署">系统中间件应用部署</a></li>
+<li><a href="#_核心应用部署">核心应用部署</a></li>
 <li><a href="#_杂项">杂项</a></li>
 </ul>
 </li>
@@ -44,7 +45,7 @@
 </blockquote>
 </div>
 <div class="paragraph">
-<p>此项目致力于简化部署 Kubernetes 流程 ，整合零散设备，提高设备利用率。</p>
+<p>此项目致力于简化轻量化部署 Kubernetes 流程，整合零散设备，提高设备利用率。</p>
 </div>
 </div>
 </div>
@@ -60,9 +61,24 @@
 <p>整合账户系统，使用 <strong>LDAP</strong> 来管理用户</p>
 </li>
 <li>
-<p>完全使用 <code>yaml</code> 配置来管理和部署集群</p>
+<p>使用 <code>yaml</code> 配置来管理和部署集群</p>
+</li>
+<li>
+<p>支持离线部署</p>
 </li>
 </ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+离线部署需用户在有网络的环境下准备好安装的 Docker 镜像和 kubernetes 运行时。
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -70,7 +86,7 @@
 <h2 id="_入门">入门</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>项目发布于 <a target="_blank" href="https://gitlab.open-edgn.cn/document/all-in-kubernetes">document/all-in-kubernetes</a> ，且实时同步到 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes">d7z-project/all-in-kubernetes</a>。 如有问题可在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/issues">Github</a> 提问或发送邮件给我。如果你有新的想法可提 <strong>Pull request</strong> ，如需在线阅读请访问 <a target="_blank" href="https://d7z-project.github.io/all-in-kubernetes/">d7z-project.github.io/all-in-kubernetes</a> 或者是 <a target="_blank" href="https://all-in-kubernetes.docs.d7z.net">all-in-kubernetes.docs.d7z.net</a>。</p>
+<p>项目发布在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes">d7z-project/all-in-kubernetes</a>。 如有问题可在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/issues">Github</a> 提问或发送邮件给我。如果你有新的想法可提 <strong>Pull request</strong> ，如需在线阅读请访问 <a target="_blank" href="https://d7z-project.github.io/all-in-kubernetes/">d7z-project.github.io/all-in-kubernetes</a> 或者是 <a target="_blank" href="https://all-in-kubernetes.docs.d7z.net">all-in-kubernetes.docs.d7z.net</a>。</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -186,6 +202,16 @@
 </div>
 </div>
 <div class="sect2">
+<h3 id="_核心应用部署">核心应用部署</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="./03-deploy-core-app/README.html">核心应用部署准备</a></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_杂项">杂项</h3>
 <div class="ulist">
 <ul>
@@ -193,10 +219,13 @@
 <p><a href="zz-document/other/HARDWARE_INFO.html">测试环境配置</a></p>
 </li>
 <li>
-<p><a href="zz-TODO.html">待完成列表</a></p>
+<p><a href="zz-TODO.html">待完成列表与贡献者指南</a></p>
 </li>
 <li>
 <p><a href="zz-document/other/PAGE_TEST.html">页面渲染测试</a></p>
+</li>
+<li>
+<p><a href="zz-document/other/NOTE.html">非相关扩展内容</a></p>
 </li>
 </ul>
 </div>
@@ -243,11 +272,11 @@
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月15日 15时01分54秒 |
+        最后编辑于 2022年07月19日 22时08分12秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/ed17600b2e409c44343b592c4991d10ba230d6e8//MAIN.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ed17600b2e409c44343b592c4991d10ba230d6e8/"
-            target="_blank">#42c23cf</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/bf0421eac7c16eb1b8dd78be7e794cb724831993//MAIN.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/bf0421eac7c16eb1b8dd78be7e794cb724831993/"
+            target="_blank">#b8fc56b</a>
 </div>
 </body>
 </html>
