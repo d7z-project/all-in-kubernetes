@@ -35,6 +35,21 @@ spec:
                 configMapKeyRef:
                   name: ldap-global-conf
                   key: ldap_url
+            - name: LDAP_BASE_DN
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_base_dn
+            - name: LDAP_USERS_DN
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_user_dn
+            - name: LDAP_GROUPS_DN
+              valueFrom:
+                configMapKeyRef:
+                  name: ldap-global-conf
+                  key: ldap_group_dn
             - name: LAM_LANG
               value: zh_CN
             - name: LAM_PASSWORD
