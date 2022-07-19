@@ -99,13 +99,16 @@ body{
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a target="dist" href="02-deploy-core-middleware/README.html">核心中间件部署准备</a></p>
+<p><a target="dist" href="./02-deploy-core-middleware/README.html">核心中间件部署准备</a></p>
 </li>
 <li>
-<p><a target="dist" href="02-deploy-core-middleware/00-deplpy-mariadb/README.html">MariaDB 部署</a></p>
+<p><a target="dist" href="./02-deploy-core-middleware/00-deplpy-mariadb/README.html">MariaDB 部署</a></p>
 </li>
 <li>
-<p><a target="dist" href="02-deploy-core-middleware/01-deplpy-redis/README.html">Redis部署</a></p>
+<p><a target="dist" href="./02-deploy-core-middleware/01-deplpy-redis/README.html">Redis部署</a></p>
+</li>
+<li>
+<p><a target="dist" href="./02-deploy-core-middleware/02-deploy-postgres/README.html">Postgres 部署</a></p>
 </li>
 </ol>
 </div>

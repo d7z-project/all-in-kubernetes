@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>部署 MariaDB</title>
+<title>部署 PostgresSQL</title>
 <style>
 @import url(https://fonts.googleapis.com/css?family=Noto+Sans);
 @import url(https://cdn.jsdelivr.net/gh/asciidoctor/asciidoctor@2.0/data/stylesheets/asciidoctor-default.css); /* Default asciidoc style framework - important */
@@ -15,13 +15,13 @@
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>部署 MariaDB</h1>
+<h1>部署 PostgresSQL</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
 <li><a href="#_创建_pvc">创建 PVC</a></li>
 <li><a href="#_管理员用户配置">管理员用户配置</a></li>
-<li><a href="#_创建_mariadb_服务器">创建 MariaDB 服务器</a></li>
+<li><a href="#_创建_postgressql_服务器">创建 PostgresSQL 服务器</a></li>
 <li><a href="#_关联service">关联Service</a></li>
 <li><a href="#_测试">测试</a></li>
 </ul>
@@ -69,10 +69,10 @@
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-mariadb-data</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-postgres-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">postgres</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
@@ -103,16 +103,18 @@
  8
  9
 10
+11
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-mariadb-root</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-postgres-root</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">postgres</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">mysql-root-password'</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">username</span><span class="pi">:</span> <span class="s1">'</span><span class="s">postgres'</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">postgres-admin-password'</span> <i class="conum" data-value="1"></i><b>(1)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -121,17 +123,17 @@
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>你需要将其配置成一个更安全的密码</td>
+<td>你需要为管理员用户配置更为复杂的密码</td>
 </tr>
 </table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_mariadb_服务器">创建 MariaDB 服务器</h2>
+<h2 id="_创建_postgressql_服务器">创建 PostgresSQL 服务器</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>使用以下配置创建 MariaDB 服务器。</p>
+<p>使用以下配置创建 PostgresSQL 服务器。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -176,47 +178,57 @@
 39
 40
 41
+42
+43
+44
+45
+46
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-server</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">postgres-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">postgres</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">postgres-server</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">postgres-server</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">postgres-server</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">postgres</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb:10.8</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-server</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">postgres:14</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-data</span>
-              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/mysql</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/postgresql/data</span>
           <span class="na">ports</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">3306</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
+            <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5432</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">postgres</span>
           <span class="na">env</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MARIADB_ROOT_PASSWORD</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POSTGRES_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-mariadb-root</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-postgres-root</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
-            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MARIADB_ROOT_HOST</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">%"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POSTGRES_USER</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-postgres-root</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">username</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">PGDATA'</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/var/lib/postgresql/data/pgdata"</span>
       <span class="na">volumes</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-data</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-data</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
-            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-mariadb-data</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-postgres-data</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -226,7 +238,7 @@
 <h2 id="_关联service">关联Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>将 MariaDB 服务关联到 Service 下。</p>
+<p>将 PostgresSQL 服务关联到 Service 下。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -247,15 +259,15 @@
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">postgres-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">postgres</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">postgres</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">3306</span>
+    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">5432</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">postgres</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -270,20 +282,22 @@
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get pods,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>mariadb
+</pre></td><td class="code"><pre>kubectl get pods,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>postgres
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>如果一切无误的话可使用以下命令测试 MariaDB ，输出结果如下所示。</p>
+<p>如果一切无误的话可使用以下命令测试 PostgresSQL ，输出结果如下所示。</p>
 </div>
 <div class="listingblock">
 <div class="title">测试命令</div>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre><span class="nv">MYSQL_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle  secret-mariadb-root <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
-kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/mariadb-server-0 <span class="nt">--</span> mysql <span class="nt">-uroot</span> <span class="nt">-p</span><span class="nv">$MYSQL_PASSWD</span> <span class="nt">-e</span> <span class="s2">"select 1;"</span>
+3
+</pre></td><td class="code"><pre><span class="nv">PG_NAME</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-postgres-root <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.username}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
+<span class="nv">PG_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-postgres-root  <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/postgres-server-0 <span class="nt">--</span> psql <span class="nt">-h</span> 127.0.0.1 <span class="nt">-U</span> <span class="nv">$PG_NAME</span> <span class="nt">-w</span> <span class="nt">-c</span> <span class="s2">"select 1"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -294,12 +308,10 @@ kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt
 2
 3
 4
-5
-</pre></td><td class="code"><pre>+---+
-| 1 |
-+---+
-| 1 |
-+---+
+</pre></td><td class="code"><pre> ?column?
+----------
+        1
+(1 row)
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -537,7 +549,7 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月19日 09时27分15秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/50d537b57938d7a7d2d2b077349fe027097af9f3//02-deploy-core-middleware/00-deplpy-mariadb/README.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/50d537b57938d7a7d2d2b077349fe027097af9f3//02-deploy-core-middleware/02-deploy-postgres/README.adoc">查看源码</a> |
         <a href="https://github.com/d7z-project/all-in-kubernetes/tree/50d537b57938d7a7d2d2b077349fe027097af9f3/"
             target="_blank">#50d537b</a>
 </div>
