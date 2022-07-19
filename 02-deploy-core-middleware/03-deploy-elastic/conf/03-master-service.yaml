@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: elastic-server
+    type: elastic
+  name: elastic
+  namespace: core-middle
+spec:
+  ports:
+    - name: api
+      protocol: TCP
+      port: 9200
+    - name: cluster-port
+      protocol: TCP
+      port: 9300
+  selector:
+    app: elastic-server
