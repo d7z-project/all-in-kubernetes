@@ -1,0 +1,76 @@
+= 部署 Elastic Search
+:experimental:
+:icons: font
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+WARNING: 此为单实例部署，切勿用于生产环境。
+
+== 创建 PVC
+
+导入以下配置，创建PVC。
+
+[source%linenums,yaml]
+----
+include::conf/00-create-pvc.yaml[]
+----
+
+== 创建 Elastic 配置
+
+Elastic 运行时需要一些默认配置，导入以下配置即可。
+
+[source%linenums,yaml]
+----
+include::conf/01-create-config.yaml[]
+----
+
+.其中
+<1> Elastic 配置： 指定运行时大小
+<2> 你需要为管理员用户配置更为复杂的密码
+
+== 创建 Elastic Master 运行配置
+
+使用以下配置创建 Elastic Master 服务。
+
+[source%linenums,yaml]
+----
+include::conf/02-deploy-elastic-master.yaml[]
+----
+
+== 关联Service
+
+将 Elastic Master 服务关联到 Service 下。
+
+[source%linenums,yaml]
+----
+include::conf/03-master-service.yaml[]
+----
+
+== 测试
+
+使用以下命令查看实例部署情况：
+
+[source%linenums,bash]
+----
+kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=elastic
+----
+
+如果一切无误的话可使用以下命令测试 Elastic Search ，输出结果如下所示 （有输出即可）。
+
+.测试命令
+[source%linenums,bash]
+----
+ES_USER=$(kubectl get secrets -n core-middle secret-elastic -o jsonpath='{.data.username}' | base64 -d)
+ES_PASSWD=$(kubectl get secrets -n core-middle secret-elastic  -o jsonpath='{.data.password}' | base64 -d)
+kubectl exec -it -n core-middle pods/elastic-server-0 -- curl http://elastic.core-middle.svc.cluster.local:9200/_cat/nodes -u "$ES_USER:$ES_PASSWD"
+----
+
+.输出结果
+[source%linenums,text]
+----
+192.168.1.97 27 96 0 0.14 0.16 0.14 cdfhilmrstw * elastic-server-0
+----

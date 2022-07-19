@@ -71,7 +71,7 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 ** [x] 测试部署
 * [x] 部署 Redis/验证
 * [x] 部署 PostgresSQL/验证
-* [ ] 部署 ElasticSearch/验证
+* [x] 部署 ElasticSearch/验证
 
 === 核心应用 (core-app)
 

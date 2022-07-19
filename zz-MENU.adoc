@@ -21,9 +21,10 @@
 === 系统中间件应用部署
 
 . link:./02-deploy-core-middleware/README.adoc[核心中间件部署准备]
-. link:./02-deploy-core-middleware/00-deplpy-mariadb/README.adoc[MariaDB 部署]
-. link:./02-deploy-core-middleware/01-deplpy-redis/README.adoc[Redis部署]
-. link:./02-deploy-core-middleware/02-deploy-postgres/README.adoc[Postgres 部署]
+. link:./02-deploy-core-middleware/00-deplpy-mariadb/README.adoc[MariaDB 单实例部署]
+. link:./02-deploy-core-middleware/01-deplpy-redis/README.adoc[Redis 单实例部署]
+. link:./02-deploy-core-middleware/02-deploy-postgres/README.adoc[Postgres 单实例部署]
+. link:./02-deploy-core-middleware/03-deploy-elastic/README.adoc[Elastic 单实例部署]
 
 === 杂项
 
