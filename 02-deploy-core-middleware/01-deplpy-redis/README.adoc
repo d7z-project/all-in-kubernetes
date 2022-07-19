@@ -30,6 +30,9 @@ include::./conf/00-create-pvc.yaml[]
 include::./conf/01-create-secret.yaml[]
 ----
 
+.其中
+<1> 请将其设置为复杂的密码
+
 === Redis  配置
 
 Redis 带有大量参数需要配置，使用 ConfigMap 创建 Redis 相关的配置。
@@ -70,6 +73,6 @@ include::./conf/04-redis-service.yaml[]
 
 [source%linenums,bash]
 ----
-REDIS_PASSWD=$(kubectl get secrets -n core-middle  secret-redis-root -o jsonpath='{.data.password}' | base64 -d)
+REDIS_PASSWD=$(kubectl get secrets -n core-middle  secret-redis -o jsonpath='{.data.password}' | base64 -d)
 kubectl exec -it -n core-middle pods/redis-server-0  -- redis-cli AUTH $REDIS_PASSWD
 ----
