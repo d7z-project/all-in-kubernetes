@@ -1,4 +1,4 @@
-= 文档任务
+= 任务列表 & 贡献者指南
 :experimental:
 :icons: font
 :toc: right
@@ -6,18 +6,37 @@
 :toclevels: 4
 :source-highlighter: rouge
 
-TIP: 所有组件除特殊说明的除外均为单实例部署，系统内所有账户均采用LDAP来管理。
+== 贡献者指南
 
-WARNING: 避免使用 `bitnami` 打包的镜像。
+=== 文档编写指南
 
-== 环境介绍
+. 所有文档需使用 link:https://asciidoc.org/[AsciiDoc] 编写。
+. 对于代码引用需单独保存至文件，并使用 `include::path/to/file[]` 引入。
+. 过长的代码块需要用折叠块折叠。
+. 所有文档均需要有简单的测试说明。
+. 对于引用他人文档需注意版权问题，且需要在文档末尾注明引用来源。
+. 编写的文档需要在 `zz-MENU.adoc` 内存在引用菜单。
+. 文档命名需按照部署流程排序: `00 - zz` 。
+. 如果需要拉取镜像则需要在文档内注明所需的镜像地址，方便读者离线部署。
+. 所有从网络加载的 `kubernetes` 的  `yaml` 配置文件均需在本地留有备份 （仅可修改 namespace）。
+
+=== 注意事项
+
+. 请 *不要使用任何闭源的软件或镜像*。
+. 所有组件除特殊说明的除外均为单实例部署，系统内所有账户尽量采用LDAP来统一管理。
+. 避免使用 `bitnami` 打包的镜像。
+. 对于 Java 相关的应用部署，需避免引入带 link:https://www.cve.org/CVERecord?id=CVE-2021-44228[Log4Shell] 漏洞的镜像。
+
+== 任务列表
+
+=== 环境介绍
 
 * [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍物理机环境]
 * [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍部署机器环境]
 
-== 组件部署
+=== 组件部署
 
-=== 底层组件
+==== 底层组件
 
 * [x] 安装 Kubernetes(google)/验证
 ** [x] 初始化部署环境
@@ -47,7 +66,7 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 ** [x] 导入资源
 ** [x] 测试 CertManager
 
-=== 核心组件 (core-system)
+==== 核心组件 (core-system)
 
 * [x] 部署 OpenLDAP/验证
 ** [x] 导入配置
@@ -63,7 +82,7 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 * [ ] 部署 Velero
 //TODO
 
-=== 核心中间件 (core-middleware)
+==== 核心中间件 (core-middleware)
 
 * [x] 部署 MariaDB/验证
 ** [x] 创建PVC
@@ -73,25 +92,25 @@ WARNING: 避免使用 `bitnami` 打包的镜像。
 * [x] 部署 PostgresSQL/验证
 * [x] 部署 ElasticSearch/验证
 
-=== 核心应用 (core-app)
+==== 核心应用 (core-app)
 
 * [ ] 部署 Nexus3/验证
 * [ ] 部署 Gitlab/验证
 
-=== 扩展应用 (share-app)
+==== 扩展应用 (share-app)
 
 * [ ] 部署 Gitlab-Runner/验证
 * [ ] 部署 Jellyfin/验证
 * [ ] 部署 V2ray/验证
 
-=== 集群监控 (monitor-app)
+==== 集群监控 (monitor-app)
 
 * [ ] 部署 Prometheus/验证
 * [ ] 部署 AlertManager/验证
 * [ ] 部署 Grafana/验证
 * [ ] 部署 NodeExporter/验证
 
-== 自动化部署测试
+=== 自动化部署测试
 
 * [ ] 使用 Gitlab Actions 做自动化测试
 * [ ] 使用 Gitlab Runner 做自动化测试
