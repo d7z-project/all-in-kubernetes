@@ -26,6 +26,9 @@ include::conf/00-create-pvc.yaml[]
 include::conf/01-create-secret.yaml[]
 ----
 
+.其中
+<1> 你需要将其配置成一个更安全的密码
+
 == 创建 MariaDB 服务器
 
 使用以下配置创建 MariaDB 服务器。
