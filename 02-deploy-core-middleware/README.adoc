@@ -8,7 +8,7 @@
 
 == 创建 Namespace
 
-核心系统应用需要独立的 namespace，使用以下 `YAML` 创建即可。
+核心中间件需要独立的 namespace，使用以下 `YAML` 创建即可。
 
 [source%linenums,yaml]
 ----
