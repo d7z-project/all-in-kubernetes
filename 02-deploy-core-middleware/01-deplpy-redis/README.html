@@ -118,20 +118,29 @@
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-redis-root</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-redis</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
-  <span class="na">annotations</span><span class="pi">:</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">redis-password'</span>
+  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">redis-password'</span>  <i class="conum" data-value="1"></i><b>(1)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<div class="title">其中</div>
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>请将其设置为复杂的密码</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
@@ -388,7 +397,7 @@
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">REDIS_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-redis-root</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-redis</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis-data</span>
@@ -461,7 +470,7 @@
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre><span class="nv">REDIS_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle  secret-redis-root <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
+</pre></td><td class="code"><pre><span class="nv">REDIS_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle  secret-redis <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
 kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/redis-server-0  <span class="nt">--</span> redis-cli AUTH <span class="nv">$REDIS_PASSWD</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -698,11 +707,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月18日 15时35分35秒 |
+        最后编辑于 2022年07月19日 21时04分24秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/7720bf3eca3dfa3755af9df0baceed49d184c899//02-deploy-core-middleware/01-deplpy-redis/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/7720bf3eca3dfa3755af9df0baceed49d184c899/"
-            target="_blank">#8158d99</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ed17600b2e409c44343b592c4991d10ba230d6e8//02-deploy-core-middleware/01-deplpy-redis/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ed17600b2e409c44343b592c4991d10ba230d6e8/"
+            target="_blank">#ed17600</a>
 </div>
 </body>
 </html>
