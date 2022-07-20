@@ -137,6 +137,9 @@ body{
 <li>
 <p><a target="dist" href="zz-document/other/EXTRA_NOTE.html">非部署相关扩展内容</a></p>
 </li>
+<li>
+<p><a target="dist" href="zz-document/other/EXTRA_SCRIPT.html">扩展脚本</a></p>
+</li>
 </ul>
 </div>
 </div></body></html>

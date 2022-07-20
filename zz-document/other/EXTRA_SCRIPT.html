@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>Untitled</title>
+<title>扩展脚本</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,13 +435,265 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body class="article">
+<body class="article toc2 toc-right">
 <div id="header">
+<h1>扩展脚本</h1>
+<div id="toc" class="toc2">
+<div id="toctitle">目录</div>
+<ul class="sectlevel1">
+<li><a href="#_快速导入镜像">快速导入镜像</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
-
+<div class="sect1">
+<h2 id="_快速导入镜像">快速导入镜像</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+</pre></td><td class="code"><pre><span class="c">#!/usr/bin/env bash</span>
+<span class="nv">IMAGE_NAME</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nv">REMOTE_ADDRESS</span><span class="o">=</span><span class="nv">$2</span>
+<span class="nv">SAVE_IMG_NAME</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span>
+docker pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> <span class="o">||</span> <span class="nb">exit </span>1
+<span class="nb">rm</span> /tmp/export-image-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>.tar
+docker save <span class="nt">-o</span> /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span>
+scp /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$REMOTE_ADDRESS</span><span class="s2">"</span>:/tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span>
+<span class="c"># Containerd 需要指定命名空间</span>
+ssh <span class="s2">"</span><span class="nv">$REMOTE_ADDRESS</span><span class="s2">"</span> <span class="s2">"ctr -n=k8s.io image import /tmp/</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span>
+</pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
 <div class="custom-content">
     <style>
         .custom-footer {
@@ -456,11 +708,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月20日 13时55分35秒 |
+        最后编辑于 2022年07月20日 15时55分23秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c1648e1684e915c868b14b625492cf97e3e2dc59//zz-document/other/QUICK_SEND_IMAGE.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/c1648e1684e915c868b14b625492cf97e3e2dc59/"
-            target="_blank">#d0bb95c</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/74e2ac6b4a8beb066c952de6ce4a7710dd2a4aca//zz-document/other/EXTRA_SCRIPT.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/74e2ac6b4a8beb066c952de6ce4a7710dd2a4aca/"
+            target="_blank">#74e2ac6</a>
 </div>
 </body>
 </html>

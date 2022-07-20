@@ -586,6 +586,9 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 </li>
 </ul>
 </div>
+<details>
+<summary class="title">点击展开部署命令</summary>
+<div class="content">
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -637,6 +640,31 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 47
 48
 49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
 </pre></td><td class="code"><pre><span class="c"># Kubernetes 版本</span>
 <span class="nv">KUBEADM_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.3"</span>
 <span class="nv">CRICTL_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
@@ -649,6 +677,8 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 <span class="c">#下载目录</span>
 <span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/kubernetes
 <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
+<span class="nv">IMAGE_PATH</span><span class="o">=</span><span class="nv">$DOWNLOAD_PATH</span>/images
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$IMAGE_PATH</span>
 
 <span class="c"># 准备环境</span>
 wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubeadm <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
@@ -659,13 +689,22 @@ wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</sp
 wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf
 <span class="nb">chmod</span> +x <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
 <span class="c"># 下载镜像</span>
+save_image<span class="o">()</span> <span class="o">{</span>
+    docker pull <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+    <span class="c"># shellcheck disable=SC2001</span>
+    docker save <span class="nt">-o</span> <span class="nv">$IMAGE_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+<span class="o">}</span>
+<span class="c"># 导入默认镜像</span>
 <span class="nv">IFS</span><span class="o">=</span><span class="s2">" "</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> LIST <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="si">$(</span><span class="nv">HTTP_PROXY</span><span class="o">=</span>no <span class="nv">HTTPS_PROXY</span><span class="o">=</span>no <span class="nv">$DOWNLOAD_PATH</span>/kubeadm config images list 2&gt;/dev/null | xargs <span class="nb">echo</span><span class="si">)</span><span class="s2">"</span>
 <span class="c"># shellcheck disable=SC2128</span>
 <span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
-    </span>docker pull <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
-    <span class="c"># shellcheck disable=SC2001</span>
-    docker save <span class="nt">-o</span> <span class="nv">$DOWNLOAD_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
+    </span>save_image <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
 <span class="k">done</span>
+
+<span class="c"># 导入自定义镜像</span>
+save_image <span class="s2">"k8s.gcr.io/pause:3.6"</span>
+save_image <span class="s2">"rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"</span>
+save_image <span class="s2">"rancher/mirrored-flannelcni-flannel:v0.18.1"</span>
 
 <span class="c"># 安装</span>
 <span class="nb">tar</span> <span class="nt">-C</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
@@ -681,14 +720,30 @@ wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</sp
 systemctl daemon-reload
 systemctl <span class="nb">enable</span> <span class="nt">--now</span> kubelet
 
-<span class="c"># 导入镜像</span>
-<span class="nv">IFS</span><span class="o">=</span><span class="s2">" "</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> LIST <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="si">$(</span><span class="nv">HTTP_PROXY</span><span class="o">=</span>no <span class="nv">HTTPS_PROXY</span><span class="o">=</span>no /usr/bin/kubeadm config images list 2&gt;/dev/null | xargs <span class="nb">echo</span><span class="si">)</span><span class="s2">"</span>
-<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
-    </span>ctr image import <span class="nv">$DOWNLOAD_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span>
+<span class="c"># 配置 cri</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee /etc/crictl.yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+</span><span class="no">EOF
+
+</span><span class="c"># 导入镜像</span>
+<span class="c"># shellcheck disable=SC2178</span>
+<span class="nv">LIST</span><span class="o">=</span><span class="si">$(</span>
+    <span class="nb">cd</span> <span class="nv">$IMAGE_PATH</span> <span class="o">||</span> <span class="nb">exit</span>
+    <span class="c"># shellcheck disable=SC2035</span>
+    <span class="nb">ls</span> <span class="k">*</span>
+<span class="si">)</span>
+<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do</span>
+    <span class="c"># Containerd 需要指定命名空间</span>
+    ctr <span class="nt">-n</span><span class="o">=</span>k8s.io image import <span class="nv">$IMAGE_PATH</span>/<span class="nv">$IMAGE</span>
 <span class="k">done</span>
+
+<span class="c"># 注意，如果安装失败可能是 pause  镜像问题，导入 3.6 版本镜像即可。</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
+</div>
+</details>
 </div>
 <div class="sect2">
 <h3 id="_配置_containerd_网络代理_可选">配置 <code>containerd</code> 网络代理 (可选)</h3>
@@ -789,7 +844,7 @@ kubectl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/kub
 <span class="c"># 导入 kubeadm</span>
 kubeadm completion bash | <span class="nb">tee</span> /etc/bash_completion.d/kubeadm <span class="o">&gt;</span> /dev/null
 <span class="c"># 导入 cri-tools</span>
-crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/kubeadm <span class="o">&gt;</span> /dev/null
+crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/crictl <span class="o">&gt;</span> /dev/null
 <span class="nb">source</span> /usr/share/bash-completion/bash_completion
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1701,11 +1756,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月20日 13时55分35秒 |
+        最后编辑于 2022年07月20日 15时55分23秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c1648e1684e915c868b14b625492cf97e3e2dc59//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/c1648e1684e915c868b14b625492cf97e3e2dc59/"
-            target="_blank">#d0bb95c</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/74e2ac6b4a8beb066c952de6ce4a7710dd2a4aca//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/74e2ac6b4a8beb066c952de6ce4a7710dd2a4aca/"
+            target="_blank">#74e2ac6</a>
 </div>
 </body>
 </html>
