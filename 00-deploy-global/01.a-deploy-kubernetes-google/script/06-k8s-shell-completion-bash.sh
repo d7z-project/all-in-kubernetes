@@ -6,5 +6,5 @@ kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null
 # 导入 kubeadm
 kubeadm completion bash | tee /etc/bash_completion.d/kubeadm > /dev/null
 # 导入 cri-tools
-crictl completion bash | tee /etc/bash_completion.d/kubeadm > /dev/null
+crictl completion bash | tee /etc/bash_completion.d/crictl > /dev/null
 source /usr/share/bash-completion/bash_completion
