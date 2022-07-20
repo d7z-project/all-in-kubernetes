@@ -619,12 +619,33 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 29
 30
 31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
 </pre></td><td class="code"><pre><span class="c"># Kubernetes 版本</span>
-<span class="nv">KUBEADM_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
+<span class="nv">KUBEADM_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.3"</span>
+<span class="nv">CRICTL_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
 <span class="c"># 系统架构</span>
 <span class="nv">ARCH</span><span class="o">=</span><span class="s2">"amd64"</span>
 <span class="c"># Kubernetes 下载目录</span>
 <span class="nv">KUBERNETES_BIN_URL</span><span class="o">=</span><span class="s2">"https://storage.googleapis.com/kubernetes-release/release"</span>
+<span class="c"># Kubernetes 发布工具版本</span>
+<span class="nv">KUBE_RELEASE_VERSION</span><span class="o">=</span><span class="s2">"v0.14.0"</span>
 <span class="c">#下载目录</span>
 <span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/kubernetes
 <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
@@ -633,9 +654,18 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubeadm <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
 wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubelet <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet
 wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubectl <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubectl
-wget https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$KUBEADM_RELEASE</span>/crictl-<span class="nv">$KUBEADM_RELEASE</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
-wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBEADM_RELEASE</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service
-wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBEADM_RELEASE</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf
+wget https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$CRICTL_RELEASE</span>/crictl-<span class="nv">$CRICTL_RELEASE</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service
+wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf
+<span class="nb">chmod</span> +x <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
+<span class="c"># 下载镜像</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="s2">" "</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> LIST <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="si">$(</span><span class="nv">HTTP_PROXY</span><span class="o">=</span>no <span class="nv">HTTPS_PROXY</span><span class="o">=</span>no <span class="nv">$DOWNLOAD_PATH</span>/kubeadm config images list 2&gt;/dev/null | xargs <span class="nb">echo</span><span class="si">)</span><span class="s2">"</span>
+<span class="c"># shellcheck disable=SC2128</span>
+<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
+    </span>docker pull <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
+    <span class="c"># shellcheck disable=SC2001</span>
+    docker save <span class="nt">-o</span> <span class="nv">$DOWNLOAD_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
+<span class="k">done</span>
 
 <span class="c"># 安装</span>
 <span class="nb">tar</span> <span class="nt">-C</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
@@ -650,6 +680,12 @@ wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</sp
 <span class="c"># 启动</span>
 systemctl daemon-reload
 systemctl <span class="nb">enable</span> <span class="nt">--now</span> kubelet
+
+<span class="c"># 导入镜像</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="s2">" "</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> LIST <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="si">$(</span><span class="nv">HTTP_PROXY</span><span class="o">=</span>no <span class="nv">HTTPS_PROXY</span><span class="o">=</span>no /usr/bin/kubeadm config images list 2&gt;/dev/null | xargs <span class="nb">echo</span><span class="si">)</span><span class="s2">"</span>
+<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
+    </span>ctr image import <span class="nv">$DOWNLOAD_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span>
+<span class="k">done</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1667,8 +1703,8 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月20日 13时55分35秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/d0bb95c1dace9776d5f290348d8925274b7612a0//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/d0bb95c1dace9776d5f290348d8925274b7612a0/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c1648e1684e915c868b14b625492cf97e3e2dc59//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/c1648e1684e915c868b14b625492cf97e3e2dc59/"
             target="_blank">#d0bb95c</a>
 </div>
 </body>
