@@ -511,6 +511,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 31
 32
 33
+34
+35
+36
+37
+38
+39
+40
+41
+42
 </pre></td><td class="code"><pre><span class="c"># 此脚本参考至 https://github.com/kubernetes/kubernetes/issues/106464#issuecomment-1142563656</span>
 <span class="c"># 配置运行时版本</span>
 <span class="c">## https://github.com/containerd/containerd</span>
@@ -522,26 +531,35 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="c"># 配置系统架构</span>
 <span class="nv">ARCH</span><span class="o">=</span>amd64
 
-apt-get autoremove <span class="nt">--purge</span> <span class="nt">-y</span> containerd containerd.io
-<span class="c"># 部署 containerd</span>
-wget https://github.com/containerd/containerd/releases/download/v<span class="nv">$CONTAINERD_VERSION</span>/containerd-<span class="nv">$CONTAINERD_VERSION</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> /tmp/containerd.tgz
-<span class="nb">tar </span>Cxzvf /usr/local /tmp/containerd.tgz
+<span class="c"># 下载地址</span>
+<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/kubernetes
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
+
+<span class="c"># 准备软件</span>
+
+wget https://github.com/containerd/containerd/releases/download/v<span class="nv">$CONTAINERD_VERSION</span>/containerd-<span class="nv">$CONTAINERD_VERSION</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/containerd.tgz
+wget https://github.com/opencontainers/runc/releases/download/v<span class="nv">$RUNC_VERSION</span>/runc.<span class="nv">$ARCH</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/runc
+wget https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$CNI_VERSION</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$CNI_VERSION</span>.tgz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/cni-plugin.tgz
+wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/containerd.service
+
+<span class="c"># 开始安装</span>
+
+<span class="c"># 部署 Containerd</span>
+<span class="nb">tar </span>Cxzvf /usr/local <span class="nv">$DOWNLOAD_PATH</span>/containerd.tgz
 <span class="nb">mkdir</span> /etc/containerd/
 containerd config default <span class="o">&gt;</span>/etc/containerd/config.toml
 <span class="c"># 备注：在 Debian Bullseye 下已经默认启用 cgroup v2</span>
 <span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s|SystemdCgroup = false|SystemdCgroup = true|'</span> /etc/containerd/config.toml
 
 <span class="c"># 部署 runc</span>
-wget https://github.com/opencontainers/runc/releases/download/v<span class="nv">$RUNC_VERSION</span>/runc.<span class="nv">$ARCH</span> <span class="nt">-c</span> <span class="nt">-O</span> /tmp/runc
-<span class="nb">install</span> <span class="nt">-m</span> 755 /tmp/runc /usr/local/sbin/runc
+<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/runc /usr/local/sbin/runc
 
 <span class="c"># 部署 CNI</span>
-wget https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$CNI_VERSION</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$CNI_VERSION</span>.tgz <span class="nt">-c</span> <span class="nt">-O</span> /tmp/cni-plugin.tgz
 <span class="nb">mkdir</span> <span class="nt">-p</span> /opt/cni/bin
-<span class="nb">tar </span>Cxzvf /opt/cni/bin /tmp/cni-plugin.tgz
+<span class="nb">tar </span>Cxzvf /opt/cni/bin <span class="nv">$DOWNLOAD_PATH</span>/cni-plugin.tgz
 
 <span class="c"># 配置 Systemd 服务</span>
-wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service <span class="nt">--output-document</span><span class="o">=</span>/etc/systemd/system/containerd.service
+<span class="nb">cp</span> <span class="nv">$DOWNLOAD_PATH</span>/containerd.service /etc/systemd/system/containerd.service
 systemctl daemon-reload
 systemctl <span class="nb">enable</span> <span class="nt">--now</span> containerd
 </pre></td></tr></tbody></table></code></pre>
@@ -568,18 +586,6 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 </li>
 </ul>
 </div>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-如果是中国大陆用户，可能会出现某些网址无法访问的问题，请自备代理工具或者使用镜像地址。注意：对于 <strong>导入证书等操作一定要再三确认</strong>，谨防<a target="_blank" href="https://zh.m.wikipedia.org/zh/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB">中间人攻击</a>。
-</td>
-</tr>
-</table>
-</div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -597,21 +603,53 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 13
 14
 15
-</pre></td><td class="code"><pre>apt-get <span class="nb">install</span> <span class="nt">-y</span> apt-transport-https ca-certificates curl
-<span class="c"># 导入公钥对</span>
-curl <span class="nt">-fsSLo</span> /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-<span class="c"># 配置 APT</span>
-<span class="nb">echo</span> <span class="s2">"deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://mirrors.ustc.edu.cn/kubernetes/apt/ kubernetes-xenial main"</span> | <span class="nb">tee</span> /etc/apt/sources.list.d/kubernetes.list
-apt-get update
-<span class="c"># 安装 kubeadm</span>
-apt-get <span class="nb">install</span> <span class="nt">-y</span> kubelet kubeadm kubectl cri-tools
-<span class="c"># 锁定 kubernetes 版本</span>
-apt-mark hold kubelet kubeadm kubectl cri-tools
-<span class="c"># 配置 cri-tools</span>
-<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> | tee /etc/crictl.yaml
-runtime-endpoint: unix:///var/run/containerd/containerd.sock
-image-endpoint: unix:///var/run/containerd/containerd.sock
-EOF</span>
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></td><td class="code"><pre><span class="c"># Kubernetes 版本</span>
+<span class="nv">KUBEADM_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
+<span class="c"># 系统架构</span>
+<span class="nv">ARCH</span><span class="o">=</span><span class="s2">"amd64"</span>
+<span class="c"># Kubernetes 下载目录</span>
+<span class="nv">KUBERNETES_BIN_URL</span><span class="o">=</span><span class="s2">"https://storage.googleapis.com/kubernetes-release/release"</span>
+<span class="c">#下载目录</span>
+<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/kubernetes
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
+
+<span class="c"># 准备环境</span>
+wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubeadm <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
+wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubelet <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet
+wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubectl <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubectl
+wget https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$KUBEADM_RELEASE</span>/crictl-<span class="nv">$KUBEADM_RELEASE</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBEADM_RELEASE</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service
+wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBEADM_RELEASE</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf
+
+<span class="c"># 安装</span>
+<span class="nb">tar</span> <span class="nt">-C</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/crictl /usr/bin/crictl
+<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/kubeadm /usr/bin/kubeadm
+<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/kubelet /usr/bin/kubelet
+<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/kubectl /usr/bin/kubectl
+<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /etc/systemd/system/kubelet.service.d
+<span class="nb">install</span> <span class="nt">-m</span> 644 <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service /etc/systemd/system/kubelet.service
+<span class="nb">install</span> <span class="nt">-m</span> 644 <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+
+<span class="c"># 启动</span>
+systemctl daemon-reload
+systemctl <span class="nb">enable</span> <span class="nt">--now</span> kubelet
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1627,11 +1665,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月15日 00时44分35秒 |
+        最后编辑于 2022年07月20日 13时55分35秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/4e1dc6ea90650fe90bbb25b1c723f7463bb082b6//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4e1dc6ea90650fe90bbb25b1c723f7463bb082b6/"
-            target="_blank">#84f7d5d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/d0bb95c1dace9776d5f290348d8925274b7612a0//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/d0bb95c1dace9776d5f290348d8925274b7612a0/"
+            target="_blank">#d0bb95c</a>
 </div>
 </body>
 </html>
