@@ -31,8 +31,6 @@ include::./script/00-soft-install-containerd.sh[lines=2..-1]
 * `kubelet` ：在集群中的每个节点上用来启动 Pod 和容器等。
 * `kubectl` ：用来与集群通信的命令行工具。
 
-TIP: 如果是中国大陆用户，可能会出现某些网址无法访问的问题，请自备代理工具或者使用镜像地址。注意：对于 *导入证书等操作一定要再三确认*，谨防link:https://zh.m.wikipedia.org/zh/%E4%B8%AD%E9%97%B4%E4%BA%BA%E6%94%BB%E5%87%BB[中间人攻击]。
-
 [source%linenums,bash]
 ----
 include::./script/01-soft-install-kubeadm.sh[lines=2..-1]

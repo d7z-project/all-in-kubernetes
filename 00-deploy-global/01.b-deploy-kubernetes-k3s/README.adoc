@@ -5,3 +5,11 @@
 :toc-title: 目录
 :toclevels: 4
 :source-highlighter: rouge
+
+[source%linenums,bash]
+----
+cat ./k3s.sh | INSTALL_K3S_SKIP_DOWNLOAD=true  sh -s - server --datastore-endpoint=etcd --token c83f0510-a5b3-11ec-b909-0242ac120002 --cluster-cidr "10.254.0.0/16" --service-cidr "10.253.0.0/16" --flannel-backend wireguard --flannel-iface ens192 --node-ip 172.18.40.176  --cluster-init --disable-helm-controller --disable servicelb --disable traefik --node-name node-master
+
+
+cat ./k3s.sh | INSTALL_K3S_SKIP_DOWNLOAD=true sh -s - agent --token c83f0510-a5b3-11ec-b909-0242ac120002 --server https://172.18.40.176:6443 --node-name node-worker-01
+----

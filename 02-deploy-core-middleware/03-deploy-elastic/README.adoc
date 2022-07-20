@@ -32,9 +32,9 @@ include::conf/01-create-config.yaml[]
 <1> Elastic 配置： 指定运行时大小
 <2> 你需要为管理员用户配置更为复杂的密码
 
-== 创建 Elastic Master 运行配置
+== 创建 Elastic Master 启动配置
 
-使用以下配置创建 Elastic Master 服务。
+使用以下配置创建 Elastic Master 启动配置。
 
 [source%linenums,yaml]
 ----

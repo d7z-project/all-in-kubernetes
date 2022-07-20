@@ -34,4 +34,4 @@
 
 * link:zz-document/other/HARDWARE_INFO.adoc[测试部署环境概览]
 * link:zz-TODO.adoc[待完成列表与贡献者指南]
-* link:zz-document/other/EXTRA-NOTE.adoc[非部署相关扩展内容]
+* link:zz-document/other/EXTRA_NOTE.adoc[非部署相关扩展内容]
