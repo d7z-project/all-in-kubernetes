@@ -472,6 +472,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_贡献者指南">贡献者指南</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>如果你想要为此文档做出贡献，可参考以下说明。</p>
+</div>
 <div class="sect2">
 <h3 id="_文档编写指南">文档编写指南</h3>
 <div class="olist arabic">
@@ -551,105 +554,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="checklist">
 <li>
 <p><i class="fa fa-check-square-o"></i> 安装 Kubernetes(google)/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 初始化部署环境</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 安装 <code>containerd</code></p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 安装 <code>kubeadm</code></p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署控制节点</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 配置CNI 插件</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署工作节点</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-square-o"></i> 安装 Kubernetes(k3s)/验证</p>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 配置 共享存储(rook-nfs)/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 共享 <code>/share</code></p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 创建 NFS Server</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 测试</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 配置 共享存储(nfs-ganesha)/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 共享 <code>/share</code></p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 创建 NFS Server</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 测试</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 LoadBalancer实现(metallb)/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署LoadBalancer</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 分配IP池</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 验证LoadBalancer</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 Ingress(Nginx)/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署 Ingress(Nginx)</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 测试 Ingress(Nginx)</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 Cert-Manager/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 导入资源</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 测试 CertManager</p>
-</li>
-</ul>
-</div>
 </li>
 </ul>
 </div>
@@ -660,44 +582,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="checklist">
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 OpenLDAP/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 导入配置</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 创建PVC</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 安装 OpenLDAP</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 添加 MemberOf 支持</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 验证</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 ldap-account-manager/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署 APP</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署 Service</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 部署 Ingress</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 验证</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-square-o"></i> 部署 Velero</p>
@@ -711,19 +598,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="checklist">
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 MariaDB/验证</p>
-<div class="ulist checklist">
-<ul class="checklist">
-<li>
-<p><i class="fa fa-check-square-o"></i> 创建PVC</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 创建服务及绑定</p>
-</li>
-<li>
-<p><i class="fa fa-check-square-o"></i> 测试部署</p>
-</li>
-</ul>
-</div>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 Redis/验证</p>
@@ -742,7 +616,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
-<p><i class="fa fa-square-o"></i> 部署 Nexus3/验证</p>
+<p><i class="fa fa-check-square-o"></i> 部署 Nexus3/验证</p>
 </li>
 <li>
 <p><i class="fa fa-square-o"></i> 部署 Gitlab/验证</p>
@@ -816,11 +690,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月19日 22时08分12秒 |
+        最后编辑于 2022年07月22日 23时20分27秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee//zz-TODO.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee/"
-            target="_blank">#b8fc56b</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23//zz-TODO.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23/"
+            target="_blank">#4a7243c</a>
 </div>
 </body>
 </html>

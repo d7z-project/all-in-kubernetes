@@ -445,13 +445,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_说明">说明</a></li>
 <li><a href="#_创建持久卷">创建持久卷</a></li>
+<li><a href="#_创建_nexus3_nginx_反向代理配置">创建 Nexus3 Nginx 反向代理配置</a></li>
 <li><a href="#_创建_nexus3_启动配置">创建 Nexus3 启动配置</a></li>
-<li><a href="#_创建_nexus3_service">创建 Nexus3 Service</a></li>
+<li><a href="#_暴露_nexus3_service">暴露 Nexus3 Service</a></li>
 <li><a href="#_创建_ingress_映射">创建 Ingress 映射</a></li>
 <li><a href="#_管理_nexus3">管理 Nexus3</a>
 <ul class="sectlevel2">
 <li><a href="#_获取管理员密码">获取管理员密码</a></li>
 <li><a href="#_绑定_ldap">绑定 LDAP</a></li>
+<li><a href="#_绑定角色权限">绑定角色权限</a>
+<ul class="sectlevel3">
+<li><a href="#_绑定管理员">绑定管理员</a></li>
+<li><a href="#_绑定docker用户组">绑定Docker用户组</a></li>
+</ul>
+</li>
+<li><a href="#_创建_docker_仓库">创建 Docker 仓库</a></li>
 </ul>
 </li>
 </ul>
@@ -462,7 +470,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Nexus3 项目依赖镜像 <code>sonatype/nexus3:3.40.1</code>。</p>
+<p>Nexus3 项目依赖镜像 <code>sonatype/nexus3:3.40.1</code> 和 <code>nginx:1.21.1</code>。</p>
 </div>
 </div>
 </div>
@@ -508,119 +516,75 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_nexus3_启动配置">创建 Nexus3 启动配置</h2>
+<h2 id="_创建_nexus3_nginx_反向代理配置">创建 Nexus3 Nginx 反向代理配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>使用以下配置创建 Nexus3 启动配置。</p>
+<p>由于要配置复杂的分流规则，需要 Nginx ，使用以下配置导入 Nginx 配置。</p>
 </div>
+<details>
+<summary class="title">点击展开配置</summary>
+<div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
-  2
-  3
-  4
-  5
-  6
-  7
-  8
-  9
- 10
- 11
- 12
- 13
- 14
- 15
- 16
- 17
- 18
- 19
- 20
- 21
- 22
- 23
- 24
- 25
- 26
- 27
- 28
- 29
- 30
- 31
- 32
- 33
- 34
- 35
- 36
- 37
- 38
- 39
- 40
- 41
- 42
- 43
- 44
- 45
- 46
- 47
- 48
- 49
- 50
- 51
- 52
- 53
- 54
- 55
- 56
- 57
- 58
- 59
- 60
- 61
- 62
- 63
- 64
- 65
- 66
- 67
- 68
- 69
- 70
- 71
- 72
- 73
- 74
- 75
- 76
- 77
- 78
- 79
- 80
- 81
- 82
- 83
- 84
- 85
- 86
- 87
- 88
- 89
- 90
- 91
- 92
- 93
- 94
- 95
- 96
- 97
- 98
- 99
-100
-101
-102
-103
-104
-105
-106
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -637,7 +601,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="s">listen  [::]:80;</span>
     <span class="s">location / {</span>
     <span class="s">proxy_http_version 1.1;</span>
-    <span class="s">proxy_pass http://127.0.0.1:8081;</span>
+    <span class="s">proxy_pass http://127.0.0.1:8081; </span><i class="conum" data-value="1"></i><b>(1)</b>
     <span class="s">proxy_set_header Host $host;</span>
     <span class="s">proxy_buffering off;</span>
     <span class="s">client_max_body_size 0;</span>
@@ -650,10 +614,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="s">}</span>
   <span class="na">docker.conf</span><span class="pi">:</span> <span class="pi">|</span>
     <span class="s">upstream nexus_docker_hosted {</span>
-    <span class="s">server 127.0.0.1:10000;</span>
+    <span class="s">server 127.0.0.1:10000; </span><i class="conum" data-value="2"></i><b>(2)</b>
     <span class="s">}</span>
     <span class="s">upstream nexus_docker_group {</span>
-    <span class="s">server 127.0.0.1:10001;</span>
+    <span class="s">server 127.0.0.1:10001; </span><i class="conum" data-value="3"></i><b>(3)</b>
     <span class="s">}</span>
     <span class="s">server{</span>
     <span class="s">listen 81;</span>
@@ -680,8 +644,85 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="s">proxy_set_header X-Forwarded-Proto http;</span>
     <span class="s">}</span>
     <span class="s">}</span>
-<span class="s">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<div class="title">其中</div>
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>此处配置的是 nexus3 web面板的地址</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>此处配置的是 Nexus3 Docker Host 的地址</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>此处配置的是 Nexus3 Docker Group 的地址</td>
+</tr>
+</table>
+</div>
+</div>
+</details>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建_nexus3_启动配置">创建 Nexus3 启动配置</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>使用以下配置创建 Nexus3 启动配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-server</span>
@@ -733,7 +774,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_nexus3_service">创建 Nexus3 Service</h2>
+<h2 id="_暴露_nexus3_service">暴露 Nexus3 Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置创建 Nexus3 Service。</p>
@@ -815,6 +856,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 24
 25
 26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -824,14 +877,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="na">type</span><span class="pi">:</span> <span class="s">nexus</span>
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span> <i class="conum" data-value="1"></i><b>(1)</b>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">nexus.pcloud.com</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">pcloud-com-tls</span>
+        <span class="pi">-</span> <span class="s">nexus.d7z.net</span>
+        <span class="pi">-</span> <span class="s">registry.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">d7z-net-tls</span>
   <span class="na">rules</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nexus.pcloud.com</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nexus.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
@@ -841,6 +896,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                 <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-web</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">registry.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-docker</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -849,6 +914,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect1">
 <h2 id="_管理_nexus3">管理 Nexus3</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>安装完成后，你需要对 Nexus3 进行一些配置。</p>
+</div>
 <div class="sect2">
 <h3 id="_获取管理员密码">获取管理员密码</h3>
 <div class="paragraph">
@@ -857,14 +925,143 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-app pods/nexus3-server-0 <span class="nt">--</span> <span class="nb">cat</span> /nexus-data/admin.password
+</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-app pods/nexus3-server-0  <span class="nt">--container</span> nexus3-server  <span class="nt">--</span> <span class="nb">cat</span> /nexus-data/admin.password
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>得到密码后，访问 <code><a target="_blank" href="https://nexus.d7z.net" class="bare">https://nexus.d7z.net</a></code> 来管理。</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+请将 nexus 的管理员密码设置的足够复杂，以防止被暴力破解！
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_绑定_ldap">绑定 LDAP</h3>
-
+<div class="paragraph">
+<p>登陆 Nexus 后，访问 <code><a target="_blank" href="https://nexus.d7z.net/#admin/security/ldap" class="bare">https://nexus.d7z.net/#admin/security/ldap</a></code> ，添加一个 LDAP 服务。具体配置参加如下图片即可。</p>
+</div>
+<div class="paragraph">
+<p>在添加绑定前，你需要在 LDAP 下添加 <code>cn=docker,ou=groups,dc=d7z,dc=net</code> 的用户组，类型为 <code>groupOfNames</code> 。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/01.a-bind-ldap.png" alt="01.a bind ldap">
+</div>
+<div class="title">Figure 1. 配置LDAP连接</div>
+</div>
+<div class="paragraph">
+<p>其中，密码为 LDAP 用户 <code>service-account</code> 的密码。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/01.b-bind-ldap.png" alt="01.b bind ldap">
+</div>
+<div class="title">Figure 2. 配置LDAP用户</div>
+</div>
+<div class="paragraph">
+<p>UserFilter 的内容如下所示</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="ldif"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>(|(memberOf=cn=admin,ou=groups,dc=d7z,dc=net)(memberOf=cn=docker,ou=groups,dc=d7z,dc=net))
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>配置完成后，点击 <code>Verify user mapping</code> , 检查是否找到用户和角色。一切无误后保存即可。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_绑定角色权限">绑定角色权限</h3>
+<div class="paragraph">
+<p>前往 <code><a target="_blank" href="https://nexus.d7z.net/#admin/security/roles" class="bare">https://nexus.d7z.net/#admin/security/roles</a></code> 页面，对LDAP相关的角色进行管理。</p>
+</div>
+<div class="sect3">
+<h4 id="_绑定管理员">绑定管理员</h4>
+<div class="paragraph">
+<p>绑定管理员的参考如下，注意配置权限：</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/02.a-bind-admin-roles.png" alt="02.a bind admin roles">
+</div>
+<div class="title">Figure 3. 绑定管理员角色</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_绑定docker用户组">绑定Docker用户组</h4>
+<div class="paragraph">
+<p>绑定Docker管理员的参考如下，注意配置权限：</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/02.b-bind-docker-roles.png" alt="02.b bind docker roles">
+</div>
+<div class="title">Figure 4. 绑定Docker角色</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_创建_docker_仓库">创建 Docker 仓库</h3>
+<div class="paragraph">
+<p>前往 <code><a target="_blank" href="https://nexus.d7z.net/#admin/repository/repositories" class="bare">https://nexus.d7z.net/#admin/repository/repositories</a></code>，删除默认创建的所有仓库，然后点击新建，选择 <code>docker (hosted)</code>, 创建本地私有仓库。具体配置如下：</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/03.a-create-docker-hosted.png" alt="03.a create docker hosted">
+</div>
+<div class="title">Figure 5. 创建 Docker 本地仓库</div>
+</div>
+<div class="paragraph">
+<p>在创建时，需与之前 <code>Nginx</code> 配置的端口一致。创建完成后，继续创建镜像代理。选择 <code>docker (proxy)</code> ，依照如下配置填写。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/03.b-create-docker-proxy.png" alt="03.b create docker proxy">
+</div>
+<div class="title">Figure 6. 创建 Docker仓库代理</div>
+</div>
+<div class="paragraph">
+<p>代理创建完成后，需要将两者进行归组。选择 <code>docker (group)</code> ,按如下配置填写。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/03.c-create-docker-group.png" alt="03.c create docker group">
+</div>
+<div class="title">Figure 7. 归组</div>
+</div>
+<div class="paragraph">
+<p>一切完成后，使用以下命令测试配置是否成功。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre></td><td class="code"><pre><span class="c"># 登陆 docker</span>
+docker login registry.d7z.net
+docker pull nginx:1.21.1
+docker tag nginx:1.21.1 registry.d7z.net/public/nginx:1.21.1
+docker push registry.d7z.net/public/nginx:1.21.1
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>如果推送一切无误，则表明安装成功。</p>
+</div>
 </div>
 </div>
 </div>
@@ -1098,11 +1295,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月22日 17时52分12秒 |
+        最后编辑于 2022年07月22日 23时20分27秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee/"
-            target="_blank">#36440f7</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23/"
+            target="_blank">#4a7243c</a>
 </div>
 </body>
 </html>

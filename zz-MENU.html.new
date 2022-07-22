@@ -128,6 +128,9 @@ body{
 <li>
 <p><a target="dist" href="./03-deploy-core-app/README.html">核心应用部署准备</a></p>
 </li>
+<li>
+<p><a target="dist" href="./03-deploy-core-app/01-deploy-nexus3/README.html">部署 Nexus3</a></p>
+</li>
 </ol>
 </div>
 </div>
