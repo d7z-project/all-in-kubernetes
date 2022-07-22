@@ -7,14 +7,16 @@ metadata:
     type: nexus
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
 spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - nexus.pcloud.com
-      secretName: pcloud-com-tls
+        - nexus.d7z.net
+        - registry.d7z.net
+      secretName: d7z-net-tls
   rules:
-    - host: nexus.pcloud.com
+    - host: nexus.d7z.net
       http:
         paths:
           - path: /
@@ -24,3 +26,13 @@ spec:
                 name: nexus3
                 port:
                   name: nexus3-web
+    - host: registry.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nexus3
+                port:
+                  name: nexus3-docker
