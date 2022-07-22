@@ -8,6 +8,8 @@
 
 == 贡献者指南
 
+如果你想要为此文档做出贡献，可参考以下说明。
+
 === 文档编写指南
 
 . 所有文档需使用 link:https://asciidoc.org/[AsciiDoc] 编写。
@@ -39,62 +41,31 @@
 ==== 底层组件
 
 * [x] 安装 Kubernetes(google)/验证
-** [x] 初始化部署环境
-** [x] 安装 `containerd`
-** [x] 安装 `kubeadm`
-** [x] 部署控制节点
-** [x] 配置CNI 插件
-** [x] 部署工作节点
 * [ ] 安装 Kubernetes(k3s)/验证
 //TODO
 * [x] 配置 共享存储(rook-nfs)/验证
-** [x] 共享 `/share`
-** [x] 创建 NFS Server
-** [x] 测试
 * [x] 配置 共享存储(nfs-ganesha)/验证
-** [x] 共享 `/share`
-** [x] 创建 NFS Server
-** [x] 测试
 * [x] 部署 LoadBalancer实现(metallb)/验证
-** [x] 部署LoadBalancer
-** [x] 分配IP池
-** [x] 验证LoadBalancer
 * [x] 部署 Ingress(Nginx)/验证
-** [x] 部署 Ingress(Nginx)
-** [x] 测试 Ingress(Nginx)
 * [x] 部署 Cert-Manager/验证
-** [x] 导入资源
-** [x] 测试 CertManager
 
 ==== 核心组件 (core-system)
 
 * [x] 部署 OpenLDAP/验证
-** [x] 导入配置
-** [x] 创建PVC
-** [x] 安装 OpenLDAP
-** [x] 添加 MemberOf 支持
-** [x] 验证
 * [x] 部署 ldap-account-manager/验证
-** [x] 部署 APP
-** [x] 部署 Service
-** [x] 部署 Ingress
-** [x] 验证
 * [ ] 部署 Velero
 //TODO
 
 ==== 核心中间件 (core-middleware)
 
 * [x] 部署 MariaDB/验证
-** [x] 创建PVC
-** [x] 创建服务及绑定
-** [x] 测试部署
 * [x] 部署 Redis/验证
 * [x] 部署 PostgresSQL/验证
 * [x] 部署 ElasticSearch/验证
 
 ==== 核心应用 (core-app)
 
-* [ ] 部署 Nexus3/验证
+* [x] 部署 Nexus3/验证
 * [ ] 部署 Gitlab/验证
 
 ==== 扩展应用 (share-app)

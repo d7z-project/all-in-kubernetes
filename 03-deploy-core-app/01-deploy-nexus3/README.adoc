@@ -10,7 +10,7 @@
 
 == 说明
 
-Nexus3 项目依赖镜像 `sonatype/nexus3:3.40.1`。
+Nexus3 项目依赖镜像 `sonatype/nexus3:3.40.1` 和 `nginx:1.21.1`。
 
 == 创建持久卷
 
@@ -81,7 +81,7 @@ include::conf/04-create-nexus-ingress.yaml[]
 kubectl exec -it -n core-app pods/nexus3-server-0  --container nexus3-server  -- cat /nexus-data/admin.password
 ----
 
-访问 `https://nexus.d7z.net` 来管理。
+得到密码后，访问 `https://nexus.d7z.net` 来管理。
 
 WARNING: 请将 nexus 的管理员密码设置的足够复杂，以防止被暴力破解！
 
