@@ -10,6 +10,8 @@
 
 == 快速导入镜像
 
+对于离线安装环境可使用此脚本从本机快速复制脚本至部署机器，支持多镜像多机器同时导入，需要本机装有 `docker` 、`openssh-client` 和 `scp` 软件包。此脚本只支持 `Containerd` 。
+
 [source%linenums,bash]
 ----
 include::./script/send-image.sh[]

@@ -6,6 +6,10 @@
 :toclevels: 4
 :source-highlighter: rouge
 
+== 准备
+
+此文档依赖镜像 `osixia/openldap:1.5.0`。
+
 == 导入配置
 
 OpenLDAP 需要一些初始化配置才能工作。

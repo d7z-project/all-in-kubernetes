@@ -60,7 +60,7 @@ include::./script/02.b-conf-containerd-clear-http-proxy.sh[lines=2..-1]
 
 === 预下载运行时镜像 (可选)
 
-为防止因网络问题导致镜像下载失败致使 `kubernetes` 部署失败，可将所有 `kubernetes` 所用到的镜像预下载到本地。
+为防止因网络问题导致镜像下载失败致使 `kubernetes` 部署失败，可将所有 `kubernetes` 所用到的镜像预下载。
 
 [source%linenums,bash]
 ----

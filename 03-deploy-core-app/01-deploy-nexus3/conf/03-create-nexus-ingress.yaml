@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nexus3
+  namespace: core-app
+  labels:
+    type: nexus
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - nexus.pcloud.com
+      secretName: pcloud-com-tls
+  rules:
+    - host: nexus.pcloud.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nexus3
+                port:
+                  name: nexus3-web

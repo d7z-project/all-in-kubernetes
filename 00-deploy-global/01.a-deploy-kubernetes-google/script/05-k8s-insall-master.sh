@@ -5,7 +5,7 @@ unset https_proxy
 kubeadm init \
     --upload-certs \
     --pod-network-cidr 10.254.0.0/16 \
-    --node-name node-master | tee /tmp/kubectl-installer.log
+    --node-name node-master  --kubernetes-version=v1.24.3 | tee /tmp/kubectl-installer.log
 echo "export KUBECONFIG=/etc/kubernetes/admin.conf" >> ~/.bashrc
 source ~/.bashrc
 sleep 5

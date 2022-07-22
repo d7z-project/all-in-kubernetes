@@ -1,0 +1,62 @@
+= 部署 Nexus3
+:experimental:
+:icons: font
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+Nexus3 项目依赖镜像 `sonatype/nexus3:3.40.1`。
+
+== 创建持久卷
+
+导入以下配置，创建持久卷;由于 Nexus 要存储 Docker 镜像和 Maven 编译结果以及 RPM/DEB 镜像包，可适当调大容量。
+
+[source%linenums,yaml]
+----
+include::conf/00-create-pvc.yaml[]
+----
+
+== 创建 Nexus3 启动配置
+
+使用以下配置创建 Nexus3 启动配置。
+
+[source%linenums,yaml]
+----
+include::conf/01-create-nexus-app.yaml[]
+----
+
+== 创建 Nexus3 Service
+
+使用以下配置创建 Nexus3 Service。
+
+[source%linenums,yaml]
+----
+include::conf/02-create-nexus-service.yaml[]
+----
+
+== 创建 Ingress 映射
+
+创建 Service 完成后，将其映射到 Ingress 上。
+
+[source%linenums,yaml]
+----
+include::conf/03-create-nexus-ingress.yaml[]
+----
+
+== 管理 Nexus3
+
+=== 获取管理员密码
+
+`Nexus3` 密码在程序第一次启动时自动生成 ，可使用以下命令获取密码。
+
+[source%linenums,bash]
+----
+kubectl exec -it -n core-app pods/nexus3-server-0 -- cat /nexus-data/admin.password
+----
+
+=== 绑定 LDAP
