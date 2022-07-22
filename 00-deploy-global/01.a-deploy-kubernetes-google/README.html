@@ -797,7 +797,7 @@ systemctl restart containerd.service
 <div class="sect2">
 <h3 id="_预下载运行时镜像_可选">预下载运行时镜像 (可选)</h3>
 <div class="paragraph">
-<p>为防止因网络问题导致镜像下载失败致使 <code>kubernetes</code> 部署失败，可将所有 <code>kubernetes</code> 所用到的镜像预下载到本地。</p>
+<p>为防止因网络问题导致镜像下载失败致使 <code>kubernetes</code> 部署失败，可将所有 <code>kubernetes</code> 所用到的镜像预下载。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -916,7 +916,7 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 kubeadm init <span class="se">\</span>
     <span class="nt">--upload-certs</span> <span class="se">\</span>
     <span class="nt">--pod-network-cidr</span> 10.254.0.0/16 <span class="se">\</span>
-    <span class="nt">--node-name</span> node-master | <span class="nb">tee</span> /tmp/kubectl-installer.log
+    <span class="nt">--node-name</span> node-master  <span class="nt">--kubernetes-version</span><span class="o">=</span>v1.24.3 | <span class="nb">tee</span> /tmp/kubectl-installer.log
 <span class="nb">echo</span> <span class="s2">"export KUBECONFIG=/etc/kubernetes/admin.conf"</span> <span class="o">&gt;&gt;</span> ~/.bashrc
 <span class="nb">source</span> ~/.bashrc
 <span class="nb">sleep </span>5
@@ -1756,11 +1756,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月20日 15时55分23秒 |
+        最后编辑于 2022年07月22日 17时52分12秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/74e2ac6b4a8beb066c952de6ce4a7710dd2a4aca//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/74e2ac6b4a8beb066c952de6ce4a7710dd2a4aca/"
-            target="_blank">#74e2ac6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee//00-deploy-global/01.a-deploy-kubernetes-google/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee/"
+            target="_blank">#36440f7</a>
 </div>
 </body>
 </html>

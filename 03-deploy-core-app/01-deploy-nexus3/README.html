@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>扩展脚本</title>
+<title>部署 Nexus3</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,24 +439,357 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>扩展脚本</h1>
+<h1>部署 Nexus3</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_快速导入镜像">快速导入镜像</a></li>
+<li><a href="#_说明">说明</a></li>
+<li><a href="#_创建持久卷">创建持久卷</a></li>
+<li><a href="#_创建_nexus3_启动配置">创建 Nexus3 启动配置</a></li>
+<li><a href="#_创建_nexus3_service">创建 Nexus3 Service</a></li>
+<li><a href="#_创建_ingress_映射">创建 Ingress 映射</a></li>
+<li><a href="#_管理_nexus3">管理 Nexus3</a>
+<ul class="sectlevel2">
+<li><a href="#_获取管理员密码">获取管理员密码</a></li>
+<li><a href="#_绑定_ldap">绑定 LDAP</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_快速导入镜像">快速导入镜像</h2>
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>对于离线安装环境可使用此脚本从本机快速复制脚本至部署机器，支持多镜像多机器同时导入，需要本机装有 <code>docker</code> 、<code>openssh-client</code> 和 <code>scp</code> 软件包。此脚本只支持 <code>Containerd</code> 。</p>
+<p>Nexus3 项目依赖镜像 <code>sonatype/nexus3:3.40.1</code>。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建持久卷">创建持久卷</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>导入以下配置，创建持久卷;由于 Nexus 要存储 Docker 镜像和 Maven 编译结果以及 RPM/DEB 镜像包，可适当调大容量。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-nexus3-data</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">50Gi</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建_nexus3_启动配置">创建 Nexus3 启动配置</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>使用以下配置创建 Nexus3 启动配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-nginx-conf</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">default.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">server_tokens off;</span>
+  <span class="na">web-panel.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">server{</span>
+    <span class="s">listen       80;</span>
+    <span class="s">listen  [::]:80;</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_http_version 1.1;</span>
+    <span class="s">proxy_pass http://127.0.0.1:8081;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">proxy_connect_timeout 3600s;</span>
+    <span class="s">proxy_read_timeout 3600s;</span>
+    <span class="s">proxy_send_timeout 3600s;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+  <span class="na">docker.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">upstream nexus_docker_hosted {</span>
+    <span class="s">server 127.0.0.1:10000;</span>
+    <span class="s">}</span>
+    <span class="s">upstream nexus_docker_group {</span>
+    <span class="s">server 127.0.0.1:10001;</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 81;</span>
+    <span class="s">listen  [::]:81;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">set $upstream "nexus_docker_hosted";</span>
+    <span class="s">if ( $request_method ~* 'GET') {</span>
+    <span class="s">set $upstream "nexus_docker_group";</span>
+    <span class="s">}</span>
+    <span class="s">if ($request_uri ~ '/search') {</span>
+    <span class="s">set $upstream "nexus_docker_hosted";</span>
+    <span class="s">}</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://$upstream;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_connect_timeout 3600;</span>
+    <span class="s">proxy_send_timeout 3600;</span>
+    <span class="s">proxy_read_timeout 3600;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">proxy_set_header X-Forwarded-Proto http;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+<span class="s">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">sonatype/nexus3:3.40.1</span>
+          <span class="na">resources</span><span class="pi">:</span>
+            <span class="na">limits</span><span class="pi">:</span>
+              <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
+              <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4G"</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/nexus-data</span>
+          <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">INSTALL4J_ADD_VM_PARAMS</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-Xms2703m</span><span class="nv"> </span><span class="s">-Xmx2703m</span><span class="nv"> </span><span class="s">-XX:MaxDirectMemorySize=2703m</span><span class="nv"> </span><span class="s">-Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-forward</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.21.1</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/conf.d/</span>
+
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-data</span>
+          <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-nexus3-data</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
+          <span class="na">configMap</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-nginx-conf</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建_nexus3_service">创建 Nexus3 Service</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>使用以下配置创建 Nexus3 Service。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-web</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-docker</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">81</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建_ingress_映射">创建 Ingress 映射</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>创建 Service 完成后，将其映射到 Ingress 上。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -482,68 +815,56 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 24
 25
 26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-</pre></td><td class="code"><pre><span class="c">#!/usr/bin/env bash</span>
-<span class="nv">REMOTE_ADDRESSES</span><span class="o">=</span><span class="nv">$1</span>
-<span class="nv">IMAGES_NAME</span><span class="o">=</span><span class="nv">$2</span>
-
-<span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="s2">"</span><span class="nv">$IMAGES_NAME</span><span class="s2">"</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="o">!</span> <span class="s2">"</span><span class="nv">$REMOTE_ADDRESSES</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
-    </span><span class="nb">echo</span> <span class="s2">"help"</span>
-    <span class="nb">echo</span> <span class="s2">""</span>
-    <span class="nb">echo</span> <span class="s2">"send-image root@&lt;ip&gt;,root@&lt;ip&gt; image1,image2"</span>
-    <span class="nb">echo</span> <span class="s2">""</span>
-    <span class="nb">echo</span> <span class="s2">"Example: send-image root@10.0.0.1,root@10.0.0.2 busybox,nginx"</span>
-    <span class="nb">exit </span>1
-<span class="k">fi
-
-</span><span class="nv">IFS</span><span class="o">=</span><span class="s1">','</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> IMAGES <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="nv">$IMAGES_NAME</span><span class="s2">"</span>
-<span class="nv">IFS</span><span class="o">=</span><span class="s1">','</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> REMOTES <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="nv">$REMOTE_ADDRESSES</span><span class="s2">"</span>
-
-<span class="nb">echo</span> <span class="s2">"开始导出镜像"</span>
-<span class="nv">FILES</span><span class="o">=()</span>
-<span class="k">for </span>IMAGE_NAME <span class="k">in</span> <span class="k">${</span><span class="nv">IMAGES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
-    </span><span class="nb">echo</span> <span class="s2">"导出 </span><span class="nv">$IMAGE_NAME</span><span class="s2"> ."</span>
-    <span class="nv">SAVE_IMG_NAME</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span>
-    docker pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> <span class="o">||</span> <span class="nb">exit </span>1
-    <span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
-        </span><span class="nb">echo</span> <span class="s2">"文件 /tmp/</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2"> 已存在，跳过导出。"</span>
-    <span class="k">else
-        </span>docker save <span class="nt">-o</span> /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span>
-    <span class="k">fi</span>
-    <span class="c"># shellcheck disable=SC2179</span>
-    FILES+<span class="o">=(</span><span class="s2">"/tmp/</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span><span class="o">)</span>
-    <span class="nb">echo</span> <span class="s2">"导出 </span><span class="nv">$IMAGE_NAME</span><span class="s2"> 完成."</span>
-<span class="k">done
-</span><span class="nb">rm</span> <span class="nt">-f</span> /tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span> <span class="o">||</span> :
-<span class="nb">echo</span> <span class="s2">"#!/bin/bash"</span> <span class="o">&gt;</span>/tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
-<span class="k">for </span>LOCAL_FILE <span class="k">in</span> <span class="k">${</span><span class="nv">FILES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
-    </span><span class="nb">echo</span> <span class="s2">"ctr -n=k8s.io image import </span><span class="nv">$LOCAL_FILE</span><span class="s2">"</span> <span class="o">&gt;&gt;</span>/tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
-<span class="k">done
-
-</span><span class="nb">echo</span> <span class="s2">"开始传输文件"</span>
-<span class="k">for </span>REMOTE_ADDRESS <span class="k">in</span> <span class="k">${</span><span class="nv">REMOTES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do</span>
-    <span class="c"># shellcheck disable=SC2086</span>
-    scp /tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span> <span class="k">${</span><span class="nv">FILES</span><span class="p">[*]</span><span class="k">}</span> <span class="s2">"</span><span class="nv">$REMOTE_ADDRESS</span><span class="s2">"</span>:/tmp/
-    ssh <span class="s2">"</span><span class="nv">$REMOTE_ADDRESS</span><span class="s2">"</span> <span class="s2">"bash /tmp/import-script-</span><span class="nv">$USER</span><span class="s2">"</span>
-<span class="k">done</span>
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-nexus3</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">nexus.pcloud.com</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">pcloud-com-tls</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nexus.pcloud.com</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-web</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_管理_nexus3">管理 Nexus3</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_获取管理员密码">获取管理员密码</h3>
+<div class="paragraph">
+<p><code>Nexus3</code> 密码在程序第一次启动时自动生成 ，可使用以下命令获取密码。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-app pods/nexus3-server-0 <span class="nt">--</span> <span class="nb">cat</span> /nexus-data/admin.password
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_绑定_ldap">绑定 LDAP</h3>
+
 </div>
 </div>
 </div>
@@ -779,7 +1100,7 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月22日 17时52分12秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee//zz-document/other/EXTRA_SCRIPT.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
         <a href="https://github.com/d7z-project/all-in-kubernetes/tree/36440f792e01e764f2b523eac332416a0ecdefee/"
             target="_blank">#36440f7</a>
 </div>
