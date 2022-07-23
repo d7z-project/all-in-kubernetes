@@ -68,6 +68,9 @@ include::conf/03-create-nexus-service.yaml[]
 include::conf/04-create-nexus-ingress.yaml[]
 ----
 
+.其中
+<1> 配置Nginx不限制最大上传镜像大小
+
 == 管理 Nexus3
 
 安装完成后，你需要对 Nexus3 进行一些配置。

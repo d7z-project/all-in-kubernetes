@@ -67,6 +67,7 @@
 
 * [x] 部署 Nexus3/验证
 * [ ] 部署 Gitlab/验证
+* [ ] 部署 Gitea/验证
 
 ==== 扩展应用 (share-app)
 
