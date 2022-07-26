@@ -65,7 +65,7 @@ kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=postgre
 ----
 PG_NAME=$(kubectl get secrets -n core-middle secret-postgres-root -o jsonpath='{.data.username}' | base64 -d)
 PG_PASSWD=$(kubectl get secrets -n core-middle secret-postgres-root  -o jsonpath='{.data.password}' | base64 -d)
-kubectl exec -it -n core-middle pods/postgres-server-0 -- psql -h 127.0.0.1 -U $PG_NAME -w -c "select 1"
+kubectl exec -it -n core-middle pods/postgres-server-0 -- psql  postgresql://$PG_NAME:$PG_PASSWD@postgres.core-middle.svc.cluster.local:5432 -c "select 1"
 ----
 
 .输出结果
