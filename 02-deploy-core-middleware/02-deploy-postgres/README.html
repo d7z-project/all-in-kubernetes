@@ -679,6 +679,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 11
 12
 13
+14
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -690,8 +691,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">5432</span>
+      <span class="na">targetPort</span><span class="pi">:</span> <span class="m">5432</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">postgres</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">postgres-server</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -721,7 +723,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 3
 </pre></td><td class="code"><pre><span class="nv">PG_NAME</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-postgres-root <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.username}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
 <span class="nv">PG_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-postgres-root  <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
-kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/postgres-server-0 <span class="nt">--</span> psql <span class="nt">-h</span> 127.0.0.1 <span class="nt">-U</span> <span class="nv">$PG_NAME</span> <span class="nt">-w</span> <span class="nt">-c</span> <span class="s2">"select 1"</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/postgres-server-0 <span class="nt">--</span> psql  postgresql://<span class="nv">$PG_NAME</span>:<span class="nv">$PG_PASSWD</span>@postgres.core-middle.svc.cluster.local:5432 <span class="nt">-c</span> <span class="s2">"select 1"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -971,11 +973,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月19日 09时27分15秒 |
+        最后编辑于 2022年07月26日 23时57分30秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23//02-deploy-core-middleware/02-deploy-postgres/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23/"
-            target="_blank">#50d537b</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79//02-deploy-core-middleware/02-deploy-postgres/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79/"
+            target="_blank">#2fb3e8a</a>
 </div>
 </body>
 </html>

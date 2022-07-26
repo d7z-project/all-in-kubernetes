@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-gitlab
+  namespace: core-app
+  labels:
+    type: gitlab
+data:
+  db-name: 'gitlabhq_production'
+  db-user: 'gitlab'
+  gitlab-host: gitlab.d7z.net
+  gitlab-url: https://gitlab.d7z.net
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-gitlab
+  namespace: core-app
+  labels:
+    type: gitlab
+stringData:
+  db-password: 'password'
+  root-password: '@gitlab-p@ssw0rd'
+  db-key-secrets: WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd
+  session-key-secrets: 4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg
+  otp-key-secrets: psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc

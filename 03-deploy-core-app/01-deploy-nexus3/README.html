@@ -718,10 +718,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 40
 41
 42
-43
-44
-45
-46
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -745,10 +741,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-server</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">sonatype/nexus3:3.40.1</span>
-          <span class="na">resources</span><span class="pi">:</span>
-            <span class="na">limits</span><span class="pi">:</span>
-              <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
-              <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4G"</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/nexus-data</span>
@@ -908,6 +900,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-docker</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<div class="title">其中</div>
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>配置Nginx不限制最大上传镜像大小</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -1295,11 +1296,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月22日 23时20分27秒 |
+        最后编辑于 2022年07月23日 09时45分37秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23/"
-            target="_blank">#4a7243c</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79/"
+            target="_blank">#2e961fb</a>
 </div>
 </body>
 </html>

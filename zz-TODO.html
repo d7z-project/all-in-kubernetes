@@ -483,7 +483,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>所有文档需使用 <a target="_blank" href="https://asciidoc.org/">AsciiDoc</a> 编写。</p>
 </li>
 <li>
-<p>对于代码引用需单独保存至文件，并使用 <code>include::path/to/file[]</code> 引入。</p>
+<p>对于代码块内容需单独保存至文件，并使用 <code>include::path/to/file[]</code> 引入。</p>
 </li>
 <li>
 <p>过长的代码块需要用折叠块折叠。</p>
@@ -492,7 +492,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>所有文档均需要有简单的测试说明。</p>
 </li>
 <li>
-<p>对于引用他人文档需注意版权问题，且需要在文档末尾注明引用来源。</p>
+<p>对于引用他人文档需避免版权问题，且需要在文档末尾注明引用来源。</p>
 </li>
 <li>
 <p>编写的文档需要在 <code>zz-MENU.adoc</code> 内存在引用菜单。</p>
@@ -505,6 +505,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li>
 <p>所有从网络加载的 <code>kubernetes</code> 的  <code>yaml</code> 配置文件均需在本地留有备份 （仅可修改 namespace）。</p>
+</li>
+<li>
+<p>请不要使用 Helm 安装。</p>
 </li>
 </ol>
 </div>
@@ -520,10 +523,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>所有组件除特殊说明的除外均为单实例部署，系统内所有账户尽量采用LDAP来统一管理。</p>
 </li>
 <li>
-<p>避免使用 <code>bitnami</code> 打包的镜像。</p>
+<p>避免使用超过一年未更新的镜像（有特殊说明的除外）。</p>
 </li>
 <li>
-<p>对于 Java 相关的应用部署，需避免引入带 <a target="_blank" href="https://www.cve.org/CVERecord?id=CVE-2021-44228">Log4Shell</a> 漏洞的镜像。</p>
+<p>尽量避免使用 <code>bitnami</code> 打包的镜像。</p>
+</li>
+<li>
+<p>对于 Java 相关的应用部署，需仔细审核依赖，避免引入带 <a target="_blank" href="https://www.cve.org/CVERecord?id=CVE-2021-44228">Log4Shell</a> 漏洞的镜像。</p>
 </li>
 </ol>
 </div>
@@ -621,6 +627,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li>
 <p><i class="fa fa-square-o"></i> 部署 Gitlab/验证</p>
 </li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Gitea/验证</p>
+</li>
 </ul>
 </div>
 </div>
@@ -690,11 +699,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月22日 23时20分27秒 |
+        最后编辑于 2022年07月26日 23时57分30秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23//zz-TODO.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4a7243c2fd1097e6aea84ab0233c2f1d749f4c23/"
-            target="_blank">#4a7243c</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79//zz-TODO.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79/"
+            target="_blank">#2fb3e8a</a>
 </div>
 </body>
 </html>

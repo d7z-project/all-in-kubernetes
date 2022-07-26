@@ -21,10 +21,6 @@ spec:
       containers:
         - name: nexus3-server
           image: sonatype/nexus3:3.40.1
-          resources:
-            limits:
-              cpu: "500m"
-              memory: "4G"
           volumeMounts:
             - name: nexus3-data
               mountPath: /nexus-data
