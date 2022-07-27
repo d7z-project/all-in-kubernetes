@@ -105,10 +105,13 @@ include::./conf/t-00-nfs-test-1.yml[]
 
 === 验证测试
 
-执行完成后使用 `kubectl get pods` 查看创建情况。创建完成后，执行以下命令，有数据返回则表示成功：
+创建完成后，执行以下命令，有数据返回则表示成功：
 
 [source%linenums,bash]
 ----
+# 验证创建结果
+kubectl get deploy,pvc,pods -l mode=test,app=rook-nfs
+# 测试结果
 CLUSTER_IP=$(kubectl get services svc-test-rook-nfs -o jsonpath='{.spec.clusterIP}')
 POD_NAME=$(kubectl get pod -l app=rook-nfs,role=busybox -o jsonpath='{.items[0].metadata.name}')
 kubectl exec $POD_NAME -- wget -qO- http://$CLUSTER_IP
