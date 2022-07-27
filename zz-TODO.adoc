@@ -23,6 +23,11 @@
 . 所有从网络加载的 `kubernetes` 的  `yaml` 配置文件均需在本地留有备份 （仅可修改 namespace）。
 . 请不要使用 Helm 安装。
 
+=== 命名规范
+
+. 所有资源命名采用小写 + 中划线
+. 资源名称头部需带上资源类型完整名称或缩写+项目类型名称，例如 Redis 所需要的持久卷应当命名为 `pvc-redis`;如果需挂载多个持久卷则可以继续拼接 ，例如 `pvc-redis-data` 、`pvc-redis-rdb`。
+
 === 注意事项
 
 . 请 *不要使用任何闭源的软件或镜像*。
@@ -43,8 +48,6 @@
 ==== 底层组件
 
 * [x] 安装 Kubernetes(google)/验证
-* [ ] 安装 Kubernetes(k3s)/验证
-//TODO
 * [x] 配置 共享存储(rook-nfs)/验证
 * [x] 配置 共享存储(nfs-ganesha)/验证
 * [x] 部署 LoadBalancer实现(metallb)/验证

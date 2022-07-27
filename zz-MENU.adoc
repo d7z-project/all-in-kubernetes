@@ -1,17 +1,9 @@
 === 核心环境部署
 
 . link:./00-deploy-global/00-init-node/SYSTEM.adoc[系统环境配置]
-
 . link:./00-deploy-global/00-init-node/README.adoc[初始化部署环境]
-
-. 部署 Kubernetes
-
-.. link:./00-deploy-global/01.a-deploy-kubernetes-google/README.adoc[部署 Kubernetes(Google)]
-
-.. link:./00-deploy-global/01.b-deploy-kubernetes-k3s/README.adoc[部署 Kubernetes(K3s)]
-
+. link:./00-deploy-global/01-deploy-kubernetes-google/README.adoc[部署 Kubernetes(Google)]
 . 配置共享存储
-
 .. link:./00-deploy-global/02.a-deploy-rook-nfs/README.adoc[基于 rook-nfs 配置存储]
 
 .. link:./00-deploy-global/02.b-deploy-nfs-ganesha/README.adoc[基于ganesha 配置存储]
