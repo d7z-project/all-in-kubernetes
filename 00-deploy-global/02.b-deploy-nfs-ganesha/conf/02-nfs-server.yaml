@@ -1,100 +1,20 @@
----
-kind: StorageClass
-apiVersion: storage.k8s.io/v1
-metadata:
-  name: cluster-share
-  labels:
-    app: nfs-server-provisioner
-    release: nfs-server
-provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
-reclaimPolicy: Retain
-allowVolumeExpansion: true
-mountOptions:
-  - vers=3
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: nfs-server-provisioner
-  labels:
-    app: nfs-server-provisioner
-    release: nfs-server
-  namespace: storage-nfs
-spec:
-  type: ClusterIP
-  ports:
-    - port: 2049
-      targetPort: nfs
-      protocol: TCP
-      name: nfs
-    - port: 2049
-      targetPort: nfs-udp
-      protocol: UDP
-      name: nfs-udp
-    - port: 32803
-      targetPort: nlockmgr
-      protocol: TCP
-      name: nlockmgr
-    - port: 32803
-      targetPort: nlockmgr-udp
-      protocol: UDP
-      name: nlockmgr-udp
-    - port: 20048
-      targetPort: mountd
-      protocol: TCP
-      name: mountd
-    - port: 20048
-      targetPort: mountd-udp
-      protocol: UDP
-      name: mountd-udp
-    - port: 875
-      targetPort: rquotad
-      protocol: TCP
-      name: rquotad
-    - port: 875
-      targetPort: rquotad-udp
-      protocol: UDP
-      name: rquotad-udp
-    - port: 111
-      targetPort: rpcbind
-      protocol: TCP
-      name: rpcbind
-    - port: 111
-      targetPort: rpcbind-udp
-      protocol: UDP
-      name: rpcbind-udp
-    - port: 662
-      targetPort: statd
-      protocol: TCP
-      name: statd
-    - port: 662
-      targetPort: statd-udp
-      protocol: UDP
-      name: statd-udp
-  selector:
-    app: nfs-server-provisioner
-    release: nfs-server
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: nfs-server-provisioner
+  name: sts-nfs-ganesha
   labels:
-    app: nfs-server-provisioner
-    release: nfs-server
-  namespace: storage-nfs
+    app: nfs-ganesha
+  namespace: nfs-ganesha
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nfs-server-provisioner
-      release: nfs-server
-  serviceName: nfs-server-provisioner
+      app: nfs-ganesha
+  serviceName: svc-nfs-ganesha
   template:
     metadata:
       labels:
-        app: nfs-server-provisioner
-        release: nfs-server
+        app: nfs-ganesha
     spec:
       terminationGracePeriodSeconds: 100
       serviceAccountName: nfs-server-provisioner
@@ -152,7 +72,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: SERVICE_NAME
-              value: nfs-server-provisioner
+              value: svc-nfs-ganesha
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -163,4 +83,77 @@ spec:
       volumes:
         - name: export-volume
           persistentVolumeClaim:
-            claimName: "nfs-local-pvc-share"
+            claimName: pvc-nfs-ganesha-local
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-nfs-ganesha
+  labels:
+    app: nfs-ganesha
+  namespace: nfs-ganesha
+spec:
+  type: ClusterIP
+  ports:
+    - port: 2049
+      targetPort: nfs
+      protocol: TCP
+      name: nfs
+    - port: 2049
+      targetPort: nfs-udp
+      protocol: UDP
+      name: nfs-udp
+    - port: 32803
+      targetPort: nlockmgr
+      protocol: TCP
+      name: nlockmgr
+    - port: 32803
+      targetPort: nlockmgr-udp
+      protocol: UDP
+      name: nlockmgr-udp
+    - port: 20048
+      targetPort: mountd
+      protocol: TCP
+      name: mountd
+    - port: 20048
+      targetPort: mountd-udp
+      protocol: UDP
+      name: mountd-udp
+    - port: 875
+      targetPort: rquotad
+      protocol: TCP
+      name: rquotad
+    - port: 875
+      targetPort: rquotad-udp
+      protocol: UDP
+      name: rquotad-udp
+    - port: 111
+      targetPort: rpcbind
+      protocol: TCP
+      name: rpcbind
+    - port: 111
+      targetPort: rpcbind-udp
+      protocol: UDP
+      name: rpcbind-udp
+    - port: 662
+      targetPort: statd
+      protocol: TCP
+      name: statd
+    - port: 662
+      targetPort: statd-udp
+      protocol: UDP
+      name: statd-udp
+  selector:
+    app: nfs-ganesha
+---
+kind: StorageClass
+apiVersion: storage.k8s.io/v1
+metadata:
+  name: sc-nfs-share
+  labels:
+    app: nfs-ganesha
+provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+mountOptions:
+  - vers=3

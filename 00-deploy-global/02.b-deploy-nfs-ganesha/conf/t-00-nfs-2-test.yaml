@@ -1,10 +1,13 @@
-## 测试
+# 测试
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: cluster-test-pvc
+  name: pvc-test-nfs-ganesha
+  labels:
+    app: nfs-ganesha
+    mode: test
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteMany
   resources:
@@ -15,19 +18,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: nfs-demo
+    app: nfs-ganesha
+    mode: test
     role: web-frontend
-  name: nfs-web
+  name: deploy-test-nfs-ganesha-web
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nfs-demo
+      app: nfs-ganesha
+      mode: test
       role: web-frontend
   template:
     metadata:
       labels:
-        app: nfs-demo
+        app: nfs-ganesha
+        mode: test
         role: web-frontend
     spec:
       containers:
@@ -38,30 +44,33 @@ spec:
               containerPort: 80
           volumeMounts:
             # name must match the volume name below
-            - name: rook-nfs-vol
+            - name: nfs-ganesha-vol
               mountPath: "/usr/share/nginx/html"
       volumes:
-        - name: rook-nfs-vol
+        - name: nfs-ganesha-vol
           persistentVolumeClaim:
-            claimName: cluster-test-pvc
+            claimName: pvc-test-nfs-ganesha
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: nfs-demo
+    app: nfs-ganesha
+    mode: test
     role: busybox
-  name: nfs-busybox
+  name: deploy-test-nfs-ganesha-busybox
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nfs-demo
+      app: nfs-ganesha
+      mode: test
       role: busybox
   template:
     metadata:
       labels:
-        app: nfs-demo
+        app: nfs-ganesha
+        mode: test
         role: busybox
     spec:
       containers:
@@ -74,17 +83,20 @@ spec:
           name: busybox
           volumeMounts:
             # name must match the volume name below
-            - name: rook-nfs-vol
+            - name: nfs-ganesha-vol
               mountPath: "/mnt"
       volumes:
-        - name: rook-nfs-vol
+        - name: nfs-ganesha-vol
           persistentVolumeClaim:
-            claimName: cluster-test-pvc
+            claimName: pvc-test-nfs-ganesha
 ---
 kind: Service
 apiVersion: v1
 metadata:
-  name: nfs-web
+  name: svc-test-nfs-ganesha
+  labels:
+    app: nfs-ganesha
+    mode: test
 spec:
   ports:
     - port: 80
