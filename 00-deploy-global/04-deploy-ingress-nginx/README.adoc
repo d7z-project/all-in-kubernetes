@@ -8,7 +8,9 @@
 
 项目地址：link:https://github.com/kubernetes/ingress-nginx/[ingress-nginx]
 
-== 导入资源
+== 导入配置
+
+=== 导入资源
 
 由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-ingress-nginx.yaml[conf/ingress-nginx.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
 
@@ -27,6 +29,16 @@ Nginx Ingress Controller 需要以下镜像：
 crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
 crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 ----
+
+=== 应用修复
+
+由于需要夺冠 LoadBalancer Service 共享同一个IP,所以需要对 `Ingress` 单独进行配置。
+
+[source%linenums,yaml]
+----
+include::./conf/01-patch-service.yaml[]
+----
+
 
 导入完成后使用以下命令查看结果：
 

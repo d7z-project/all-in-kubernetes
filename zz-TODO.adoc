@@ -68,8 +68,9 @@
 ==== 核心应用 (core-app)
 
 * [x] 部署 Nexus3/验证
-* [ ] 部署 Gitlab/验证
+* [x] 部署 Gitlab/验证
 * [ ] 部署 Gitea/验证
+// TODO
 
 ==== 扩展应用 (share-app)
 
@@ -87,4 +88,7 @@
 === 自动化部署测试
 
 * [ ] 使用 Gitlab Actions 做自动化测试
-* [ ] 使用 Gitlab Runner 做自动化测试
+
+=== 文档优化
+
+* [ ] 为所有的可变参数做标记和警告

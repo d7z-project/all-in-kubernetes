@@ -10,7 +10,7 @@
 
 == 说明
 
-Gitlab 依赖镜像 `sameersbn/gitlab:15.1.2`, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 `Postgres` 和 `Redis` ，请在部署 `Gitlab` 前对其配置。
+Gitlab 依赖镜像 `sameersbn/gitlab:15.1.2`, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 `Postgres` 数据库 ，请在部署 `Gitlab` 前对其配置。
 
 == 注意事项
 
@@ -52,9 +52,104 @@ kubectl exec -it -n core-middle postgres-server-0 -- psql -U gitlab -d gitlabhq_
 
 至此，数据源配置完成。
 
+=== 创建 LDAP 用户组
+
+*Gitlab* 被配置为只有归属于 `cn=gitlab` 的用户和管理员才能登陆，需要在 *LDAP* 下创建名为 `gitlab` 的 `groupOfNames` 用户组。
+
+[source%linenums,text]
+----
+cn=gitlab,ou=groups,dc=pcloud,dc=com
+----
+
+== 开始部署
+
 === 创建 Gitlab 配置
 
 [source%linenums,yaml]
 ----
 include::./conf/00-gitlab-conf.yaml[]
 ----
+
+.其中
+<1> 如果你修改了 *Postgres* 的数据库名称，则需要在此更改
+<2> 如果你修改了 *Postgres* 的用户，则需要在此更改
+<3> 请将其修改为你 *Gitlab* 对应的域名
+<4> LDAP 的过滤条件，请将 `dc=d7z,dc=net` 改为你的 *LDAP* 服务器信息
+<5> 如果你修改了 *Postgres* 的密码，则需要在此更改
+<6> 由于 `Gitlab CE` 无法动态分配管理员，请修改默认管理员密码并妥善保存（*请不要使用默认配置*）。
+<7> 在安装时请自定义 *Secrets* ,可使用 `pwgen -Bsv1 64` 生成 （*请不要使用默认配置*）。
+
+=== 创建 Gitlab 持久卷
+
+使用以下配置创建 *Gitlab* 的持久卷。同时为 *Gitlab* 所需要的 *Redis* 创建持久卷。
+
+TIP: *Gitlab* 将提交保存至持久卷，可按照实际需求调整大小，较高的磁盘性能可提升 *Gitlab* 提交速度。
+
+[source%linenums,yaml]
+----
+include::./conf/01-gitlab-pvc.yaml[]
+----
+
+== 创建 Gitlab Server
+
+使用以下配置创建 *Gitlab Server*。
+
+.点击展开
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/02-gitlab-server.yaml[]
+----
+
+====
+
+配置导入完成后，使用如下命令监控启动结果。
+
+[source%linenums,bash]
+----
+kubectl get pods -n core-app -l type=gitlab
+----
+
+=== 关联 Service
+
+Server 创建完成且工作正常后，使用以下配置创建对应的 `Service`。
+
+WARNING: Gitlab 需要暴露 `22` 端口以便使用 `ssh` 提交，请根据对应的 `LoadBalancer` 实现自行配置，此处使用的是 `metallb` 。
+
+[source%linenums,yaml]
+----
+include::./conf/03-create-gitlab-service.yaml[]
+----
+
+创建完成后使用如下命令查看结果。
+
+[source%linenums,bash]
+----
+kubectl get service -n core-app -l type=gitlab
+----
+
+=== 关联 Ingress
+
+使用以下配置将 Service 与 Ingress 相关联。
+
+[source%linenums,yaml]
+----
+include::./conf/04-create-gitlab-ingress.yaml[]
+----
+
+== 测试
+
+=== 检查部署结果
+
+使用以下命令查看各个组件的部署结果。
+
+[source%linenums,bash]
+----
+kubectl get pods,pvc,service,ingress -n core-app -l type=gitlab
+----
+
+=== 测试 LDAP 登陆
+
+创建一个测试用户，并在 `cn=gitlab` 下添加对此用户的绑定，然后在 *Gitlab* 测试登陆，登陆成功后，退出用户并在 *LDAP* 下删除此用户，然后再次测试，如无法登陆则表明安装成功。
