@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ldap-global-conf
+  namespace: core-system
+  labels:
+    type: ldap
+  annotations: # <1>
+    reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
+    reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
+data:
+  ldap_org: "Dragon's Zone Team" # <2>
+  ldap_domain: 'd7z.net' # <3>
+  ldap_host: 'service-ldap.core-system.svc.cluster.local' # <4>
+  ldap_url: 'ldap://service-ldap.core-system.svc.cluster.local:389' # <5>
+  ldap_base_dn: 'dc=d7z,dc=net' # <6>
+  ldap_user_dn: 'ou=people,dc=d7z,dc=net' # <7>
+  ldap_group_dn: 'ou=groups,dc=d7z,dc=net' # <8>

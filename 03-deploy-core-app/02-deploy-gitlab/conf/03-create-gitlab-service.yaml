@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gitlab-server
+    type: gitlab
+  name: gitlab
+  namespace: core-app
+spec:
+  ports:
+    - name: gitlab-web
+      protocol: TCP
+      port: 80
+    - name: gitlab-ssh
+      protocol: TCP
+      port: 22
+  selector:
+    app: gitlab-server
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gitlab-server
+    type: gitlab
+  name: gitlab-lb
+  namespace: core-app
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "primary-ip-share"
+spec:
+  ports:
+    - name: gitlab-ssh
+      protocol: TCP
+      port: 22
+  selector:
+    app: gitlab-server
+  type: LoadBalancer

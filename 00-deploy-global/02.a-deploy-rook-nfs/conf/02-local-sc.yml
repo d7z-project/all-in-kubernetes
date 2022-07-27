@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: sc-rook-nfs-local
+  labels:
+    app: rook-nfs
+provisioner: kubernetes.io/no-provisioner # <1>
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer # <2>
