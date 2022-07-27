@@ -21,7 +21,7 @@ jobs:
       - name: 编译项目
         run: |
           sudo apt install -y curl
-          curl https://raw.githubusercontent.com/d7z-team/asciidoc-static-pages/main/setup-deb.sh | sh - `pwd`
+          curl -sfL https://raw.githubusercontent.com/d7z-team/asciidoc-static-pages/main/setup-deb.sh | sh -s - `pwd`
       - name: 发布 Web 页面
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
