@@ -103,3 +103,12 @@ kubectl get pods,service -n core-system
 ----
 
 确认 Pod 状态均为 `Running` 且未多次重启即表示安装无误。
+
+== 扩展
+
+可使用 `CURL` 测试 LDAP .
+
+[source%linenums,bash]
+----
+curl --user $LDAP_BIND_DN:$LDAP_PASS ldap://$LDAP_HOST/$LDAP_BASE?uid?one?"$LDAP_USER_FILTER"
+----
