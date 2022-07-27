@@ -109,7 +109,9 @@ include::./conf/t-00-nfs-test-1.yml[]
 
 [source%linenums,bash]
 ----
-echo; kubectl exec $(kubectl get pod -l app=nfs-demo,role=busybox -o jsonpath='{.items[0].metadata.name}') -- wget -qO- http://$(kubectl get services nfs-web -o jsonpath='{.spec.clusterIP}'); echo
+CLUSTER_IP=$(kubectl get services svc-test-rook-nfs -o jsonpath='{.spec.clusterIP}')
+POD_NAME=$(kubectl get pod -l app=rook-nfs,role=busybox -o jsonpath='{.items[0].metadata.name}')
+kubectl exec $POD_NAME -- wget -qO- http://$CLUSTER_IP
 ----
 
 TIP: 如果返回403错误，可能是因为文件系统权限问题，可通过 `kubectl exec` 手动查看。

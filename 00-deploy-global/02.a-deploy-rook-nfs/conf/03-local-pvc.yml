@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-local-pvc-share
+  name: pvc-rook-nfs-local
   namespace: rook-nfs
+  labels:
+    app: rook-nfs
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
       storage: 100Gi
-  storageClassName: nfs-local-sc-share
+  storageClassName: sc-rook-nfs-local
   volumeMode: Filesystem
-  volumeName: nfs-local-pv-share # 指定关联的PV 名称
+  volumeName: pv-rook-nfs-local # 指定关联的PV 名称

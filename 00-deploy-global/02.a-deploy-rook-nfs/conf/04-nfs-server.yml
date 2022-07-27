@@ -3,6 +3,8 @@ kind: NFSServer
 metadata:
   name: rook-nfs
   namespace: rook-nfs
+  labels:
+    app: rook-nfs
 spec:
   replicas: 1
   exports:
@@ -11,6 +13,6 @@ spec:
         accessMode: ReadWrite
         squash: none
       persistentVolumeClaim:
-        claimName: nfs-local-pvc-share
+        claimName: pvc-rook-nfs-local
   annotations:
     rook: nfs
