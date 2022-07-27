@@ -448,7 +448,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_部署前准备">部署前准备</a>
 <ul class="sectlevel2">
 <li><a href="#_配置数据源">配置数据源</a></li>
+<li><a href="#_创建_ldap_用户组">创建 LDAP 用户组</a></li>
+</ul>
+</li>
+<li><a href="#_开始部署">开始部署</a>
+<ul class="sectlevel2">
 <li><a href="#_创建_gitlab_配置">创建 Gitlab 配置</a></li>
+<li><a href="#_创建_gitlab_持久卷">创建 Gitlab 持久卷</a></li>
+</ul>
+</li>
+<li><a href="#_创建_gitlab_server">创建 Gitlab Server</a>
+<ul class="sectlevel2">
+<li><a href="#_关联_service">关联 Service</a></li>
+<li><a href="#_关联_ingress">关联 Ingress</a></li>
+</ul>
+</li>
+<li><a href="#_测试">测试</a>
+<ul class="sectlevel2">
+<li><a href="#_检查部署结果">检查部署结果</a></li>
+<li><a href="#_测试_ldap_登陆">测试 LDAP 登陆</a></li>
 </ul>
 </li>
 </ul>
@@ -459,7 +477,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gitlab 依赖镜像 <code>sameersbn/gitlab:15.1.2</code>, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 <code>Postgres</code> 和 <code>Redis</code> ，请在部署 <code>Gitlab</code> 前对其配置。</p>
+<p>Gitlab 依赖镜像 <code>sameersbn/gitlab:15.1.2</code>, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 <code>Postgres</code> 数据库 ，请在部署 <code>Gitlab</code> 前对其配置。</p>
 </div>
 </div>
 </div>
@@ -539,6 +557,24 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect2">
+<h3 id="_创建_ldap_用户组">创建 LDAP 用户组</h3>
+<div class="paragraph">
+<p><strong>Gitlab</strong> 被配置为只有归属于 <code>cn=gitlab</code> 的用户和管理员才能登陆，需要在 <strong>LDAP</strong> 下创建名为 <code>gitlab</code> 的 <code>groupOfNames</code> 用户组。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>cn=gitlab,ou=groups,dc=pcloud,dc=com
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_开始部署">开始部署</h2>
+<div class="sectionbody">
+<div class="sect2">
 <h3 id="_创建_gitlab_配置">创建 Gitlab 配置</h3>
 <div class="listingblock">
 <div class="content">
@@ -568,7 +604,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 24
 25
 26
-27
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -577,11 +612,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
 <span class="na">data</span><span class="pi">:</span>
-  <span class="na">db-name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlabhq_production'</span>
-  <span class="na">db-user</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab'</span>
-  <span class="na">gitlab-host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span>
-  <span class="na">gitlab-url</span><span class="pi">:</span> <span class="s">https://gitlab.d7z.net</span>
-
+  <span class="na">db-name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlabhq_production'</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">db-user</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab'</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="na">gitlab-host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="na">ldap-user-filter</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(|(memberOf=cn=admin,ou=groups,dc=d7z,dc=net)(memberOf=cn=gitlab,ou=groups,dc=d7z,dc=net))'</span> <i class="conum" data-value="4"></i><b>(4)</b>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
@@ -591,13 +625,637 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">db-password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">password'</span>
-  <span class="na">root-password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">@gitlab-p@ssw0rd'</span>
-  <span class="na">db-key-secrets</span><span class="pi">:</span> <span class="s">WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd</span>
-  <span class="na">session-key-secrets</span><span class="pi">:</span> <span class="s">4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg</span>
-  <span class="na">otp-key-secrets</span><span class="pi">:</span> <span class="s">psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc</span>
+  <span class="na">db-password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">password'</span><i class="conum" data-value="5"></i><b>(5)</b>
+  <span class="na">root-password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">@gitlab-p@ssw0rd'</span> <i class="conum" data-value="6"></i><b>(6)</b>
+  <span class="na">db-key-secrets</span><span class="pi">:</span> <span class="s">WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd</span>  <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">session-key-secrets</span><span class="pi">:</span> <span class="s">4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg</span> <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">otp-key-secrets</span><span class="pi">:</span> <span class="s">psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc</span> <i class="conum" data-value="7"></i><b>(7)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<div class="title">其中</div>
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>如果你修改了 <strong>Postgres</strong> 的数据库名称，则需要在此更改</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>如果你修改了 <strong>Postgres</strong> 的用户，则需要在此更改</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>请将其修改为你 <strong>Gitlab</strong> 对应的域名</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>LDAP 的过滤条件，请将 <code>dc=d7z,dc=net</code> 改为你的 <strong>LDAP</strong> 服务器信息</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>如果你修改了 <strong>Postgres</strong> 的密码，则需要在此更改</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>由于 <code>Gitlab CE</code> 无法动态分配管理员，请修改默认管理员密码并妥善保存（<strong>请不要使用默认配置</strong>）。</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="7"></i><b>7</b></td>
+<td>在安装时请自定义 <strong>Secrets</strong> ,可使用 <code>pwgen -Bsv1 64</code> 生成 （<strong>请不要使用默认配置</strong>）。</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_创建_gitlab_持久卷">创建 Gitlab 持久卷</h3>
+<div class="paragraph">
+<p>使用以下配置创建 <strong>Gitlab</strong> 的持久卷。同时为 <strong>Gitlab</strong> 所需要的 <strong>Redis</strong> 创建持久卷。</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<strong>Gitlab</strong> 将提交保存至持久卷，可按照实际需求调整大小，较高的磁盘性能可提升 <strong>Gitlab</strong> 提交速度。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-gitlab-data</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-gitlab-redis</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">10Gi</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建_gitlab_server">创建 Gitlab Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>使用以下配置创建 <strong>Gitlab Server</strong>。</p>
+</div>
+<details>
+<summary class="title">点击展开</summary>
+<div class="content">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+        <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.2</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/data</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/gitlab:15.1.2</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/home/git/data</span>
+          <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SSH_PORT</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">22"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PORT</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">443"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_HTTPS</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">SSL_SELF_SIGNED</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_HOST</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">gitlab-host</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_ROOT_PASSWORD</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">root-password</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SECRETS_DB_KEY_BASE</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-key-secrets</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SECRETS_SECRET_KEY_BASE</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">session-key-secrets</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SECRETS_OTP_KEY_BASE</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">otp-key-secrets</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_TIMEZONE</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s">Beijing</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PACKAGES_ENABLED</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_REGISTRY_ENABLED</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_ENABLED</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_HOST</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">postgres.core-middle.svc.cluster.local"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5432"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_NAME</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-name</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_USER</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-user</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PASS</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-password</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">REDIS_HOST</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">REDIS_PORT</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">6379"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_ENABLED</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_LABEL</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LDAP"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LDAP_HOST"</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_host</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PORT</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">389"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_UID</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">uid"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BLOCK_AUTO_CREATED_USERS</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_ACTIVE_DIRECTORY</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_METHOD</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">plain"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-service</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">user-dn</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PASS</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-service</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BASE</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_user_dn</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_USER_FILTER</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-filter</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-data</span>
+          <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-gitlab-data</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
+          <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-gitlab-redis</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</details>
+<div class="paragraph">
+<p>配置导入完成后，使用如下命令监控启动结果。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>kubectl get pods <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>gitlab
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_关联_service">关联 Service</h3>
+<div class="paragraph">
+<p>Server 创建完成且工作正常后，使用以下配置创建对应的 <code>Service</code>。</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交，请根据对应的 <code>LoadBalancer</code> 实现自行配置，此处使用的是 <code>metallb</code> 。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-web</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-ssh</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">22</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-lb</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">metallb.universe.tf/allow-shared-ip</span><span class="pi">:</span> <span class="s2">"</span><span class="s">primary-ip-share"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-ssh</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">22</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab-server</span>
+  <span class="na">type</span><span class="pi">:</span> <span class="s">LoadBalancer</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>创建完成后使用如下命令查看结果。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>kubectl get service <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>gitlab
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_关联_ingress">关联 Ingress</h3>
+<div class="paragraph">
+<p>使用以下配置将 Service 与 Ingress 相关联。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-gitlab</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">type</span><span class="pi">:</span> <span class="s">gitlab</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">gitlab.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">d7z-net-tls</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-web</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_测试">测试</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_检查部署结果">检查部署结果</h3>
+<div class="paragraph">
+<p>使用以下命令查看各个组件的部署结果。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>kubectl get pods,pvc,service,ingress <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>gitlab
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_测试_ldap_登陆">测试 LDAP 登陆</h3>
+<div class="paragraph">
+<p>创建一个测试用户，并在 <code>cn=gitlab</code> 下添加对此用户的绑定，然后在 <strong>Gitlab</strong> 测试登陆，登陆成功后，退出用户并在 <strong>LDAP</strong> 下删除此用户，然后再次测试，如无法登陆则表明安装成功。</p>
 </div>
 </div>
 </div>
@@ -832,11 +1490,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月26日 23时57分30秒 |
+        最后编辑于 2022年07月27日 17时03分15秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79//03-deploy-core-app/02-deploy-gitlab/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/2fb3e8abff3b47d6d6f09494a098bb2aa77e4d79/"
-            target="_blank">#2fb3e8a</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/03889b4fa91a4e959f44e04fa574081e4f954bee//03-deploy-core-app/02-deploy-gitlab/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/03889b4fa91a4e959f44e04fa574081e4f954bee/"
+            target="_blank">#03889b4</a>
 </div>
 </body>
 </html>

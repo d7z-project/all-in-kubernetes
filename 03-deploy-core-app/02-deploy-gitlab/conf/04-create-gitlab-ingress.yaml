@@ -7,7 +7,7 @@ metadata:
     type: gitlab
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
-    nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
 
 spec:
   ingressClassName: nginx

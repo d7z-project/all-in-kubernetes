@@ -5,7 +5,7 @@ metadata:
   namespace: core-app
   labels:
     app: gitlab-server
-    type: nexus3
+    type: gitlab
 spec:
   serviceName: gitlab-server
   selector:
@@ -16,7 +16,7 @@ spec:
     metadata:
       labels:
         app: gitlab-server
-        type: nexus3
+        type: gitlab
     spec:
       containers:
         - name: gitlab-redis
@@ -94,6 +94,45 @@ spec:
               value: "127.0.0.1"
             - name: REDIS_PORT
               value: "6379"
+            - name: LDAP_ENABLED
+              value: "true"
+            - name: LDAP_LABEL
+              value: "LDAP"
+            - name: "LDAP_HOST"
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap_host
+                  name: ldap-global-conf
+            - name: LDAP_PORT
+              value: "389"
+            - name: LDAP_UID
+              value: "uid"
+            - name: LDAP_BLOCK_AUTO_CREATED_USERS
+              value: "true"
+            - name: LDAP_ACTIVE_DIRECTORY
+              value: "false"
+            - name: LDAP_METHOD
+              value: "plain"
+            - name: LDAP_BIND_DN
+              valueFrom:
+                secretKeyRef:
+                  name: ldap-secret-service
+                  key: user-dn
+            - name: LDAP_PASS
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: ldap-secret-service
+            - name: LDAP_BASE
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap_user_dn
+                  name: ldap-global-conf
+            - name: LDAP_USER_FILTER
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-user-filter
+                  name: conf-gitlab
       volumes:
         - name: gitlab-data
           persistentVolumeClaim:
