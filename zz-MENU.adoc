@@ -42,6 +42,7 @@
 . link:./03-deploy-core-app/README.adoc[核心应用部署准备]
 . link:./03-deploy-core-app/01-deploy-nexus3/README.adoc[部署 Nexus3]
 . link:./03-deploy-core-app/02-deploy-gitlab/README.adoc[部署 Gitlab CE]
+. link:./zz-LINK.adoc[文档参考]
 
 === 杂项
 
