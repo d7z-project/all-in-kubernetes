@@ -134,6 +134,9 @@ body{
 <li>
 <p><a target="dist" href="./03-deploy-core-app/02-deploy-gitlab/README.html">部署 Gitlab CE</a></p>
 </li>
+<li>
+<p><a target="dist" href="./zz-LINK.html">文档参考</a></p>
+</li>
 </ol>
 </div>
 </div>
