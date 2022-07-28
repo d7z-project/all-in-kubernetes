@@ -546,7 +546,7 @@ crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
   <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-nginx-controller</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">ingress-nginx</span>
   <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">metallb.universe.tf/allow-shared-ip</span><span class="pi">:</span> <span class="s2">"</span><span class="s">primary-ip-share"</span>
+    <span class="na">metallb.universe.tf/allow-shared-ip</span><span class="pi">:</span> <span class="s2">"</span><span class="s">primary-ip-share"</span> <i class="conum" data-value="1"></i><b>(1)</b>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">appProtocol</span><span class="pi">:</span> <span class="s">http</span>
@@ -567,6 +567,15 @@ crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
+<div class="colist arabic">
+<div class="title">其中</div>
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>移除了独占配置，并配置 IP 共享 key ( metallb 提供支持 )</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>导入完成后使用以下命令查看结果：</p>
 </div>
@@ -578,7 +587,7 @@ crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </div>
 </div>
 <div class="paragraph">
-<p>如果一切无误，则会启动 <code>ingress-nginx-controller</code>,同时如果配置了 LoadBalancer ，则此时 LoadBalancer 也将绑定外部地址 。</p>
+<p>如果一切无误，则会启动 <code>ingress-nginx-controller</code>,同时如果配置了 <strong>LoadBalancer</strong> ，则此时 <strong>LoadBalancer</strong> 也将绑定外部地址 。</p>
 </div>
 </div>
 </div>
@@ -879,7 +888,7 @@ curl http://<span class="nv">$CLIENT_IP</span>/second
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>需要配置了LoadBalancer此命令才可用</td>
+<td>需要配置了 <strong>LoadBalancer</strong> 此命令才可用</td>
 </tr>
 </table>
 </div>
@@ -1128,11 +1137,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月27日 17时03分15秒 |
+        最后编辑于 2022年07月28日 10时53分08秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3de490b3c135c7a6cc0bdb205c747d0bb326f2ed//00-deploy-global/04-deploy-ingress-nginx/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/3de490b3c135c7a6cc0bdb205c747d0bb326f2ed/"
-            target="_blank">#03889b4</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17//00-deploy-global/04-deploy-ingress-nginx/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17/"
+            target="_blank">#99a1973</a>
 </div>
 </body>
 </html>

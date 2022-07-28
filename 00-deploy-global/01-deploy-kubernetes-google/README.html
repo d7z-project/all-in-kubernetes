@@ -445,10 +445,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel1">
 <li><a href="#_部署软件包">部署软件包</a>
 <ul class="sectlevel2">
-<li><a href="#_部署容器运行时">部署容器运行时</a></li>
-<li><a href="#_部署_kubeadmkubelet_和_kubectl">部署 kubeadm、kubelet 和 kubectl</a></li>
+<li><a href="#_下载需要的资源">下载需要的资源</a></li>
+<li><a href="#_部署容器运行时_和_kubeadmkubelet_和_kubectl">部署容器运行时 和 kubeadm、kubelet 和 kubectl</a></li>
 <li><a href="#_配置_containerd_网络代理_可选">配置 <code>containerd</code> 网络代理 (可选)</a></li>
-<li><a href="#_预下载运行时镜像_可选">预下载运行时镜像 (可选)</a></li>
 <li><a href="#_添加_tab_命令补全_可选">添加 TAB 命令补全 （可选）</a></li>
 </ul>
 </li>
@@ -469,99 +468,299 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_部署软件包">部署软件包</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_部署容器运行时">部署容器运行时</h3>
+<h3 id="_下载需要的资源">下载需要的资源</h3>
 <div class="paragraph">
-<p>Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 <a target="_blank" href="https://containerd.io/">containerd</a>。</p>
+<p>Kubernetes 需要以下资源才可正常运行，可在有网络的机器上下载并打包上传。注意，<strong>此脚本仅适配 AMD64 !</strong></p>
 </div>
 <details>
-<summary class="title">点击展开部署命令</summary>
+<summary class="title">点击展开部署脚本</summary>
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-</pre></td><td class="code"><pre><span class="c"># 此脚本参考至 https://github.com/kubernetes/kubernetes/issues/106464#issuecomment-1142563656</span>
-<span class="c"># 配置运行时版本</span>
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+</pre></td><td class="code"><pre><span class="c"># 配置运行时版本</span>
 <span class="c">## https://github.com/containerd/containerd</span>
 <span class="nv">CONTAINERD_VERSION</span><span class="o">=</span>1.6.6
 <span class="c">## https://github.com/opencontainers/runc</span>
 <span class="nv">RUNC_VERSION</span><span class="o">=</span>1.1.3
 <span class="c">## https://github.com/containernetworking/plugins</span>
 <span class="nv">CNI_VERSION</span><span class="o">=</span>1.1.1
+<span class="c">##</span>
+<span class="nv">KUBEADM_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.3"</span>
+<span class="c">##</span>
+<span class="nv">CRICTL_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
+<span class="c">##</span>
+<span class="nv">KUBE_RELEASE_VERSION</span><span class="o">=</span><span class="s2">"v0.14.0"</span>
 <span class="c"># 配置系统架构</span>
 <span class="nv">ARCH</span><span class="o">=</span>amd64
-
 <span class="c"># 下载地址</span>
-<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/kubernetes
+<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/k8s
 <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
+<span class="c"># 镜像地址</span>
+<span class="nv">IMAGE_PATH</span><span class="o">=</span><span class="nv">$DOWNLOAD_PATH</span>/images
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$IMAGE_PATH</span>
 
-<span class="c"># 准备软件</span>
+down<span class="o">()</span> <span class="o">{</span>
+    wget <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> 2&gt;/dev/null <span class="o">||</span> <span class="nb">exit </span>1
+<span class="o">}</span>
 
-wget https://github.com/containerd/containerd/releases/download/v<span class="nv">$CONTAINERD_VERSION</span>/containerd-<span class="nv">$CONTAINERD_VERSION</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/containerd.tgz
-wget https://github.com/opencontainers/runc/releases/download/v<span class="nv">$RUNC_VERSION</span>/runc.<span class="nv">$ARCH</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/runc
-wget https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$CNI_VERSION</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$CNI_VERSION</span>.tgz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/cni-plugin.tgz
-wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/containerd.service
+<span class="c"># 准备 containerd 软件</span>
+down https://github.com/containerd/containerd/releases/download/v<span class="nv">$CONTAINERD_VERSION</span>/containerd-<span class="nv">$CONTAINERD_VERSION</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nv">$DOWNLOAD_PATH</span>/containerd.tgz
+down https://github.com/opencontainers/runc/releases/download/v<span class="nv">$RUNC_VERSION</span>/runc.<span class="nv">$ARCH</span> <span class="nv">$DOWNLOAD_PATH</span>/runc
+down https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$CNI_VERSION</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$CNI_VERSION</span>.tgz <span class="nv">$DOWNLOAD_PATH</span>/cni-plugin.tgz
+down https://raw.githubusercontent.com/containerd/containerd/main/containerd.service <span class="nv">$DOWNLOAD_PATH</span>/containerd.service
 
-<span class="c"># 开始安装</span>
+<span class="c"># 下载 kubernetes</span>
+<span class="nv">KUBERNETES_BIN_URL</span><span class="o">=</span><span class="s2">"https://storage.googleapis.com/kubernetes-release/release"</span>
+down <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubeadm <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
+down <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubelet <span class="nv">$DOWNLOAD_PATH</span>/kubelet
+down <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubectl <span class="nv">$DOWNLOAD_PATH</span>/kubectl
+<span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$DOWNLOAD_PATH</span><span class="s2">/crictl"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+    </span>down https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$CRICTL_RELEASE</span>/crictl-<span class="nv">$CRICTL_RELEASE</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+    <span class="nb">tar</span> <span class="nt">-C</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+    <span class="nb">rm</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+<span class="k">fi
+</span>down <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service"</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service
+down <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf"</span> <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf
+<span class="nb">chmod</span> +x <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
 
-<span class="c"># 部署 Containerd</span>
-<span class="nb">tar </span>Cxzvf /usr/local <span class="nv">$DOWNLOAD_PATH</span>/containerd.tgz
-<span class="nb">mkdir</span> /etc/containerd/
-containerd config default <span class="o">&gt;</span>/etc/containerd/config.toml
-<span class="c"># 备注：在 Debian Bullseye 下已经默认启用 cgroup v2</span>
-<span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s|SystemdCgroup = false|SystemdCgroup = true|'</span> /etc/containerd/config.toml
+<span class="c"># 下载镜像函数</span>
+save_image<span class="o">()</span> <span class="o">{</span>
+    <span class="c"># shellcheck disable=SC2001</span>
+    <span class="nv">CURRENT_DOCKER_PATH</span><span class="o">=</span><span class="nv">$IMAGE_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$CURRENT_DOCKER_PATH</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
+        </span>docker pull <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+        docker save <span class="nt">-o</span> <span class="s2">"</span><span class="nv">$CURRENT_DOCKER_PATH</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
+    <span class="k">fi</span>
+<span class="o">}</span>
+<span class="c"># 下载预置镜像</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="s2">" "</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> LIST <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="si">$(</span><span class="nv">HTTP_PROXY</span><span class="o">=</span>no <span class="nv">HTTPS_PROXY</span><span class="o">=</span>no <span class="nv">$DOWNLOAD_PATH</span>/kubeadm config images list 2&gt;/dev/null | xargs <span class="nb">echo</span><span class="si">)</span><span class="s2">"</span>
+<span class="c"># shellcheck disable=SC2128</span>
+<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
+    </span>save_image <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
+<span class="k">done</span>
 
-<span class="c"># 部署 runc</span>
-<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/runc /usr/local/sbin/runc
+<span class="c"># 导入自定义镜像</span>
+save_image <span class="s2">"k8s.gcr.io/pause:3.6"</span>
+save_image <span class="s2">"rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"</span>
+save_image <span class="s2">"rancher/mirrored-flannelcni-flannel:v0.18.1"</span>
 
-<span class="c"># 部署 CNI</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> /opt/cni/bin
-<span class="nb">tar </span>Cxzvf /opt/cni/bin <span class="nv">$DOWNLOAD_PATH</span>/cni-plugin.tgz
-
-<span class="c"># 配置 Systemd 服务</span>
-<span class="nb">cp</span> <span class="nv">$DOWNLOAD_PATH</span>/containerd.service /etc/systemd/system/containerd.service
+<span class="nv">INSTALL_SCRIPT</span><span class="o">=</span><span class="nv">$DOWNLOAD_PATH</span>/install.sh
+<span class="nb">touch</span> <span class="nv">$INSTALL_SCRIPT</span> <span class="o">||</span>:
+<span class="nb">chmod </span>755 <span class="nv">$INSTALL_SCRIPT</span> <span class="o">||</span> <span class="nb">exit </span>1
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="sh">"</span><span class="no">EOD</span><span class="sh">" | tee </span><span class="nv">$INSTALL_SCRIPT</span><span class="sh"> &gt;/dev/null
+#!/bin/bash
+PROJECT_HOME=</span><span class="si">$(</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="k">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="k">}</span><span class="si">)</span>
+    <span class="nb">pwd</span>
+<span class="si">)</span><span class="sh">
+# 配置系统环境
+cat &lt;&lt;EOF | tee /etc/modules-load.d/kubernetes.conf &gt; /dev/null
+br_netfilter
+EOF
+modprobe br_netfilter
+cat &lt;&lt;EOF | tee /etc/sysctl.d/zz-kubernetes.conf
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+EOF
+sysctl --system
+# 解包软件包
+tar Cxzvf /usr/local </span><span class="nv">$PROJECT_HOME</span><span class="sh">/containerd.tgz
+mkdir /etc/containerd/
+containerd config default &gt;/etc/containerd/config.toml
+# 备注：在 Debian Bullseye 下已经默认启用 cgroup v2 , 使用 SystemdCgroup
+sed -i 's|SystemdCgroup = false|SystemdCgroup = true|' /etc/containerd/config.toml
+# 部署 runc
+install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/runc /usr/local/sbin/runc
+# 部署 CNI
+mkdir -p /opt/cni/bin
+tar Cxzvf /opt/cni/bin </span><span class="nv">$PROJECT_HOME</span><span class="sh">/cni-plugin.tgz
+# 配置 Systemd 服务
+cp </span><span class="nv">$PROJECT_HOME</span><span class="sh">/containerd.service /etc/systemd/system/containerd.service
 systemctl daemon-reload
-systemctl <span class="nb">enable</span> <span class="nt">--now</span> containerd
+systemctl enable --now containerd
+install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/crictl /usr/bin/crictl
+install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubeadm /usr/bin/kubeadm
+install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubelet /usr/bin/kubelet
+install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubectl /usr/bin/kubectl
+sudo mkdir -p /etc/systemd/system/kubelet.service.d
+install -m 644 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubelet.service /etc/systemd/system/kubelet.service
+install -m 644 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+# 启动
+systemctl daemon-reload
+systemctl enable --now kubelet
+# 配置 cri
+cat &lt;&lt;EOF | tee /etc/crictl.yaml
+runtime-endpoint: unix:///var/run/containerd/containerd.sock
+image-endpoint: unix:///var/run/containerd/containerd.sock
+EOF
+# 导入镜像
+LIST=</span><span class="si">$(</span>
+    <span class="nb">cd</span> <span class="nv">$PROJECT_HOME</span>/images <span class="o">||</span> <span class="nb">exit
+    ls</span> <span class="k">*</span>
+<span class="si">)</span><span class="sh">
+for IMAGE in </span><span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="sh">; do
+    # Containerd 需要指定命名空间
+    ctr -n=k8s.io image import "</span><span class="nv">$PROJECT_HOME</span><span class="sh">"/images/"</span><span class="nv">$IMAGE</span><span class="sh">"
+done
+</span><span class="no">EOD
+
+</span><span class="c"># 压缩软件包</span>
+<span class="nv">TGZ_PATH</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>
+    <span class="nb">cd</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="o">||</span> <span class="nb">exit </span>1
+    <span class="c"># shellcheck disable=SC2046</span>
+    <span class="nb">dirname</span> <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
+<span class="si">)</span><span class="s2">/k8s.tgz"</span>
+<span class="o">(</span>
+    <span class="c"># shellcheck disable=SC2046</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="nv">$DOWNLOAD_PATH</span><span class="si">)</span> <span class="o">||</span> <span class="nb">exit</span>
+    <span class="c"># shellcheck disable=SC2046</span>
+    <span class="nb">tar </span>zcf <span class="s2">"</span><span class="nv">$TGZ_PATH</span><span class="s2">"</span> <span class="si">$(</span><span class="nb">basename</span> <span class="nv">$DOWNLOAD_PATH</span><span class="si">)</span>
+<span class="o">)</span>
+<span class="nb">echo</span> <span class="s2">"导出压缩文件位置：</span><span class="nv">$TGZ_PATH</span><span class="s2">."</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -569,9 +768,9 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 </details>
 </div>
 <div class="sect2">
-<h3 id="_部署_kubeadmkubelet_和_kubectl">部署 kubeadm、kubelet 和 kubectl</h3>
+<h3 id="_部署容器运行时_和_kubeadmkubelet_和_kubectl">部署容器运行时 和 kubeadm、kubelet 和 kubectl</h3>
 <div class="paragraph">
-<p>你需要在每台机器上部署以下的软件包：</p>
+<p>Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 <a target="_blank" href="https://containerd.io/">containerd</a>。你需要在每台机器上部署以下的软件包：</p>
 </div>
 <div class="ulist">
 <ul>
@@ -586,164 +785,29 @@ systemctl <span class="nb">enable</span> <span class="nt">--now</span> container
 </li>
 </ul>
 </div>
-<details>
-<summary class="title">点击展开部署命令</summary>
-<div class="content">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+你需要将上一步生成的 <code>k8s.tgz</code> 上传到目标服务器上。
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-</pre></td><td class="code"><pre><span class="c"># Kubernetes 版本</span>
-<span class="nv">KUBEADM_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.3"</span>
-<span class="nv">CRICTL_RELEASE</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
-<span class="c"># 系统架构</span>
-<span class="nv">ARCH</span><span class="o">=</span><span class="s2">"amd64"</span>
-<span class="c"># Kubernetes 下载目录</span>
-<span class="nv">KUBERNETES_BIN_URL</span><span class="o">=</span><span class="s2">"https://storage.googleapis.com/kubernetes-release/release"</span>
-<span class="c"># Kubernetes 发布工具版本</span>
-<span class="nv">KUBE_RELEASE_VERSION</span><span class="o">=</span><span class="s2">"v0.14.0"</span>
-<span class="c">#下载目录</span>
-<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/kubernetes
-<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
-<span class="nv">IMAGE_PATH</span><span class="o">=</span><span class="nv">$DOWNLOAD_PATH</span>/images
-<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$IMAGE_PATH</span>
-
-<span class="c"># 准备环境</span>
-wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubeadm <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
-wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubelet <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet
-wget <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubectl <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubectl
-wget https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$CRICTL_RELEASE</span>/crictl-<span class="nv">$CRICTL_RELEASE</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
-wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service
-wget <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubeadm/10-kubeadm.conf"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf
-<span class="nb">chmod</span> +x <span class="nv">$DOWNLOAD_PATH</span>/kubeadm
-<span class="c"># 下载镜像</span>
-save_image<span class="o">()</span> <span class="o">{</span>
-    docker pull <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-    <span class="c"># shellcheck disable=SC2001</span>
-    docker save <span class="nt">-o</span> <span class="nv">$IMAGE_PATH</span>/<span class="s2">"</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> | <span class="nb">sed </span>s@/@-@g<span class="si">)</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span>
-<span class="o">}</span>
-<span class="c"># 导入默认镜像</span>
-<span class="nv">IFS</span><span class="o">=</span><span class="s2">" "</span> <span class="nb">read</span> <span class="nt">-r</span> <span class="nt">-a</span> LIST <span class="o">&lt;&lt;&lt;</span><span class="s2">"</span><span class="si">$(</span><span class="nv">HTTP_PROXY</span><span class="o">=</span>no <span class="nv">HTTPS_PROXY</span><span class="o">=</span>no <span class="nv">$DOWNLOAD_PATH</span>/kubeadm config images list 2&gt;/dev/null | xargs <span class="nb">echo</span><span class="si">)</span><span class="s2">"</span>
-<span class="c"># shellcheck disable=SC2128</span>
-<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
-    </span>save_image <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
-<span class="k">done</span>
-
-<span class="c"># 导入自定义镜像</span>
-save_image <span class="s2">"k8s.gcr.io/pause:3.6"</span>
-save_image <span class="s2">"rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"</span>
-save_image <span class="s2">"rancher/mirrored-flannelcni-flannel:v0.18.1"</span>
-
-<span class="c"># 安装</span>
-<span class="nb">tar</span> <span class="nt">-C</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
-<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/crictl /usr/bin/crictl
-<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/kubeadm /usr/bin/kubeadm
-<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/kubelet /usr/bin/kubelet
-<span class="nb">install</span> <span class="nt">-m</span> 755 <span class="nv">$DOWNLOAD_PATH</span>/kubectl /usr/bin/kubectl
-<span class="nb">sudo mkdir</span> <span class="nt">-p</span> /etc/systemd/system/kubelet.service.d
-<span class="nb">install</span> <span class="nt">-m</span> 644 <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service /etc/systemd/system/kubelet.service
-<span class="nb">install</span> <span class="nt">-m</span> 644 <span class="nv">$DOWNLOAD_PATH</span>/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-
-<span class="c"># 启动</span>
-systemctl daemon-reload
-systemctl <span class="nb">enable</span> <span class="nt">--now</span> kubelet
-
-<span class="c"># 配置 cri</span>
-<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee /etc/crictl.yaml
-runtime-endpoint: unix:///var/run/containerd/containerd.sock
-image-endpoint: unix:///var/run/containerd/containerd.sock
-</span><span class="no">EOF
-
-</span><span class="c"># 导入镜像</span>
-<span class="c"># shellcheck disable=SC2178</span>
-<span class="nv">LIST</span><span class="o">=</span><span class="si">$(</span>
-    <span class="nb">cd</span> <span class="nv">$IMAGE_PATH</span> <span class="o">||</span> <span class="nb">exit</span>
-    <span class="c"># shellcheck disable=SC2035</span>
-    <span class="nb">ls</span> <span class="k">*</span>
-<span class="si">)</span>
-<span class="k">for </span>IMAGE <span class="k">in</span> <span class="k">${</span><span class="nv">LIST</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do</span>
-    <span class="c"># Containerd 需要指定命名空间</span>
-    ctr <span class="nt">-n</span><span class="o">=</span>k8s.io image import <span class="nv">$IMAGE_PATH</span>/<span class="nv">$IMAGE</span>
-<span class="k">done</span>
-
-<span class="c"># 注意，如果安装失败可能是 pause  镜像问题，导入 3.6 版本镜像即可。</span>
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+3
+</pre></td><td class="code"><pre><span class="nb">tar </span>zxvf k8s.tgz
+<span class="nb">cd </span>k8s <span class="o">||</span> <span class="nb">exit </span>1
+bash <span class="nt">-x</span> install.sh
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
-</div>
-</details>
 </div>
 <div class="sect2">
 <h3 id="_配置_containerd_网络代理_可选">配置 <code>containerd</code> 网络代理 (可选)</h3>
@@ -790,33 +854,6 @@ systemctl restart containerd.service
 </pre></td><td class="code"><pre><span class="nb">rm</span> /etc/systemd/system/containerd.service.d/http_proxy.conf <span class="o">||</span>:
 systemctl daemon-reload
 systemctl restart containerd.service
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_预下载运行时镜像_可选">预下载运行时镜像 (可选)</h3>
-<div class="paragraph">
-<p>为防止因网络问题导致镜像下载失败致使 <code>kubernetes</code> 部署失败，可将所有 <code>kubernetes</code> 所用到的镜像预下载。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="code"><pre><span class="c"># 获取kubernetes需要的镜像列表</span>
-<span class="nv">LIST</span><span class="o">=</span><span class="si">$(</span>kubeadm config images list<span class="si">)</span>
-<span class="k">for </span>IMAGE <span class="k">in</span> <span class="nv">$LIST</span><span class="p">;</span> <span class="k">do</span>
-    <span class="c"># 注意：环境变量 HTTP_PROXY 不会生效，详情可查看 https://github.com/kubernetes-sigs/cri-tools/issues/336</span>
-    crictl pull <span class="s2">"</span><span class="nv">$IMAGE</span><span class="s2">"</span>
-<span class="k">done</span>
-<span class="c"># 验证镜像是否全部下载</span>
-crictl images
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -893,6 +930,18 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 </div>
 <div class="sect2">
 <h3 id="_部署控制节点">部署控制节点</h3>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<code>kubernetes</code> 需要 <code>conntrack</code> 软件包。
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>控制节点部署在 <code>dragon-k8s-master</code> 机器上，SSH 连接机器，执行以下命令：</p>
 </div>
@@ -944,11 +993,11 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 <p>kubernetes 控制节点部署完成后，需要配置CNI网络插件实现各个节点之间的通信。</p>
 </div>
 <details>
-<summary class="title">点击展开部署命令</summary>
+<summary class="title">点击展开部署配置</summary>
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1196,262 +1245,254 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 246
 247
 248
-249
-250
-251
-252
-</pre></td><td class="code"><pre><span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="sh">"</span><span class="no">EOF</span><span class="sh">" &gt; /tmp/kube-flannel.yml
----
-apiVersion: policy/v1beta1
-kind: PodSecurityPolicy
-metadata:
-  name: psp.flannel.unprivileged
-  annotations:
-    seccomp.security.alpha.kubernetes.io/allowedProfileNames: docker/default
-    seccomp.security.alpha.kubernetes.io/defaultProfileName: docker/default
-    apparmor.security.beta.kubernetes.io/allowedProfileNames: runtime/default
-    apparmor.security.beta.kubernetes.io/defaultProfileName: runtime/default
-spec:
-  privileged: false
-  volumes:
-    - configMap
-    - secret
-    - emptyDir
-    - hostPath
-  allowedHostPaths:
-    - pathPrefix: "/etc/cni/net.d"
-    - pathPrefix: "/etc/kube-flannel"
-    - pathPrefix: "/run/flannel"
-  readOnlyRootFilesystem: false
-  # Users and groups
-  runAsUser:
-    rule: RunAsAny
-  supplementalGroups:
-    rule: RunAsAny
-  fsGroup:
-    rule: RunAsAny
-  # Privilege Escalation
-  allowPrivilegeEscalation: false
-  defaultAllowPrivilegeEscalation: false
-  # Capabilities
-  allowedCapabilities: [ 'NET_ADMIN', 'NET_RAW' ]
-  defaultAddCapabilities: [ ]
-  requiredDropCapabilities: [ ]
-  # Host namespaces
-  hostPID: false
-  hostIPC: false
-  hostNetwork: true
-  hostPorts:
-    - min: 0
-      max: 65535
-  # SELinux
-  seLinux:
-    # SELinux is unused in CaaSP
-    rule: 'RunAsAny'
----
-kind: ClusterRole
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: flannel
-rules:
-  - apiGroups: [ 'extensions' ]
-    resources: [ 'podsecuritypolicies' ]
-    verbs: [ 'use' ]
-    resourceNames: [ 'psp.flannel.unprivileged' ]
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - get
-  - apiGroups:
-      - ""
-    resources:
-      - nodes
-    verbs:
-      - list
-      - watch
-  - apiGroups:
-      - ""
-    resources:
-      - nodes/status
-    verbs:
-      - patch
----
-kind: ClusterRoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: flannel
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: flannel
-subjects:
-  - kind: ServiceAccount
-    name: flannel
-    namespace: kube-system
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: flannel
-  namespace: kube-system
----
-kind: ConfigMap
-apiVersion: v1
-metadata:
-  name: kube-flannel-cfg
-  namespace: kube-system
-  labels:
-    tier: node
-    app: flannel
-data:
-  cni-conf.json: |
-    {
-      "name": "cbr0",
-      "cniVersion": "0.3.1",
-      "plugins": [
-        {
-          "type": "flannel",
-          "delegate": {
-            "hairpinMode": true,
-            "isDefaultGateway": true
-          }
-        },
-        {
-          "type": "portmap",
-          "capabilities": {
-            "portMappings": true
-          }
-        }
-      ]
-    }
-  net-conf.json: |
-    {
-      "Network": "10.254.0.0/16",
-      "Backend": {
-        "Type": "wireguard"
-      }
-    }
----
-apiVersion: apps/v1
-kind: DaemonSet
-metadata:
-  name: kube-flannel-ds
-  namespace: kube-system
-  labels:
-    tier: node
-    app: flannel
-spec:
-  selector:
-    matchLabels:
-      app: flannel
-  template:
-    metadata:
-      labels:
-        tier: node
-        app: flannel
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/os
-                    operator: In
-                    values:
-                      - linux
-      hostNetwork: true
-      priorityClassName: system-node-critical
-      tolerations:
-        - operator: Exists
-          effect: NoSchedule
-      serviceAccountName: flannel
-      initContainers:
-        - name: install-cni-plugin
-          #image: flannelcni/flannel-cni-plugin:v1.1.0 for ppc64le and mips64le (dockerhub limitations may apply)
-          image: rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0
-          command:
-            - cp
-          args:
-            - -f
-            - /flannel
-            - /opt/cni/bin/flannel
-          volumeMounts:
-            - name: cni-plugin
-              mountPath: /opt/cni/bin
-        - name: install-cni
-          #image: flannelcni/flannel:v0.18.1 for ppc64le and mips64le (dockerhub limitations may apply)
-          image: rancher/mirrored-flannelcni-flannel:v0.18.1
-          command:
-            - cp
-          args:
-            - -f
-            - /etc/kube-flannel/cni-conf.json
-            - /etc/cni/net.d/10-flannel.conflist
-          volumeMounts:
-            - name: cni
-              mountPath: /etc/cni/net.d
-            - name: flannel-cfg
-              mountPath: /etc/kube-flannel/
-      containers:
-        - name: kube-flannel
-          #image: flannelcni/flannel:v0.18.1 for ppc64le and mips64le (dockerhub limitations may apply)
-          image: rancher/mirrored-flannelcni-flannel:v0.18.1
-          command:
-            - /opt/bin/flanneld
-          args:
-            - --ip-masq
-            - --kube-subnet-mgr
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "50Mi"
-            limits:
-              cpu: "100m"
-              memory: "50Mi"
-          securityContext:
-            privileged: false
-            capabilities:
-              add: [ "NET_ADMIN", "NET_RAW" ]
-          env:
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: EVENT_QUEUE_DEPTH
-              value: "5000"
-          volumeMounts:
-            - name: run
-              mountPath: /run/flannel
-            - name: flannel-cfg
-              mountPath: /etc/kube-flannel/
-            - name: xtables-lock
-              mountPath: /run/xtables.lock
-      volumes:
-        - name: run
-          hostPath:
-            path: /run/flannel
-        - name: cni-plugin
-          hostPath:
-            path: /opt/cni/bin
-        - name: cni
-          hostPath:
-            path: /etc/cni/net.d
-        - name: flannel-cfg
-          configMap:
-            name: kube-flannel-cfg
-        - name: xtables-lock
-          hostPath:
-            path: /run/xtables.lock
-            type: FileOrCreate
-</span><span class="no">EOF
-</span>kubectl apply <span class="nt">-f</span> /tmp/kube-flannel.yml
-kubectl get pods <span class="nt">--all-namespaces</span>
+</pre></td><td class="code"><pre><span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">policy/v1beta1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PodSecurityPolicy</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">psp.flannel.unprivileged</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">seccomp.security.alpha.kubernetes.io/allowedProfileNames</span><span class="pi">:</span> <span class="s">docker/default</span>
+    <span class="na">seccomp.security.alpha.kubernetes.io/defaultProfileName</span><span class="pi">:</span> <span class="s">docker/default</span>
+    <span class="na">apparmor.security.beta.kubernetes.io/allowedProfileNames</span><span class="pi">:</span> <span class="s">runtime/default</span>
+    <span class="na">apparmor.security.beta.kubernetes.io/defaultProfileName</span><span class="pi">:</span> <span class="s">runtime/default</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">privileged</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">volumes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">configMap</span>
+    <span class="pi">-</span> <span class="s">secret</span>
+    <span class="pi">-</span> <span class="s">emptyDir</span>
+    <span class="pi">-</span> <span class="s">hostPath</span>
+  <span class="na">allowedHostPaths</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">pathPrefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/cni/net.d"</span>
+    <span class="pi">-</span> <span class="na">pathPrefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/kube-flannel"</span>
+    <span class="pi">-</span> <span class="na">pathPrefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/run/flannel"</span>
+  <span class="na">readOnlyRootFilesystem</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="c1"># Users and groups</span>
+  <span class="na">runAsUser</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
+  <span class="na">supplementalGroups</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
+  <span class="na">fsGroup</span><span class="pi">:</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
+  <span class="c1"># Privilege Escalation</span>
+  <span class="na">allowPrivilegeEscalation</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">defaultAllowPrivilegeEscalation</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="c1"># Capabilities</span>
+  <span class="na">allowedCapabilities</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">NET_ADMIN'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">NET_RAW'</span> <span class="pi">]</span>
+  <span class="na">defaultAddCapabilities</span><span class="pi">:</span> <span class="pi">[</span> <span class="pi">]</span>
+  <span class="na">requiredDropCapabilities</span><span class="pi">:</span> <span class="pi">[</span> <span class="pi">]</span>
+  <span class="c1"># Host namespaces</span>
+  <span class="na">hostPID</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">hostIPC</span><span class="pi">:</span> <span class="no">false</span>
+  <span class="na">hostNetwork</span><span class="pi">:</span> <span class="no">true</span>
+  <span class="na">hostPorts</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">min</span><span class="pi">:</span> <span class="m">0</span>
+      <span class="na">max</span><span class="pi">:</span> <span class="m">65535</span>
+  <span class="c1"># SELinux</span>
+  <span class="na">seLinux</span><span class="pi">:</span>
+    <span class="c1"># SELinux is unused in CaaSP</span>
+    <span class="na">rule</span><span class="pi">:</span> <span class="s1">'</span><span class="s">RunAsAny'</span>
+<span class="nn">---</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRole</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
+<span class="na">rules</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">extensions'</span> <span class="pi">]</span>
+    <span class="na">resources</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">podsecuritypolicies'</span> <span class="pi">]</span>
+    <span class="na">verbs</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">use'</span> <span class="pi">]</span>
+    <span class="na">resourceNames</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">psp.flannel.unprivileged'</span> <span class="pi">]</span>
+  <span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">pods</span>
+    <span class="na">verbs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">get</span>
+  <span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">nodes</span>
+    <span class="na">verbs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">list</span>
+      <span class="pi">-</span> <span class="s">watch</span>
+  <span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">"</span>
+    <span class="na">resources</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">nodes/status</span>
+    <span class="na">verbs</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">patch</span>
+<span class="nn">---</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRoleBinding</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io/v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
+<span class="na">roleRef</span><span class="pi">:</span>
+  <span class="na">apiGroup</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io</span>
+  <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRole</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
+<span class="na">subjects</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
+    <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+<span class="nn">---</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel-cfg</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">node</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flannel</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">cni-conf.json</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">{</span>
+      <span class="s">"name": "cbr0",</span>
+      <span class="s">"cniVersion": "0.3.1",</span>
+      <span class="s">"plugins": [</span>
+        <span class="s">{</span>
+          <span class="s">"type": "flannel",</span>
+          <span class="s">"delegate": {</span>
+            <span class="s">"hairpinMode": true,</span>
+            <span class="s">"isDefaultGateway": true</span>
+          <span class="s">}</span>
+        <span class="s">},</span>
+        <span class="s">{</span>
+          <span class="s">"type": "portmap",</span>
+          <span class="s">"capabilities": {</span>
+            <span class="s">"portMappings": true</span>
+          <span class="s">}</span>
+        <span class="s">}</span>
+      <span class="s">]</span>
+    <span class="s">}</span>
+  <span class="na">net-conf.json</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">{</span>
+      <span class="s">"Network": "10.254.0.0/16",</span>
+      <span class="s">"Backend": {</span>
+        <span class="s">"Type": "wireguard"</span>
+      <span class="s">}</span>
+    <span class="s">}</span>
+<span class="s">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel-ds</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">tier</span><span class="pi">:</span> <span class="s">node</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flannel</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">flannel</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">tier</span><span class="pi">:</span> <span class="s">node</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">flannel</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">affinity</span><span class="pi">:</span>
+        <span class="na">nodeAffinity</span><span class="pi">:</span>
+          <span class="na">requiredDuringSchedulingIgnoredDuringExecution</span><span class="pi">:</span>
+            <span class="na">nodeSelectorTerms</span><span class="pi">:</span>
+              <span class="pi">-</span> <span class="na">matchExpressions</span><span class="pi">:</span>
+                  <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">kubernetes.io/os</span>
+                    <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
+                    <span class="na">values</span><span class="pi">:</span>
+                      <span class="pi">-</span> <span class="s">linux</span>
+      <span class="na">hostNetwork</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">priorityClassName</span><span class="pi">:</span> <span class="s">system-node-critical</span>
+      <span class="na">tolerations</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+          <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+      <span class="na">serviceAccountName</span><span class="pi">:</span> <span class="s">flannel</span>
+      <span class="na">initContainers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">install-cni-plugin</span>
+          <span class="c1">#image: flannelcni/flannel-cni-plugin:v1.1.0 for ppc64le and mips64le (dockerhub limitations may apply)</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0</span>
+          <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">cp</span>
+          <span class="na">args</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">-f</span>
+            <span class="pi">-</span> <span class="s">/flannel</span>
+            <span class="pi">-</span> <span class="s">/opt/cni/bin/flannel</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cni-plugin</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/opt/cni/bin</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">install-cni</span>
+          <span class="c1">#image: flannelcni/flannel:v0.18.1 for ppc64le and mips64le (dockerhub limitations may apply)</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">rancher/mirrored-flannelcni-flannel:v0.18.1</span>
+          <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">cp</span>
+          <span class="na">args</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">-f</span>
+            <span class="pi">-</span> <span class="s">/etc/kube-flannel/cni-conf.json</span>
+            <span class="pi">-</span> <span class="s">/etc/cni/net.d/10-flannel.conflist</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cni</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/cni/net.d</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">flannel-cfg</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/kube-flannel/</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel</span>
+          <span class="c1">#image: flannelcni/flannel:v0.18.1 for ppc64le and mips64le (dockerhub limitations may apply)</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">rancher/mirrored-flannelcni-flannel:v0.18.1</span>
+          <span class="na">command</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">/opt/bin/flanneld</span>
+          <span class="na">args</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">--ip-masq</span>
+            <span class="pi">-</span> <span class="s">--kube-subnet-mgr</span>
+          <span class="na">resources</span><span class="pi">:</span>
+            <span class="na">requests</span><span class="pi">:</span>
+              <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">100m"</span>
+              <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">50Mi"</span>
+            <span class="na">limits</span><span class="pi">:</span>
+              <span class="na">cpu</span><span class="pi">:</span> <span class="s2">"</span><span class="s">100m"</span>
+              <span class="na">memory</span><span class="pi">:</span> <span class="s2">"</span><span class="s">50Mi"</span>
+          <span class="na">securityContext</span><span class="pi">:</span>
+            <span class="na">privileged</span><span class="pi">:</span> <span class="no">false</span>
+            <span class="na">capabilities</span><span class="pi">:</span>
+              <span class="na">add</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">NET_ADMIN"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">NET_RAW"</span> <span class="pi">]</span>
+          <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POD_NAME</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">fieldRef</span><span class="pi">:</span>
+                  <span class="na">fieldPath</span><span class="pi">:</span> <span class="s">metadata.name</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POD_NAMESPACE</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">fieldRef</span><span class="pi">:</span>
+                  <span class="na">fieldPath</span><span class="pi">:</span> <span class="s">metadata.namespace</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">EVENT_QUEUE_DEPTH</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5000"</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">run</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/run/flannel</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">flannel-cfg</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/kube-flannel/</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">xtables-lock</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/run/xtables.lock</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">run</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/run/flannel</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cni-plugin</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/opt/cni/bin</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cni</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/etc/cni/net.d</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">flannel-cfg</span>
+          <span class="na">configMap</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel-cfg</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">xtables-lock</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/run/xtables.lock</span>
+            <span class="na">type</span><span class="pi">:</span> <span class="s">FileOrCreate</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1756,11 +1797,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月27日 23时28分37秒 |
+        最后编辑于 2022年07月28日 10时53分08秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3de490b3c135c7a6cc0bdb205c747d0bb326f2ed//00-deploy-global/01-deploy-kubernetes-google/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/3de490b3c135c7a6cc0bdb205c747d0bb326f2ed/"
-            target="_blank">#bb5c1d8</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17//00-deploy-global/01-deploy-kubernetes-google/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17/"
+            target="_blank">#99a1973</a>
 </div>
 </body>
 </html>
