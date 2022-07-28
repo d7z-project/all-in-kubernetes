@@ -24,7 +24,7 @@ kubernetes 安装后可选择一个节点的某个目录作为集群数据存储
 
 [source%linenums,yaml]
 ----
-include::./conf/00-nfs-rbac.yaml[]
+include::./conf/00-ganesha-rbac.yaml[]
 ----
 
 ====
@@ -39,7 +39,7 @@ include::./conf/00-nfs-rbac.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/01-local-storage.yaml[]
+include::./conf/01-ganesha-local-storage.yaml[]
 ----
 
 ====
@@ -54,7 +54,7 @@ include::./conf/01-local-storage.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/02-nfs-server.yaml[]
+include::./conf/02-ganesha-nfs-server.yaml[]
 ----
 
 ====
