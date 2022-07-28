@@ -68,7 +68,7 @@ include::conf/04-ldap-app.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl exec -it -n core-system pods/sts-ldap-system-0 -- /bin/bash
+kubectl exec -it -n core-system pods/sts-ldap-0 -- /bin/bash
 ----
 
 === 导入 MemberOf 配置
