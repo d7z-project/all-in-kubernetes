@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: cloudflare-api-token-secret
+  name: secret-cert-manager-cloudflare-api-token
   namespace: cert-manager
 type: Opaque
 stringData:

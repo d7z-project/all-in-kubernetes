@@ -55,7 +55,7 @@ WARNING: 此次测试需要有一个域名，同时需要 Cert-Manager 支持此
 
 [source%linenums,yaml]
 ----
-include::./conf/02-dnsapi-cloudflare-apikey.yaml[]
+include::./conf/02-cloudflare-apikey.yaml[]
 ----
 
 .其中:
