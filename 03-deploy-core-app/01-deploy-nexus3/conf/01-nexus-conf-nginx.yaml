@@ -4,7 +4,7 @@ metadata:
   name: conf-nexus-nginx
   namespace: core-app
   labels:
-    type: nexus
+    app: nexus
 data:
   default.conf: |
     server_tokens off;

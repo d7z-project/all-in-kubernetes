@@ -75,6 +75,15 @@ include::conf/04-nexus-ingress.yaml[]
 
 安装完成后，你需要对 Nexus3 进行一些配置。
 
+=== 查看 Nexus3 部署情况
+
+使用以下命令查看 `nexus3` 部署状态。
+
+[source%linenums,bash]
+----
+kubectl get pods,configmaps,secrets,statefulsets.apps,service,ingress  -n core-app -l app=nexus
+----
+
 === 获取管理员密码
 
 `Nexus3` 密码在程序第一次启动时自动生成 ，可使用以下命令获取密码。
