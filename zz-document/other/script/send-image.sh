@@ -33,6 +33,7 @@ rm -f /tmp/import-script-"$USER" || :
 echo "#!/bin/bash" >/tmp/import-script-"$USER"
 for LOCAL_FILE in ${FILES[*]}; do
     echo "ctr -n=k8s.io image import $LOCAL_FILE" >>/tmp/import-script-"$USER"
+    echo "/bin/rm -f $LOCAL_FILE" >>/tmp/import-script-"$USER"
 done
 
 echo "开始传输文件"
@@ -41,3 +42,5 @@ for REMOTE_ADDRESS in ${REMOTES[*]}; do
     scp /tmp/import-script-"$USER" ${FILES[*]} "$REMOTE_ADDRESS":/tmp/
     ssh "$REMOTE_ADDRESS" "bash /tmp/import-script-$USER"
 done
+
+/bin/rm ${FILES[*]}

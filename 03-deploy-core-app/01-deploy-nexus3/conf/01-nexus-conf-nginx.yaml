@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nexus3-nginx-conf
+  name: conf-nexus-nginx
   namespace: core-app
   labels:
-    type: nexus3
+    app: nexus
 data:
   default.conf: |
     server_tokens off;

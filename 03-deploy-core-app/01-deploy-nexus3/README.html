@@ -451,12 +451,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_创建_ingress_映射">创建 Ingress 映射</a></li>
 <li><a href="#_管理_nexus3">管理 Nexus3</a>
 <ul class="sectlevel2">
+<li><a href="#_查看_nexus3_部署情况">查看 Nexus3 部署情况</a></li>
 <li><a href="#_获取管理员密码">获取管理员密码</a></li>
 <li><a href="#_绑定_ldap">绑定 LDAP</a></li>
 <li><a href="#_绑定角色权限">绑定角色权限</a>
 <ul class="sectlevel3">
 <li><a href="#_绑定管理员">绑定管理员</a></li>
 <li><a href="#_绑定docker用户组">绑定Docker用户组</a></li>
+<li><a href="#_绑定deploy用户组">绑定Deploy用户组</a></li>
 </ul>
 </li>
 <li><a href="#_创建_docker_仓库">创建 Docker 仓库</a></li>
@@ -478,7 +480,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_创建持久卷">创建持久卷</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>导入以下配置，创建持久卷;由于 Nexus 要存储 Docker 镜像和 Maven 编译结果以及 RPM/DEB 镜像包，可适当调大容量。</p>
+<p>导入以下配置，创建持久卷;由于 <strong>Nexus</strong> 要存储 <strong>Docker</strong> 镜像和 <strong>Maven</strong> 编译结果以及 <strong>RPM</strong>/<strong>DEB</strong> 镜像包，可适当调大容量。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -499,12 +501,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-nexus3-data</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-nexus-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
@@ -588,10 +590,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-nginx-conf</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-nexus-nginx</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">default.conf</span><span class="pi">:</span> <span class="pi">|</span>
     <span class="s">server_tokens off;</span>
@@ -716,50 +718,46 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 38
 39
 40
-41
-42
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-nexus</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-nexus</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">sonatype/nexus3:3.40.1</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-data</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/nexus-data</span>
           <span class="na">env</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">INSTALL4J_ADD_VM_PARAMS</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-Xms2703m</span><span class="nv"> </span><span class="s">-Xmx2703m</span><span class="nv"> </span><span class="s">-XX:MaxDirectMemorySize=2703m</span><span class="nv"> </span><span class="s">-Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-forward</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.21.1</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/conf.d/</span>
 
       <span class="na">volumes</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-data</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-data</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
-            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-nexus3-data</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-nexus-data</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
           <span class="na">configMap</span><span class="pi">:</span>
-            <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-nginx-conf</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-nexus-nginx</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -790,25 +788,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 15
 16
 17
-18
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus3</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-web</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-web</span>
       <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
       <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-docker</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-docker</span>
       <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
       <span class="na">port</span><span class="pi">:</span> <span class="m">81</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus3-server</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -863,10 +859,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-nexus3</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-nexus</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">nexus</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span> <i class="conum" data-value="1"></i><b>(1)</b>
@@ -876,7 +872,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">nexus.d7z.net</span>
         <span class="pi">-</span> <span class="s">registry.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">d7z-net-tls</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nexus.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
@@ -885,9 +881,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-web</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-web</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">registry.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
@@ -895,9 +891,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus3-docker</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-docker</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -919,6 +915,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p>安装完成后，你需要对 Nexus3 进行一些配置。</p>
 </div>
 <div class="sect2">
+<h3 id="_查看_nexus3_部署情况">查看 Nexus3 部署情况</h3>
+<div class="paragraph">
+<p>使用以下命令查看 <code>nexus3</code> 部署状态。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>kubectl get pods,configmaps,secrets,statefulsets.apps,service,ingress  <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nexus
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_获取管理员密码">获取管理员密码</h3>
 <div class="paragraph">
 <p><code>Nexus3</code> 密码在程序第一次启动时自动生成 ，可使用以下命令获取密码。</p>
@@ -926,7 +935,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-app pods/nexus3-server-0  <span class="nt">--container</span> nexus3-server  <span class="nt">--</span> <span class="nb">cat</span> /nexus-data/admin.password
+</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-app pods/sts-nexus-0  <span class="nt">--container</span> nexus  <span class="nt">--</span> <span class="nb">cat</span> /nexus-data/admin.password
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -951,9 +960,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>登陆 Nexus 后，访问 <code><a target="_blank" href="https://nexus.d7z.net/#admin/security/ldap" class="bare">https://nexus.d7z.net/#admin/security/ldap</a></code> ，添加一个 LDAP 服务。具体配置参加如下图片即可。</p>
 </div>
-<div class="paragraph">
-<p>在添加绑定前，你需要在 LDAP 下添加 <code>cn=docker,ou=groups,dc=d7z,dc=net</code> 的用户组，类型为 <code>groupOfNames</code> 。</p>
-</div>
 <div class="imageblock">
 <div class="content">
 <img src="images/01.a-bind-ldap.png" alt="01.a bind ldap">
@@ -961,7 +967,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">Figure 1. 配置LDAP连接</div>
 </div>
 <div class="paragraph">
-<p>其中，密码为 LDAP 用户 <code>service-account</code> 的密码。</p>
+<p>其中，密码为 LDAP 用户 <code>service-account</code> 的密码。点击按钮验证输入是否正确，验证完成后开始添加绑定。在添加绑定前，你需要在 <strong>LDAP</strong> 下添加 <code>cn=docker,ou=groups,dc=cluster,dc=local
+` 的角色，类型为 `groupOfNames</code> 。</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -975,7 +982,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="ldif"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>(|(memberOf=cn=admin,ou=groups,dc=d7z,dc=net)(memberOf=cn=docker,ou=groups,dc=d7z,dc=net))
+</pre></td><td class="code"><pre>(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1012,6 +1019,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="title">Figure 4. 绑定Docker角色</div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="_绑定deploy用户组">绑定Deploy用户组</h4>
+<div class="paragraph">
+<p>绑定Deploy角色的参考如下，注意配置权限：</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/02.c-bind-deploy-roles.png" alt="02.c bind deploy roles">
+</div>
+<div class="title">Figure 5. 绑定Deploy角色</div>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_创建_docker_仓库">创建 Docker 仓库</h3>
@@ -1022,7 +1041,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <img src="images/03.a-create-docker-hosted.png" alt="03.a create docker hosted">
 </div>
-<div class="title">Figure 5. 创建 Docker 本地仓库</div>
+<div class="title">Figure 6. 创建 Docker 本地仓库</div>
 </div>
 <div class="paragraph">
 <p>在创建时，需与之前 <code>Nginx</code> 配置的端口一致。创建完成后，继续创建镜像代理。选择 <code>docker (proxy)</code> ，依照如下配置填写。</p>
@@ -1031,7 +1050,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <img src="images/03.b-create-docker-proxy.png" alt="03.b create docker proxy">
 </div>
-<div class="title">Figure 6. 创建 Docker仓库代理</div>
+<div class="title">Figure 7. 创建 Docker仓库代理</div>
 </div>
 <div class="paragraph">
 <p>代理创建完成后，需要将两者进行归组。选择 <code>docker (group)</code> ,按如下配置填写。</p>
@@ -1040,7 +1059,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <img src="images/03.c-create-docker-group.png" alt="03.c create docker group">
 </div>
-<div class="title">Figure 7. 归组</div>
+<div class="title">Figure 8. 归组</div>
 </div>
 <div class="paragraph">
 <p>一切完成后，使用以下命令测试配置是否成功。</p>
@@ -1296,11 +1315,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月23日 09时45分37秒 |
+        最后编辑于 2022年07月28日 17时20分17秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428/"
-            target="_blank">#2e961fb</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550/"
+            target="_blank">#ec6dbe5</a>
 </div>
 </body>
 </html>

@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-nexus3
+  name: ingress-nexus
   namespace: core-app
   labels:
-    type: nexus
+    app: nexus
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
@@ -14,7 +14,7 @@ spec:
     - hosts:
         - nexus.d7z.net
         - registry.d7z.net
-      secretName: d7z-net-tls
+      secretName: tls-d7z-net
   rules:
     - host: nexus.d7z.net
       http:
@@ -23,9 +23,9 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nexus3
+                name: svc-nexus
                 port:
-                  name: nexus3-web
+                  name: nexus-web
     - host: registry.d7z.net
       http:
         paths:
@@ -33,6 +33,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: nexus3
+                name: svc-nexus
                 port:
-                  name: nexus3-docker
+                  name: nexus-docker

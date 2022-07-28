@@ -4,7 +4,7 @@ metadata:
   name: pvc-ldap-config
   namespace: core-system
   labels:
-    type: ldap
+    app: ldap
 spec:
   storageClassName: sc-nfs-share
   accessModes:
@@ -19,7 +19,7 @@ metadata:
   name: pvc-ldap-data
   namespace: core-system
   labels:
-    type: ldap
+    app: ldap
 spec:
   storageClassName: sc-nfs-share
   accessModes:

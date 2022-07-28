@@ -516,7 +516,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">annotations</span><span class="pi">:</span> <i class="conum" data-value="1"></i><b>(1)</b>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
@@ -525,7 +525,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">ldap-name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Kubernetes</span><span class="nv"> </span><span class="s">Cluster</span><span class="nv"> </span><span class="s">LDAP</span><span class="nv"> </span><span class="s">Server"</span>
   <span class="na">ldap-domain</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cluster.local'</span>
-  <span class="na">ldap-host</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service-ldap.core-system.svc.cluster.local'</span>
+  <span class="na">ldap-host</span><span class="pi">:</span> <span class="s1">'</span><span class="s">svc-ldap.core-system.svc.cluster.local'</span>
   <span class="na">ldap-url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ldap://svc-ldap.core-system.svc.cluster.local:389'</span>
   <span class="na">ldap-base-dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dc=cluster,dc=local'</span>
   <span class="na">ldap-user-ou</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=people,dc=cluster,dc=local'</span>
@@ -584,7 +584,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-admin</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="na">password</span><span class="pi">:</span> <span class="s">admin</span> <i class="conum" data-value="1"></i><b>(1)</b>
@@ -595,7 +595,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-service</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">annotations</span><span class="pi">:</span> <i class="conum" data-value="2"></i><b>(2)</b>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
@@ -684,7 +684,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-ldap-config</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
@@ -699,7 +699,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-ldap-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
@@ -814,28 +814,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 94
 95
 96
-97
-98
-99
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-ldap-system</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-ldap</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-core</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">service-ldap</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-ldap</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-core</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-core</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-core</span>
@@ -907,15 +902,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">service-ldap</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">svc-ldap</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">389</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-core</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1265,8 +1259,8 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月28日 13时21分25秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428//01-deploy-core-system/00-deploy-openldap/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550//01-deploy-core-system/00-deploy-openldap/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550/"
             target="_blank">#7b7d444</a>
 </div>
 </body>

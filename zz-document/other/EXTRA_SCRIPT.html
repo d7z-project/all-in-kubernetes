@@ -499,6 +499,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 41
 42
 43
+44
+45
+46
 </pre></td><td class="code"><pre><span class="c">#!/usr/bin/env bash</span>
 <span class="nv">REMOTE_ADDRESSES</span><span class="o">=</span><span class="nv">$1</span>
 <span class="nv">IMAGES_NAME</span><span class="o">=</span><span class="nv">$2</span>
@@ -534,6 +537,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="nb">echo</span> <span class="s2">"#!/bin/bash"</span> <span class="o">&gt;</span>/tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
 <span class="k">for </span>LOCAL_FILE <span class="k">in</span> <span class="k">${</span><span class="nv">FILES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
     </span><span class="nb">echo</span> <span class="s2">"ctr -n=k8s.io image import </span><span class="nv">$LOCAL_FILE</span><span class="s2">"</span> <span class="o">&gt;&gt;</span>/tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
+    <span class="nb">echo</span> <span class="s2">"/bin/rm -f </span><span class="nv">$LOCAL_FILE</span><span class="s2">"</span> <span class="o">&gt;&gt;</span>/tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span>
 <span class="k">done
 
 </span><span class="nb">echo</span> <span class="s2">"开始传输文件"</span>
@@ -542,6 +546,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     scp /tmp/import-script-<span class="s2">"</span><span class="nv">$USER</span><span class="s2">"</span> <span class="k">${</span><span class="nv">FILES</span><span class="p">[*]</span><span class="k">}</span> <span class="s2">"</span><span class="nv">$REMOTE_ADDRESS</span><span class="s2">"</span>:/tmp/
     ssh <span class="s2">"</span><span class="nv">$REMOTE_ADDRESS</span><span class="s2">"</span> <span class="s2">"bash /tmp/import-script-</span><span class="nv">$USER</span><span class="s2">"</span>
 <span class="k">done</span>
+
+/bin/rm <span class="k">${</span><span class="nv">FILES</span><span class="p">[*]</span><span class="k">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -779,8 +785,8 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月22日 17时52分12秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428//zz-document/other/EXTRA_SCRIPT.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550//zz-document/other/EXTRA_SCRIPT.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550/"
             target="_blank">#36440f7</a>
 </div>
 </body>

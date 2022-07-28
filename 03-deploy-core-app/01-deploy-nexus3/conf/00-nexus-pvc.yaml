@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-nexus3-data
+  name: pvc-nexus-data
   namespace: core-app
   labels:
-    type: nexus3
+    app: nexus
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:
