@@ -6,13 +6,17 @@
 :toclevels: 4
 :source-highlighter: rouge
 
+== 说明
+
 项目地址：link:https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner[nfs-ganesha-server-and-external-provisioner]
 
 kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
 
+安装时需要拉取镜像 `k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0`,同时需要集群上每个节点安装有 `nfs-common` 软件包。
+
 == 导入 RBAC 规则和初始化
 
-在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 `k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0`,同时需要集群上每个节点安装有 `nfs-common` 软件包。
+在开始前需要导入RBAC规则和初始化配置。
 
 .点击展开部署命令
 [%collapsible]
