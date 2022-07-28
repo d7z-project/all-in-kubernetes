@@ -10,7 +10,7 @@ metadata:
   name: ingress-nginx-controller
   namespace: ingress-nginx
   annotations:
-    metallb.universe.tf/allow-shared-ip: "primary-ip-share"
+    metallb.universe.tf/allow-shared-ip: "primary-ip-share" # <1>
 spec:
   ports:
     - appProtocol: http

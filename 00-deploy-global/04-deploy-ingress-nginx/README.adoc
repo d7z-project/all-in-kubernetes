@@ -39,6 +39,8 @@ crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 include::./conf/01-patch-service.yaml[]
 ----
 
+.其中
+<1> 移除了独占配置，并配置 IP 共享 key ( metallb 提供支持 )
 
 导入完成后使用以下命令查看结果：
 
@@ -47,7 +49,7 @@ include::./conf/01-patch-service.yaml[]
 kubectl get service,pods -n ingress-nginx -o wide
 ----
 
-如果一切无误，则会启动 `ingress-nginx-controller`,同时如果配置了 LoadBalancer ，则此时 LoadBalancer 也将绑定外部地址 。
+如果一切无误，则会启动 `ingress-nginx-controller`,同时如果配置了 *LoadBalancer* ，则此时 *LoadBalancer* 也将绑定外部地址 。
 
 == 测试
 
@@ -75,7 +77,7 @@ include::./script/t-00-test.sh[lines=2...-1]
 ----
 
 .其中：
-<1> 需要配置了LoadBalancer此命令才可用
+<1> 需要配置了 *LoadBalancer* 此命令才可用
 
 如果一切无误，则控制台会展示如下结果。
 
