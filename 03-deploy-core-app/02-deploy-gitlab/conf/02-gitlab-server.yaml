@@ -1,22 +1,20 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: gitlab-server
+  name: sts-gitlab
   namespace: core-app
   labels:
-    app: gitlab-server
-    type: gitlab
+    app: gitlab
 spec:
-  serviceName: gitlab-server
+  serviceName: svc-gitlab
   selector:
     matchLabels:
-      app: gitlab-server
+      app: gitlab
   replicas: 1
   template:
     metadata:
       labels:
-        app: gitlab-server
-        type: gitlab
+        app: gitlab
     spec:
       containers:
         - name: gitlab-redis
@@ -72,7 +70,7 @@ spec:
             - name: GITLAB_PAGES_ENABLED
               value: 'false'
             - name: DB_HOST
-              value: "postgres.core-middle.svc.cluster.local"
+              value: "svc-postgres.core-middle.svc.cluster.local"
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME
@@ -107,8 +105,6 @@ spec:
               value: "389"
             - name: LDAP_UID
               value: "uid"
-            - name: LDAP_BLOCK_AUTO_CREATED_USERS
-              value: "true"
             - name: LDAP_ACTIVE_DIRECTORY
               value: "false"
             - name: LDAP_METHOD

@@ -561,7 +561,7 @@ kubectl apply <span class="nt">-n</span> kube-system <span class="nt">-f</span> 
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">cloudflare-api-token-secret</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
@@ -622,7 +622,7 @@ kubectl apply <span class="nt">-n</span> kube-system <span class="nt">-f</span> 
           <span class="na">cloudflare</span><span class="pi">:</span>
             <span class="na">email</span><span class="pi">:</span> <span class="s">&lt;EMAIL&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
             <span class="na">apiTokenSecretRef</span><span class="pi">:</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">cloudflare-api-token-secret</span> <i class="conum" data-value="2"></i><b>(2)</b>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span> <i class="conum" data-value="2"></i><b>(2)</b>
               <span class="na">key</span><span class="pi">:</span> <span class="s">api-token</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -998,11 +998,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月28日 12时55分49秒 |
+        最后编辑于 2022年07月28日 20时51分04秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550//00-deploy-global/05-deploy-cert-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/ec6dbe565358321f114012ab7c3d0a658ee31550/"
-            target="_blank">#1220965</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/6e003ddbc74564d09426fc6ba92517cd039e8b6f//00-deploy-global/05-deploy-cert-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/6e003ddbc74564d09426fc6ba92517cd039e8b6f/"
+            target="_blank">#0cb087e</a>
 </div>
 </body>
 </html>

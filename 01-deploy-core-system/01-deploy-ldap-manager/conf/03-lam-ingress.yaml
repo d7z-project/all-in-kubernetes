@@ -24,4 +24,4 @@ spec:
               service:
                 name: svc-lam  # <4>
                 port:
-                  name: port
+                  name: web
