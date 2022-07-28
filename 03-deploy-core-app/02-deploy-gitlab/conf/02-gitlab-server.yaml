@@ -61,8 +61,6 @@ spec:
                 secretKeyRef:
                   name: secret-gitlab
                   key: otp-key-secrets
-            - name: GITLAB_TIMEZONE
-              value: Beijing
             - name: GITLAB_PACKAGES_ENABLED
               value: 'false'
             - name: GITLAB_REGISTRY_ENABLED
