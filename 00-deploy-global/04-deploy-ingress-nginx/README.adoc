@@ -6,7 +6,17 @@
 :toclevels: 4
 :source-highlighter: rouge
 
+== 说明
+
 项目地址：link:https://github.com/kubernetes/ingress-nginx/[ingress-nginx]
+
+Nginx Ingress Controller 需要以下镜像：
+
+[source%linenums,bash]
+----
+crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
+crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
+----
 
 == 导入配置
 
@@ -20,14 +30,6 @@
 ----
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
 
-----
-
-Nginx Ingress Controller 需要以下镜像：
-
-[source%linenums,bash]
-----
-crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
-crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 ----
 
 === 应用修复

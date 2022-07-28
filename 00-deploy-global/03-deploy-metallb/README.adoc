@@ -6,9 +6,19 @@
 :toclevels: 4
 :source-highlighter: rouge
 
+== 说明
+
 项目地址：link:https://metallb.universe.tf/[MetalLB]
 
 为了系统的扩展性和稳定性，我们需要将服务暴露到单独的 IP 上，避免使用 Kubernetes 集群IP。
+
+MetalLB 需要以下镜像：
+
+[source%linenums,bash]
+----
+crictl pull quay.io/metallb/controller:v0.13.3
+crictl pull quay.io/metallb/speaker:v0.13.3
+----
 
 == 环境准备
 
@@ -30,14 +40,6 @@ include::./script/00-ipvs-patch.sh[lines=3..-1]
 [source%linenums,bash]
 ----
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
-----
-
-MetalLB 需要以下镜像：
-
-[source%linenums,bash]
-----
-crictl pull quay.io/metallb/controller:v0.13.3
-crictl pull quay.io/metallb/speaker:v0.13.3
 ----
 
 导入完成后使用以下命令查看结果：
