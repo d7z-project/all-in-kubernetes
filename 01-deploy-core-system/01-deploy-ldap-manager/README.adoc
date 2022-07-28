@@ -6,7 +6,7 @@
 :toclevels: 4
 :source-highlighter: rouge
 
-== 简介
+== 说明
 
 此项目使用 `ldapaccountmanager` 作为 LDAP 管理器。此项目依赖镜像 `ldapaccountmanager/lam:8.0.1` 。
 
@@ -16,7 +16,7 @@
 
 [source%linenums,yaml]
 ----
-include::./conf/01-deploy-lam.yaml[]
+include::./conf/01-lam-deploy.yaml[]
 ----
 
 创建完成后使用 `kubectl get pods -n core-system` 查看创建结果。
@@ -27,7 +27,7 @@ include::./conf/01-deploy-lam.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/02-create-service.yaml[]
+include::./conf/02-lam-service.yaml[]
 ----
 
 创建完成后使用 `kubectl get svc -n core-system` 查看创建结果。
@@ -38,7 +38,7 @@ include::./conf/02-create-service.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/03-create-ingress.yaml[]
+include::./conf/03-lam-ingress.yaml[]
 ----
 
 . 其中

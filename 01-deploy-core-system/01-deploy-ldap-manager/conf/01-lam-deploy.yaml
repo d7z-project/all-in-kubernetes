@@ -1,24 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ldap-account-manager
+  name: deploy-lam
   namespace: core-system
   labels:
-    app: ldap-account-manager
-    type: ldap
+    app: lam
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ldap-account-manager
+      app: lam
   template:
     metadata:
       labels:
-        app: ldap-account-manager
-        type: ldap
+        app: lam
     spec:
       containers:
-        - name: ldap-account-manager
+        - name: lam
           image: ldapaccountmanager/lam:8.0.1
           ports:
             - containerPort: 80
