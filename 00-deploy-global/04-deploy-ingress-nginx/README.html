@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_导入配置">导入配置</a>
 <ul class="sectlevel2">
 <li><a href="#_导入资源">导入资源</a></li>
@@ -459,10 +460,23 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址：<a target="_blank" href="https://github.com/kubernetes/ingress-nginx/">ingress-nginx</a></p>
+</div>
+<div class="paragraph">
+<p>Nginx Ingress Controller 需要以下镜像：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre>crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
+crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -481,18 +495,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Nginx Ingress Controller 需要以下镜像：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-</pre></td><td class="code"><pre>crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
-crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1137,11 +1139,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月28日 10时53分08秒 |
+        最后编辑于 2022年07月28日 12时55分49秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17//00-deploy-global/04-deploy-ingress-nginx/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17/"
-            target="_blank">#99a1973</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d//00-deploy-global/04-deploy-ingress-nginx/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d/"
+            target="_blank">#1220965</a>
 </div>
 </body>
 </html>

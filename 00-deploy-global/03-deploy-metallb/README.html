@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_环境准备">环境准备</a></li>
 <li><a href="#_导入资源">导入资源</a></li>
 <li><a href="#_配置_loadbalancer_地址">配置 LoadBalancer 地址</a></li>
@@ -457,13 +458,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址：<a target="_blank" href="https://metallb.universe.tf/">MetalLB</a></p>
 </div>
 <div class="paragraph">
 <p>为了系统的扩展性和稳定性，我们需要将服务暴露到单独的 IP 上，避免使用 Kubernetes 集群IP。</p>
+</div>
+<div class="paragraph">
+<p>MetalLB 需要以下镜像：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre>crictl pull quay.io/metallb/controller:v0.13.3
+crictl pull quay.io/metallb/speaker:v0.13.3
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -514,18 +528,6 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>MetalLB 需要以下镜像：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-</pre></td><td class="code"><pre>crictl pull quay.io/metallb/controller:v0.13.3
-crictl pull quay.io/metallb/speaker:v0.13.3
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -958,11 +960,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月15日 00时44分35秒 |
+        最后编辑于 2022年07月28日 12时55分49秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17//00-deploy-global/03-deploy-metallb/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17/"
-            target="_blank">#84f7d5d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d//00-deploy-global/03-deploy-metallb/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d/"
+            target="_blank">#1220965</a>
 </div>
 </body>
 </html>

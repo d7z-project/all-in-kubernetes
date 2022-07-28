@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_导入_rbac_规则和初始化">导入 RBAC 规则和初始化</a></li>
 <li><a href="#_映射节点目录">映射节点目录</a></li>
 <li><a href="#_安装_nfs_server">安装 NFS Server</a></li>
@@ -456,7 +457,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址：<a target="_blank" href="https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner">nfs-ganesha-server-and-external-provisioner</a></p>
@@ -464,13 +466,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="paragraph">
 <p>kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。</p>
 </div>
+<div class="paragraph">
+<p>安装时需要拉取镜像 <code>k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0</code>,同时需要集群上每个节点安装有 <code>nfs-common</code> 软件包。</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_导入_rbac_规则和初始化">导入 RBAC 规则和初始化</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 <code>k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0</code>,同时需要集群上每个节点安装有 <code>nfs-common</code> 软件包。</p>
+<p>在开始前需要导入RBAC规则和初始化配置。</p>
 </div>
 <details>
 <summary class="title">点击展开部署命令</summary>
@@ -1560,11 +1565,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月15日 00时44分35秒 |
+        最后编辑于 2022年07月28日 11时01分26秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17//00-deploy-global/02.b-deploy-nfs-ganesha/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17/"
-            target="_blank">#84f7d5d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d//00-deploy-global/02.b-deploy-nfs-ganesha/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d/"
+            target="_blank">#8bbf202</a>
 </div>
 </body>
 </html>

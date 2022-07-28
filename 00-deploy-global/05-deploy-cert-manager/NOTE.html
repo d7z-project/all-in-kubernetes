@@ -522,7 +522,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">duration</span><span class="pi">:</span> <span class="s">876000h</span> <span class="c1"># 100 year</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">self-signed-issuer</span>
-  <span class="na">commonName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ca.pcloud.com"</span>
+  <span class="na">commonName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">PowerSI</span><span class="nv"> </span><span class="s">CA</span><span class="nv"> </span><span class="s">Certificate"</span>
   <span class="na">isCA</span><span class="pi">:</span> <span class="no">true</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -581,7 +581,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">cert-pcloud-com</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cert-powercloud-com</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">secretTemplate</span><span class="pi">:</span>
@@ -590,16 +590,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
-  <span class="na">secretName</span><span class="pi">:</span> <span class="s">pcloud-com-tls</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-powercloud-com</span>
   <span class="na">duration</span><span class="pi">:</span> <span class="s">8760h</span> <span class="c1"># 1y</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">self-issuer</span>
-  <span class="na">commonName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">ca.pcloud.com"</span>
+  <span class="na">commonName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">PowerSI</span><span class="nv"> </span><span class="s">CA</span><span class="nv"> </span><span class="s">Certificate"</span>
   <span class="na">dnsNames</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">pcloud.com</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pcloud.com'</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">admin.pcloud.com'</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.admin.pcloud.com'</span>
+    <span class="pi">-</span> <span class="s">powercloud.com</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.powercloud.com'</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">core.powercloud.com'</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.core.powercloud.com'</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -836,11 +836,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月22日 17时52分12秒 |
+        最后编辑于 2022年07月28日 12时55分49秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17//00-deploy-global/05-deploy-cert-manager/NOTE.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/99a1973473a4069554dedd984973d228590bfa17/"
-            target="_blank">#36440f7</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d//00-deploy-global/05-deploy-cert-manager/NOTE.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d/"
+            target="_blank">#1220965</a>
 </div>
 </body>
 </html>
