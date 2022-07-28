@@ -1,25 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: elastic-server
+  name: sts-elastic
   namespace: core-middle
   labels:
-    app: elastic-server
-    type: elastic
+    app: elastic
 spec:
-  serviceName: elastic-server
+  serviceName: svc-elastic
   selector:
     matchLabels:
-      app: elastic-server
+      app: elastic
   replicas: 1
   template:
     metadata:
       labels:
-        app: elastic-server
-        type: elastic
+        app: elastic
     spec:
       containers:
-        - name: elastic-master
+        - name: elastic
           image: docker.elastic.co/elasticsearch/elasticsearch:8.3.2
           volumeMounts:
             - name: elastic-data
@@ -35,7 +33,7 @@ spec:
             - name: ES_JAVA_OPTS
               valueFrom:
                 configMapKeyRef:
-                  name: config-elastic-master
+                  name: conf-elastic
                   key: jvm.ops
             - name: ELASTICSEARCH_USERNAME
               valueFrom:
@@ -50,7 +48,7 @@ spec:
             - name: 'xpack.security.enabled'
               valueFrom:
                 configMapKeyRef:
-                  name: config-elastic-master
+                  name: conf-elastic
                   key: 'xpack.security.enabled'
 
       volumes:

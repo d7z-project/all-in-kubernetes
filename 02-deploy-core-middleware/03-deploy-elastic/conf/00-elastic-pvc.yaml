@@ -4,9 +4,9 @@ metadata:
   name: pvc-elastic-data
   namespace: core-middle
   labels:
-    type: elastic
+    app: elastic
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:

@@ -10,13 +10,23 @@
 
 WARNING: 此为单实例部署，切勿用于生产环境。
 
+== 说明
+
+*Elastic Search* 部署需要镜像 `docker.elastic.co/elasticsearch/elasticsearch:8.3.2`。部署完成后，集群内部地址为：
+
+[source%linenums,text]
+----
+svc-elastic.core-middle.svc.cluster.local:9200
+----
+
+
 == 创建 PVC
 
 导入以下配置，创建PVC。
 
 [source%linenums,yaml]
 ----
-include::conf/00-create-pvc.yaml[]
+include::conf/00-elastic-pvc.yaml[]
 ----
 
 == 创建 Elastic 配置
@@ -25,7 +35,7 @@ Elastic 运行时需要一些默认配置，导入以下配置即可。
 
 [source%linenums,yaml]
 ----
-include::conf/01-create-config.yaml[]
+include::conf/01-elastic-config.yaml[]
 ----
 
 .其中
@@ -38,7 +48,7 @@ include::conf/01-create-config.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/02-deploy-elastic-master.yaml[]
+include::conf/02-elastic-deploy.yaml[]
 ----
 
 == 关联Service
@@ -47,7 +57,7 @@ include::conf/02-deploy-elastic-master.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/03-master-service.yaml[]
+include::conf/03-elastic-service.yaml[]
 ----
 
 == 测试
@@ -56,7 +66,7 @@ include::conf/03-master-service.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=elastic
+kubectl get pods,configmap,secrets,services,deployments,pvc -n core-middle -l app=elastic
 ----
 
 如果一切无误的话可使用以下命令测试 Elastic Search ，输出结果如下所示 （有输出即可）。
@@ -66,7 +76,7 @@ kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=elastic
 ----
 ES_USER=$(kubectl get secrets -n core-middle secret-elastic -o jsonpath='{.data.username}' | base64 -d)
 ES_PASSWD=$(kubectl get secrets -n core-middle secret-elastic  -o jsonpath='{.data.password}' | base64 -d)
-kubectl exec -it -n core-middle pods/elastic-server-0 -- curl http://elastic.core-middle.svc.cluster.local:9200/_cat/nodes -u "$ES_USER:$ES_PASSWD"
+kubectl exec -it -n core-middle pods/sts-elastic-0 -- curl http://svc-elastic.core-middle.svc.cluster.local:9200/_cat/nodes -u "$ES_USER:$ES_PASSWD"
 ----
 
 .输出结果
