@@ -4,9 +4,9 @@ metadata:
   name: pvc-gitlab-data
   namespace: core-app
   labels:
-    type: gitlab
+    app: gitlab
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:
@@ -19,9 +19,9 @@ metadata:
   name: pvc-gitlab-redis
   namespace: core-app
   labels:
-    type: gitlab
+    app: gitlab
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:

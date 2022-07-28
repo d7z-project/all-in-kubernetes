@@ -28,7 +28,7 @@ TIP: 在生产环境部署建议使用 *Gitlab* 推荐的 *Postgres* 版本，�
 
 [source%linenums,bash]
 ----
-kubectl exec -it -n core-middle postgres-server-0 -- psql -U postgres
+kubectl exec -it -n core-middle sts-postgres-0 -- psql -U postgres
 ----
 
 连接建立后，执行如下 *SQL* 语句创建 *Gitlab* 的 *Postgres* 账户和数据库，执行完成后，使用 `\q` 退出。。
@@ -47,7 +47,7 @@ GRANT ALL PRIVILEGES ON DATABASE gitlabhq_production to gitlab;
 
 [source%linenums,bash]
 ----
-kubectl exec -it -n core-middle postgres-server-0 -- psql -U gitlab -d gitlabhq_production -c "CREATE EXTENSION pg_trgm;"
+kubectl exec -it -n core-middle sts-postgres-0 -- psql -U gitlab -d gitlabhq_production -c "CREATE EXTENSION pg_trgm;"
 ----
 
 至此，数据源配置完成。
@@ -120,7 +120,7 @@ WARNING: Gitlab 需要暴露 `22` 端口以便使用 `ssh` 提交，请根据对
 
 [source%linenums,yaml]
 ----
-include::./conf/03-create-gitlab-service.yaml[]
+include::./conf/03-gitlab-service.yaml[]
 ----
 
 创建完成后使用如下命令查看结果。
@@ -136,7 +136,7 @@ kubectl get service -n core-app -l type=gitlab
 
 [source%linenums,yaml]
 ----
-include::./conf/04-create-gitlab-ingress.yaml[]
+include::./conf/04-gitlab-ingress.yaml[]
 ----
 
 == 测试

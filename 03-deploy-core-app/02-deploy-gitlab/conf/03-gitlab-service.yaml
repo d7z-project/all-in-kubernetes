@@ -2,9 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: gitlab-server
-    type: gitlab
-  name: gitlab
+    app: gitlab
+  name: svc-gitlab
   namespace: core-app
 spec:
   ports:
@@ -15,15 +14,14 @@ spec:
       protocol: TCP
       port: 22
   selector:
-    app: gitlab-server
+    app: gitlab
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: gitlab-server
-    type: gitlab
-  name: gitlab-lb
+    app: gitlab
+  name: svc-gitlab-lb
   namespace: core-app
   annotations:
     metallb.universe.tf/allow-shared-ip: "primary-ip-share"
@@ -33,5 +31,5 @@ spec:
       protocol: TCP
       port: 22
   selector:
-    app: gitlab-server
+    app: gitlab
   type: LoadBalancer

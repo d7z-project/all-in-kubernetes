@@ -4,12 +4,12 @@ metadata:
   name: conf-gitlab
   namespace: core-app
   labels:
-    type: gitlab
+    app: gitlab
 data:
   db-name: 'gitlabhq_production' # <1>
   db-user: 'gitlab'  # <2>
   gitlab-host: gitlab.d7z.net # <3>
-  ldap-user-filter: '(|(memberOf=cn=admin,ou=groups,dc=d7z,dc=net)(memberOf=cn=gitlab,ou=groups,dc=d7z,dc=net))' # <4>
+  ldap-user-filter: '(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=gitlab,ou=groups,dc=cluster,dc=local))' # <4>
 ---
 apiVersion: v1
 kind: Secret
@@ -17,7 +17,7 @@ metadata:
   name: secret-gitlab
   namespace: core-app
   labels:
-    type: gitlab
+    app: gitlab
 stringData:
   db-password: 'password'# <5>
   root-password: '@gitlab-p@ssw0rd' # <6>
