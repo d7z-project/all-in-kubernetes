@@ -1,32 +1,27 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mariadb-server
+  name: sts-mariadb
   namespace: core-middle
   labels:
-    app: mariadb-server
-    type: mariadb
+    app: mariadb
 spec:
   serviceName: mariadb-server
   selector:
     matchLabels:
-      app: mariadb-server
+      app: mariadb
   replicas: 1
   template:
     metadata:
       labels:
-        app: mariadb-server
-        type: mariadb
+        app: mariadb
     spec:
       containers:
-        - name: mariadb-server
+        - name: mariadb
           image: mariadb:10.8
           volumeMounts:
             - name: mariadb-data
               mountPath: /var/lib/mysql
-          ports:
-            - containerPort: 3306
-              name: mariadb
           env:
             - name: MARIADB_ROOT_PASSWORD
               valueFrom:

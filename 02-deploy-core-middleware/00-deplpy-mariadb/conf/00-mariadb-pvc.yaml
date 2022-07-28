@@ -4,9 +4,9 @@ metadata:
   name: pvc-mariadb-data
   namespace: core-middle
   labels:
-    type: mariadb
+    app: mariadb
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:
