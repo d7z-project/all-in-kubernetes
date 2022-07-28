@@ -4,9 +4,9 @@ metadata:
   name: pvc-redis-data
   namespace: core-middle
   labels:
-    type: redis
+    app: redis
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:

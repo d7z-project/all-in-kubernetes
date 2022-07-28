@@ -1,25 +1,23 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: redis-server
+  name: sts-redis
   namespace: core-middle
   labels:
-    app: redis-server
-    type: redis
+    app: redis
 spec:
-  serviceName: redis-server
+  serviceName: svc-redis
   selector:
     matchLabels:
-      app: redis-server
+      app: redis
   replicas: 1
   template:
     metadata:
       labels:
-        app: redis-server
-        type: redis
+        app: redis
     spec:
       containers:
-        - name: redis-server
+        - name: redis
           image: redis:7
           command:
             - redis-server
@@ -31,9 +29,6 @@ spec:
               mountPath: /data
             - name: redis-conf
               mountPath: /usr/local/etc/redis
-          ports:
-            - containerPort: 6379
-              name: redis
           env:
             - name: REDIS_PASSWORD
               valueFrom:
@@ -46,4 +41,4 @@ spec:
             claimName: pvc-redis-data
         - name: redis-conf
           configMap:
-            name: redis-conf
+            name: conf-redis

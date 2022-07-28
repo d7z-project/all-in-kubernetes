@@ -10,13 +10,17 @@
 
 WARNING: 此项目采用单实例部署，切勿在生产环境使用！
 
+== 说明
+
+此项目需要镜像 `redis:7`。
+
 == 创建持久化磁盘
 
 Redis 需要将内存中存储的键值对数据缓存到本地磁盘
 
 [source%linenums,yaml]
 ----
-include::./conf/00-create-pvc.yaml[]
+include::./conf/00-redis-pvc.yaml[]
 ----
 
 == 创建配置
@@ -27,7 +31,7 @@ include::./conf/00-create-pvc.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/01-create-secret.yaml[]
+include::./conf/01-redis-secret.yaml[]
 ----
 
 .其中
@@ -39,7 +43,7 @@ Redis 带有大量参数需要配置，使用 ConfigMap 创建 Redis 相关的�
 
 [source%linenums,yaml]
 ----
-include::./conf/02-config-map.yaml[]
+include::./conf/02-redis-conf.yaml[]
 ----
 
 == 部署 Redis
@@ -48,7 +52,7 @@ include::./conf/02-config-map.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/03-redis-server.yaml[]
+include::conf/03-redis-deploy.yaml[]
 ----
 
 == 创建 Service
@@ -66,13 +70,13 @@ include::./conf/04-redis-service.yaml[]
 
 [source%linenums,bash]
 ----
- kubectl get pvc,secrets,configmaps,pods,service -n core-middle -l type=redis
+ kubectl get pvc,secrets,configmaps,pods,service -n core-middle -l app=redis
 ----
 
-如果一切无误，可使用以下命令测试，正常情况下将会显示 OK 然后退出。
+如果一切无误，可使用以下命令测试，正常情况下将会显示 *OK* 然后退出。
 
 [source%linenums,bash]
 ----
 REDIS_PASSWD=$(kubectl get secrets -n core-middle  secret-redis -o jsonpath='{.data.password}' | base64 -d)
-kubectl exec -it -n core-middle pods/redis-server-0  -- redis-cli AUTH $REDIS_PASSWD
+kubectl exec -it -n core-middle pods/sts-redis-0  -- redis-cli AUTH $REDIS_PASSWD
 ----
