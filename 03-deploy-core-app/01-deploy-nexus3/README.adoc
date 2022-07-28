@@ -14,11 +14,11 @@ Nexus3 项目依赖镜像 `sonatype/nexus3:3.40.1` 和 `nginx:1.21.1`。
 
 == 创建持久卷
 
-导入以下配置，创建持久卷;由于 Nexus 要存储 Docker 镜像和 Maven 编译结果以及 RPM/DEB 镜像包，可适当调大容量。
+导入以下配置，创建持久卷;由于 *Nexus* 要存储 *Docker* 镜像和 *Maven* 编译结果以及 *RPM*/*DEB* 镜像包，可适当调大容量。
 
 [source%linenums,yaml]
 ----
-include::conf/00-create-pvc.yaml[]
+include::conf/00-nexus-pvc.yaml[]
 ----
 
 == 创建 Nexus3 Nginx 反向代理配置
@@ -31,7 +31,7 @@ include::conf/00-create-pvc.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/01-create-nexus-nginx-conf.yaml[]
+include::./conf/01-nexus-conf-nginx.yaml[]
 ----
 
 .其中
@@ -47,7 +47,7 @@ include::./conf/01-create-nexus-nginx-conf.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/02-create-nexus-app.yaml[]
+include::conf/02-nexus-deploy.yaml[]
 ----
 
 == 暴露 Nexus3 Service
@@ -56,7 +56,7 @@ include::conf/02-create-nexus-app.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/03-create-nexus-service.yaml[]
+include::conf/03-nexus-service.yaml[]
 ----
 
 == 创建 Ingress 映射
@@ -65,7 +65,7 @@ include::conf/03-create-nexus-service.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/04-create-nexus-ingress.yaml[]
+include::conf/04-nexus-ingress.yaml[]
 ----
 
 .其中
@@ -81,7 +81,7 @@ include::conf/04-create-nexus-ingress.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl exec -it -n core-app pods/nexus3-server-0  --container nexus3-server  -- cat /nexus-data/admin.password
+kubectl exec -it -n core-app pods/sts-nexus-0  --container nexus  -- cat /nexus-data/admin.password
 ----
 
 得到密码后，访问 `https://nexus.d7z.net` 来管理。
@@ -92,11 +92,10 @@ WARNING: 请将 nexus 的管理员密码设置的足够复杂，以防止被暴�
 
 登陆 Nexus 后，访问 `https://nexus.d7z.net/#admin/security/ldap` ，添加一个 LDAP 服务。具体配置参加如下图片即可。
 
-在添加绑定前，你需要在 LDAP 下添加 `cn=docker,ou=groups,dc=d7z,dc=net` 的用户组，类型为 `groupOfNames` 。
-
 image::images/01.a-bind-ldap.png[title="配置LDAP连接"]
 
-其中，密码为 LDAP 用户 `service-account` 的密码。
+其中，密码为 LDAP 用户 `service-account` 的密码。点击按钮验证输入是否正确，验证完成后开始添加绑定。在添加绑定前，你需要在 *LDAP* 下添加 `cn=docker,ou=groups,dc=cluster,dc=local
+` 的角色，类型为 `groupOfNames` 。
 
 image::images/01.b-bind-ldap.png[title="配置LDAP用户"]
 
@@ -104,7 +103,7 @@ UserFilter 的内容如下所示
 
 [source%linenums,ldif]
 ----
-(|(memberOf=cn=admin,ou=groups,dc=d7z,dc=net)(memberOf=cn=docker,ou=groups,dc=d7z,dc=net))
+(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
 ----
 
 配置完成后，点击 `Verify user mapping` , 检查是否找到用户和角色。一切无误后保存即可。
@@ -124,6 +123,12 @@ image::images/02.a-bind-admin-roles.png[title="绑定管理员角色"]
 绑定Docker管理员的参考如下，注意配置权限：
 
 image::images/02.b-bind-docker-roles.png[title="绑定Docker角色"]
+
+==== 绑定Deploy用户组
+
+绑定Deploy角色的参考如下，注意配置权限：
+
+image::images/02.c-bind-deploy-roles.png[title="绑定Deploy角色"]
 
 === 创建 Docker 仓库
 

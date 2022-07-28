@@ -2,17 +2,16 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: nexus3-server
-    type: nexus3
-  name: nexus3
+    app: nexus
+  name: svc-nexus
   namespace: core-app
 spec:
   ports:
-    - name: nexus3-web
+    - name: nexus-web
       protocol: TCP
       port: 80
-    - name: nexus3-docker
+    - name: nexus-docker
       protocol: TCP
       port: 81
   selector:
-    app: nexus3-server
+    app: nexus

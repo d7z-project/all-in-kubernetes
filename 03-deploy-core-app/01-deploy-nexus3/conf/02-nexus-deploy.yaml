@@ -1,42 +1,40 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: nexus3-server
+  name: sts-nexus
   namespace: core-app
   labels:
-    app: nexus3-server
-    type: nexus3
+    app: nexus
 spec:
-  serviceName: nexus3-server
+  serviceName: svc-nexus
   selector:
     matchLabels:
-      app: nexus3-server
+      app: nexus
   replicas: 1
   template:
     metadata:
       labels:
-        app: nexus3-server
-        type: nexus3
+        app: nexus
     spec:
       containers:
-        - name: nexus3-server
+        - name: nexus
           image: sonatype/nexus3:3.40.1
           volumeMounts:
-            - name: nexus3-data
+            - name: nexus-data
               mountPath: /nexus-data
           env:
             - name: INSTALL4J_ADD_VM_PARAMS
               value: "-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
-        - name: nginx-forward
+        - name: nginx
           image: nginx:1.21.1
           volumeMounts:
             - name: nginx-data
               mountPath: /etc/nginx/conf.d/
 
       volumes:
-        - name: nexus3-data
+        - name: nexus-data
           persistentVolumeClaim:
-            claimName: pvc-nexus3-data
+            claimName: pvc-nexus-data
         - name: nginx-data
           configMap:
-            name: nexus3-nginx-conf
+            name: conf-nexus-nginx
