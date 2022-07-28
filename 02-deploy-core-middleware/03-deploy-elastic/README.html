@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_创建_pvc">创建 PVC</a></li>
 <li><a href="#_创建_elastic_配置">创建 Elastic 配置</a></li>
 <li><a href="#_创建_elastic_master_启动配置">创建 Elastic Master 启动配置</a></li>
@@ -465,6 +466,21 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_说明">说明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Elastic Search</strong> 部署需要镜像 <code>docker.elastic.co/elasticsearch/elasticsearch:8.3.2</code>。部署完成后，集群内部地址为：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>svc-elastic.core-middle.svc.cluster.local:9200
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -496,9 +512,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-elastic-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">elastic</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
@@ -547,10 +563,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">config-elastic-master</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-elastic</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">elastic</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">xpack.security.enabled</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
   <span class="na">jvm.ops</span><span class="pi">:</span> <span class="s1">'</span><span class="s">-Xms1g</span><span class="nv"> </span><span class="s">-Xmx1g'</span> <i class="conum" data-value="1"></i><b>(1)</b>
@@ -566,7 +582,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">elastic</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="na">username</span><span class="pi">:</span> <span class="s1">'</span><span class="s">elastic'</span>
@@ -654,30 +670,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 55
 56
 57
-58
-59
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">elastic-server</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-elastic</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">elastic</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">elastic-server</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-elastic</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">elastic-server</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">elastic-server</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">elastic</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">elastic-master</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">elastic</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">docker.elastic.co/elasticsearch/elasticsearch:8.3.2</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">elastic-data</span>
@@ -693,7 +705,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ES_JAVA_OPTS</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">config-elastic-master</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-elastic</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">jvm.ops</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ELASTICSEARCH_USERNAME</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
@@ -708,7 +720,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">xpack.security.enabled'</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">config-elastic-master</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-elastic</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">xpack.security.enabled'</span>
 
       <span class="na">volumes</span><span class="pi">:</span>
@@ -745,14 +757,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 15
 16
 17
-18
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">elastic</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">elastic</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-elastic</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
@@ -763,7 +773,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
       <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
       <span class="na">port</span><span class="pi">:</span> <span class="m">9300</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic-server</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">elastic</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -778,7 +788,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get pods,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>elastic
+</pre></td><td class="code"><pre>kubectl get pods,configmap,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>elastic
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -793,7 +803,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 3
 </pre></td><td class="code"><pre><span class="nv">ES_USER</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-elastic <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.username}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
 <span class="nv">ES_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-elastic  <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
-kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/elastic-server-0 <span class="nt">--</span> curl http://elastic.core-middle.svc.cluster.local:9200/_cat/nodes <span class="nt">-u</span> <span class="s2">"</span><span class="nv">$ES_USER</span><span class="s2">:</span><span class="nv">$ES_PASSWD</span><span class="s2">"</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/sts-elastic-0 <span class="nt">--</span> curl http://svc-elastic.core-middle.svc.cluster.local:9200/_cat/nodes <span class="nt">-u</span> <span class="s2">"</span><span class="nv">$ES_USER</span><span class="s2">:</span><span class="nv">$ES_PASSWD</span><span class="s2">"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1037,11 +1047,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月20日 13时55分35秒 |
+        最后编辑于 2022年07月28日 15时56分28秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/290b40060fe050d28a54c00b16abd308d4c80a22//02-deploy-core-middleware/03-deploy-elastic/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/290b40060fe050d28a54c00b16abd308d4c80a22/"
-            target="_blank">#d0bb95c</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428//02-deploy-core-middleware/03-deploy-elastic/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/3a2849732f84da77d7ba8a4bfa314ce356148428/"
+            target="_blank">#3a28497</a>
 </div>
 </body>
 </html>

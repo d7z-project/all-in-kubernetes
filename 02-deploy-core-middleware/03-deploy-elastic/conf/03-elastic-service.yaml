@@ -2,9 +2,8 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: elastic-server
-    type: elastic
-  name: elastic
+    app: elastic
+  name: svc-elastic
   namespace: core-middle
 spec:
   ports:
@@ -15,4 +14,4 @@ spec:
       protocol: TCP
       port: 9300
   selector:
-    app: elastic-server
+    app: elastic

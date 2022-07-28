@@ -1,32 +1,27 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgres-server
+  name: sts-postgres
   namespace: core-middle
   labels:
-    app: postgres-server
-    type: postgres
+    app: postgres
 spec:
-  serviceName: postgres-server
+  serviceName: svc-postgres
   selector:
     matchLabels:
-      app: postgres-server
+      app: postgres
   replicas: 1
   template:
     metadata:
       labels:
-        app: postgres-server
-        type: postgres
+        app: postgres
     spec:
       containers:
-        - name: postgres-server
+        - name: postgres
           image: postgres:14
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
-          ports:
-            - containerPort: 5432
-              name: postgres
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:

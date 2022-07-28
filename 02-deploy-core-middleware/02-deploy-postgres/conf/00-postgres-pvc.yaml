@@ -4,9 +4,9 @@ metadata:
   name: pvc-postgres-data
   namespace: core-middle
   labels:
-    type: postgres
+    app: postgres
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:

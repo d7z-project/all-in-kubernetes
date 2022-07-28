@@ -2,13 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: postgres-server
-    type: postgres
-  name: postgres
+    app: postgres
+  name: svc-postgres
   namespace: core-middle
 spec:
   ports:
     - port: 5432
       targetPort: 5432
   selector:
-    app: postgres-server
+    app: postgres
