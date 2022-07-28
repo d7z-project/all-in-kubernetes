@@ -4,7 +4,7 @@ metadata:
   name: conf-ldap
   namespace: core-system
   labels:
-    type: ldap
+    app: ldap
   annotations: # <1>
     reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
@@ -13,7 +13,7 @@ metadata:
 data:
   ldap-name: "Kubernetes Cluster LDAP Server"
   ldap-domain: 'cluster.local'
-  ldap-host: 'service-ldap.core-system.svc.cluster.local'
+  ldap-host: 'svc-ldap.core-system.svc.cluster.local'
   ldap-url: 'ldap://svc-ldap.core-system.svc.cluster.local:389'
   ldap-base-dn: 'dc=cluster,dc=local'
   ldap-user-ou: 'ou=people,dc=cluster,dc=local'

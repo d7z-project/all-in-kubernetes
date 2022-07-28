@@ -81,4 +81,12 @@ image::images/03-create-adm.png[]
 
 image::images/04-create-adm-group.png[]
 
+=== 创建部署角色
+
+继续添加部署角色，其中，部署角色的相关用户拥有读取各个存储仓库的只读权限，在 `ou=groups` 下方新建 `groupOfNames` 对象，按如下所示输入保存即可。
+
+image::images/05-create-deploy-group.png[]
+
+
+
 TIP: 后续相关角色创建流程均参考此流程即可。
