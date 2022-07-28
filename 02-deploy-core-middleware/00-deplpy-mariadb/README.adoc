@@ -10,7 +10,12 @@ WARNING: 此项目采用单实例部署，切勿在生产环境使用！
 
 == 说明
 
-MariaDB 需要镜像 `mariadb:10.8`。
+MariaDB 需要镜像 `mariadb:10.8`。部署完成后，集群内部地址为：
+
+[source%linenums,text]
+----
+svc-mariadb.core-middle.svc.cluster.local:3306
+----
 
 == 创建 PVC
 

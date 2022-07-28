@@ -10,13 +10,22 @@
 
 WARNING: 此项目采用单实例部署，切勿在生产环境使用！
 
+== 说明
+
+此文档需要镜像 `postgres:14`。部署完成后，集群内部地址为：
+
+[source%linenums,text]
+----
+svc-postgres.core-middle.svc.cluster.local:5432
+----
+
 == 创建 PVC
 
 导入以下配置，创建PVC。
 
 [source%linenums,yaml]
 ----
-include::conf/00-create-pvc.yaml[]
+include::conf/00-postgres-pvc.yaml[]
 ----
 
 == 管理员用户配置
@@ -25,7 +34,7 @@ include::conf/00-create-pvc.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/01-create-secret.yaml[]
+include::conf/01-postgres-secret.yaml[]
 ----
 
 .其中
@@ -37,7 +46,7 @@ include::conf/01-create-secret.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/02-deploy-postgres.yaml[]
+include::conf/02-postgres-deploy.yaml[]
 ----
 
 == 关联Service
@@ -55,7 +64,7 @@ include::conf/03-postgres-service.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=postgres
+kubectl get pods,secrets,services,deployments,pvc -n core-middle -l app=postgres
 ----
 
 如果一切无误的话可使用以下命令测试 PostgresSQL ，输出结果如下所示。
@@ -65,7 +74,7 @@ kubectl get pods,secrets,services,deployments,pvc -n core-middle -l type=postgre
 ----
 PG_NAME=$(kubectl get secrets -n core-middle secret-postgres-root -o jsonpath='{.data.username}' | base64 -d)
 PG_PASSWD=$(kubectl get secrets -n core-middle secret-postgres-root  -o jsonpath='{.data.password}' | base64 -d)
-kubectl exec -it -n core-middle pods/postgres-server-0 -- psql  postgresql://$PG_NAME:$PG_PASSWD@postgres.core-middle.svc.cluster.local:5432 -c "select 1"
+kubectl exec -it -n core-middle pods/sts-postgres-0 -- psql  postgresql://$PG_NAME:$PG_PASSWD@svc-postgres.core-middle.svc.cluster.local:5432 -c "select 1"
 ----
 
 .输出结果
