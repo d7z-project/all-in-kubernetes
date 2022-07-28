@@ -1,24 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ldap-account-manager
+  name: deploy-lam
   namespace: core-system
   labels:
-    app: ldap-account-manager
-    type: ldap
+    app: lam
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: ldap-account-manager
+      app: lam
   template:
     metadata:
       labels:
-        app: ldap-account-manager
-        type: ldap
+        app: lam
     spec:
       containers:
-        - name: ldap-account-manager
+        - name: lam
           image: ldapaccountmanager/lam:8.0.1
           ports:
             - containerPort: 80
@@ -28,32 +26,32 @@ spec:
             - name: LDAP_DOMAIN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_domain
+                  name: conf-ldap
+                  key: ldap-domain
             - name: LDAP_SERVER
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_url
+                  name: conf-ldap
+                  key: ldap-url
             - name: LDAP_BASE_DN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_base_dn
+                  name: conf-ldap
+                  key: ldap-base-dn
             - name: LDAP_USERS_DN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_user_dn
+                  name: conf-ldap
+                  key: ldap-user-ou
             - name: LDAP_GROUPS_DN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_group_dn
+                  name: conf-ldap
+                  key: ldap-group-ou
             - name: LAM_LANG
               value: zh_CN
             - name: LAM_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ldap-secret-admin
+                  name: secret-ldap-admin
                   key: password

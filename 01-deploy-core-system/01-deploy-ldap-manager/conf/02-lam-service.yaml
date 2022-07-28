@@ -3,11 +3,11 @@ kind: Service
 metadata:
   labels:
     app: lam
-    type: ldap
-  name: lam
+  name: svc-lam
   namespace: core-system
 spec:
   ports:
     - port: 80
+      name: web
   selector:
-    app: ldap-account-manager
+    app: lam

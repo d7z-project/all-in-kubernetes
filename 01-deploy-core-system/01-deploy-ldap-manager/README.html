@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_简介">简介</a></li>
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_创建_deployment">创建 Deployment</a>
 <ul class="sectlevel2">
 <li><a href="#_创建_service">创建 Service</a></li>
@@ -464,7 +464,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_简介">简介</h2>
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此项目使用 <code>ldapaccountmanager</code> 作为 LDAP 管理器。此项目依赖镜像 <code>ldapaccountmanager/lam:8.0.1</code> 。</p>
@@ -536,29 +536,25 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 55
 56
 57
-58
-59
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">deploy-lam</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">lam</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">ldapaccountmanager/lam:8.0.1</span>
           <span class="na">ports</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">80</span>
@@ -568,34 +564,34 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_DOMAIN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_domain</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-domain</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_SERVER</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_url</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-url</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BASE_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_base_dn</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-base-dn</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_USERS_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_user_dn</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-ou</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_GROUPS_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_group_dn</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-group-ou</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LAM_LANG</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s">zh_CN</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LAM_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-admin</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-admin</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -628,14 +624,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">lam</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-lam</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">ldap-account-manager</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -680,10 +676,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-ingress</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-lam</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-system</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">ldap</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">lam</span>
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="c1"># 重写路径</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
@@ -692,7 +688,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">lam.d7z.net</span> <i class="conum" data-value="1"></i><b>(1)</b>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">d7z-net-tls</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>  <i class="conum" data-value="2"></i><b>(2)</b>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">lam.d7z.net</span>  <i class="conum" data-value="3"></i><b>(3)</b>
       <span class="na">http</span><span class="pi">:</span>
@@ -701,9 +697,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">lam</span>  <i class="conum" data-value="4"></i><b>(4)</b>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-lam</span>  <i class="conum" data-value="4"></i><b>(4)</b>
                 <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">number</span><span class="pi">:</span> <span class="s">80</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">port</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1051,11 +1047,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月22日 17时52分12秒 |
+        最后编辑于 2022年07月28日 13时46分32秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d//01-deploy-core-system/01-deploy-ldap-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d/"
-            target="_blank">#36440f7</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35//01-deploy-core-system/01-deploy-ldap-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35/"
+            target="_blank">#aea0b1f</a>
 </div>
 </body>
 </html>

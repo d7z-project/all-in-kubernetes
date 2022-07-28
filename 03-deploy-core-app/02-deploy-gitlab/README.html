@@ -1006,8 +1006,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LDAP_HOST"</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_host</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-host</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PORT</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">389"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_UID</span>
@@ -1020,19 +1020,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">plain"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
-                <span class="na">secretKeyRef</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-service</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">user-dn</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-bind-user-dn</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PASS</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-secret-service</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-service</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BASE</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap_user_dn</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-global-conf</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-ou</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_USER_FILTER</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
@@ -1492,8 +1492,8 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月27日 17时03分15秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d//03-deploy-core-app/02-deploy-gitlab/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/12209656b4184f0aa93055a3e161aeacd136869d/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35//03-deploy-core-app/02-deploy-gitlab/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35/"
             target="_blank">#03889b4</a>
 </div>
 </body>
