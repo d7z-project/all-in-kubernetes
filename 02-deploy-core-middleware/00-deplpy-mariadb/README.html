@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_创建_pvc">创建 PVC</a></li>
 <li><a href="#_管理员用户配置">管理员用户配置</a></li>
 <li><a href="#_创建_mariadb_服务器">创建 MariaDB 服务器</a></li>
@@ -465,6 +466,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </td>
 </tr>
 </table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_说明">说明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>MariaDB 需要镜像 <code>mariadb:10.8</code>。</p>
 </div>
 </div>
 </div>
@@ -496,9 +505,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-mariadb-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
@@ -533,7 +542,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-mariadb-root</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">mysql-root-password'</span> <i class="conum" data-value="1"></i><b>(1)</b>
@@ -595,40 +604,30 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 34
 35
 36
-37
-38
-39
-40
-41
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-mariadb</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">serviceName</span><span class="pi">:</span> <span class="s">mariadb-server</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb:10.8</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/mysql</span>
-          <span class="na">ports</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">3306</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
           <span class="na">env</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MARIADB_ROOT_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
@@ -666,20 +665,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 10
 11
 12
-13
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">mariadb</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-mariadb</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">3306</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb-server</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">mariadb</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -694,7 +691,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get pods,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>mariadb
+</pre></td><td class="code"><pre>kubectl get pods,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>mariadb
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -707,7 +704,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre><span class="nv">MYSQL_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle  secret-mariadb-root <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
-kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/mariadb-server-0 <span class="nt">--</span> mysql <span class="nt">-uroot</span> <span class="nt">-p</span><span class="nv">$MYSQL_PASSWD</span> <span class="nt">-e</span> <span class="s2">"select 1;"</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/sts-mariadb-0 <span class="nt">--</span> mysql <span class="nt">-h</span> svc-mariadb.core-middle.svc.cluster.local <span class="nt">-uroot</span> <span class="nt">-p</span><span class="nv">$MYSQL_PASSWD</span> <span class="nt">-e</span> <span class="s2">"select 1;"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -959,11 +956,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月19日 09时27分15秒 |
+        最后编辑于 2022年07月28日 14时59分22秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35//02-deploy-core-middleware/00-deplpy-mariadb/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35/"
-            target="_blank">#50d537b</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/290b40060fe050d28a54c00b16abd308d4c80a22//02-deploy-core-middleware/00-deplpy-mariadb/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/290b40060fe050d28a54c00b16abd308d4c80a22/"
+            target="_blank">#d849726</a>
 </div>
 </body>
 </html>

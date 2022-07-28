@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_创建持久化磁盘">创建持久化磁盘</a></li>
 <li><a href="#_创建配置">创建配置</a>
 <ul class="sectlevel2">
@@ -474,6 +475,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
+<h2 id="_说明">说明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>此项目需要镜像 <code>redis:7</code>。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_创建持久化磁盘">创建持久化磁盘</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -501,9 +510,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-redis-data</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">cluster-share</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
   <span class="na">accessModes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
@@ -545,7 +554,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-redis</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
@@ -649,10 +658,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">redis-conf</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-redis</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">redis.conf</span><span class="pi">:</span> <span class="pi">|</span>
     <span class="s">protected-mode yes</span>
@@ -776,33 +785,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 42
 43
 44
-45
-46
-47
-48
-49
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">redis-server</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-redis</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">redis-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">redis-server</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-redis</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">redis-server</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">redis-server</span>
-        <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis-server</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">redis:7</span>
           <span class="na">command</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">redis-server</span>
@@ -814,9 +816,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/data</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis-conf</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/usr/local/etc/redis</span>
-          <span class="na">ports</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">6379</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
           <span class="na">env</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">REDIS_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
@@ -829,7 +828,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
             <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-redis-data</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">redis-conf</span>
           <span class="na">configMap</span><span class="pi">:</span>
-            <span class="na">name</span><span class="pi">:</span> <span class="s">redis-conf</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-redis</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -860,15 +859,15 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">redis-server</span>
-    <span class="na">type</span><span class="pi">:</span> <span class="s">redis</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-redis</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-middle</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">6379</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">redis</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">redis-server</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">redis</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -883,19 +882,19 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre> kubectl get pvc,secrets,configmaps,pods,service <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>redis
+</pre></td><td class="code"><pre> kubectl get pvc,secrets,configmaps,pods,service <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>redis
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>如果一切无误，可使用以下命令测试，正常情况下将会显示 OK 然后退出。</p>
+<p>如果一切无误，可使用以下命令测试，正常情况下将会显示 <strong>OK</strong> 然后退出。</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre><span class="nv">REDIS_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle  secret-redis <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
-kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/redis-server-0  <span class="nt">--</span> redis-cli AUTH <span class="nv">$REDIS_PASSWD</span>
+kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/sts-redis-0  <span class="nt">--</span> redis-cli AUTH <span class="nv">$REDIS_PASSWD</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1131,11 +1130,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月19日 21时04分24秒 |
+        最后编辑于 2022年07月28日 15时08分53秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35//02-deploy-core-middleware/01-deplpy-redis/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/aea0b1ffda477663061a18e07d12433bfdd19d35/"
-            target="_blank">#ed17600</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/290b40060fe050d28a54c00b16abd308d4c80a22//02-deploy-core-middleware/01-deplpy-redis/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/290b40060fe050d28a54c00b16abd308d4c80a22/"
+            target="_blank">#290b400</a>
 </div>
 </body>
 </html>

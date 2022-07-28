@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: redis-conf
+  name: conf-redis
   namespace: core-middle
   labels:
-    type: redis
+    app: redis
 data:
   redis.conf: |
     protected-mode yes
