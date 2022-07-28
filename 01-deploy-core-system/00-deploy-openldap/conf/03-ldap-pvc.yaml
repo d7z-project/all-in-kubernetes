@@ -6,7 +6,7 @@ metadata:
   labels:
     type: ldap
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:
@@ -21,7 +21,7 @@ metadata:
   labels:
     type: ldap
 spec:
-  storageClassName: cluster-share
+  storageClassName: sc-nfs-share
   accessModes:
     - ReadWriteOnce
   resources:

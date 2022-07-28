@@ -28,32 +28,32 @@ spec:
             - name: LDAP_DOMAIN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_domain
+                  name: conf-ldap
+                  key: ldap-domain
             - name: LDAP_SERVER
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_url
+                  name: conf-ldap
+                  key: ldap-url
             - name: LDAP_BASE_DN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_base_dn
+                  name: conf-ldap
+                  key: ldap-base-dn
             - name: LDAP_USERS_DN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_user_dn
+                  name: conf-ldap
+                  key: ldap-user-ou
             - name: LDAP_GROUPS_DN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_group_dn
+                  name: conf-ldap
+                  key: ldap-group-ou
             - name: LAM_LANG
               value: zh_CN
             - name: LAM_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ldap-secret-admin
+                  name: secret-ldap-admin
                   key: password

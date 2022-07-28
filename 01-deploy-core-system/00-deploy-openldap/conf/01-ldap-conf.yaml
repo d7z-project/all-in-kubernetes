@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ldap-global-conf
+  name: conf-ldap
   namespace: core-system
   labels:
     type: ldap
@@ -11,10 +11,12 @@ metadata:
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
 data:
-  ldap_org: "Dragon's Zone Team" # <2>
-  ldap_domain: 'd7z.net' # <3>
-  ldap_host: 'service-ldap.core-system.svc.cluster.local' # <4>
-  ldap_url: 'ldap://service-ldap.core-system.svc.cluster.local:389' # <5>
-  ldap_base_dn: 'dc=d7z,dc=net' # <6>
-  ldap_user_dn: 'ou=people,dc=d7z,dc=net' # <7>
-  ldap_group_dn: 'ou=groups,dc=d7z,dc=net' # <8>
+  ldap-name: "Kubernetes Cluster LDAP Server"
+  ldap-domain: 'cluster.local'
+  ldap-host: 'service-ldap.core-system.svc.cluster.local'
+  ldap-url: 'ldap://svc-ldap.core-system.svc.cluster.local:389'
+  ldap-base-dn: 'dc=cluster,dc=local'
+  ldap-user-ou: 'ou=people,dc=cluster,dc=local'
+  ldap-group-ou: 'ou=groups,dc=cluster,dc=local'
+  ldap-bind-user-dn: 'cn=service-account,dc=cluster,dc=local'
+  ldap-bind-user: 'service-account'

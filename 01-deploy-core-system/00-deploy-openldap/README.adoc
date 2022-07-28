@@ -6,9 +6,9 @@
 :toclevels: 4
 :source-highlighter: rouge
 
-== 准备
+== 说明
 
-此文档依赖镜像 `osixia/openldap:1.5.0`。
+此项目需要镜像 `osixia/openldap:1.5.0`。
 
 == 导入配置
 
@@ -20,18 +20,11 @@ OpenLDAP 需要一些初始化配置才能工作。
 
 [source%linenums,yaml]
 ----
-include::conf/01-config-map.yaml[]
+include::conf/01-ldap-conf.yaml[]
 ----
 
 .其中：
 <1> 复制此 ConfigMap 到各个 namespace 下 （reflector 提供）
-<2> LDAP 配置：组织名称
-<3> LDAP 配置：DC 地址
-<4> 共享配置：LDAP 服务器地址
-<5> 共享配置：带URL 的 LDAP 服务器地址
-<6> 共享配置：BaseDN 地址
-<7> 共享配置：User DN 地址
-<8> 共享配置：Group DN 地址
 
 === 创建 Secret
 
@@ -39,14 +32,13 @@ include::conf/01-config-map.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/02-secret.yaml[]
+include::./conf/02-ldap-secret.yaml[]
 ----
 
 .其中：
 <1> 设置管理员密码
 <2> 配置共享用户秘密共享
-<3> 共享用户用户名
-<4> 共享用户密码
+<3> 共享用户密码
 
 WARNING: 生产环境安装一定要更改为复杂的密码！
 
@@ -58,7 +50,7 @@ OpenLDAP 运行过程中需要存储数据。使用以下 YAML 创建，注意�
 
 [source%linenums,yaml]
 ----
-include::./conf/03-pvc.yaml[]
+include::./conf/03-ldap-pvc.yaml[]
 ----
 
 === 部署 OpenLDAP 服务
@@ -67,7 +59,7 @@ include::./conf/03-pvc.yaml[]
 
 [source%linenums,yaml]
 ----
-include::conf/04-deploy-server.yaml[]
+include::conf/04-ldap-app.yaml[]
 ----
 
 == 导入LDAP配置
@@ -76,7 +68,7 @@ include::conf/04-deploy-server.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl exec -it -n core-system pods/ldap-system-0 -- /bin/bash
+kubectl exec -it -n core-system pods/sts-ldap-system-0 -- /bin/bash
 ----
 
 === 导入 MemberOf 配置

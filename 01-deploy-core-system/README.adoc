@@ -12,8 +12,5 @@
 
 [source%linenums,yaml]
 ----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: core-system
+w
 ----

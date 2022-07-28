@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ldap-system
+  name: sts-ldap-system
   namespace: core-system
   labels:
-    app: ldap-system
+    app: ldap-core
     type: ldap
 spec:
-  serviceName: ldap-system
+  serviceName: service-ldap
   selector:
     matchLabels:
-      app: ldap-system
+      app: ldap-core
   replicas: 1
   template:
     metadata:
       labels:
-        app: ldap-system
+        app: ldap-core
         type: ldap
     spec:
       containers:
-        - name: ldap-system
+        - name: ldap-core
           image: osixia/openldap:1.5.0
           volumeMounts:
             - name: ldap-data
@@ -35,34 +35,34 @@ spec:
             - name: LDAP_ORGANISATION
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_org
+                  name: conf-ldap
+                  key: ldap-name
             - name: LDAP_DOMAIN
               valueFrom:
                 configMapKeyRef:
-                  name: ldap-global-conf
-                  key: ldap_domain
+                  name: conf-ldap
+                  key: ldap-domain
             - name: LDAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ldap-secret-admin
+                  name: secret-ldap-admin
                   key: password
             - name: LDAP_CONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ldap-secret-admin
+                  name: secret-ldap-admin
                   key: password
             - name: LDAP_READONLY_USER
               value: "true"
             - name: LDAP_READONLY_USER_USERNAME
               valueFrom:
-                secretKeyRef:
-                  name: ldap-secret-service
-                  key: user
+                configMapKeyRef:
+                  name: conf-ldap
+                  key: ldap-bind-user
             - name: LDAP_READONLY_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ldap-secret-service
+                  name: secret-ldap-service
                   key: password
             - name: LDAP_RFC2307BIS_SCHEMA
               value: "false"
@@ -90,10 +90,10 @@ metadata:
   labels:
     app: service-ldap
     type: ldap
-  name: service-ldap
+  name: svc-ldap
   namespace: core-system
 spec:
   ports:
     - port: 389
   selector:
-    app: ldap-system
+    app: ldap-core
