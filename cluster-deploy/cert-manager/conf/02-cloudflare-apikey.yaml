@@ -6,4 +6,4 @@ metadata:
 type: Opaque
 stringData:
   # 需要修改为实际数据
-  api-token: '<CLOUDFLARE API TOKEN>' # <1>
+  api-token: '{{cloudflare-api-token}}' # <1>
