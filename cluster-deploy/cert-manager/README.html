@@ -468,25 +468,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
-4
-</pre></td><td class="code"><pre>crictl pull quay.io/jetstack/cert-manager-cainjector:v1.8.2
-crictl pull quay.io/jetstack/cert-manager-controller:v1.8.2
-crictl pull quay.io/jetstack/cert-manager-webhook:v1.8.2
-crictl pull emberstack/kubernetes-reflector:6.1.47 <i class="conum" data-value="1"></i><b>(1)</b>
+</pre></td><td class="code"><pre>quay.io/jetstack/cert-manager-cainjector:v1.8.2
+quay.io/jetstack/cert-manager-controller:v1.8.2
+quay.io/jetstack/cert-manager-webhook:v1.8.2
 </pre></td></tr></tbody></table></code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<div class="title">其中</div>
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td><code>emberstack/kubernetes-reflector</code> 用于在多命名空间下同步数据</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
@@ -494,14 +483,7 @@ crictl pull emberstack/kubernetes-reflector:6.1.47 <i class="conum" data-value="
 <h2 id="_导入资源">导入资源</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 <a href="conf/00-cert-manager.yaml">conf/cert-manager.yaml</a> 和 <a href="conf/01-reflector.yaml">conf/reflector.yaml</a> 推送到控制节点,再使用 <code>kubectl apply -f cert-manager.yaml -f reflector.yaml</code> 导入资源。</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>注： Reflector 用于同步证书到各个 <code>namespace</code> 。</p>
-</li>
-</ul>
+<p>由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 <a href="conf/00-cert-manager.yaml">conf/cert-manager.yaml</a>  推送到控制节点,再使用 <code>kubectl apply -f cert-manager.yaml</code> 导入资源。</p>
 </div>
 <div class="paragraph">
 <p>或者你可以使用以下命令在线导入资源：</p>
@@ -509,9 +491,7 @@ crictl pull emberstack/kubernetes-reflector:6.1.47 <i class="conum" data-value="
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
 </pre></td><td class="code"><pre>kubectl apply <span class="nt">-f</span> https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
-kubectl apply <span class="nt">-n</span> kube-system <span class="nt">-f</span> https://github.com/emberstack/kubernetes-reflector/releases/download/v6.1.47/reflector.yaml
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -760,7 +740,7 @@ cert-d7z-net       True    d7z-net-tls            18h
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-注意，需要填充的内容必须真实有效，否则将导致签发失败。
+注意，需要填充的内容必须真实有效，否则将导致签发失败。如果没有可用的域名可参考 <a href="NOTE.html">笔记</a> 中的自签名证书。
 </td>
 </tr>
 </table>
@@ -996,13 +976,66 @@ pre.rouge {
         .custom-footer a {
             color: white;
         }
+
+        .toast {
+            max-width: 60%;
+            min-width: 150px;
+            padding: 0 14px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 999999;
+            background: rgba(0, 0, 0, 0.56);
+            font-size: 16px;
+        }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月29日 22时34分31秒 |
+        代码双击可复制 | 最后编辑于 2022年07月30日 00时23分57秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf/"
-            target="_blank">#abf0fa6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b/"
+           target="_blank">#fdb24da</a>
+        <script>
+
+            function toast(msg, duration = 1000) {
+                const m = document.createElement('div');
+                m.innerHTML = msg;
+                m.className = "toast"
+                document.body.appendChild(m);
+                setTimeout(function () {
+                    const d = 0.5;
+                    m.style.transition = '-webkit-transform ' + d + 's ease-in, opacity ' + d + 's ease-in';
+                    m.style.opacity = '0';
+                    setTimeout(function () {
+                        document.body.removeChild(m)
+                    }, d * 1000);
+                }, duration);
+            }
+
+            function copyData(data) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(data);
+                    toast("复制成功！")
+                }
+            }
+
+            window.onload = function () {
+                for (let pre of document.getElementsByTagName('pre')) {
+                    if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
+                        let code = pre.getElementsByClassName('code')[0].innerText;
+                        pre.ondblclick = function () {
+                            copyData(code)
+                        }
+                    }
+                }
+
+            };
+        </script>
 </div>
 </body>
 </html>

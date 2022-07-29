@@ -443,6 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_部署软件包">部署软件包</a>
 <ul class="sectlevel2">
 <li><a href="#_下载需要的资源">下载需要的资源</a></li>
@@ -459,11 +460,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_部署工作节点">部署工作节点</a></li>
 </ul>
 </li>
-<li><a href="#_参考">参考</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div class="sect1">
+<h2 id="_说明">说明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>此文档已在 <code>Debian Bullseye</code> 和 <code>CentOS</code> 下验证 （仅使用 <strong>AMD64</strong>）。安装过程中需要网络。</p>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="_部署软件包">部署软件包</h2>
 <div class="sectionbody">
@@ -1555,18 +1563,6 @@ node-worker-02   Ready    &lt;none&gt;          105s   v1.24.2
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_参考">参考</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a target="_blank" href="https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">部署 kubeadm</a></p>
-</li>
-</ol>
-</div>
-</div>
-</div>
 </div>
 <style>
 pre.rouge table td { padding: 5px; }
@@ -1795,13 +1791,66 @@ pre.rouge {
         .custom-footer a {
             color: white;
         }
+
+        .toast {
+            max-width: 60%;
+            min-width: 150px;
+            padding: 0 14px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 999999;
+            background: rgba(0, 0, 0, 0.56);
+            font-size: 16px;
+        }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月29日 22时34分31秒 |
+        代码双击可复制 | 最后编辑于 2022年07月29日 22时44分16秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//cluster-deploy/kubernetes/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf/"
-            target="_blank">#abf0fa6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b//cluster-deploy/kubernetes/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b/"
+           target="_blank">#16f7c85</a>
+        <script>
+
+            function toast(msg, duration = 1000) {
+                const m = document.createElement('div');
+                m.innerHTML = msg;
+                m.className = "toast"
+                document.body.appendChild(m);
+                setTimeout(function () {
+                    const d = 0.5;
+                    m.style.transition = '-webkit-transform ' + d + 's ease-in, opacity ' + d + 's ease-in';
+                    m.style.opacity = '0';
+                    setTimeout(function () {
+                        document.body.removeChild(m)
+                    }, d * 1000);
+                }, duration);
+            }
+
+            function copyData(data) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(data);
+                    toast("复制成功！")
+                }
+            }
+
+            window.onload = function () {
+                for (let pre of document.getElementsByTagName('pre')) {
+                    if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
+                        let code = pre.getElementsByClassName('code')[0].innerText;
+                        pre.ondblclick = function () {
+                            copyData(code)
+                        }
+                    }
+                }
+
+            };
+        </script>
 </div>
 </body>
 </html>

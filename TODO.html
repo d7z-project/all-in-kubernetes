@@ -455,7 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_环境介绍">环境介绍</a></li>
 <li><a href="#_组件部署">组件部署</a>
 <ul class="sectlevel3">
-<li><a href="#_底层组件">底层组件</a></li>
+<li><a href="#_应用环境和底层组件">应用环境和底层组件</a></li>
 <li><a href="#_系统存储_core_storage">系统存储 (core-storage)</a></li>
 <li><a href="#_核心组件_core_system">核心组件 (core-system)</a></li>
 <li><a href="#_核心中间件_core_middleware">核心中间件 (core-middleware)</a></li>
@@ -569,11 +569,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="sect2">
 <h3 id="_组件部署">组件部署</h3>
 <div class="sect3">
-<h4 id="_底层组件">底层组件</h4>
+<h4 id="_应用环境和底层组件">应用环境和底层组件</h4>
 <div class="ulist checklist">
 <ul class="checklist">
 <li>
-<p><i class="fa fa-check-square-o"></i> 安装 Kubernetes(google)/验证</p>
+<p><i class="fa fa-check-square-o"></i> 部署 Kubernetes/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 reflector/验证</p>
 </li>
 <li>
 <p><i class="fa fa-check-square-o"></i> 部署 LoadBalancer实现(metallb)/验证</p>
@@ -611,7 +614,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><i class="fa fa-check-square-o"></i> 部署 ldap-account-manager/验证</p>
 </li>
 <li>
-<p><i class="fa fa-square-o"></i> 部署 Velero</p>
+<p><i class="fa fa-square-o"></i> 部署 Velero/验证</p>
 </li>
 </ul>
 </div>
@@ -732,13 +735,66 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         .custom-footer a {
             color: white;
         }
+
+        .toast {
+            max-width: 60%;
+            min-width: 150px;
+            padding: 0 14px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 999999;
+            background: rgba(0, 0, 0, 0.56);
+            font-size: 16px;
+        }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月29日 22时37分02秒 |
+        代码双击可复制 | 最后编辑于 2022年07月30日 00时23分57秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//TODO.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf/"
-            target="_blank">#63553ac</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b//TODO.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b/"
+           target="_blank">#fdb24da</a>
+        <script>
+
+            function toast(msg, duration = 1000) {
+                const m = document.createElement('div');
+                m.innerHTML = msg;
+                m.className = "toast"
+                document.body.appendChild(m);
+                setTimeout(function () {
+                    const d = 0.5;
+                    m.style.transition = '-webkit-transform ' + d + 's ease-in, opacity ' + d + 's ease-in';
+                    m.style.opacity = '0';
+                    setTimeout(function () {
+                        document.body.removeChild(m)
+                    }, d * 1000);
+                }, duration);
+            }
+
+            function copyData(data) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(data);
+                    toast("复制成功！")
+                }
+            }
+
+            window.onload = function () {
+                for (let pre of document.getElementsByTagName('pre')) {
+                    if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
+                        let code = pre.getElementsByClassName('code')[0].innerText;
+                        pre.ondblclick = function () {
+                            copyData(code)
+                        }
+                    }
+                }
+
+            };
+        </script>
 </div>
 </body>
 </html>
