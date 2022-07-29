@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cert-powercloud-com
+  name: cert-{{deploy-host-name}}
   namespace: cert-manager
 spec:
   secretTemplate:
@@ -10,11 +10,11 @@ spec:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{shared-namespace}}"
-  secretName: tls-powercloud-com
+  secretName: tls-{{deploy-host-name}}
   duration: 8760h # 1y
   issuerRef:
     name: self-issuer
   commonName: "Self CA Certificate"
   dnsNames:
-    - powercloud.com
-    - '*.powercloud.com'
+    - '{{deploy-host}}'
+    - '*.{{deploy-host}}'
