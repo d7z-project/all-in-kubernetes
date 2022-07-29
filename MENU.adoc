@@ -7,8 +7,7 @@
 
 . link:cluster-deploy/ingress-nginx/README.adoc[部署 Nginx Ingress]
 
-. link:cluster-deploy/cert-manager/README.adoc[部署 CertManager]
-.. link:cluster-deploy/cert-manager/NOTE.adoc[CertManager 笔记]
+. link:cluster-deploy/cert-manager/README.adoc[部署 CertManager] | link:cluster-deploy/cert-manager/NOTE.adoc[ 相关笔记]
 
 === 存储提供者部署
 
