@@ -75,6 +75,10 @@
 * [ ] 部署 Gitea/验证
 // TODO
 
+==== Dev-Ops相关应用 (dev-ops)
+
+* [ ] 部署 kpack
+
 ==== 扩展应用 (share-app)
 
 * [ ] 部署 Gitlab-Runner/验证

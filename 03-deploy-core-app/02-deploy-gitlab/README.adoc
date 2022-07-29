@@ -58,7 +58,7 @@ kubectl exec -it -n core-middle sts-postgres-0 -- psql -U gitlab -d gitlabhq_pro
 
 [source%linenums,text]
 ----
-cn=gitlab,ou=groups,dc=pcloud,dc=com
+cn=gitlab,ou=groups,dc=cluster,dc=local
 ----
 
 == 开始部署
