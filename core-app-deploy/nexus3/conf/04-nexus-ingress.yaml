@@ -12,11 +12,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - nexus.d7z.net
-        - registry.d7z.net
-      secretName: tls-d7z-net
+        - nexus.{{deploy-host-}}
+        - registry.{{deploy-host-}}
+      secretName: tls-{{deploy-host-name}}
   rules:
-    - host: nexus.d7z.net
+    - host: nexus.{{deploy-host-}}
       http:
         paths:
           - path: /
@@ -26,7 +26,7 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-web
-    - host: registry.d7z.net
+    - host: registry.{{deploy-host-}}
       http:
         paths:
           - path: /
