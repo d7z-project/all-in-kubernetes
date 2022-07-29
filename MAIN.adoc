@@ -21,8 +21,11 @@ TIP: 离线部署需用户在有网络的环境下准备好安装的 Docker 镜�
 
 == 入门
 
-项目发布在 link:https://github.com/d7z-project/all-in-kubernetes[d7z-project/all-in-kubernetes]。 如有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问或发送邮件给我。如果你有新的想法可提 *Pull request* ，如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[d7z-project.github.io/all-in-kubernetes] 或者是 link:https://all-in-kubernetes.docs.d7z.net[all-in-kubernetes.docs.d7z.net]。
+项目发布在 link:https://github.com/d7z-project/all-in-kubernetes[d7z-project/all-in-kubernetes]。 有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问。
 
+如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[d7z-project.github.io/all-in-kubernetes] 或者是 link:https://all-in-kubernetes.docs.d7z.net[all-in-kubernetes.docs.d7z.net]。
+
+项目默认使用 {deploy-host} 域名作为模板来渲染文档，你可以克隆此项目后修改文件 link:./attr.properties[attr.properties] 文件实现自定义配置。
 
 TIP:  由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请在阅读文档内容后谨慎使用。
 
