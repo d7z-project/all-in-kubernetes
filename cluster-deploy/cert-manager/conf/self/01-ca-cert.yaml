@@ -8,5 +8,5 @@ spec:
   duration: 876000h # 100 year
   issuerRef:
     name: self-signed-issuer
-  commonName: "PowerSI CA Certificate"
+  commonName: "Self CA Certificate"
   isCA: true

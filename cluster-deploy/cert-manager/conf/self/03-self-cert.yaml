@@ -6,17 +6,15 @@ metadata:
 spec:
   secretTemplate:
     annotations:
-      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "{{shared-namespace}}"
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{shared-namespace}}"
   secretName: tls-powercloud-com
   duration: 8760h # 1y
   issuerRef:
     name: self-issuer
-  commonName: "PowerSI CA Certificate"
+  commonName: "Self CA Certificate"
   dnsNames:
     - powercloud.com
     - '*.powercloud.com'
-    - 'core.powercloud.com'
-    - '*.core.powercloud.com'
