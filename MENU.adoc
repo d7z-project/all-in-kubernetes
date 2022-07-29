@@ -17,7 +17,7 @@
 
 . link:system-app-deploy/README.adoc[核心系统应用部署准备]
 . link:system-app-deploy/openldap/README.adoc[部署OpenLDAP]
-. link:system-app-deploy/ldap-manager/README.adoc[部署 LDAP Account Manager]
+. link:system-app-deploy/lam/README.adoc[部署 LDAP Account Manager]
 
 === 系统中间件应用部署
 
@@ -32,11 +32,11 @@
 . link:./core-app-deploy/README.adoc[核心应用部署准备]
 . link:./core-app-deploy/nexus3/README.adoc[部署 Nexus3]
 . link:./core-app-deploy/gitlab/README.adoc[部署 Gitlab CE]
-. link:./LINK.adoc[文档参考]
 
 === 杂项
 
 * link:zz-document/other/HARDWARE_INFO.adoc[测试部署环境概览]
 * link:TODO.adoc[待完成列表与贡献者指南]
-* link:zz-document/other/EXTRA_NOTE.adoc[非部署相关扩展内容]
-* link:zz-document/other/EXTRA_SCRIPT.adoc[扩展脚本]
+* link:zz-document/other/EXTRA_SCRIPT.adoc[相关部署脚本]
+* link:./LINK.adoc[文档参考]
+* link:zz-document/other/EXTRA_NOTE.adoc[杂项]
