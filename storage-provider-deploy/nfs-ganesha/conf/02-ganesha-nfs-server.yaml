@@ -149,7 +149,7 @@ spec:
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
-  name: sc-nfs-share
+  name: '{{default-storage-class}}'
   labels:
     app: nfs-ganesha
 provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
