@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>核心中间件安装准备</title>
+<title>部署 kpack</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,31 +439,32 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>核心中间件安装准备</h1>
+<h1>部署 kpack</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_创建_namespace">创建 Namespace</a></li>
+<li><a href="#_说明">说明</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_创建_namespace">创建 Namespace</h2>
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>核心中间件需要独立的 namespace，使用以下 <code>YAML</code> 创建即可。</p>
-</div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Namespace</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">core-middle</span>
+5
+6
+</pre></td><td class="code"><pre>gcr.io/cf-build-service-public/kpack/build-init@sha256:a68ebf8e886b3e53c9b7920e5bf39b6b67a225e9f930bdc0533f3e33e1ccb15f
+gcr.io/cf-build-service-public/kpack/rebase@sha256:2396d57dada6fb1b43f19f8f48de79e8d25f2d85fb8c1befb7dffe61a92df0e6
+gcr.io/cf-build-service-public/kpack/lifecycle@sha256:c7e8d312f79f5cf9918fd5c60191da9d34b750cc4183a159149835b88bf42721
+gcr.io/cf-build-service-public/kpack/completion@sha256:835d36448547643750786279fdc389566e34c362dceb68aebeee9c22a0756734
+gcr.io/cf-build-service-public/kpack/controller@sha256:9fdec102a140d75f5c322a8f01ebfa37b57f9faa3ff2d4520905207326d64d9d
+gcr.io/cf-build-service-public/kpack/webhook@sha256:659e53454546e3a45226eae805c62994c77a0d08e716bde263f6947395a6cee4
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -699,11 +700,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月19日 22时09分01秒 |
+        最后编辑于 2022年07月29日 16时25分57秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/239f70e75d5cb8277b4643a6c25c18146e45cc5b//02-deploy-core-middleware/README.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/239f70e75d5cb8277b4643a6c25c18146e45cc5b//04-deploy-dev-ops-app/00-deploy-kpack/README.adoc">查看源码</a> |
         <a href="https://github.com/d7z-project/all-in-kubernetes/tree/239f70e75d5cb8277b4643a6c25c18146e45cc5b/"
-            target="_blank">#bf0421e</a>
+            target="_blank">#239f70e</a>
 </div>
 </body>
 </html>

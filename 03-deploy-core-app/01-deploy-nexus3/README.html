@@ -584,9 +584,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 54
 55
 56
-57
-58
-59
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -604,7 +601,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="s">location / {</span>
     <span class="s">proxy_http_version 1.1;</span>
     <span class="s">proxy_pass http://127.0.0.1:8081; </span><i class="conum" data-value="1"></i><b>(1)</b>
-    <span class="s">proxy_set_header Host $host;</span>
     <span class="s">proxy_buffering off;</span>
     <span class="s">client_max_body_size 0;</span>
     <span class="s">proxy_connect_timeout 3600s;</span>
@@ -635,14 +631,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <span class="s">}</span>
     <span class="s">location / {</span>
     <span class="s">proxy_pass http://$upstream;</span>
-    <span class="s">proxy_set_header Host $host;</span>
     <span class="s">proxy_connect_timeout 3600;</span>
     <span class="s">proxy_send_timeout 3600;</span>
     <span class="s">proxy_read_timeout 3600;</span>
     <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
     <span class="s">proxy_buffering off;</span>
     <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
     <span class="s">proxy_set_header X-Forwarded-Proto http;</span>
     <span class="s">}</span>
     <span class="s">}</span>
@@ -1317,8 +1311,8 @@ pre.rouge {
     <p class="custom-footer">
         最后编辑于 2022年07月28日 17时20分17秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/7e1cdfb7f5a1496d4fdb95ed0da8e72873239bbe//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/7e1cdfb7f5a1496d4fdb95ed0da8e72873239bbe/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/239f70e75d5cb8277b4643a6c25c18146e45cc5b//03-deploy-core-app/01-deploy-nexus3/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/239f70e75d5cb8277b4643a6c25c18146e45cc5b/"
             target="_blank">#ec6dbe5</a>
 </div>
 </body>
