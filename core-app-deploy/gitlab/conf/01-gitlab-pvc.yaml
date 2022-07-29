@@ -6,7 +6,7 @@ metadata:
   labels:
     app: gitlab
 spec:
-  storageClassName: sc-nfs-share
+  storageClassName: '{{default-storage-class}}'
   accessModes:
     - ReadWriteOnce
   resources:
@@ -21,7 +21,7 @@ metadata:
   labels:
     app: gitlab
 spec:
-  storageClassName: sc-nfs-share
+  storageClassName: '{{default-storage-class}}'
   accessModes:
     - ReadWriteOnce
   resources:

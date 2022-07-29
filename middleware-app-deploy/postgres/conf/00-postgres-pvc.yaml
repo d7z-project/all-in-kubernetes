@@ -6,7 +6,7 @@ metadata:
   labels:
     app: postgres
 spec:
-  storageClassName: sc-nfs-share
+  storageClassName: '{{default-storage-class}}'
   accessModes:
     - ReadWriteOnce
   resources:
