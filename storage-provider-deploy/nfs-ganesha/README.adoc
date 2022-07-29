@@ -31,7 +31,7 @@ include::./conf/00-ganesha-rbac.yaml[]
 
 == 映射节点目录
 
-具体步骤可参考 link:../02.a-deploy-rook-nfs/README.adoc[RookNFS] , 此处仅放置最终配置。
+具体步骤可参考 link:../rook-nfs/README.adoc[RookNFS] , 此处仅放置最终配置。
 
 .点击展开配置
 [%collapsible]
