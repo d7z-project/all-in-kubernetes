@@ -6,6 +6,10 @@
 :toclevels: 4
 :source-highlighter: rouge
 
+== 说明
+
+此文档已在 `Debian Bullseye` 和 `CentOS` 下验证 （仅使用 *AMD64*）。安装过程中需要网络。
+
 == 部署软件包
 
 === 下载需要的资源
@@ -150,7 +154,3 @@ node-worker-02   Ready    <none>          105s   v1.24.2
 ----
 
 至此，kubernetes (Google) 安装完成。
-
-== 参考
-
-. link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[部署 kubeadm]
