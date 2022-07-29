@@ -13,29 +13,22 @@
 
 CertManager 需要以下镜像：
 
-[source%linenums,bash]
+[source%linenums,text]
 ----
-crictl pull quay.io/jetstack/cert-manager-cainjector:v1.8.2
-crictl pull quay.io/jetstack/cert-manager-controller:v1.8.2
-crictl pull quay.io/jetstack/cert-manager-webhook:v1.8.2
-crictl pull emberstack/kubernetes-reflector:6.1.47 # <1>
+quay.io/jetstack/cert-manager-cainjector:v1.8.2
+quay.io/jetstack/cert-manager-controller:v1.8.2
+quay.io/jetstack/cert-manager-webhook:v1.8.2
 ----
-
-.其中
-<1> `emberstack/kubernetes-reflector` 用于在多命名空间下同步数据
 
 == 导入资源
 
-由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-cert-manager.yaml[conf/cert-manager.yaml] 和 link:conf/01-reflector.yaml[conf/reflector.yaml] 推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml -f reflector.yaml` 导入资源。
-
-* 注： Reflector 用于同步证书到各个 `namespace` 。
+由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-cert-manager.yaml[conf/cert-manager.yaml]  推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml` 导入资源。
 
 或者你可以使用以下命令在线导入资源：
 
 [source%linenums,bash]
 ----
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
-kubectl apply -n kube-system -f https://github.com/emberstack/kubernetes-reflector/releases/download/v6.1.47/reflector.yaml
 ----
 
 导入完成后使用以下命令查看结果：
@@ -112,4 +105,4 @@ NAME               READY   SECRET                 AGE
 cert-d7z-net       True    d7z-net-tls            18h
 ----
 
-WARNING: 注意，需要填充的内容必须真实有效，否则将导致签发失败。
+WARNING: 注意，需要填充的内容必须真实有效，否则将导致签发失败。如果没有可用的域名可参考 link:NOTE.adoc[笔记] 中的自签名证书。

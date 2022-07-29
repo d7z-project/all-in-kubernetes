@@ -44,9 +44,10 @@
 
 === 组件部署
 
-==== 底层组件
+==== 应用环境和底层组件
 
-* [x] 安装 Kubernetes(google)/验证
+* [x] 部署 Kubernetes/验证
+* [x] 部署 reflector/验证
 * [x] 部署 LoadBalancer实现(metallb)/验证
 * [x] 部署 Ingress(Nginx)/验证
 * [x] 部署 Cert-Manager/验证
@@ -60,7 +61,7 @@
 
 * [x] 部署 OpenLDAP/验证
 * [x] 部署 ldap-account-manager/验证
-* [ ] 部署 Velero
+* [ ] 部署 Velero/验证
 //TODO
 
 ==== 核心中间件 (core-middleware)

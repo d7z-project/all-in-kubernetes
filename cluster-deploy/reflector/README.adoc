@@ -1,0 +1,70 @@
+= 部署 reflector
+:experimental:
+:icons: font
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+:nocopyblocks:
+
+== 说明
+
+reflector 用于在各个 `namespace` 下同步 `ConfigMap` 配置。
+
+项目地址: link:https://github.com/emberstack/kubernetes-reflector[emberstack/kubernetes-reflector]
+
+此文档/项目需要如下镜像:
+
+[source%linenums,text]
+----
+emberstack/kubernetes-reflector:6.1.47
+----
+
+此组件/应用将被安装到 `kube-system` 命名空间下。
+
+== 部署
+
+导入以下配置，创建 `reflector` 相关的资源。
+
+.点击展开配置
+[%collapsible]
+====
+
+[source%linenums,yaml]
+----
+include::./conf/01-reflector.yaml[]
+----
+
+====
+
+你也可以使用以下命令在线导入资源。
+
+[source%linenums,bash]
+----
+kubectl apply -n kube-system -f https://github.com/emberstack/kubernetes-reflector/releases/download/v6.1.47/reflector.yaml
+----
+
+导入完成后，使用以下命令查看导入结果。
+
+[source%linenums,bash]
+----
+kubectl get pods -n kube-system -l app.kubernetes.io/name=reflector
+----
+
+== 验证
+
+在 kubernetes 中导入以下配置.
+
+[source%linenums,yaml]
+----
+include::./conf/t-01-config.yaml[]
+----
+
+导入后使用如下命令测试，如果能返回 `ok` 则表明部署成功。
+
+[source%linenums,bash]
+----
+ kubectl get configmaps -n default test-reflector -o jsonpath='{.data.test}'
+----
