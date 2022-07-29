@@ -74,7 +74,7 @@ include::./conf/00-gitlab-conf.yaml[]
 <1> 如果你修改了 *Postgres* 的数据库名称，则需要在此更改
 <2> 如果你修改了 *Postgres* 的用户，则需要在此更改
 <3> 请将其修改为你 *Gitlab* 对应的域名
-<4> LDAP 的过滤条件，请将 `dc=d7z,dc=net` 改为你的 *LDAP* 服务器信息
+<4> LDAP 的过滤条件
 <5> 如果你修改了 *Postgres* 的密码，则需要在此更改
 <6> 由于 `Gitlab CE` 无法动态分配管理员，请修改默认管理员密码并妥善保存（*请不要使用默认配置*）。
 <7> 在安装时请自定义 *Secrets* ,可使用 `pwgen -Bsv1 64` 生成 （*请不要使用默认配置*）。
@@ -127,7 +127,7 @@ include::./conf/03-gitlab-service.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl get service -n core-app -l type=gitlab
+kubectl get service -n core-app -l app=gitlab
 ----
 
 === 关联 Ingress
@@ -147,7 +147,7 @@ include::./conf/04-gitlab-ingress.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl get pods,pvc,service,ingress -n core-app -l type=gitlab
+kubectl get pods,pvc,service,ingress -n core-app -l app=gitlab
 ----
 
 === 测试 LDAP 登陆
