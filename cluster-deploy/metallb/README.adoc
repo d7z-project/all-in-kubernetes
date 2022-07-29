@@ -20,6 +20,8 @@ crictl pull quay.io/metallb/controller:v0.13.3
 crictl pull quay.io/metallb/speaker:v0.13.3
 ----
 
+本文仅介绍了使用 `L2` 模式，BGP 模式请查看官网。
+
 == 环境准备
 
 如果您在 *IPVS* 模式下使用 `kube-proxy`，从 *Kubernetes v1.14.2* 开始，您必须启用严格的 *ARP* 模式。
