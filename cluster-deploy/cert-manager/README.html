@@ -5,6 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
+<meta name="author" content="== 说明">
 <title>部署 CertManager</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -440,10 +441,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <body class="article toc2 toc-right">
 <div id="header">
 <h1>部署 CertManager</h1>
+<div class="details">
+<span id="author" class="author">== 说明</span><br>
+</div>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
 <li><a href="#_导入资源">导入资源</a></li>
 <li><a href="#_验证结果">验证结果</a>
 <ul class="sectlevel2">
@@ -457,8 +460,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_说明">说明</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址： <a target="_blank" href="https://cert-manager.io">cert-manager</a></p>
@@ -546,7 +548,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="c1"># 需要修改为实际数据</span>
-  <span class="na">api-token</span><span class="pi">:</span> <span class="s1">'</span><span class="s">&lt;CLOUDFLARE</span><span class="nv"> </span><span class="s">API</span><span class="nv"> </span><span class="s">TOKEN&gt;'</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">api-token</span><span class="pi">:</span> <span class="s1">'</span><span class="s"><请填写你的 CloudFlare 账户的Token值>'</span> <i class="conum" data-value="1"></i><b>(1)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -600,7 +602,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
     <span class="na">solvers</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="na">dns01</span><span class="pi">:</span>
           <span class="na">cloudflare</span><span class="pi">:</span>
-            <span class="na">email</span><span class="pi">:</span> <span class="s">&lt;EMAIL&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+            <span class="na">email</span><span class="pi">:</span> <span class="s1">'</span><span class="s"><请填写你的 CloudFlare 账户邮箱信息>'</span> <i class="conum" data-value="1"></i><b>(1)</b>
             <span class="na">apiTokenSecretRef</span><span class="pi">:</span>
               <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span> <i class="conum" data-value="2"></i><b>(2)</b>
               <span class="na">key</span><span class="pi">:</span> <span class="s">api-token</span>
@@ -611,11 +613,11 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>此处填写你的 Cloudflare Email</td>
+<td>此处填写你的 <strong>Cloudflare Email</strong></td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>关联的 Cloudflare Token</td>
+<td>关联的 <strong>Cloudflare Token</strong></td>
 </tr>
 </table>
 </div>
@@ -655,7 +657,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">cert-d7z-net</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cert-d7z-net'</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">secretTemplate</span><span class="pi">:</span>
@@ -668,12 +670,12 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
     <span class="na">algorithm</span><span class="pi">:</span> <span class="s">RSA</span>
     <span class="na">size</span><span class="pi">:</span> <span class="m">4096</span>
   <span class="na">dnsNames</span><span class="pi">:</span> <i class="conum" data-value="5"></i><b>(5)</b>
-    <span class="pi">-</span> <span class="s">d7z.net</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">d7z.net'</span>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">*.d7z.net'</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>  <i class="conum" data-value="6"></i><b>(6)</b>
-  <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -729,7 +731,7 @@ kubectl get certificate <span class="nt">-n</span> cert-manager
 <pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>NAME               READY   SECRET                 AGE
-cert-d7z-net       True    d7z-net-tls            18h
+cert-d7z-net       True    tls-d7z-net            18h
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -995,11 +997,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022年07月30日 00时23分57秒 |
+        代码双击可复制 | 最后编辑于 2022年07月30日 02时39分55秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b/"
-           target="_blank">#fdb24da</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/206c026ed6eb2056b22b7bc3a4078e336bcacfa5//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/206c026ed6eb2056b22b7bc3a4078e336bcacfa5/"
+           target="_blank">#7d266c2</a>
         <script>
 
             function toast(msg, duration = 1000) {

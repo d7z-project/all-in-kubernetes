@@ -443,13 +443,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_贡献者指南">贡献者指南</a>
-<ul class="sectlevel2">
-<li><a href="#_文档编写指南">文档编写指南</a></li>
-<li><a href="#_命名规范">命名规范</a></li>
-<li><a href="#_注意事项">注意事项</a></li>
-</ul>
-</li>
 <li><a href="#_任务列表">任务列表</a>
 <ul class="sectlevel2">
 <li><a href="#_环境介绍">环境介绍</a></li>
@@ -473,83 +466,6 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_贡献者指南">贡献者指南</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>如果你想要为此文档做出贡献，可参考以下说明。</p>
-</div>
-<div class="sect2">
-<h3 id="_文档编写指南">文档编写指南</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>所有文档需使用 <a target="_blank" href="https://asciidoc.org/">AsciiDoc</a> 编写。</p>
-</li>
-<li>
-<p>对于代码块内容需单独保存至文件，并使用 <code>include::path/to/file[]</code> 引入。</p>
-</li>
-<li>
-<p>过长的代码块需要用折叠块折叠。</p>
-</li>
-<li>
-<p>所有文档均需要有简单的测试说明。</p>
-</li>
-<li>
-<p>对于引用他人文档需避免版权问题，且需要在文档末尾注明引用来源。</p>
-</li>
-<li>
-<p>编写的文档需要在 <code>MENU.adoc</code> 内存在引用菜单。</p>
-</li>
-<li>
-<p>如果需要拉取镜像则需要在文档内注明所需的镜像地址，方便读者离线部署。</p>
-</li>
-<li>
-<p>所有从网络加载的 <code>kubernetes</code> 的  <code>yaml</code> 配置文件均需在本地留有备份 （仅可修改 namespace）。</p>
-</li>
-<li>
-<p>请不要使用 Helm 安装。</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_命名规范">命名规范</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>所有资源命名采用小写 + 中划线</p>
-</li>
-<li>
-<p>资源名称头部需带上资源类型完整名称或缩写+项目类型名称，例如 Redis 所需要的持久卷应当命名为 <code>pvc-redis</code>;如果需挂载多个持久卷则可以继续拼接 ，例如 <code>pvc-redis-data</code> 、<code>pvc-redis-rdb</code>。</p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_注意事项">注意事项</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>请 <strong>不要使用任何闭源的软件或镜像</strong>。</p>
-</li>
-<li>
-<p>所有组件除特殊说明的除外均为单实例部署，系统内所有账户尽量采用LDAP来统一管理。</p>
-</li>
-<li>
-<p>避免使用超过一年未更新的镜像（有特殊说明的除外）。</p>
-</li>
-<li>
-<p>尽量避免使用 <code>bitnami</code> 打包的镜像。</p>
-</li>
-<li>
-<p>对于 Java 相关的应用部署，需仔细审核依赖，避免引入带 <a target="_blank" href="https://www.cve.org/CVERecord?id=CVE-2021-44228">Log4Shell</a> 漏洞的镜像。</p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
 <div class="sect1">
 <h2 id="_任务列表">任务列表</h2>
 <div class="sectionbody">
@@ -754,11 +670,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022年07月30日 00时23分57秒 |
+        代码双击可复制 | 最后编辑于 2022年07月30日 02时40分03秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b//TODO.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/fdb24da2499010ab68fbae250fcff275857f6a7b/"
-           target="_blank">#fdb24da</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/206c026ed6eb2056b22b7bc3a4078e336bcacfa5//TODO.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/206c026ed6eb2056b22b7bc3a4078e336bcacfa5/"
+           target="_blank">#efc1ad9</a>
         <script>
 
             function toast(msg, duration = 1000) {
