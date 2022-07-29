@@ -1,0 +1,28 @@
+= containerd 自定义镜像
+
+详细配置可参考 link:https://github.com/containerd/containerd/blob/main/docs/cri/config.md#registry-configuration[在线文档]。
+
+== 修改配置
+
+编辑配置文件 `/etc/containerd/config.toml`,修改为如下内容。
+
+[source%linenums,toml]
+----
+[plugins."io.containerd.grpc.v1.cri".registry]
+   config_path = "/etc/containerd/certs.d"
+----
+
+修改完成后，创建 `/etc/containerd/certs.d` 文件夹。
+
+== 添加自定义镜像源
+
+编辑文件 `/etc/containerd/certs.d/docker.io/hosts.toml` ，添加如下配置:
+
+[source%linenums,toml]
+----
+server = "https://docker.io"
+
+[host."https://registry.powercloud.com"]
+  capabilities = ["pull", "resolve"]
+  skip_verify = true
+----
