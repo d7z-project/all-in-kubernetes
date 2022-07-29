@@ -650,7 +650,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>LDAP 的过滤条件，请将 <code>dc=d7z,dc=net</code> 改为你的 <strong>LDAP</strong> 服务器信息</td>
+<td>LDAP 的过滤条件</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
@@ -1146,7 +1146,7 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get service <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>gitlab
+</pre></td><td class="code"><pre>kubectl get service <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>gitlab
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1231,7 +1231,7 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get pods,pvc,service,ingress <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nb">type</span><span class="o">=</span>gitlab
+</pre></td><td class="code"><pre>kubectl get pods,pvc,service,ingress <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>gitlab
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1491,11 +1491,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022年07月30日 00时40分49秒 |
+        代码双击可复制 | 最后编辑于 2022年07月30日 03时22分27秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/eff859182d629a79c82b761689a88e85e1f8a5b1//core-app-deploy/gitlab/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/eff859182d629a79c82b761689a88e85e1f8a5b1/"
-           target="_blank">#53bcc9d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/bd5fc41a096a71c60bc9bec0754bbb72a6e24de3//core-app-deploy/gitlab/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/bd5fc41a096a71c60bc9bec0754bbb72a6e24de3/"
+           target="_blank">#bd5fc41</a>
         <script>
 
             function toast(msg, duration = 1000) {
