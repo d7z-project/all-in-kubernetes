@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>非部署相关扩展记录</title>
+<title>任务列表 &amp; 贡献者指南</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,20 +439,283 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>非部署相关扩展记录</h1>
+<h1>任务列表 &amp; 贡献者指南</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_过年">过年</a></li>
+<li><a href="#_贡献者指南">贡献者指南</a>
+<ul class="sectlevel2">
+<li><a href="#_文档编写指南">文档编写指南</a></li>
+<li><a href="#_命名规范">命名规范</a></li>
+<li><a href="#_注意事项">注意事项</a></li>
+</ul>
+</li>
+<li><a href="#_任务列表">任务列表</a>
+<ul class="sectlevel2">
+<li><a href="#_环境介绍">环境介绍</a></li>
+<li><a href="#_组件部署">组件部署</a>
+<ul class="sectlevel3">
+<li><a href="#_底层组件">底层组件</a></li>
+<li><a href="#_系统存储_core_storage">系统存储 (core-storage)</a></li>
+<li><a href="#_核心组件_core_system">核心组件 (core-system)</a></li>
+<li><a href="#_核心中间件_core_middleware">核心中间件 (core-middleware)</a></li>
+<li><a href="#_核心应用_core_app">核心应用 (core-app)</a></li>
+<li><a href="#_dev_ops相关应用_dev_ops">Dev-Ops相关应用 (dev-ops)</a></li>
+<li><a href="#_扩展应用_share_app">扩展应用 (share-app)</a></li>
+<li><a href="#_集群监控_monitor_app">集群监控 (monitor-app)</a></li>
+</ul>
+</li>
+<li><a href="#_自动化部署测试">自动化部署测试</a></li>
+<li><a href="#_文档优化">文档优化</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_过年">过年</h2>
+<h2 id="_贡献者指南">贡献者指南</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>快过年了，不要再讨论什么 <code>NAS</code>、<code>HTPC</code> 、<code>OpenWrt</code> 了。你带你的大机箱回到家并不能给你带来任何实质性作用，朋友们兜里掏出一大把钱吃喝玩乐，你默默的在家里摆弄你的破 <code>NAS</code> 。亲戚朋友吃饭问你收获了什么，你说我组了一个 <strong>RAID 0</strong> 的 <strong>ALL IN ONE</strong> ，亲戚们懵逼了，你还在心里默默嘲笑他们，笑他们不懂你的刮削器，不懂你的  <strong>Auto Backup</strong> ，也笑他们看爱奇艺还要忍受会员专属广告。你父母的同事都在说自己的子女一年的收获，儿子买了个房，女儿买了个车，姑娘升职加薪了，你的父母默默无言，说我的儿子装了个黑盒子，开起来嗡嗡响、家里电表走得越来越快了。</p>
+<p>如果你想要为此文档做出贡献，可参考以下说明。</p>
+</div>
+<div class="sect2">
+<h3 id="_文档编写指南">文档编写指南</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>所有文档需使用 <a target="_blank" href="https://asciidoc.org/">AsciiDoc</a> 编写。</p>
+</li>
+<li>
+<p>对于代码块内容需单独保存至文件，并使用 <code>include::path/to/file[]</code> 引入。</p>
+</li>
+<li>
+<p>过长的代码块需要用折叠块折叠。</p>
+</li>
+<li>
+<p>所有文档均需要有简单的测试说明。</p>
+</li>
+<li>
+<p>对于引用他人文档需避免版权问题，且需要在文档末尾注明引用来源。</p>
+</li>
+<li>
+<p>编写的文档需要在 <code>MENU.adoc</code> 内存在引用菜单。</p>
+</li>
+<li>
+<p>如果需要拉取镜像则需要在文档内注明所需的镜像地址，方便读者离线部署。</p>
+</li>
+<li>
+<p>所有从网络加载的 <code>kubernetes</code> 的  <code>yaml</code> 配置文件均需在本地留有备份 （仅可修改 namespace）。</p>
+</li>
+<li>
+<p>请不要使用 Helm 安装。</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_命名规范">命名规范</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>所有资源命名采用小写 + 中划线</p>
+</li>
+<li>
+<p>资源名称头部需带上资源类型完整名称或缩写+项目类型名称，例如 Redis 所需要的持久卷应当命名为 <code>pvc-redis</code>;如果需挂载多个持久卷则可以继续拼接 ，例如 <code>pvc-redis-data</code> 、<code>pvc-redis-rdb</code>。</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_注意事项">注意事项</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>请 <strong>不要使用任何闭源的软件或镜像</strong>。</p>
+</li>
+<li>
+<p>所有组件除特殊说明的除外均为单实例部署，系统内所有账户尽量采用LDAP来统一管理。</p>
+</li>
+<li>
+<p>避免使用超过一年未更新的镜像（有特殊说明的除外）。</p>
+</li>
+<li>
+<p>尽量避免使用 <code>bitnami</code> 打包的镜像。</p>
+</li>
+<li>
+<p>对于 Java 相关的应用部署，需仔细审核依赖，避免引入带 <a target="_blank" href="https://www.cve.org/CVERecord?id=CVE-2021-44228">Log4Shell</a> 漏洞的镜像。</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_任务列表">任务列表</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_环境介绍">环境介绍</h3>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-check-square-o"></i> <a href="./zz-document/other/HARDWARE_INFO.html">介绍物理机环境</a></p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> <a href="./zz-document/other/HARDWARE_INFO.html">介绍部署机器环境</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_组件部署">组件部署</h3>
+<div class="sect3">
+<h4 id="_底层组件">底层组件</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-check-square-o"></i> 安装 Kubernetes(google)/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 LoadBalancer实现(metallb)/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 Ingress(Nginx)/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 Cert-Manager/验证</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_系统存储_core_storage">系统存储 (core-storage)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-check-square-o"></i> 配置 共享存储(rook-nfs)/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 配置 共享存储(nfs-ganesha)/验证</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_核心组件_core_system">核心组件 (core-system)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 OpenLDAP/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 ldap-account-manager/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Velero</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_核心中间件_core_middleware">核心中间件 (core-middleware)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 MariaDB/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 Redis/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 PostgresSQL/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 ElasticSearch/验证</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_核心应用_core_app">核心应用 (core-app)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 Nexus3/验证</p>
+</li>
+<li>
+<p><i class="fa fa-check-square-o"></i> 部署 Gitlab/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Gitea/验证</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dev_ops相关应用_dev_ops">Dev-Ops相关应用 (dev-ops)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> 部署 kpack</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_扩展应用_share_app">扩展应用 (share-app)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Gitlab-Runner/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Jellyfin/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 V2ray/验证</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_集群监控_monitor_app">集群监控 (monitor-app)</h4>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Prometheus/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 AlertManager/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 Grafana/验证</p>
+</li>
+<li>
+<p><i class="fa fa-square-o"></i> 部署 NodeExporter/验证</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_自动化部署测试">自动化部署测试</h3>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> 使用 Gitlab Actions 做自动化测试</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_文档优化">文档优化</h3>
+<div class="ulist checklist">
+<ul class="checklist">
+<li>
+<p><i class="fa fa-square-o"></i> 为所有的可变参数做标记和警告</p>
+</li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -471,11 +734,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月20日 13时55分35秒 |
+        最后编辑于 2022年07月29日 22时37分02秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//zz-document/other/EXTRA_NOTE.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//TODO.adoc">查看源码</a> |
         <a href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf/"
-            target="_blank">#d0bb95c</a>
+            target="_blank">#63553ac</a>
 </div>
 </body>
 </html>

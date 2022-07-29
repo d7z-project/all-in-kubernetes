@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>非部署相关扩展记录</title>
+<title>Debian 系统环境配置</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,24 +439,385 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>非部署相关扩展记录</h1>
+<h1>Debian 系统环境配置</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_过年">过年</a></li>
+<li><a href="#_基础软件安装">基础软件安装</a>
+<ul class="sectlevel2">
+<li><a href="#_安装_bash_completion">安装 Bash Completion</a></li>
+<li><a href="#_安装_openssh_server">安装 OpenSSH Server</a></li>
+<li><a href="#_安装_vm_tools_可选">安装 VM tools (可选)</a></li>
+</ul>
+</li>
+<li><a href="#_基础环境配置">基础环境配置</a>
+<ul class="sectlevel2">
+<li><a href="#_修改_apt_远程仓库地址_可选">修改 APT 远程仓库地址 (可选)</a></li>
+<li><a href="#_修改openssh_配置_可选">修改OpenSSH 配置 (可选)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_过年">过年</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>快过年了，不要再讨论什么 <code>NAS</code>、<code>HTPC</code> 、<code>OpenWrt</code> 了。你带你的大机箱回到家并不能给你带来任何实质性作用，朋友们兜里掏出一大把钱吃喝玩乐，你默默的在家里摆弄你的破 <code>NAS</code> 。亲戚朋友吃饭问你收获了什么，你说我组了一个 <strong>RAID 0</strong> 的 <strong>ALL IN ONE</strong> ，亲戚们懵逼了，你还在心里默默嘲笑他们，笑他们不懂你的刮削器，不懂你的  <strong>Auto Backup</strong> ，也笑他们看爱奇艺还要忍受会员专属广告。你父母的同事都在说自己的子女一年的收获，儿子买了个房，女儿买了个车，姑娘升职加薪了，你的父母默默无言，说我的儿子装了个黑盒子，开起来嗡嗡响、家里电表走得越来越快了。</p>
+<p>本项目使用 <a target="_blank" href="https://www.debian.org/releases/bullseye/">"Debian bullseye"</a> 作底层操作系统，在系统安装完成后的具体的配置情况如下：</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_基础软件安装">基础软件安装</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_安装_bash_completion">安装 Bash Completion</h3>
+<div class="paragraph">
+<p><strong>Bash Completion</strong> 可为 Shell 添加 <strong>TAB</strong> 补全功能，建议安装。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>apt-get <span class="nb">install</span> <span class="nt">-y</span>  bash-completion
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装_openssh_server">安装 OpenSSH Server</h3>
+<div class="paragraph">
+<p><strong>OpenSSH</strong> 能极大的方便远程调试，建议安装。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre><span class="c"># 安装 OpenSSH 软件包</span>
+apt-get <span class="nt">-y</span> <span class="nb">install </span>openssh-server
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_安装_vm_tools_可选">安装 VM tools (可选)</h3>
+<div class="paragraph">
+<p>在 <strong>KVM</strong> 虚拟机环境下，某些工具包能极大提升部署效率，建议安装。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre><span class="c"># 安装虚拟化相关的软件包</span>
+apt-get <span class="nt">-y</span> <span class="nb">install </span>qemu-guest-agent cloud-init
+</pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_基础环境配置">基础环境配置</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_修改_apt_远程仓库地址_可选">修改 APT 远程仓库地址 (可选)</h3>
+<div class="paragraph">
+<p>受地域影响，默认的 APT 下载可能会非常慢，可根据实际需求更改为合适的地址，例如：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+</pre></td><td class="code"><pre><span class="c"># 备份旧的配置</span>
+<span class="nb">mv</span> /etc/apt/sources.list /etc/apt/sources.list.bak
+<span class="c"># 覆盖新的配置文件</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> &gt; /etc/apt/sources.list
+deb https://mirrors.ustc.edu.cn/debian/ bullseye main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian/ bullseye-updates main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian/ bullseye-backports main contrib non-free
+deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main contrib non-free
+</span><span class="no">EOF
+</span>apt-get update
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_修改openssh_配置_可选">修改OpenSSH 配置 (可选)</h3>
+<div class="paragraph">
+<p>关闭密码登陆可提高服务器安全性。同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 <code>2222</code> ，如果没有使用需求则可以跳过。</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+在关闭密码登陆之前请 <strong>务必</strong> 将公钥复制到目标服务器，否则可能会导致无法使用SSH远程登陆。可以使用 <code>ssh-copy-id &lt;user&gt;@&lt;address&gt;</code> 快速复制本机的公钥到目标服务器下。
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+</pre></td><td class="code"><pre><span class="c"># 更新OpenSSH 配置文件</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="sh">"</span><span class="no">EOF</span><span class="sh">" &gt; /etc/ssh/sshd_config.d/security.conf
+# 修改默认SSH端口
+Port 2222
+# 开启公钥登陆
+PubkeyAuthentication yes
+# 指定公钥位置
+AuthorizedKeysFile     .ssh/authorized_keys
+# 关闭密码登陆
+PasswordAuthentication no
+</span><span class="no">EOF
+
+</span><span class="c"># 重加载配置文件</span>
+systemctl restart ssh
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
 <div class="custom-content">
     <style>
         .custom-footer {
@@ -471,11 +832,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        最后编辑于 2022年07月20日 13时55分35秒 |
+        最后编辑于 2022年07月29日 22时34分31秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//zz-document/other/EXTRA_NOTE.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf//cluster-deploy/pre-deploy/SYSTEM.adoc">查看源码</a> |
         <a href="https://github.com/d7z-project/all-in-kubernetes/tree/63553ace03956251a55c91ecbde6b5c1f9b570bf/"
-            target="_blank">#d0bb95c</a>
+            target="_blank">#abf0fa6</a>
 </div>
 </body>
 </html>
