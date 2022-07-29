@@ -109,7 +109,7 @@ include::./conf/02-gitlab-server.yaml[]
 
 [source%linenums,bash]
 ----
-kubectl get pods -n core-app -l type=gitlab
+kubectl get pods -n core-app -l app=gitlab
 ----
 
 === 关联 Service
