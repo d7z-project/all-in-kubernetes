@@ -1,39 +1,39 @@
 === 核心环境部署
 
-. link:./00-deploy-global/00-init-node/SYSTEM.adoc[系统环境配置]
-. link:./00-deploy-global/00-init-node/README.adoc[初始化部署环境]
-. link:./00-deploy-global/01-deploy-kubernetes-google/README.adoc[部署 Kubernetes(Google)]
+. link:./cluster-deploy/00-init-node/SYSTEM.adoc[系统环境配置]
+. link:./cluster-deploy/00-init-node/README.adoc[初始化部署环境]
+. link:./cluster-deploy/01-deploy-kubernetes-google/README.adoc[部署 Kubernetes(Google)]
 . 配置共享存储
-.. link:./00-deploy-global/02.a-deploy-rook-nfs/README.adoc[基于 rook-nfs 配置存储]
+.. link:./cluster-deploy/02.a-deploy-rook-nfs/README.adoc[基于 rook-nfs 配置存储]
 
-.. link:./00-deploy-global/02.b-deploy-nfs-ganesha/README.adoc[基于ganesha 配置存储]
+.. link:./cluster-deploy/02.b-deploy-nfs-ganesha/README.adoc[基于ganesha 配置存储]
 
-. link:00-deploy-global/03-deploy-metallb/README.adoc[部署 LoadBalancer 实现 (metallb)]
+. link:cluster-deploy/03-deploy-metallb/README.adoc[部署 LoadBalancer 实现 (metallb)]
 
-. link:00-deploy-global/04-deploy-ingress-nginx/README.adoc[部署 Nginx Ingress]
+. link:cluster-deploy/04-deploy-ingress-nginx/README.adoc[部署 Nginx Ingress]
 
-. link:00-deploy-global/05-deploy-cert-manager/README.adoc[部署 CertManager]
-.. link:00-deploy-global/05-deploy-cert-manager/NOTE.adoc[CertManager 笔记]
+. link:cluster-deploy/05-deploy-cert-manager/README.adoc[部署 CertManager]
+.. link:cluster-deploy/05-deploy-cert-manager/NOTE.adoc[CertManager 笔记]
 
 === 核心系统应用部署
 
-. link:01-deploy-core-system/README.adoc[核心系统应用部署准备]
-. link:01-deploy-core-system/00-deploy-openldap/README.adoc[部署OpenLDAP]
-. link:01-deploy-core-system/01-deploy-ldap-manager/README.adoc[部署 LDAP Account Manager]
+. link:system-app-deploy/README.adoc[核心系统应用部署准备]
+. link:system-app-deploy/00-deploy-openldap/README.adoc[部署OpenLDAP]
+. link:system-app-deploy/01-deploy-ldap-manager/README.adoc[部署 LDAP Account Manager]
 
 === 系统中间件应用部署
 
-. link:./02-deploy-core-middleware/README.adoc[核心中间件部署准备]
-. link:./02-deploy-core-middleware/00-deplpy-mariadb/README.adoc[MariaDB 单实例部署]
-. link:./02-deploy-core-middleware/01-deplpy-redis/README.adoc[Redis 单实例部署]
-. link:./02-deploy-core-middleware/02-deploy-postgres/README.adoc[Postgres 单实例部署]
-. link:./02-deploy-core-middleware/03-deploy-elastic/README.adoc[Elastic 单实例部署]
+. link:./middleware-app-deploy/README.adoc[核心中间件部署准备]
+. link:./middleware-app-deploy/00-deplpy-mariadb/README.adoc[MariaDB 单实例部署]
+. link:./middleware-app-deploy/01-deplpy-redis/README.adoc[Redis 单实例部署]
+. link:./middleware-app-deploy/02-deploy-postgres/README.adoc[Postgres 单实例部署]
+. link:./middleware-app-deploy/03-deploy-elastic/README.adoc[Elastic 单实例部署]
 
 === 核心应用部署
 
-. link:./03-deploy-core-app/README.adoc[核心应用部署准备]
-. link:./03-deploy-core-app/01-deploy-nexus3/README.adoc[部署 Nexus3]
-. link:./03-deploy-core-app/02-deploy-gitlab/README.adoc[部署 Gitlab CE]
+. link:./core-app-deploy/README.adoc[核心应用部署准备]
+. link:./core-app-deploy/01-deploy-nexus3/README.adoc[部署 Nexus3]
+. link:./core-app-deploy/02-deploy-gitlab/README.adoc[部署 Gitlab CE]
 . link:./zz-LINK.adoc[文档参考]
 
 === 杂项

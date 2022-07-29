@@ -48,11 +48,14 @@
 ==== 底层组件
 
 * [x] 安装 Kubernetes(google)/验证
-* [x] 配置 共享存储(rook-nfs)/验证
-* [x] 配置 共享存储(nfs-ganesha)/验证
 * [x] 部署 LoadBalancer实现(metallb)/验证
 * [x] 部署 Ingress(Nginx)/验证
 * [x] 部署 Cert-Manager/验证
+
+==== 系统存储 (core-storage)
+
+* [x] 配置 共享存储(rook-nfs)/验证
+* [x] 配置 共享存储(nfs-ganesha)/验证
 
 ==== 核心组件 (core-system)
 
