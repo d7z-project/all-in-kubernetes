@@ -8,7 +8,7 @@ metadata:
 data:
   db-name: 'gitlabhq_production' # <1>
   db-user: 'gitlab'  # <2>
-  gitlab-host: gitlab.{{deploy-host-}} # <3>
+  gitlab-host: gitlab.{{deploy-host}} # <3>
   ldap-user-filter: '(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=gitlab,ou=groups,dc=cluster,dc=local))' # <4>
 ---
 apiVersion: v1

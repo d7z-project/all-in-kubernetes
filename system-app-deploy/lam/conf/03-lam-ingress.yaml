@@ -12,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - lam.{{deploy-host-}} # <1>
+        - lam.{{deploy-host}} # <1>
       secretName: tls-{{deploy-host-name}}  # <2>
   rules:
-    - host: lam.{{deploy-host-}}  # <3>
+    - host: lam.{{deploy-host}}  # <3>
       http:
         paths:
           - path: /
