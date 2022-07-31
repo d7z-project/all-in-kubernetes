@@ -65,7 +65,7 @@ include::./conf/01-l2-netwok.yaml[]
 ----
 
 .其中：
-<1> 用于指定 LoadBalancer 可用的地址。
+<1> 用于指定 *LoadBalancer* 可用的地址。
 
 == 验证部署结果
 
