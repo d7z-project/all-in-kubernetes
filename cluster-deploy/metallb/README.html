@@ -595,7 +595,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">addresses</span><span class="pi">:</span>
     <span class="c1"># 根据实际需求自行配置</span>
-    <span class="pi">-</span> <span class="s">10.0.0.35-10.0.0.39</span> <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">10.0.0.35-10.0.0.39'</span> <i class="conum" data-value="1"></i><b>(1)</b>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">metallb.io/v1beta1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">L2Advertisement</span>
@@ -613,7 +613,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>用于指定 LoadBalancer 可用的地址。</td>
+<td>用于指定 <strong>LoadBalancer</strong> 可用的地址。</td>
 </tr>
 </table>
 </div>
@@ -980,11 +980,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022年07月29日 22时45分19秒 |
+        代码双击可复制 | 最后编辑于 2022年07月31日 22时02分44秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/bd5fc41a096a71c60bc9bec0754bbb72a6e24de3//cluster-deploy/metallb/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/bd5fc41a096a71c60bc9bec0754bbb72a6e24de3/"
-           target="_blank">#97e08b0</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/88e1259c6e01004bca85765a4b1ce09bef6d5861//cluster-deploy/metallb/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/88e1259c6e01004bca85765a4b1ce09bef6d5861/"
+           target="_blank">#88e1259</a>
         <script>
 
             function toast(msg, duration = 1000) {

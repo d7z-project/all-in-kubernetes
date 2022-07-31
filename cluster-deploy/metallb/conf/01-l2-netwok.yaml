@@ -6,7 +6,7 @@ metadata:
 spec:
   addresses:
     # 根据实际需求自行配置
-    - 10.0.0.35-10.0.0.39 # <1>
+    - '{{load-balancer-addrs}}' # <1>
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
