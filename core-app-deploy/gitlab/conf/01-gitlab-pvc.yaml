@@ -6,7 +6,7 @@ metadata:
   labels:
     app: gitlab
 spec:
-  storageClassName: '{{default-storage-class}}'
+  storageClassName: '{{var.storage.class.default}}'
   accessModes:
     - ReadWriteOnce
   resources:
@@ -21,7 +21,7 @@ metadata:
   labels:
     app: gitlab
 spec:
-  storageClassName: '{{default-storage-class}}'
+  storageClassName: '{{var.storage.class.default}}'
   accessModes:
     - ReadWriteOnce
   resources:

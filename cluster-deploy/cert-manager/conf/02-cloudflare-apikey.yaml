@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Secret
 metadata:
-  name: secret-cert-manager-cloudflare-api-token
+  name: secret-cert-manager-var.cloudflare.api.token
   namespace: cert-manager
 type: Opaque
 stringData:
   # 需要修改为实际数据
-  api-token: '{{cloudflare-api-token}}' # <1>
+  api-token: '{{var.cloudflare.api.token}}' # <1>

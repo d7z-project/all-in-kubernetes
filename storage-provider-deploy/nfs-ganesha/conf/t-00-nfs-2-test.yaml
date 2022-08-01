@@ -7,7 +7,7 @@ metadata:
     app: nfs-ganesha
     mode: test
 spec:
-  storageClassName: '{{default-storage-class}}'
+  storageClassName: '{{var.storage.class.default}}'
   accessModes:
     - ReadWriteMany
   resources:

@@ -33,11 +33,15 @@
 . link:./core-app-deploy/nexus3/README.adoc[部署 Nexus3]
 . link:./core-app-deploy/gitlab/README.adoc[部署 Gitlab CE]
 
+=== DevOps环境部署
+
+. link:./dev-ops-app-deploy/gitlab-runner/README.adoc[部署 Gitlab Runner]
+
 === 杂项
 
-* link:zz-document/other/HARDWARE_INFO.adoc[测试环境概览]
-* link:TODO.adoc[待完成列表]
-* link:CONTRIBUTOR.adoc[贡献者指南]
-* link:zz-document/other/EXTRA_SCRIPT.adoc[相关部署脚本]
+* link:./zz-document/other/HARDWARE_INFO.adoc[测试环境概览]
+* link:./TODO.adoc[待完成列表]
+* link:./CONTRIBUTOR.adoc[贡献者指南]
+* link:./zz-document/other/EXTRA_SCRIPT.adoc[相关部署脚本]
 * link:./LINK.adoc[文档参考]
-* link:zz-document/other/EXTRA_NOTE.adoc[杂项]
+* link:./zz-document/other/EXTRA_NOTE.adoc[杂项]

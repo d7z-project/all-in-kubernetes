@@ -13,10 +13,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - gitlab.{{deploy-host}}
-      secretName: tls-{{deploy-host-name}}
+        - gitlab.{{var.deploy.host}}
+      secretName: tls-{{var.deploy.host.name}}
   rules:
-    - host: gitlab.{{deploy-host}}
+    - host: gitlab.{{var.deploy.host}}
       http:
         paths:
           - path: /

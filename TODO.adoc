@@ -46,6 +46,7 @@
 
 * [x] 部署 Nexus3/验证
 * [x] 部署 Gitlab/验证
+* [ ] 部署 MinIO/验证
 * [ ] 部署 Gitea/验证
 // TODO
 
