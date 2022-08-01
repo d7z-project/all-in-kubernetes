@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: secret-gitlab-ci-token
-  namespace: gitlab-ci
+  namespace: dev-ops
   labels:
     app: gitlab-ci
 stringData:

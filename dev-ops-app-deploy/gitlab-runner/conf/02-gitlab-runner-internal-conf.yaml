@@ -2,7 +2,8 @@ apiVersion: v1
 data:
   run.sh: |
     #!/bin/bash
-    CONF_PATH="/etc/gitlab-runner"
+    env
+    export CONF_PATH="/etc/gitlab-runner"
     unregister() {
         kill %1
         echo "Unregistering runner ${RUNNER_NAME} ..."
@@ -12,8 +13,8 @@ data:
     cat >>/etc/gitlab-runner/config.toml <<EOF
     EOF
     trap 'unregister' EXIT HUP INT QUIT PIPE TERM
-    mkdir -p "$CONF_PATH"/certs
-    cp /certs/ca.crt "$CONF_PATH"/certs/
+    mkdir -p $CONF_PATH/certs
+    cp /certs/ca.crt $CONF_PATH/certs/
     echo "Registering runner ${RUNNER_NAME} ..."
     /usr/bin/gitlab-ci-multi-runner register -r ${GITLAB_CI_TOKEN}
     sed -i 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/' "$CONF_PATH"/config.toml
@@ -26,7 +27,7 @@ metadata:
   labels:
     app: gitlab-ci
   name: conf-gitlab-ci-scripts
-  namespace: gitlab-ci
+  namespace: dev-ops
 ---
 apiVersion: v1
 data:
@@ -54,4 +55,4 @@ metadata:
   labels:
     app: gitlab-ci
   name: conf-gitlab-ci
-  namespace: gitlab-ci
+  namespace: dev-ops

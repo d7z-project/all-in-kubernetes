@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: gitlab-ci-runner
-  namespace: gitlab-ci
+  namespace: dev-ops
   labels:
     app: gitlab-ci
 spec:
