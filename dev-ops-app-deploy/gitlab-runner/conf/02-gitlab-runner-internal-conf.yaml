@@ -37,7 +37,7 @@ data:
   CI_SERVER_URL: "http://svc-gitlab.core-app.svc.cluster.local/ci"
   RUNNER_REQUEST_CONCURRENCY: "4"
   RUNNER_EXECUTOR: "kubernetes"
-  KUBERNETES_NAMESPACE: "gitlab"
+  KUBERNETES_NAMESPACE: "dev-ops"
   KUBERNETES_PRIVILEGED: "true"
   KUBERNETES_CPU_LIMIT: "3"
   KUBERNETES_MEMORY_LIMIT: "4Gi"
