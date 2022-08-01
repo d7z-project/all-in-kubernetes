@@ -6,7 +6,7 @@ metadata:
   labels:
     app: redis
 spec:
-  storageClassName: '{{default-storage-class}}'
+  storageClassName: '{{var.storage.class.default}}'
   accessModes:
     - ReadWriteOnce
   resources:

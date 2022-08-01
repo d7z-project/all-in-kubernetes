@@ -543,7 +543,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-var.cloudflare.api.token</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
@@ -604,7 +604,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
           <span class="na">cloudflare</span><span class="pi">:</span>
             <span class="na">email</span><span class="pi">:</span> <span class="s1">'</span><span class="s"><请填写你的 CloudFlare 账户邮箱信息>'</span> <i class="conum" data-value="1"></i><b>(1)</b>
             <span class="na">apiTokenSecretRef</span><span class="pi">:</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span> <i class="conum" data-value="2"></i><b>(2)</b>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-var.cloudflare.api.token</span> <i class="conum" data-value="2"></i><b>(2)</b>
               <span class="na">key</span><span class="pi">:</span> <span class="s">api-token</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -628,7 +628,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 <div class="sect2">
 <h3 id="_签发证书">签发证书</h3>
 <div class="paragraph">
-<p>接下来使用测试域名 <code>d7z.net</code> 签发证书。</p>
+<p>接下来使用测试域名 <code>{var.deploy.host}</code> 签发证书。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -662,10 +662,10 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">secretTemplate</span><span class="pi">:</span>
     <span class="na">annotations</span><span class="pi">:</span>
-      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span> <i class="conum" data-value="1"></i><b>(1)</b>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span> <i class="conum" data-value="1"></i><b>(1)</b>
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>  <i class="conum" data-value="2"></i><b>(2)</b>
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>  <i class="conum" data-value="3"></i><b>(3)</b>
-      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app"</span>  <i class="conum" data-value="4"></i><b>(4)</b>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>  <i class="conum" data-value="4"></i><b>(4)</b>
   <span class="na">privateKey</span><span class="pi">:</span>
     <span class="na">algorithm</span><span class="pi">:</span> <span class="s">RSA</span>
     <span class="na">size</span><span class="pi">:</span> <span class="m">4096</span>
@@ -997,11 +997,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022年07月30日 02时39分55秒 |
+        代码双击可复制 | 最后编辑于 2022年08月01日 16时37分01秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/88e1259c6e01004bca85765a4b1ce09bef6d5861//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/88e1259c6e01004bca85765a4b1ce09bef6d5861/"
-           target="_blank">#7d266c2</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/4b2240c05506309b7182082f01bae96c5093c14f//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/4b2240c05506309b7182082f01bae96c5093c14f/"
+           target="_blank">#dde70c5</a>
         <script>
 
             function toast(msg, duration = 1000) {

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: gitlab-ci-runner
+  namespace: dev-ops
+  labels:
+    app: gitlab-ci
+spec:
+  selector:
+    matchLabels:
+     app: gitlab-ci
+  updateStrategy:
+    type: RollingUpdate
+  replicas: 2
+  serviceName: gitlab-ci-runner
+  template:
+    metadata:
+      labels:
+        app: gitlab-ci
+    spec:
+      volumes:
+        - name: gitlab-ci-runner-scripts
+          projected:
+            sources:
+              - configMap:
+                  name: conf-gitlab-ci-scripts
+                  items:
+                    - key: run.sh
+                      path: run.sh
+                      mode: 0755
+        - name: gitlab-ci-runner-certs
+          projected:
+            sources:
+              - secret:
+                  name: 'tls-{{var.deploy.host.name}}'
+                  items:
+                    - key: 'ca.crt'
+                      path: 'ca.crt'
+                      mode: 0777
+      serviceAccountName: gitlab-ci
+      containers:
+        - image: gitlab-org/gitlab-runner:alpine-v15.2.1
+          name: gitlab-ci-runner
+          command:
+            - /scripts/run.sh
+          envFrom:
+            - configMapRef:
+                name: conf-gitlab-ci
+            - secretRef:
+                name: secret-gitlab-ci-token
+          ports:
+            - containerPort: 9100
+              name: http-metrics
+              protocol: TCP
+          volumeMounts:
+            - name: gitlab-ci-runner-scripts
+              mountPath: "/scripts"
+              readOnly: true
+            - name: gitlab-ci-runner-certs
+              mountPath: "/certs"
+              readOnly: true
+      restartPolicy: Always
