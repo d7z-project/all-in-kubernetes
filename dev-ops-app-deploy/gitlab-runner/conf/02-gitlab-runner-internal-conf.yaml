@@ -10,7 +10,12 @@ data:
         /usr/bin/gitlab-ci-multi-runner unregister -t "$(/usr/bin/gitlab-ci-multi-runner list 2>&1 | tail -n1 | awk '{print $4}' | cut -d'=' -f2)" -n ${RUNNER_NAME}
         exit $?
     }
+    export CURRENT_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1 | sed 's/\./-/g')
     cat >>/etc/gitlab-runner/config.toml <<EOF
+    [session_server]
+    listen_address = "[::]:8093" #  listen on all available interfaces on port 8093
+    advertise_address = "$CURRENT_IP.$KUBERNETES_NAMESPACE.pod.cluster.local:8093"
+    session_timeout = 1800
     EOF
     trap 'unregister' EXIT HUP INT QUIT PIPE TERM
     mkdir -p $CONF_PATH/certs
