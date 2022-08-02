@@ -628,7 +628,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 <div class="sect2">
 <h3 id="_签发证书">签发证书</h3>
 <div class="paragraph">
-<p>接下来使用测试域名 <code>{var.deploy.host}</code> 签发证书。</p>
+<p>接下来使用测试域名 <code>d7z.net</code> 签发证书。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -654,6 +654,8 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 20
 21
 22
+23
+24
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -672,6 +674,8 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
   <span class="na">dnsNames</span><span class="pi">:</span> <i class="conum" data-value="5"></i><b>(5)</b>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">d7z.net'</span>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">*.d7z.net'</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">pages.d7z.net'</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>  <i class="conum" data-value="6"></i><b>(6)</b>
@@ -997,11 +1001,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022年08月01日 16时37分01秒 |
+        代码双击可复制 | 最后编辑于 2022年08月02日 14时42分47秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/73408cc27568f4567c96e64cd307d1b84f12dcbc//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/73408cc27568f4567c96e64cd307d1b84f12dcbc/"
-           target="_blank">#dde70c5</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/9f3d019f131f7b1c5dde2730b46419a139c54ff0//cluster-deploy/cert-manager/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/9f3d019f131f7b1c5dde2730b46419a139c54ff0/"
+           target="_blank">#81c0adb</a>
         <script>
 
             function toast(msg, duration = 1000) {

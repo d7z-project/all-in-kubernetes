@@ -604,6 +604,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 24
 25
 26
+27
+28
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -615,6 +617,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">db-name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlabhq_production'</span> <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="na">db-user</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab'</span>  <i class="conum" data-value="2"></i><b>(2)</b>
   <span class="na">gitlab-host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="na">gitlab-pages-host</span><span class="pi">:</span> <span class="s">pages.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
   <span class="na">ldap-user-filter</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=gitlab,ou=groups,dc=cluster,dc=local))'</span> <i class="conum" data-value="4"></i><b>(4)</b>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
@@ -630,6 +633,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
   <span class="na">db-key-secrets</span><span class="pi">:</span> <span class="s">WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd</span>  <i class="conum" data-value="7"></i><b>(7)</b>
   <span class="na">session-key-secrets</span><span class="pi">:</span> <span class="s">4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg</span> <i class="conum" data-value="7"></i><b>(7)</b>
   <span class="na">otp-key-secrets</span><span class="pi">:</span> <span class="s">psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc</span> <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">pages-key-secrets</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dqmhqxTv3XmxqCMk7C7P3Hsxr7WRm9LvgdV9bhz9qxH4cHNdzJzN4V94mp9d3sVC'</span> <i class="conum" data-value="7"></i><b>(7)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -897,6 +901,20 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 134
 135
 136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -960,12 +978,26 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">otp-key-secrets</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_ACCESS_SECRET</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">pages-key-secrets</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PACKAGES_ENABLED</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_REGISTRY_ENABLED</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_ENABLED</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_DOMAIN</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">gitlab-pages-host</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_HTTPS</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_HTTP</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_HOST</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">svc-postgres.core-middle.svc.cluster.local"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
@@ -1186,6 +1218,45 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
 26
 27
 28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1196,7 +1267,6 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
-
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
   <span class="na">tls</span><span class="pi">:</span>
@@ -1205,6 +1275,46 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
       <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-gitlab</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-web</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-gitlab-pages</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+    <span class="na">nginx.ingress.kubernetes.io/ssl-redirect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">pages.d7z.net</span>
+        <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">pages.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-gitlab</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-web</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
@@ -1493,8 +1603,8 @@ pre.rouge {
     <p class="custom-footer">
         代码双击可复制 | 最后编辑于 2022年07月30日 03时22分27秒 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/73408cc27568f4567c96e64cd307d1b84f12dcbc//core-app-deploy/gitlab/README.adoc">查看源码</a> |
-        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/73408cc27568f4567c96e64cd307d1b84f12dcbc/"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/9f3d019f131f7b1c5dde2730b46419a139c54ff0//core-app-deploy/gitlab/README.adoc">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/9f3d019f131f7b1c5dde2730b46419a139c54ff0/"
            target="_blank">#bd5fc41</a>
         <script>
 

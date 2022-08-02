@@ -18,3 +18,5 @@ spec:
   dnsNames:
     - '{{var.deploy.host}}'
     - '*.{{var.deploy.host}}'
+    - 'pages.{{var.deploy.host}}'
+    - '*.pages.{{var.deploy.host}}'
