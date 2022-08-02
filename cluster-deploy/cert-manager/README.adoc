@@ -73,7 +73,7 @@ include::./conf/03-cloudflare-issuer.yaml[]
 
 === 签发证书
 
-接下来使用测试域名 `{var.deploy.host}` 签发证书。
+接下来使用测试域名 `{{var.deploy.host}}` 签发证书。
 
 [source%linenums,yaml]
 ----

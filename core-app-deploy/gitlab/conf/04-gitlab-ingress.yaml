@@ -14,9 +14,31 @@ spec:
   tls:
     - hosts:
         - gitlab.{{var.deploy.host}}
+        - pages.{{var.deploy.host}}
+        - '*.pages.{{var.deploy.host}}'
       secretName: tls-{{var.deploy.host.name}}
   rules:
     - host: gitlab.{{var.deploy.host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-gitlab
+                port:
+                  name: gitlab-web
+    - host: pages.{{var.deploy.host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-gitlab
+                port:
+                  name: gitlab-web
+    - host: '*.pages.{{var.deploy.host}}'
       http:
         paths:
           - path: /

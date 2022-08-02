@@ -1,0 +1,11 @@
+pages:
+  image:
+    name: library/asciidoc-build:latest
+  script:
+    - /opt/toolchain/doc.sh build `pwd`
+    - mv build public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH

@@ -61,12 +61,26 @@ spec:
                 secretKeyRef:
                   name: secret-gitlab
                   key: otp-key-secrets
+            - name: GITLAB_PAGES_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-gitlab
+                  key: pages-key-secrets
             - name: GITLAB_PACKAGES_ENABLED
               value: 'false'
             - name: GITLAB_REGISTRY_ENABLED
               value: 'false'
             - name: GITLAB_PAGES_ENABLED
-              value: 'false'
+              value: 'true'
+            - name: GITLAB_PAGES_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: conf-gitlab
+                  key: gitlab-pages-host
+            - name: GITLAB_PAGES_HTTPS
+              value: 'true'
+            - name: GITLAB_PAGES_HTTP
+              value: 'true'
             - name: DB_HOST
               value: "svc-postgres.core-middle.svc.cluster.local"
             - name: DB_PORT
