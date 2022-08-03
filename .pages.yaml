@@ -1,0 +1,12 @@
+pages:
+  info:
+    title: "All In Kubernetes"
+    home: 'https://github.com/d7z-project/all-in-kubernetes'
+  location:
+    menu: '/MENU.adoc'
+    main: '/MAIN.adoc'
+    icon: '/.assets/icon/logo.svg'
+    output: '/build'
+  conf: # 功能配置
+    source_url: 'https://github.com/d7z-project/all-in-kubernetes/tree/{{file.commit.id}}/'
+  attr_ref: attr.properties
