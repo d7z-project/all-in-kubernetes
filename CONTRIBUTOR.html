@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>贡献者指南</title>
+<title>文档编写指南</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -654,7 +654,7 @@ pre.rouge {
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>贡献者指南</h1>
+<h1>文档编写指南</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
@@ -752,7 +752,7 @@ pre.rouge {
 <h2 id="_变量参考">变量参考</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>文档引入了 <strong>AsciiDoc 变量</strong>，方便动态渲染内容，文档中所使用到的变量如下：</p>
+<p>文档引入了 <strong>变量功能</strong>，方便动态渲染内容，文档中所使用到的变量如下：</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -773,9 +773,7 @@ pre.rouge {
 15
 16
 17
-18
-</pre></td><td class="code"><pre><span class="c"># 部署的二级域名
-</span><span class="py">var.deploy.host</span><span class="p">=</span><span class="s">d7z.net</span>
+</pre></td><td class="code"><pre><span class="py">var.deploy.host</span><span class="p">=</span><span class="s">d7z.net</span>
 <span class="c"># 域名名称
 </span><span class="py">var.deploy.host.name</span><span class="p">=</span><span class="s">d7z-net</span>
 <span class="c"># config-map 和 secrets 共享的命名空间
@@ -794,6 +792,9 @@ pre.rouge {
 </span><span class="py">var.gitlab.ci.token</span><span class="p">=</span><span class="s">&lt;请填写 Gitlab CI 的 Token&gt;</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>如果在文档下引用变量可使用 <code>{{}}</code> 将变量名称包裹，例如 <code>{{user.dir}}</code>。</p>
 </div>
 </div>
 </div>
@@ -829,11 +830,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 18:40:03 |
+        代码双击可复制 | 最后编辑于 2022-08-04 13:45:55 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/efc1ad923ce72a238f81d66bfedb6909b66fca89/CONTRIBUTOR.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/efc1ad923ce72a238f81d66bfedb6909b66fca89/"
-           target="_blank">#efc1ad</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/5beb22e3bac3512f324dc83b6a892f24c6e770d8/CONTRIBUTOR.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/5beb22e3bac3512f324dc83b6a892f24c6e770d8/"
+           target="_blank">#5beb22</a>
         <script>
 
             function toast(msg, duration = 1000) {

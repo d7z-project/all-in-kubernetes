@@ -5,7 +5,6 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<meta name="author" content="== 说明">
 <title>部署 CertManager</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -656,14 +655,12 @@ pre.rouge {
 <body class="article toc2 toc-right">
 <div id="header">
 <h1>部署 CertManager</h1>
-<div class="details">
-<span id="author" class="author">== 说明</span><br>
-</div>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
+<li><a href="#_说明">说明</a></li>
 <li><a href="#_导入资源">导入资源</a></li>
-<li><a href="#_验证结果">验证结果</a>
+<li><a href="#_创建证书">创建证书</a>
 <ul class="sectlevel2">
 <li><a href="#_创建apikey">创建ApiKey</a></li>
 <li><a href="#_绑定_issuer">绑定 Issuer</a></li>
@@ -675,7 +672,8 @@ pre.rouge {
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址： <a target="_blank" href="https://cert-manager.io">cert-manager</a></p>
@@ -725,7 +723,7 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 </div>
 </div>
 <div class="sect1">
-<h2 id="_验证结果">验证结果</h2>
+<h2 id="_创建证书">创建证书</h2>
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -1001,11 +999,11 @@ cert-d7z-net       True    tls-d7z-net            18h
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-08-02 06:42:47 |
+        代码双击可复制 | 最后编辑于 2022-08-04 13:19:23 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/81c0adbc8904eca568dc3c5760626c2673c56900/cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/81c0adbc8904eca568dc3c5760626c2673c56900/"
-           target="_blank">#81c0ad</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ea18ac9dd063c9e9c6a4a5b4570d90dab137b48b/cluster-deploy/cert-manager/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/ea18ac9dd063c9e9c6a4a5b4570d90dab137b48b/"
+           target="_blank">#ea18ac</a>
         <script>
 
             function toast(msg, duration = 1000) {

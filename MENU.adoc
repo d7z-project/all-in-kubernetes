@@ -2,7 +2,7 @@
 
 . link:./cluster-deploy/pre-deploy/SYSTEM.adoc[系统环境配置]
 . link:./cluster-deploy/pre-deploy/README.adoc[初始化部署环境]
-. link:./cluster-deploy/kubernetes/README.adoc[部署 Kubernetes]
+. link:./cluster-deploy/kubernetes/README.adoc[部署 Kubernetes] | link:./zz-document/containerd/SET_REGISTRY.adoc[ 容器配置]
 . link:cluster-deploy/metallb/README.adoc[部署 LoadBalancer 实现]
 . link:cluster-deploy/ingress-nginx/README.adoc[部署 Nginx Ingress]
 . link:cluster-deploy/reflector/README.adoc[部署 reflector 组件]
@@ -39,9 +39,10 @@
 
 === 杂项
 
-* link:./zz-document/other/HARDWARE_INFO.adoc[测试环境概览]
 * link:./TODO.adoc[待完成列表]
-* link:./CONTRIBUTOR.adoc[贡献者指南]
-* link:./zz-document/other/EXTRA_SCRIPT.adoc[相关部署脚本]
-* link:./LINK.adoc[文档参考]
-* link:./zz-document/other/EXTRA_NOTE.adoc[杂项]
+* link:./CONTRIBUTOR.adoc[文档编写指南]
+* link:./zz-document/static/HARDWARE_INFO.adoc[测试环境概览]
+* link:./zz-document/tools/EXTRA_SCRIPT.adoc[相关部署脚本]
+* link:./REFER.adoc[文档参考]
+
+link:./zz-document/static/EXTRA_NOTE.adoc[EOF]

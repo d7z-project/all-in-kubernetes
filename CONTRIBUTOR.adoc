@@ -1,4 +1,4 @@
-= 贡献者指南
+= 文档编写指南
 :experimental:
 :icons: font
 :experimental:
@@ -37,9 +37,11 @@
 
 == 变量参考
 
-文档引入了 *AsciiDoc 变量*，方便动态渲染内容，文档中所使用到的变量如下：
+文档引入了 *变量功能*，方便动态渲染内容，文档中所使用到的变量如下：
 
 [source%linenums,properties]
 ----
-include::attr.properties[lines=2..-1]
+include::value.properties[lines=2..-1]
 ----
+
+如果在文档下引用变量可使用 `{{}}` 将变量名称包裹，例如 `{{user.dir}}`。

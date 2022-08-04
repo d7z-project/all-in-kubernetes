@@ -8,6 +8,7 @@
 :project-home: https://cert-manager.io
 :var.deploy.host: d7z.net
 :deploy-tls-name: deploy-tls-name
+
 == 说明
 
 项目地址： link:{project-home}[cert-manager]
@@ -39,7 +40,7 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 kubectl get pods -n cert-manager
 ----
 
-== 验证结果
+== 创建证书
 
 WARNING: 此次测试需要有一个域名，同时需要 Cert-Manager 支持此域名服务商的 DNS API。
 
