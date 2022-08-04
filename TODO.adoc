@@ -10,8 +10,8 @@
 
 === 环境介绍
 
-* [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍物理机环境]
-* [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍部署机器环境]
+* [x] link:./zz-document/static/HARDWARE_INFO.adoc[介绍物理机环境]
+* [x] link:./zz-document/static//HARDWARE_INFO.adoc[介绍部署机器环境]
 
 === 组件部署
 
@@ -27,6 +27,7 @@
 
 * [x] 配置 共享存储(rook-nfs)/验证
 * [x] 配置 共享存储(nfs-ganesha)/验证
+* [ ] 配置 共享存储(rook-ceph)/验证
 
 ==== 核心组件 (core-system)
 
@@ -52,11 +53,11 @@
 
 ==== Dev-Ops相关应用 (dev-ops)
 
+* [x] 部署 Gitlab-Runner/验证
 * [ ] 部署 kpack
 
 ==== 扩展应用 (share-app)
 
-* [ ] 部署 Gitlab-Runner/验证
 * [ ] 部署 Jellyfin/验证
 * [ ] 部署 V2ray/验证
 
