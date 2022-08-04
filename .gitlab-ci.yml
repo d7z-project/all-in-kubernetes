@@ -1,9 +1,9 @@
 pages:
   image:
-    name: library/asciidoc-build:latest
+    name: d7z-team/asciidoc-static-pages
   script:
-    - /opt/toolchain/doc.sh build `pwd`
-    - mv build public
+    - git checkout -b pages
+    - pages --output public
   artifacts:
     paths:
       - public

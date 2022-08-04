@@ -5,7 +5,7 @@ pages:
   location:
     menu: '/MENU.adoc'
     main: '/MAIN.adoc'
-    icon: '/.assets/icon/logo.svg'
+    icon: '/logo.svg'
     output: '/build'
   conf: # 功能配置
     source_url: 'https://github.com/d7z-project/all-in-kubernetes/tree/{{file.commit.id}}/'
