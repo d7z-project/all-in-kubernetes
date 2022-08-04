@@ -1,0 +1,95 @@
+= 安装 LoadBalancer 组件实现 (MetalLB)
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+项目地址：link:https://metallb.universe.tf/[MetalLB]
+
+为了系统的扩展性和稳定性，我们需要将服务暴露到单独的 IP 上，避免使用 Kubernetes 集群IP。
+
+MetalLB 需要以下镜像：
+
+[source%linenums,bash]
+----
+crictl pull quay.io/metallb/controller:v0.13.3
+crictl pull quay.io/metallb/speaker:v0.13.3
+----
+
+本文仅介绍了使用 `L2` 模式，BGP 模式请查看官网。
+
+== 环境准备
+
+如果您在 *IPVS* 模式下使用 `kube-proxy`，从 *Kubernetes v1.14.2* 开始，您必须启用严格的 *ARP* 模式。
+
+执行如下命令完成配置：
+
+[source%linenums,bash]
+----
+include::./script/00-ipvs-patch.sh[lines=3..-1]
+----
+
+== 导入资源
+
+由于 MetalLB 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-metallb-native.yaml[conf/metallb-native.yaml] 推送到控制节点，再使用 `kubectl apply -f metallb-native.yaml` 导入资源。
+
+或者你可以使用以下命令在线导入资源：
+
+[source%linenums,bash]
+----
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
+----
+
+导入完成后使用以下命令查看结果：
+
+[source%linenums,bash]
+----
+kubectl get pods -n metallb-system -o wide
+----
+
+如果一切无误，则会在所有节点上启动 `speaker` 。
+
+== 配置 LoadBalancer 地址
+
+安装完成后，需要指定 LoadBalancer 可分配的地址。
+
+TIP: 由于是小型化部署，所以 L2 模式已经够用，当然，如果你是自建机房，想使用 BGP 的方案的话可自行查阅文档。
+
+[source%linenums,yaml]
+----
+include::./conf/01-l2-netwok.yaml[]
+----
+
+.其中：
+<1> 用于指定 *LoadBalancer* 可用的地址。
+
+== 验证部署结果
+
+执行以下步骤，验证部署结果。
+
+=== 导入测试配置
+
+[source%linenums,yaml]
+----
+include::./conf/t-00-metallb-test.yml[]
+
+----
+
+=== 验证测试结果
+
+执行以下命令，验证测试结果
+
+[source%linenums,bash]
+----
+include::./script/t-00-test-metallb.sh[lines=2..-1]
+----
+
+如果一切无误，将看到 Pod 启动完成且 Service 有 *EXTERNAL-IP* ，浏览器可正常访问此地址。
+
+== 扩展
+
+. link:https://metallb.universe.tf/usage/#ip-address-sharing[不同服务使用同一IP]

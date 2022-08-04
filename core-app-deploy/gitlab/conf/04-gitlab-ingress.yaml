@@ -1,0 +1,67 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gitlab
+  namespace: core-app
+  labels:
+    app: gitlab
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - gitlab.d7z.net
+      secretName: tls-d7z-net
+  rules:
+    - host: gitlab.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-gitlab
+                port:
+                  name: gitlab-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-gitlab-pages
+  namespace: core-app
+  labels:
+    app: gitlab
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - pages.d7z.net
+        - '*.pages.d7z.net'
+      secretName: tls-d7z-net
+  rules:
+    - host: pages.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-gitlab
+                port:
+                  name: gitlab-web
+    - host: '*.pages.d7z.net'
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-gitlab
+                port:
+                  name: gitlab-web

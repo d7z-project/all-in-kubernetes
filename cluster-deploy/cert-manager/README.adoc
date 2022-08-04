@@ -1,0 +1,109 @@
+= 部署 CertManager
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+:project-home: https://cert-manager.io
+:var.deploy.host: d7z.net
+:deploy-tls-name: deploy-tls-name
+== 说明
+
+项目地址： link:{project-home}[cert-manager]
+
+CertManager 需要以下镜像：
+
+[source%linenums,text]
+----
+quay.io/jetstack/cert-manager-cainjector:v1.8.2
+quay.io/jetstack/cert-manager-controller:v1.8.2
+quay.io/jetstack/cert-manager-webhook:v1.8.2
+----
+
+== 导入资源
+
+由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-cert-manager.yaml[conf/cert-manager.yaml]  推送到控制节点,再使用 `kubectl apply -f cert-manager.yaml` 导入资源。
+
+或者你可以使用以下命令在线导入资源：
+
+[source%linenums,bash]
+----
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+----
+
+导入完成后使用以下命令查看结果：
+
+[source%linenums,bash]
+----
+kubectl get pods -n cert-manager
+----
+
+== 验证结果
+
+WARNING: 此次测试需要有一个域名，同时需要 Cert-Manager 支持此域名服务商的 DNS API。
+
+=== 创建ApiKey
+
+添加 *Cloudflare Api* 到 *Secret* 下
+
+[source%linenums,yaml]
+----
+include::./conf/02-cloudflare-apikey.yaml[]
+----
+
+.其中:
+<1> 此处填写你 CloudFlare API Token
+
+将此文件保存至 `api.yaml` 后执行 `kubectl apply -f api.yaml` 即可。
+
+=== 绑定 Issuer
+
+将 Cloudflare API 绑定至 ClusterIssuer。
+
+[source%linenums,yaml]
+----
+include::./conf/03-cloudflare-issuer.yaml[]
+----
+
+<1> 此处填写你的 *Cloudflare Email*
+<2> 关联的 *Cloudflare Token*
+
+将此文件保存至 `issuer.yaml` 后执行 `kubectl apply -f issuer.yaml` 即可。
+
+=== 签发证书
+
+接下来使用测试域名 `d7z.net` 签发证书。
+
+[source%linenums,yaml]
+----
+include::./conf/04-cert-d7z-net.yaml[]
+----
+
+.其中:
+<1> reflector 相关配置：管理的命名空间
+<2> reflector 相关配置：允许镜像
+<3> reflector 相关配置：自动镜像
+<4> reflector 相关配置：自动镜像的命名空间
+<5> 配置证书下的 `dns.01` 内容，可添加通配符证书
+<6> 选择对应的 Issuer
+
+=== 验证
+
+执行以下命令，查看对应证书的签发状态
+
+[source%linenums,bash]
+----
+# 查看证书签发状态
+kubectl get certificate -n cert-manager
+----
+
+如果 `READY` 项为 `True`，则表明证书签发成功。
+
+[source%linenums,text]
+----
+NAME               READY   SECRET                 AGE
+cert-d7z-net       True    tls-d7z-net            18h
+----
+
+WARNING: 注意，需要填充的内容必须真实有效，否则将导致签发失败。如果没有可用的域名可参考 link:NOTE.adoc[笔记] 中的自签名证书。

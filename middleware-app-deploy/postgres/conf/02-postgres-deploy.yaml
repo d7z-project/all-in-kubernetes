@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-postgres
+  namespace: core-middle
+  labels:
+    app: postgres
+spec:
+  serviceName: svc-postgres
+  selector:
+    matchLabels:
+      app: postgres
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:14
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-postgres-root
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret-postgres-root
+                  key: username
+            - name: 'PGDATA'
+              value: "/var/lib/postgresql/data/pgdata"
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: pvc-postgres-data

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-lam
+  namespace: core-system
+  labels:
+    app: lam
+  annotations:
+    # 重写路径
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - lam.d7z.net # <1>
+      secretName: tls-d7z-net  # <2>
+  rules:
+    - host: lam.d7z.net  # <3>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-lam  # <4>
+                port:
+                  name: web

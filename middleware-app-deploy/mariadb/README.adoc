@@ -1,0 +1,85 @@
+= 部署 MariaDB
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+WARNING: 此项目采用单实例部署，切勿在生产环境使用！
+
+== 说明
+
+MariaDB 需要镜像 `mariadb:10.8`。部署完成后，集群内部地址为：
+
+[source%linenums,text]
+----
+svc-mariadb.core-middle.svc.cluster.local:3306
+----
+
+== 创建 PVC
+
+导入以下配置，创建PVC。
+
+[source%linenums,yaml]
+----
+include::conf/00-mariadb-pvc.yaml[]
+----
+
+== 管理员用户配置
+
+将管理员用户配置导入到 Secret 中。
+
+[source%linenums,yaml]
+----
+include::conf/01-mariadb-secret.yaml[]
+----
+
+.其中
+<1> 你需要将其配置成一个更安全的密码
+
+== 创建 MariaDB 服务器
+
+使用以下配置创建 MariaDB 服务器。
+
+[source%linenums,yaml]
+----
+include::conf/02-mariadb-deploy.yaml[]
+----
+
+== 关联Service
+
+将 MariaDB 服务关联到 Service 下。
+
+[source%linenums,yaml]
+----
+include::conf/03-mariadb-service.yaml[]
+----
+
+== 测试
+
+使用以下命令查看实例部署情况：
+
+[source%linenums,bash]
+----
+kubectl get pods,secrets,services,deployments,pvc -n core-middle -l app=mariadb
+----
+
+如果一切无误的话可使用以下命令测试 MariaDB ，输出结果如下所示。
+
+.测试命令
+[source%linenums,bash]
+----
+MYSQL_PASSWD=$(kubectl get secrets -n core-middle  secret-mariadb-root -o jsonpath='{.data.password}' | base64 -d)
+kubectl exec -it -n core-middle pods/sts-mariadb-0 -- mysql -h svc-mariadb.core-middle.svc.cluster.local -uroot -p$MYSQL_PASSWD -e "select 1;"
+----
+
+.输出结果
+[source%linenums,text]
+----
++---+
+| 1 |
++---+
+| 1 |
++---+
+----

@@ -1,0 +1,73 @@
+<div class="custom-content">
+    <style>
+        .custom-footer {
+            margin: 0;
+            padding: 20px;
+            background: #555555;
+            color: white;
+        }
+
+        .custom-footer a {
+            color: white;
+        }
+
+        .toast {
+            max-width: 60%;
+            min-width: 150px;
+            padding: 0 14px;
+            height: 40px;
+            color: rgb(255, 255, 255);
+            line-height: 40px;
+            text-align: center;
+            border-radius: 4px;
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 999999;
+            background: rgba(0, 0, 0, 0.56);
+            font-size: 16px;
+        }
+    </style>
+    <p class="custom-footer">
+        代码双击可复制 | 最后编辑于 {{file.commit.last-date}} |
+        <a target="_blank"
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/{{file.commit.id}}/{{file.path}}">查看源码</a> |
+        <a href="https://github.com/d7z-project/all-in-kubernetes/tree/{{file.commit.id}}/"
+           target="_blank">#{{file.commit.short-id}}</a>
+        <script>
+
+            function toast(msg, duration = 1000) {
+                const m = document.createElement('div');
+                m.innerHTML = msg;
+                m.className = "toast"
+                document.body.appendChild(m);
+                setTimeout(function () {
+                    const d = 0.5;
+                    m.style.transition = '-webkit-transform ' + d + 's ease-in, opacity ' + d + 's ease-in';
+                    m.style.opacity = '0';
+                    setTimeout(function () {
+                        document.body.removeChild(m)
+                    }, d * 1000);
+                }, duration);
+            }
+
+            function copyData(data) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(data);
+                    toast("复制成功！")
+                }
+            }
+
+            window.onload = function () {
+                for (let pre of document.getElementsByTagName('pre')) {
+                    if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
+                        let code = pre.getElementsByClassName('code')[0].innerText;
+                        pre.ondblclick = function () {
+                            copyData(code)
+                        }
+                    }
+                }
+
+            };
+        </script>
+</div>

@@ -1,0 +1,76 @@
+= 任务列表 & 贡献者指南
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 任务列表
+
+=== 环境介绍
+
+* [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍物理机环境]
+* [x] link:./zz-document/other/HARDWARE_INFO.adoc[介绍部署机器环境]
+
+=== 组件部署
+
+==== 应用环境和底层组件
+
+* [x] 部署 Kubernetes/验证
+* [x] 部署 reflector/验证
+* [x] 部署 LoadBalancer实现(metallb)/验证
+* [x] 部署 Ingress(Nginx)/验证
+* [x] 部署 Cert-Manager/验证
+
+==== 系统存储 (core-storage)
+
+* [x] 配置 共享存储(rook-nfs)/验证
+* [x] 配置 共享存储(nfs-ganesha)/验证
+
+==== 核心组件 (core-system)
+
+* [x] 部署 OpenLDAP/验证
+* [x] 部署 ldap-account-manager/验证
+* [ ] 部署 Velero/验证
+//TODO
+
+==== 核心中间件 (core-middleware)
+
+* [x] 部署 MariaDB/验证
+* [x] 部署 Redis/验证
+* [x] 部署 PostgresSQL/验证
+* [x] 部署 ElasticSearch/验证
+
+==== 核心应用 (core-app)
+
+* [x] 部署 Nexus3/验证
+* [x] 部署 Gitlab/验证
+* [ ] 部署 MinIO/验证
+* [ ] 部署 Gitea/验证
+// TODO
+
+==== Dev-Ops相关应用 (dev-ops)
+
+* [ ] 部署 kpack
+
+==== 扩展应用 (share-app)
+
+* [ ] 部署 Gitlab-Runner/验证
+* [ ] 部署 Jellyfin/验证
+* [ ] 部署 V2ray/验证
+
+==== 集群监控 (monitor-app)
+
+* [ ] 部署 Prometheus/验证
+* [ ] 部署 AlertManager/验证
+* [ ] 部署 Grafana/验证
+* [ ] 部署 NodeExporter/验证
+
+=== 自动化部署测试
+
+* [ ] 使用 Gitlab Actions 做自动化测试
+
+=== 文档优化
+
+* [ ] 为所有的可变参数做标记和警告

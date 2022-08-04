@@ -1,0 +1,60 @@
+= Debian 系统环境配置
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+本项目使用 link:https://www.debian.org/releases/bullseye/["Debian bullseye"] 作底层操作系统，在系统安装完成后的具体的配置情况如下：
+
+== 基础软件安装
+
+=== 安装 Bash Completion
+
+*Bash Completion* 可为 Shell 添加 *TAB* 补全功能，建议安装。
+
+[source%linenums,bash]
+----
+include::./script/00.c-soft-install-bash-completion.sh[lines=2..-1]
+----
+
+=== 安装 OpenSSH Server
+
+*OpenSSH* 能极大的方便远程调试，建议安装。
+
+[source%linenums,bash]
+----
+include::./script/00.b-soft-install-openssh.sh[lines=2..-1]
+----
+
+=== 安装 VM tools (可选)
+
+在 *KVM* 虚拟机环境下，某些工具包能极大提升部署效率，建议安装。
+
+[source%linenums,bash]
+----
+include::./script/00.e-soft-install-vm-tools.sh[lines=2..-1]
+----
+
+== 基础环境配置
+
+=== 修改 APT 远程仓库地址 (可选)
+
+受地域影响，默认的 APT 下载可能会非常慢，可根据实际需求更改为合适的地址，例如：
+
+[source%linenums,bash]
+----
+include::./script/00.a-conf-update-apt-source.sh[lines=2..-1]
+----
+
+=== 修改OpenSSH 配置 (可选)
+
+关闭密码登陆可提高服务器安全性。同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 `2222` ，如果没有使用需求则可以跳过。
+
+CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到目标服务器，否则可能会导致无法使用SSH远程登陆。可以使用 `ssh-copy-id <user>@<address>` 快速复制本机的公钥到目标服务器下。
+
+[source%linenums,bash]
+----
+include::./script/00.f-conf-update-openssh-server.sh[lines=2..-1]
+----

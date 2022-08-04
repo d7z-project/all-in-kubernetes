@@ -1,0 +1,124 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: first-web
+data:
+  index.html: |
+    first web demo.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: second-web
+data:
+  index.html: |
+    second web demo.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-1
+  labels:
+    app: nginx-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-1
+  template:
+    metadata:
+      labels:
+        app: nginx-1
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.21.1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: config
+          configMap:
+            name: first-web
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-2
+  labels:
+    app: nginx-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-2
+  template:
+    metadata:
+      labels:
+        app: nginx-2
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.21.1
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html
+      volumes:
+        - name: config
+          configMap:
+            name: second-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-1-service
+spec:
+  selector:
+    app: nginx-1
+  ports:
+    - protocol: TCP
+      port: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-2-service
+spec:
+  selector:
+    app: nginx-2
+  ports:
+    - protocol: TCP
+      port: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-test
+  annotations:
+    # 重写路径
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /first
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-1-service
+                port:
+                  number: 80
+          - path: /second
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-2-service
+                port:
+                  number: 80

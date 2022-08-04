@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-cert-manager-var.cloudflare.api.token
+  namespace: cert-manager
+type: Opaque
+stringData:
+  # 需要修改为实际数据
+  api-token: '<请填写你的 CloudFlare 账户的Token值>' # <1>

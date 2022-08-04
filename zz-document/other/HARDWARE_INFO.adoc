@@ -1,0 +1,92 @@
+= 部署环境概览
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 物理机机器
+
+*注意*：非特殊情况，请不要直接使用物理机器部署，否则一旦因为某些问题导致系统崩溃，在没有IPMI、iLO等其他类似硬件的环境下很难远程恢复。
+
+=== 物理机器一
+
+此机器带有ECC内存纠错、磁盘冗余设计和UPS断电保护，所有数据敏感业务均运行会在此机器上。
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|CPU | `E3-1230v3` | 4核心8线程
+|内存 |32G | *DDR3* *ECC* 内存 （8Gx4）
+|磁盘 | 2T | 3.5寸 *SAS* *RAID-1*
+|网络 | 1Gx6 | *Intel*
+|系统 | *Proxmox* | *Proxmox* 7.x
+|===
+
+=== 物理机器二
+
+此机器带有较新的 *GPU*，适合做音视频硬解；同时硬盘 *IOPS* 较高，适合跑一些IO密集型任务。
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|CPU | `Pentium-4415U` | 4核心4线程
+|内存 |32G | *DDR4* 2133 内存 （16Gx2）
+|磁盘 | 128G | *mSATA* SSD
+|网络 | 1Gx6 | *Intel*
+|系统 | *Proxmox* | *Proxmox* 7.x
+|===
+
+== Kubernetes 部署机器
+
+所有机器均采用 link:https://www.debian.org/releases/bullseye/[Debian "bullseye"] 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 link:../../cluster-deploy/pre-deploy/SYSTEM.adoc[Debian 系统配置]。
+
+=== Kubernetes 部署机器一
+
+此机器作为 kubernetes 控制节点
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|宿主机 | 物理机器一 | 此机器作为控制节点
+|主机名 | `dragon-k8s-master` | 此机器作为控制节点
+|CPU | Host+AES | 八核心
+|虚拟化|KVM|Proxmox
+|内存 | 4G | -
+|磁盘 | 20G | 此机器作为控制节点
+|网络 | 10.0.0.20 | 关闭了DHCP
+|===
+
+=== Kubernetes 部署机器二
+
+此机器作为 kubernetes 数据节点。
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|宿主机 | 物理机器一 | 此机器作为数据节点
+|主机名 | `dragon-k8s-node-1` | 此机器作为数据节点
+|CPU | Host+AES | 八核心
+|虚拟化|KVM|Proxmox
+|内存 | 16G | -
+|系统磁盘 | 50G | 此机器作为数据节点
+|扩展磁盘 | 100G | 此磁盘挂载至 `/share` 目录
+|网络 | 10.0.0.21 | 关闭了DHCP
+|===
+
+=== Kubernetes 部署机器三
+
+此机器作为 kubernetes 数据节点，如果机器不够则无需此节点。
+
+[cols="1,2,3",options="header"]
+|===
+|配置指标 |配置值 |备注
+|宿主机 | 物理机器二 | 此机器作为数据节点
+|主机名 | `dragon-k8s-node-2` | 此机器作为数据节点
+|CPU | Host+AES | 四核心
+|虚拟化|KVM|Proxmox
+|内存 | 16G | -
+|系统磁盘 | 50G | 此机器作为数据节点
+|网络 | 10.0.0.22 | 关闭了DHCP
+|===

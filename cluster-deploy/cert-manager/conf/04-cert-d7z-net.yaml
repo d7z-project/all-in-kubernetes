@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: 'cert-d7z-net'
+  namespace: cert-manager
+spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops" # <1>
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"  # <2>
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"  # <3>
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"  # <4>
+  privateKey:
+    algorithm: RSA
+    size: 4096
+  dnsNames: # <5>
+    - 'd7z.net'
+    - '*.d7z.net'
+    - 'pages.d7z.net'
+    - '*.pages.d7z.net'
+  issuerRef:
+    kind: ClusterIssuer
+    name: issuer-dns01-cloudflare-1  # <6>
+  secretName: 'tls-d7z-net'

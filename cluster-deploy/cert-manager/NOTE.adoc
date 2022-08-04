@@ -1,0 +1,39 @@
+= Cert Manager 相关笔记
+:experimental:
+:icons: font
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 自签名证书
+
+=== 创建 CA 证书 Issuer
+
+[source%linenums,yaml]
+----
+include::./conf/self/00-ca-issuer.yaml[]
+----
+
+=== 创建 CA 证书
+
+[source%linenums,yaml]
+----
+include::./conf/self/01-ca-cert.yaml[]
+----
+
+=== 创建证书 Issuer
+
+[source%linenums,yaml]
+----
+include::./conf/self/02-self-issuer.yaml[]
+----
+
+=== 签发证书
+
+[source%linenums,yaml]
+----
+include::./conf/self/03-self-cert.yaml[]
+----

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: nexus
+  name: svc-nexus
+  namespace: core-app
+spec:
+  ports:
+    - name: nexus-web
+      protocol: TCP
+      port: 80
+    - name: nexus-docker
+      protocol: TCP
+      port: 81
+  selector:
+    app: nexus

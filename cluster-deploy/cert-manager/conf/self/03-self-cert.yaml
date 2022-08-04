@@ -1,0 +1,22 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-d7z-net
+  namespace: cert-manager
+spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"
+  secretName: tls-d7z-net
+  duration: 8760h # 1y
+  issuerRef:
+    name: self-issuer
+  commonName: "Self CA Certificate"
+  dnsNames:
+    - 'd7z.net'
+    - '*.d7z.net'
+    - 'pages.d7z.net'
+    - '*.pages.d7z.net'

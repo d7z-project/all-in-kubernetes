@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-gitlab
+  namespace: core-app
+  labels:
+    app: gitlab
+data:
+  db-name: 'gitlabhq_production' # <1>
+  db-user: 'gitlab'  # <2>
+  gitlab-host: gitlab.d7z.net # <3>
+  gitlab-pages-host: pages.d7z.net # <3>
+  ldap-user-filter: '(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=gitlab,ou=groups,dc=cluster,dc=local))' # <4>
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-gitlab
+  namespace: core-app
+  labels:
+    app: gitlab
+stringData:
+  db-password: 'password'# <5>
+  root-password: '@gitlab-p@ssw0rd' # <6>
+  db-key-secrets: WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd  # <7>
+  session-key-secrets: 4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg # <7>
+  otp-key-secrets: psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc # <7>
+  pages-key-secrets: 'dqmhqxTv3XmxqCMk7C7P3Hsxr7WRm9LvgdV9bhz9qxH4cHNdzJzN4V94mp9d3sVC' # <7>
