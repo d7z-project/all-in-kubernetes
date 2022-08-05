@@ -52,15 +52,15 @@ include::./conf/03-lam-ingress.yaml[]
 
 == 验证
 
-访问地址 `https://lam.{{var.deploy.host}}` , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明安装正确。
+访问地址 `https://lam.{{var.global.pub-host}}` , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明安装正确。
 
-TIP: 在测试时，你需要将 `lam.{{var.deploy.host}}` 改为实际的地址
+TIP: 在测试时，你需要将 `lam.{{var.global.pub-host}}` 改为实际的地址
 
 == 初始化配置
 
 === 创建OU
 
-访问 `https://lam.{{var.deploy.host}}` ，输入管理员密码登陆后可看到如下页面：
+访问 `https://lam.{{var.global.pub-host}}` ，输入管理员密码登陆后可看到如下页面：
 
 image::images/01-create-ou.png[]
 
@@ -68,19 +68,19 @@ image::images/01-create-ou.png[]
 
 === 创建默认角色
 
-前往地址 `https://lam.{{var.deploy.host}}/lam/templates/lists/list.php?type=group`，点击创建新组，按如下所示输入保存即可。
+前往地址 `https://lam.{{var.global.pub-host}}/lam/templates/lists/list.php?type=group`，点击创建新组，按如下所示输入保存即可。
 
 image::images/02-create-def-group.png[]
 
 === 创建管理员用户
 
-前往地址 `https://lam.{{var.deploy.host}}/lam/templates/lists/list.php?type=user` ，点击创建新用户，同时配置密码，按如下所示输入保存即可。注意 RDN 标志需配置为 `UID` 。
+前往地址 `https://lam.{{var.global.pub-host}}/lam/templates/lists/list.php?type=user` ，点击创建新用户，同时配置密码，按如下所示输入保存即可。注意 RDN 标志需配置为 `UID` 。
 
 image::images/03-create-adm.png[]
 
 === 创建管理员角色
 
-前往 `https://lam.{{var.deploy.host}}/lam/templates/tools/treeView.php` 页面，在 `ou=groups` 下方新建 `groupOfNames` 对象，按如下所示输入保存即可。
+前往 `https://lam.{{var.global.pub-host}}/lam/templates/tools/treeView.php` 页面，在 `ou=groups` 下方新建 `groupOfNames` 对象，按如下所示输入保存即可。
 
 image::images/04-create-adm-group.png[]
 

@@ -6,10 +6,10 @@ metadata:
   labels:
     app: ldap
   annotations: # <1>
-    reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "{{var.shared.namespace}}"
+    reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "{{var.global.shared-namespace}}"
     reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
-    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{var.shared.namespace}}"
+    reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{var.global.shared-namespace}}"
 data:
   ldap-name: "Kubernetes Cluster LDAP Server"
   ldap-domain: 'cluster.local'

@@ -12,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - gitlab.{{var.deploy.host}}
-      secretName: tls-{{var.deploy.host.name}}
+        - gitlab.{{var.global.pub-host}}
+      secretName: tls-{{var.global.pub-hostname}}
   rules:
-    - host: gitlab.{{var.deploy.host}}
+    - host: gitlab.{{var.global.pub-host}}
       http:
         paths:
           - path: /
@@ -41,11 +41,11 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - pages.{{var.deploy.host}}
-        - '*.pages.{{var.deploy.host}}'
-      secretName: tls-{{var.deploy.host.name}}
+        - pages.{{var.global.pub-host}}
+        - '*.pages.{{var.global.pub-host}}'
+      secretName: tls-{{var.global.pub-hostname}}
   rules:
-    - host: pages.{{var.deploy.host}}
+    - host: pages.{{var.global.pub-host}}
       http:
         paths:
           - path: /
@@ -55,7 +55,7 @@ spec:
                 name: svc-gitlab
                 port:
                   name: gitlab-web
-    - host: '*.pages.{{var.deploy.host}}'
+    - host: '*.pages.{{var.global.pub-host}}'
       http:
         paths:
           - path: /

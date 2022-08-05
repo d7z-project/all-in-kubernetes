@@ -74,7 +74,7 @@ include::./conf/03-cloudflare-issuer.yaml[]
 
 === 签发证书
 
-接下来使用测试域名 `{{var.deploy.host}}` 签发证书。
+接下来使用测试域名 `{{var.global.pub-host}}` 签发证书。
 
 [source%linenums,yaml]
 ----
@@ -104,7 +104,7 @@ kubectl get certificate -n cert-manager
 [source%linenums,text]
 ----
 NAME               READY   SECRET                 AGE
-cert-{{var.deploy.host.name}}       True    tls-{{var.deploy.host.name}}            18h
+cert-{{var.global.pub-hostname}}       True    tls-{{var.global.pub-hostname}}            18h
 ----
 
 WARNING: 注意，需要填充的内容必须真实有效，否则将导致签发失败。如果没有可用的域名可参考 link:NOTE.adoc[笔记] 中的自签名证书。

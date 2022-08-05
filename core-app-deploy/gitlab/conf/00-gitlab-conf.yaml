@@ -8,8 +8,8 @@ metadata:
 data:
   db-name: 'gitlabhq_production' # <1>
   db-user: 'gitlab'  # <2>
-  gitlab-host: gitlab.{{var.deploy.host}} # <3>
-  gitlab-pages-host: pages.{{var.deploy.host}} # <3>
+  gitlab-host: gitlab.{{var.global.pub-host}} # <3>
+  gitlab-pages-host: pages.{{var.global.pub-host}} # <3>
   ldap-user-filter: '(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=gitlab,ou=groups,dc=cluster,dc=local))' # <4>
 ---
 apiVersion: v1
@@ -21,8 +21,8 @@ metadata:
     app: gitlab
 stringData:
   db-password: 'password'# <5>
-  root-password: '@gitlab-p@ssw0rd' # <6>
-  db-key-secrets: WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd  # <7>
-  session-key-secrets: 4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg # <7>
-  otp-key-secrets: psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc # <7>
-  pages-key-secrets: 'dqmhqxTv3XmxqCMk7C7P3Hsxr7WRm9LvgdV9bhz9qxH4cHNdzJzN4V94mp9d3sVC' # <7>
+  root-password: '{{var.gitlab.root.password}}' # <6>
+  db-key-secrets: '{{var.gitlab.db-secrets}}'  # <7>
+  session-key-secrets: '{{var.gitlab.session-secrets}}'  # <7>
+  otp-key-secrets: '{{var.gitlab.otp-secrets}}' # <7>
+  pages-key-secrets: '{{var.gitlab.pages-secrets}}' # <7>
