@@ -22,7 +22,7 @@ metadata:
 stringData:
   db-password: 'password'# <5>
   root-password: '@gitlab-p@ssw0rd' # <6>
-  db-key-secrets: WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd  # <7>
-  session-key-secrets: 4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg # <7>
-  otp-key-secrets: psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc # <7>
+  db-key-secrets: 'WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd'  # <7>
+  session-key-secrets: '4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg'  # <7>
+  otp-key-secrets: 'psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc' # <7>
   pages-key-secrets: 'dqmhqxTv3XmxqCMk7C7P3Hsxr7WRm9LvgdV9bhz9qxH4cHNdzJzN4V94mp9d3sVC' # <7>

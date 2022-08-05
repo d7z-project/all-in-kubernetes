@@ -802,7 +802,7 @@ pre.rouge {
     <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">password</span><span class="pi">:</span> <span class="s">admin</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">admin'</span> <i class="conum" data-value="1"></i><b>(1)</b>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
@@ -827,7 +827,7 @@ pre.rouge {
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>设置管理员密码</td>
+<td>设置管理员密码,请将其设置为复杂的密码</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -835,7 +835,7 @@ pre.rouge {
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>共享用户密码</td>
+<td>只读用户密码</td>
 </tr>
 </table>
 </div>
@@ -1274,11 +1274,11 @@ kubectl get pods,service <span class="nt">-n</span> core-system
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-08-05 09:05:25 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/system-app-deploy/openldap/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/beafa32a231c7e3f24d60eddccdb107a1c9fd17a/system-app-deploy/openldap/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/beafa32a231c7e3f24d60eddccdb107a1c9fd17a/"
+           target="_blank">#beafa3</a>
         <script>
 
             function toast(msg, duration = 1000) {
