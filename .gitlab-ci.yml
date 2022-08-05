@@ -1,6 +1,6 @@
 pages:
   image:
-    name: d7z-team/asciidoc-static-pages
+    name: registry.powercloud.com/d7z-team/asciidoc-static-pages:v2
   script:
     - git checkout -b pages
     - pages --output public
