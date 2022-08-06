@@ -32,7 +32,7 @@ spec:
           projected:
             sources:
               - secret:
-                  name: 'tls-{{var.global.pub-hostname}}'
+                  name: '{{var.global.tls-name}}'
                   items:
                     - key: 'ca.crt'
                       path: 'ca.crt'

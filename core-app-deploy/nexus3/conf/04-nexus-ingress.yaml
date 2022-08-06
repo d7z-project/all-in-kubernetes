@@ -14,7 +14,7 @@ spec:
     - hosts:
         - nexus.{{var.global.pub-host}}
         - registry.{{var.global.pub-host}}
-      secretName: tls-{{var.global.pub-hostname}}
+      secretName: {{var.global.tls-name}}
   rules:
     - host: nexus.{{var.global.pub-host}}
       http:

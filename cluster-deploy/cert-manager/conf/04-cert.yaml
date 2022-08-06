@@ -16,9 +16,8 @@ spec:
   dnsNames: # <5>
     - '{{var.global.pub-host}}'
     - '*.{{var.global.pub-host}}'
-    - 'pages.{{var.global.pub-host}}'
     - '*.pages.{{var.global.pub-host}}'
   issuerRef:
     kind: ClusterIssuer
     name: issuer-dns01-cloudflare-1  # <6>
-  secretName: 'tls-{{var.global.pub-hostname}}'
+  secretName: '{{var.global.tls-name}}'

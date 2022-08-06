@@ -10,7 +10,7 @@ spec:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{var.global.shared-namespace}}"
-  secretName: tls-{{var.global.pub-hostname}}
+  secretName: {{var.global.tls-name}}
   duration: 8760h # 1y
   issuerRef:
     name: self-issuer
@@ -18,5 +18,4 @@ spec:
   dnsNames:
     - '{{var.global.pub-host}}'
     - '*.{{var.global.pub-host}}'
-    - 'pages.{{var.global.pub-host}}'
     - '*.pages.{{var.global.pub-host}}'

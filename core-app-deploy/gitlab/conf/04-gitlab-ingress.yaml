@@ -13,7 +13,7 @@ spec:
   tls:
     - hosts:
         - gitlab.{{var.global.pub-host}}
-      secretName: tls-{{var.global.pub-hostname}}
+      secretName: {{var.global.tls-name}}
   rules:
     - host: gitlab.{{var.global.pub-host}}
       http:
@@ -43,7 +43,7 @@ spec:
     - hosts:
         - pages.{{var.global.pub-host}}
         - '*.pages.{{var.global.pub-host}}'
-      secretName: tls-{{var.global.pub-hostname}}
+      secretName: {{var.global.tls-name}}
   rules:
     - host: pages.{{var.global.pub-host}}
       http:
