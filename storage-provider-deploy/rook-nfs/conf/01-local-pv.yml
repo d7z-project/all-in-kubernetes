@@ -19,7 +19,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - node-worker-01  # <2>
+                - '{{var.nfs.local-path.node-name}}'  # <2>
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sc-rook-nfs-local
   volumeMode: Filesystem

@@ -3,7 +3,7 @@ kind: StorageClass
 metadata:
   labels:
     app: rook-nfs
-  name: sc-nfs-share
+  name: '{{var.storage.class.security}}'
 parameters:
   exportName: local-share
   nfsServerName: rook-nfs
