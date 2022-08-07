@@ -13,5 +13,5 @@ spec:
           cloudflare:
             email: '<请填写你的 CloudFlare 账户邮箱信息>' # <1>
             apiTokenSecretRef:
-              name: secret-cert-manager-var.cloudflare.api.token # <2>
+              name: secret-cert-manager-cloudflare-api-token # <2>
               key: api-token

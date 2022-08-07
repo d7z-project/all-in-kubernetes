@@ -18,5 +18,4 @@ spec:
   dnsNames:
     - 'd7z.net'
     - '*.d7z.net'
-    - 'pages.d7z.net'
     - '*.pages.d7z.net'

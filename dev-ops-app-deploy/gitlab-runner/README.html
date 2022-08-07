@@ -1092,14 +1092,14 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
           <span class="na">projected</span><span class="pi">:</span>
             <span class="na">sources</span><span class="pi">:</span>
               <span class="pi">-</span> <span class="na">secret</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">tls-'tls-d7z-net'</span>
                   <span class="na">items</span><span class="pi">:</span>
                     <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ca.crt'</span>
                       <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ca.crt'</span>
                       <span class="na">mode</span><span class="pi">:</span> <span class="m">0777</span>
       <span class="na">serviceAccountName</span><span class="pi">:</span> <span class="s">gitlab-ci</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">gitlab-org/gitlab-runner:alpine-v15.2.1</span>
+        <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab/gitlab-runner:alpine-v15.2.1'</span>
           <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-ci-runner</span>
           <span class="na">command</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">/scripts/run.sh</span>

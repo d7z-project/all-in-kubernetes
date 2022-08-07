@@ -726,7 +726,7 @@ pre.rouge {
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">50Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">300Gi</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -799,6 +799,10 @@ pre.rouge {
 54
 55
 56
+57
+58
+59
+60
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -846,13 +850,17 @@ pre.rouge {
     <span class="s">}</span>
     <span class="s">location / {</span>
     <span class="s">proxy_pass http://$upstream;</span>
-    <span class="s">proxy_connect_timeout 3600;</span>
-    <span class="s">proxy_send_timeout 3600;</span>
-    <span class="s">proxy_read_timeout 3600;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_connect_timeout 3600s;</span>
+    <span class="s">proxy_read_timeout 3600s;</span>
+    <span class="s">proxy_send_timeout 3600s;</span>
+    <span class="s">proxy_set_header Host $host;</span>
     <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
     <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-Proto http;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+
     <span class="s">}</span>
     <span class="s">}</span>
 </pre></td></tr></tbody></table></code></pre>
@@ -927,6 +935,9 @@ pre.rouge {
 38
 39
 40
+41
+42
+43
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -948,6 +959,9 @@ pre.rouge {
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">sonatype/nexus3:3.40.1</span>
+          <span class="na">resources</span><span class="pi">:</span>
+            <span class="na">requests</span><span class="pi">:</span>
+              <span class="na">memory</span><span class="pi">:</span> <span class="s">3Gi</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/nexus-data</span>
@@ -1326,11 +1340,11 @@ docker push registry.d7z.net/public/nginx:1.21.1
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-08-07 04:28:53 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/core-app-deploy/nexus3/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/81cc6c3f8d7de08ec171d49f50b14f8ad91dc00a/core-app-deploy/nexus3/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/81cc6c3f8d7de08ec171d49f50b14f8ad91dc00a/"
+           target="_blank">#81cc6c</a>
         <script>
 
             function toast(msg, duration = 1000) {

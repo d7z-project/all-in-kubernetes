@@ -41,6 +41,11 @@
 
 . link:./dev-ops-app-deploy/gitlab-runner/README.adoc[部署 Gitlab Runner]
 
+== 扩展功能
+
+. link:./extra-app-deploy/README.adoc[扩展软件部署准备]
+. link:./extra-app-deploy/cluster-web-proxy/README.adoc[转发集群外部 HTTP 请求]
+
 == 运维指南
 
 == 杂项

@@ -947,7 +947,7 @@ pre.rouge {
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">300Gi</span>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
@@ -962,7 +962,7 @@ pre.rouge {
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">10Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">20Gi</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1130,6 +1130,9 @@ pre.rouge {
 148
 149
 150
+151
+152
+153
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1159,6 +1162,9 @@ pre.rouge {
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/home/git/data</span>
+          <span class="na">resources</span><span class="pi">:</span>
+            <span class="na">requests</span><span class="pi">:</span>
+              <span class="na">memory</span><span class="pi">:</span> <span class="s">4Gi</span>
           <span class="na">env</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SSH_PORT</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">22"</span>
@@ -1210,7 +1216,7 @@ pre.rouge {
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
                   <span class="na">key</span><span class="pi">:</span> <span class="s">gitlab-pages-host</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_HTTPS</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_HTTP</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_HOST</span>

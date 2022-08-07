@@ -690,7 +690,7 @@ pre.rouge {
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprecated">过时</a>，未来此文档可能会被替换,正在寻找替代方案，如果你有好的方案可告诉我，暂不考虑 <code>Ceph</code> 等类似的块存储方案 。
+rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprecated">过时</a>，未来此文档可能会被替换,正在寻找替代方案，如果你有好的方案可告诉我，<span class="line-through">暂不考虑 <code>Ceph</code> 等类似的块存储方案</span> 。
 </td>
 </tr>
 </table>
@@ -1440,7 +1440,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
   <span class="na">accessModes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">capacity</span><span class="pi">:</span>
-    <span class="na">storage</span><span class="pi">:</span> <span class="s">1000Gi</span>
+    <span class="na">storage</span><span class="pi">:</span> <span class="s">2000Gi</span>
   <span class="na">local</span><span class="pi">:</span>
     <span class="na">path</span><span class="pi">:</span> <span class="s">/share</span> <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="na">nodeAffinity</span><span class="pi">:</span>
@@ -1450,7 +1450,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
             <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">kubernetes.io/hostname</span>
               <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
               <span class="na">values</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s">node-worker-01</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">node-worker-01'</span>  <i class="conum" data-value="2"></i><b>(2)</b>
   <span class="na">persistentVolumeReclaimPolicy</span><span class="pi">:</span> <span class="s">Retain</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-rook-nfs-local</span>
   <span class="na">volumeMode</span><span class="pi">:</span> <span class="s">Filesystem</span>
@@ -1551,7 +1551,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">2000Gi</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-rook-nfs-local</span>
   <span class="na">volumeMode</span><span class="pi">:</span> <span class="s">Filesystem</span>
   <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pv-rook-nfs-local</span> <span class="c1"># 指定关联的PV 名称</span>
@@ -1642,7 +1642,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">rook-nfs</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">sc-nfs-share</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sc-nfs-share'</span>
 <span class="na">parameters</span><span class="pi">:</span>
   <span class="na">exportName</span><span class="pi">:</span> <span class="s">local-share</span>
   <span class="na">nfsServerName</span><span class="pi">:</span> <span class="s">rook-nfs</span>
@@ -1781,7 +1781,7 @@ metadata:
     app: rook-nfs
     mode: <span class="nb">test
 </span>spec:
-  storageClassName: sc-nfs-share
+  storageClassName: <span class="s1">'sc-nfs-share'</span>
   accessModes:
     - ReadWriteMany
   resources:
@@ -1951,11 +1951,11 @@ kubectl <span class="nb">exec</span> <span class="nv">$POD_NAME</span> <span cla
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-08-06 13:41:14 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/storage-provider-deploy/rook-nfs/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/d09bd8c21a3078e0ccc3524efc77221da07d8d15/storage-provider-deploy/rook-nfs/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/d09bd8c21a3078e0ccc3524efc77221da07d8d15/"
+           target="_blank">#d09bd8</a>
         <script>
 
             function toast(msg, duration = 1000) {

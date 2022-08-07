@@ -156,4 +156,4 @@ provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 mountOptions:
-  - vers=3
+  - vers=4

@@ -900,7 +900,7 @@ pre.rouge {
   <span class="na">accessModes</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">capacity</span><span class="pi">:</span>
-    <span class="na">storage</span><span class="pi">:</span> <span class="s">1000Gi</span>
+    <span class="na">storage</span><span class="pi">:</span> <span class="s">2000Gi</span>
   <span class="na">local</span><span class="pi">:</span>
     <span class="c1"># 指定挂载的目录</span>
     <span class="na">path</span><span class="pi">:</span> <span class="s">/share</span>
@@ -912,7 +912,7 @@ pre.rouge {
             <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">kubernetes.io/hostname</span>
               <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
               <span class="na">values</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s">node-worker-01</span> <span class="c1"># 指定部署在 node-worker-01 节点上，可根据实际需求更改</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">node-worker-01'</span> <span class="c1"># 指定部署在 node-worker-01 节点上，可根据实际需求更改</span>
   <span class="na">persistentVolumeReclaimPolicy</span><span class="pi">:</span> <span class="s">Retain</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-ganesha-local</span>
   <span class="na">volumeMode</span><span class="pi">:</span> <span class="s">Filesystem</span>
@@ -939,7 +939,7 @@ pre.rouge {
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">1000Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">2000Gi</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-ganesha-local</span>
   <span class="na">volumeMode</span><span class="pi">:</span> <span class="s">Filesystem</span>
   <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pv-nfs-ganesha-local</span> <span class="c1"># 指定关联的PV 名称</span>
@@ -1278,7 +1278,7 @@ pre.rouge {
 <span class="na">reclaimPolicy</span><span class="pi">:</span> <span class="s">Retain</span>
 <span class="na">allowVolumeExpansion</span><span class="pi">:</span> <span class="no">true</span>
 <span class="na">mountOptions</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">vers=3</span>
+  <span class="pi">-</span> <span class="s">vers=4</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

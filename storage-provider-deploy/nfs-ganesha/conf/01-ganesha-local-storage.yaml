@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 1000Gi
+    storage: 2000Gi
   local:
     # 指定挂载的目录
     path: /share
@@ -20,7 +20,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - node-worker-01 # 指定部署在 node-worker-01 节点上，可根据实际需求更改
+                - 'node-worker-01' # 指定部署在 node-worker-01 节点上，可根据实际需求更改
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sc-nfs-ganesha-local
   volumeMode: Filesystem
@@ -47,7 +47,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1000Gi
+      storage: 2000Gi
   storageClassName: sc-nfs-ganesha-local
   volumeMode: Filesystem
   volumeName: pv-nfs-ganesha-local # 指定关联的PV 名称

@@ -109,6 +109,21 @@
 </div>
 </div>
 <div class="sect1">
+<h2 id="_扩展功能">扩展功能</h2>
+<div class="sectionbody">
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="./extra-app-deploy/README.adoc">扩展软件部署准备</a></p>
+</li>
+<li>
+<p><a href="./extra-app-deploy/cluster-web-proxy/README.adoc">转发集群外部 HTTP 请求</a></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_运维指南">运维指南</h2>
 <div class="sectionbody">
 

@@ -35,6 +35,9 @@ spec:
                   key: username
             - name: 'PGDATA'
               value: "/var/lib/postgresql/data/pgdata"
+          resources:
+            requests:
+              memory: 3Gi
       volumes:
         - name: postgres-data
           persistentVolumeClaim:

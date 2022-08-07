@@ -19,6 +19,9 @@ spec:
       containers:
         - name: nexus
           image: sonatype/nexus3:3.40.1
+          resources:
+            requests:
+              memory: 3Gi
           volumeMounts:
             - name: nexus-data
               mountPath: /nexus-data

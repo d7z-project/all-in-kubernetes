@@ -22,7 +22,7 @@
 ----
 server = "https://docker.io"
 
-[host."https://registry.powercloud.com"]
+[host."https://registry.d7z.net"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
 ----

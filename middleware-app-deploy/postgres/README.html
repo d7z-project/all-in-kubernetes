@@ -734,7 +734,7 @@ pre.rouge {
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">30Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -833,6 +833,9 @@ pre.rouge {
 39
 40
 41
+42
+43
+44
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -870,6 +873,9 @@ pre.rouge {
                   <span class="na">key</span><span class="pi">:</span> <span class="s">username</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">PGDATA'</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/var/lib/postgresql/data/pgdata"</span>
+          <span class="na">resources</span><span class="pi">:</span>
+            <span class="na">requests</span><span class="pi">:</span>
+              <span class="na">memory</span><span class="pi">:</span> <span class="s">3Gi</span>
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-data</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>

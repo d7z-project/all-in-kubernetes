@@ -688,7 +688,7 @@ pre.rouge {
 <h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>MariaDB 需要镜像 <code>mariadb:10.8</code>。部署完成后，集群内部地址为：</p>
+<p>MariaDB 需要镜像 <code>mariadb:10.5</code>。部署完成后，集群内部地址为：</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -734,7 +734,7 @@ pre.rouge {
     <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
-      <span class="na">storage</span><span class="pi">:</span> <span class="s">30Gi</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -846,7 +846,7 @@ pre.rouge {
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb:10.8</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb:10.5</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/mysql</span>
@@ -980,11 +980,11 @@ kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-08-07 04:28:53 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/middleware-app-deploy/mariadb/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/81cc6c3f8d7de08ec171d49f50b14f8ad91dc00a/middleware-app-deploy/mariadb/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/81cc6c3f8d7de08ec171d49f50b14f8ad91dc00a/"
+           target="_blank">#81cc6c</a>
         <script>
 
             function toast(msg, duration = 1000) {

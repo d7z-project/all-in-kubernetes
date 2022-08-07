@@ -717,7 +717,7 @@ crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 <div class="sect2">
 <h3 id="_应用修复">应用修复</h3>
 <div class="paragraph">
-<p>由于需要夺冠 LoadBalancer Service 共享同一个IP,所以需要对 <code>Ingress</code> 单独进行配置。</p>
+<p>由于需要多个 LoadBalancer Service 共享同一个IP,所以需要对 <code>Ingress</code> 单独进行配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1156,11 +1156,11 @@ second web demo.
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-08-07 04:28:53 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/cluster-deploy/ingress-nginx/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/81cc6c3f8d7de08ec171d49f50b14f8ad91dc00a/cluster-deploy/ingress-nginx/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/81cc6c3f8d7de08ec171d49f50b14f8ad91dc00a/"
+           target="_blank">#81cc6c</a>
         <script>
 
             function toast(msg, duration = 1000) {

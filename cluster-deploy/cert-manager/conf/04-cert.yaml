@@ -16,7 +16,6 @@ spec:
   dnsNames: # <5>
     - 'd7z.net'
     - '*.d7z.net'
-    - 'pages.d7z.net'
     - '*.pages.d7z.net'
   issuerRef:
     kind: ClusterIssuer

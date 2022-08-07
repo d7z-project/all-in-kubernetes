@@ -32,14 +32,14 @@ spec:
           projected:
             sources:
               - secret:
-                  name: 'tls-d7z-net'
+                  name: tls-'tls-d7z-net'
                   items:
                     - key: 'ca.crt'
                       path: 'ca.crt'
                       mode: 0777
       serviceAccountName: gitlab-ci
       containers:
-        - image: gitlab-org/gitlab-runner:alpine-v15.2.1
+        - image: 'gitlab/gitlab-runner:alpine-v15.2.1'
           name: gitlab-ci-runner
           command:
             - /scripts/run.sh

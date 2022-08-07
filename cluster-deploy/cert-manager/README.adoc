@@ -78,7 +78,7 @@ include::./conf/03-cloudflare-issuer.yaml[]
 
 [source%linenums,yaml]
 ----
-include::./conf/04-cert-d7z-net.yaml[]
+include::./conf/04-cert.yaml[]
 ----
 
 .其中:
