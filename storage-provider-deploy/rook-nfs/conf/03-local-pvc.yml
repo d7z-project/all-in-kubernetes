@@ -10,7 +10,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
+      storage: 2000Gi
   storageClassName: sc-rook-nfs-local
   volumeMode: Filesystem
   volumeName: pv-rook-nfs-local # 指定关联的PV 名称

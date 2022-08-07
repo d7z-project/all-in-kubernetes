@@ -1,14 +1,16 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: StatefulSet
 metadata:
   name: sts-nfs-ganesha
   labels:
     app: nfs-ganesha
   namespace: nfs-ganesha
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: nfs-ganesha
+  serviceName: svc-nfs-ganesha
   template:
     metadata:
       labels:
@@ -16,15 +18,6 @@ spec:
     spec:
       terminationGracePeriodSeconds: 100
       serviceAccountName: nfs-server-provisioner
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: kubernetes.io/hostname
-                    operator: In
-                    values:
-                      - '{{var.nfs.local-path.node-name}}'
       containers:
         - name: nfs-server-provisioner
           image: "k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0"
@@ -163,4 +156,4 @@ provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 mountOptions:
-  - vers=3
+  - vers=4

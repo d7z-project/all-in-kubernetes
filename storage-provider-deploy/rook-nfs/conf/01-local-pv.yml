@@ -9,7 +9,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 1000Gi
+    storage: 2000Gi
   local:
     path: /share # <1>
   nodeAffinity:

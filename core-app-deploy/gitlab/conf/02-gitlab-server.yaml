@@ -27,6 +27,9 @@ spec:
           volumeMounts:
             - name: gitlab-data
               mountPath: /home/git/data
+          resources:
+            requests:
+              memory: 4Gi
           env:
             - name: GITLAB_SSH_PORT
               value: "22"

@@ -34,7 +34,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 === 应用修复
 
-由于需要夺冠 LoadBalancer Service 共享同一个IP,所以需要对 `Ingress` 单独进行配置。
+由于需要多个 LoadBalancer Service 共享同一个IP,所以需要对 `Ingress` 单独进行配置。
 
 [source%linenums,yaml]
 ----
