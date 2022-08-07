@@ -1,0 +1,4 @@
+[source%linenums,yaml]
+----
+include::./conf/deploy.yaml[]
+----

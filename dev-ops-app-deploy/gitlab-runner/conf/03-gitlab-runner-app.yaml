@@ -32,14 +32,14 @@ spec:
           projected:
             sources:
               - secret:
-                  name: '{{var.global.tls-name}}'
+                  name: tls-'{{var.global.tls-name}}'
                   items:
                     - key: 'ca.crt'
                       path: 'ca.crt'
                       mode: 0777
       serviceAccountName: gitlab-ci
       containers:
-        - image: gitlab-org/gitlab-runner:alpine-v15.2.1
+        - image: 'gitlab/gitlab-runner:alpine-v15.2.1'
           name: gitlab-ci-runner
           command:
             - /scripts/run.sh
