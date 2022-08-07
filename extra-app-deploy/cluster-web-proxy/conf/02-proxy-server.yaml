@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-web-proxy
+  namespace: share-app
+  labels:
+    app: web-proxy
+spec:
+  serviceName: svc-web-proxy
+  selector:
+    matchLabels:
+      app: web-proxy
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: web-proxy
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.21.1
+          volumeMounts:
+            - name: nginx-data
+              mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: nginx-data
+          configMap:
+            name: conf-web-proxy
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: web-proxy
+  name: svc-web-proxy
+  namespace: share-app
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+  selector:
+    app: web-proxy

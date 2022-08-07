@@ -1,0 +1,48 @@
+= 集群转发外部 HTTP/HTTPS
+:experimental:
+:icons: font
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+此文档描述了一种转发集群外部 HTTP 站点并利用 *Ingress* 进行重映射的方法。在本文中使用 `nginx` 进行转发。
+
+此处以转发外部地址 `https://10.0.0.254:8006` 为例，此Web站点使用 *自签名证书*，同时需要 *Websocket* 连接，并且有 *上传、下载文件* 的需求。
+
+== 创建配置
+
+根据需求创建以下配置：
+
+[source%linenums,yaml]
+----
+include::conf/01-web-proxy-conf.yaml[]
+----
+
+.其中
+<1> 表示目标域名
+<2> 表示要转发的地址
+<3> 使用 http 1.1
+<4> 禁用最大 body 限制
+
+== 创建转发程序
+
+导入以下配置，创建地址转发, 如果你的节点网络环境复杂，则需要配置节点亲和性：
+
+[source%linenums,yaml]
+----
+include::conf/02-proxy-server.yaml[]
+----
+
+== 创建 Ingress 配置
+
+使用以下配置，创建可用的 Ingress 配置, 注意，在部署完成再次更改配置后可能需要重建 Pod。在 `Conf` 配置中有多个域名，则需要在 `Ingress` 下配置多个转发。
+
+[source%linenums,yaml]
+----
+include::conf/03-proxy-ingress.yaml[]
+----
