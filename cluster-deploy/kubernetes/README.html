@@ -949,7 +949,7 @@ install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/cri
 install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubeadm /usr/bin/kubeadm
 install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubelet /usr/bin/kubelet
 install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubectl /usr/bin/kubectl
-sudo mkdir -p /etc/systemd/system/kubelet.service.d
+mkdir -p /etc/systemd/system/kubelet.service.d
 install -m 644 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/kubelet.service /etc/systemd/system/kubelet.service
 install -m 644 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 # 启动
