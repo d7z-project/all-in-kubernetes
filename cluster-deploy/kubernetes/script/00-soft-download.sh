@@ -106,7 +106,7 @@ install -m 755 $PROJECT_HOME/crictl /usr/bin/crictl
 install -m 755 $PROJECT_HOME/kubeadm /usr/bin/kubeadm
 install -m 755 $PROJECT_HOME/kubelet /usr/bin/kubelet
 install -m 755 $PROJECT_HOME/kubectl /usr/bin/kubectl
-sudo mkdir -p /etc/systemd/system/kubelet.service.d
+mkdir -p /etc/systemd/system/kubelet.service.d
 install -m 644 $PROJECT_HOME/kubelet.service /etc/systemd/system/kubelet.service
 install -m 644 $PROJECT_HOME/10-kubeadm.conf /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 # 启动
