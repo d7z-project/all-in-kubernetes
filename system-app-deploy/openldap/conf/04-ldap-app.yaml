@@ -94,3 +94,19 @@ spec:
     - port: 389
   selector:
     app: ldap
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: svc-ldap-lb
+  namespace: core-system
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "primary-ip-share"
+spec:
+  ports:
+    - port: 389
+  selector:
+    app: ldap
+  type: LoadBalancer
