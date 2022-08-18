@@ -152,6 +152,8 @@ metadata:
   name: 'sc-nfs-share'
   labels:
     app: nfs-ganesha
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
 provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
 reclaimPolicy: Retain
 allowVolumeExpansion: true

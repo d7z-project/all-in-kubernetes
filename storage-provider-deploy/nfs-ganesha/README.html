@@ -1120,6 +1120,8 @@ pre.rouge {
 157
 158
 159
+160
+161
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1274,6 +1276,8 @@ pre.rouge {
   <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sc-nfs-share'</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">nfs-ganesha</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">storageclass.kubernetes.io/is-default-class</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
 <span class="na">provisioner</span><span class="pi">:</span> <span class="s">nfs.3rd.storage.k8s.io/nfs-server-provisioner</span>
 <span class="na">reclaimPolicy</span><span class="pi">:</span> <span class="s">Retain</span>
 <span class="na">allowVolumeExpansion</span><span class="pi">:</span> <span class="no">true</span>
