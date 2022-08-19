@@ -17,5 +17,8 @@ spec:
   commonName: "Self CA Certificate"
   dnsNames:
     - '{{var.global.pub-host}}'
-    - '*.{{var.global.pub-host}}'
-    - '*.pages.{{var.global.pub-host}}'
+    - '*.{{var.global.pub-host}}' # 通用公开地址
+    - '*.pages.{{var.global.pub-host}}' # gitlab pages 相关地址
+    - '*.gitpod.{{var.global.pub-host}}' # gitpod 相关地址
+    - '*.ws.gitpod.{{var.global.pub-host}}' # gitpod 相关地址
+    - '*.internal.{{var.global.pub-host}}' # 隐私地址

@@ -1,0 +1,19 @@
+= 监控平台安装准备
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 创建 Namespace
+
+监控平台需要独立的 namespace，使用以下 `YAML` 创建即可。
+
+[source%linenums,yaml]
+----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitor-app
+----

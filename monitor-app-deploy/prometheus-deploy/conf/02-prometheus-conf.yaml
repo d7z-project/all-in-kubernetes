@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-prometheus
+  namespace: monitor-app
+  labels:
+    app: prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 10s
+      evaluation_interval: 30s
+      scrape_timeout: 10s
+    alerting:
+      alertmanagers:
+        - static_configs:
+            - targets:
+                - 127.0.0.1:9093
+    rule_files:
+      - "/etc/prometheus/rules/*.yaml"
+    scrape_configs:
+      - job_name: "prometheus"
+        static_configs:
+          - targets: [ "localhost:9090" ]
+      - job_name: 'kubernetes'
+        kubernetes_sd_configs:
+          - role: endpoints
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        relabel_configs:
+          - source_labels:
+              - __meta_kubernetes_namespace
+              - __meta_kubernetes_service_name
+              - __meta_kubernetes_endpoint_port_name
+            action: keep
+            regex: default;kubernetes;https
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-prometheus-rules
+  namespace: monitor-app
+  labels:
+    app: prometheus
+data:
+  sample.yaml: |
+    groups:
+      - name: "sample-config"
+        rules:
+          - alert: "PostgresSQL离线告警"
+            for: "0m"
+            annotations:
+              summary: "服务器的PostgresSQL在线情况产生告警。"
+              description: "POSTGRESQL组件 - PostgresSQL在线情况告警 "
+            expr: "pg_up{instance=~\".*\",acc=~\".*\"} == 0"

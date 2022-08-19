@@ -12,3 +12,4 @@ pages:
   attr_files:
     - value.properties
     - value-custom.properties
+    - version.properties

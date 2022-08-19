@@ -46,6 +46,11 @@
 . link:./extra-app-deploy/README.adoc[扩展软件部署准备]
 . link:./extra-app-deploy/cluster-web-proxy/README.adoc[转发集群外部 HTTP 请求]
 
+== 平台监控
+
+. link:./extra-app-deploy/README.adoc[平台监控功能部署准备]
+. link:./monitor-app-deploy/prometheus-deploy/README.adoc[Prometheus 部署]
+
 == 运维指南
 
 == 杂项

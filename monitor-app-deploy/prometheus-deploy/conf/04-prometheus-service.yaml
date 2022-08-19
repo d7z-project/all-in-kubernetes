@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: prometheus
+  name: svc-prometheus
+  namespace: monitor-app
+spec:
+  ports:
+    - port: 9090
+      name: prometheus
+  selector:
+    app: prometheus
