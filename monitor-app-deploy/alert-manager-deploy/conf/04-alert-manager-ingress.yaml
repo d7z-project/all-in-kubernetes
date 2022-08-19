@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-alert-manager
+  namespace: monitor-app
+  labels:
+    app: alert-manager
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - alert-manager.internal.{{var.global.pub-host}}
+      secretName: {{var.global.tls-name}}
+  rules:
+    - host: alert-manager.internal.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-alert-manager
+                port:
+                  name: alert-manager

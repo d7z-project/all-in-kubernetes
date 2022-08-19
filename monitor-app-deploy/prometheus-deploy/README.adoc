@@ -8,13 +8,13 @@
 
 == 说明
 
-此项目使用镜像 `prom/prometheus:v2.38.0` ，离线环境请在部署前将其导入至 `containerd` 或私有镜像源地址中。
+此项目使用镜像 `prom/prometheus:v2.38.0` ，离线环境请在部署前将其导入至 *containerd* 或私有镜像源地址中。
 
 *prometheus* 配置放在 `configmap/conf-prometheus` 中，报警规则配置放在 `configmap/conf-prometheus-rules` 中。
 
 == 导入RBAC规则
 
-`prometheus` 需要从 `kubernetes` 下抓取配置，导入以下配置创建 RBAC 规则。
+*prometheus* 需要从 *kubernetes* 下抓取配置，导入以下配置创建 *RBAC* 规则。
 
 [source%linenums,yaml]
 ----
@@ -32,7 +32,7 @@ include::./conf/01-prometheus-pvc.yaml[]
 
 == 创建配置
 
-使用以下配置创建 `Prometheus` 需要的相关的配置文件，其中包括 `prometheus` 本身的配置和报警规则的配置：
+使用以下配置创建 *Prometheus* 需要的相关的配置文件，其中包括 *prometheus* 本身的配置和报警规则的配置：
 
 [source%linenums,yaml]
 ----
@@ -41,7 +41,7 @@ include::conf/02-prometheus-conf.yaml[]
 
 == 导入启动配置
 
-使用以下配置创建 Prometheus 启动配置。
+使用以下配置创建 *Prometheus* 启动配置。
 
 [source%linenums,yaml]
 ----
@@ -50,7 +50,7 @@ include::conf/03-prometheus-sts.yaml[]
 
 == 创建 Service
 
-使用以下配置，创建对应的 `Service` 配置
+使用以下配置，创建对应的 *Service* 配置
 
 [source%linenums,yaml]
 ----
@@ -59,7 +59,7 @@ include::conf/04-prometheus-service.yaml[]
 
 == 创建 Ingress
 
-`Service` 创建完成后，使用以下配置将对应的 Service 暴露到 Ingress 中。
+*Service* 创建完成后，使用以下配置将对应的 *Service* 暴露到 *Ingress* 中。
 
 [source%linenums,yaml]
 ----
