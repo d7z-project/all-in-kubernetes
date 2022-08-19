@@ -10,6 +10,8 @@
 
 此项目使用镜像 `prom/prometheus:v2.38.0` ，离线环境请在部署前将其导入至 `containerd` 或私有镜像源地址中。
 
+*prometheus* 配置放在 `configmap/conf-prometheus` 中，报警规则配置放在 `configmap/conf-prometheus-rules` 中。
+
 == 导入RBAC规则
 
 `prometheus` 需要从 `kubernetes` 下抓取配置，导入以下配置创建 RBAC 规则。
@@ -63,3 +65,14 @@ include::conf/04-prometheus-service.yaml[]
 ----
 include::conf/05-prometheus-ingress.yaml[]
 ----
+
+== 测试
+
+配置导入完成后，使用如下命令查看结果：
+
+[source%linenums,bash]
+----
+kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=prometheus
+----
+
+待一切完成后，访问 `https://prometheus.internal.{{var.global.pub-host}}` 查看 web 页面。

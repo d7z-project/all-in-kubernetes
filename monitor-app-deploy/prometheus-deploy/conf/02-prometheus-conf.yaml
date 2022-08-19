@@ -15,7 +15,7 @@ data:
       alertmanagers:
         - static_configs:
             - targets:
-                - 127.0.0.1:9093
+                - svc-alert-manager.monitor-app.svc.cluster.local:9093
     rule_files:
       - "/etc/prometheus/rules/*.yaml"
     scrape_configs:
