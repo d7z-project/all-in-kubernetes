@@ -63,9 +63,9 @@
 
 ==== 集群监控 (monitor-app)
 
-* [ ] 部署 Prometheus/验证
-* [ ] 部署 AlertManager/验证
-* [ ] 部署 Grafana/验证
+* [x] 部署 Prometheus/验证
+* [x] 部署 AlertManager/验证
+* [x] 部署 Grafana/验证
 * [ ] 部署 NodeExporter/验证
 
 === 自动化部署测试

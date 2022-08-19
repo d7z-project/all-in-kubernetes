@@ -809,6 +809,11 @@ pre.rouge {
 51
 52
 53
+54
+55
+56
+57
+58
 </pre></td><td class="code"><pre><span class="c"># 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
 <span class="c"># 跳过代理
@@ -836,7 +841,7 @@ pre.rouge {
 </span><span class="py">var.load-balancer.addrs</span><span class="p">=</span><span class="s">10.0.0.35-10.0.0.39</span>
 <span class="c">################### Gitlab ###############################
 # Gitlab 管理员密码
-</span><span class="py">var.gitlab.root.password</span><span class="p">=</span><span class="s">@gitlab-p@ssw0rd</span>
+</span><span class="py">var.gitlab.root.password</span><span class="p">=</span><span class="s">gitlab-root-password</span>
 <span class="c"># Gitlab 数据库 secrets
 </span><span class="py">var.gitlab.db-secrets</span><span class="p">=</span><span class="s">WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd</span>
 <span class="c"># Gitlab 会话 secrets
@@ -860,8 +865,13 @@ pre.rouge {
 # Redis 管理员密码
 </span><span class="py">var.redis.password</span><span class="p">=</span><span class="s">redis-password</span>
 <span class="c">################ LDAP ##################################
-# Redis 管理员密码
+# LDAP 管理员密码
 </span><span class="py">var.ldap.admin.password</span><span class="p">=</span><span class="s">admin</span>
+<span class="c">################ Grafana ##################################
+# Grafana 管理员账户信息
+</span><span class="py">var.grafana.admin.user</span><span class="p">=</span><span class="s">admin</span>
+<span class="c"># Grafana 管理员密码
+</span><span class="py">var.grafana.admin.password</span><span class="p">=</span><span class="s">grafana-admin-password</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

@@ -1,0 +1,126 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-grafana
+  namespace: monitor-app
+  labels:
+    app: grafana
+data:
+  ADMIN_USER: 'admin'
+  LDAP_ADMIN_GROUP_DN: 'cn=admin,ou=groups,dc=cluster,dc=local'
+  LDAP_EDITOR_GROUP_DN: 'cn=monitor,ou=groups,dc=cluster,dc=local'
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-grafana
+  namespace: monitor-app
+  labels:
+    app: grafana
+stringData:
+  ADMIN_PASSWORD: 'grafana-admin-password'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-grafana-data
+  namespace: monitor-app
+  labels:
+    app: grafana
+data:
+  grafana.ini: |
+    app_mode = production
+    [server]
+    http_port = 3000
+    serve_from_sub_path = true
+    [database]
+    type = sqlite3
+    path = grafana.db
+    [security]
+    admin_user = ${ADMIN_USER}
+    admin_password = ${ADMIN_PASSWORD}
+    
+    [users]
+    allow_sign_up = false
+    default_theme = dark
+    default_locale = zh-CN
+    
+    [auth.anonymous]
+    enabled = false
+    hide_version = false
+    
+    [auth.basic]
+    enabled = false
+    
+    [auth.ldap]
+    enabled = true
+    config_file = /etc/grafana/ldap.toml
+    allow_sign_up = true
+    sync_cron = "0 1 * * *"
+    active_sync_enabled = true
+    
+    [log]
+    mode = console
+    level = warn
+    
+    [help]
+    enabled = false
+  ldap.toml: |
+    [[servers]]
+    host = "${LDAP_HOST}"
+    port = ${LDAP_PORT}
+    use_ssl = false
+    start_tls = false
+    ssl_skip_verify = false
+    
+    bind_dn = "${LDAP_BIND_DN}"
+    bind_password = "${LDAP_BIND_PASSWORD}"
+    timeout = 10
+    search_filter = "(uid=%s)"
+    search_base_dns = ["${LDAP_USER_BASE_DN}"]
+    
+    ## For Posix or LDAP setups that does not support member_of attribute you can define the below settings
+    ## Please check grafana LDAP docs for examples
+    # group_search_filter = "(&(objectClass=posixGroup)(memberUid=%s))"
+    # group_search_base_dns = ["ou=groups,dc=grafana,dc=org"]
+    # group_search_filter_user_attribute = "uid"
+    
+    # Specify names of the ldap attributes your ldap uses
+    [servers.attributes]
+    name = "givenName"
+    surname = "sn"
+    username = "cn"
+    member_of = "memberOf"
+    email = "mail"
+    
+    # Map ldap groups to grafana org roles
+    [[servers.group_mappings]]
+    group_dn = "${LDAP_ADMIN_GROUP_DN}"
+    org_role = "Admin"
+    grafana_admin = true
+    
+    [[servers.group_mappings]]
+    group_dn = "${LDAP_EDITOR_GROUP_DN}"
+    org_role = "Editor"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-grafana-sources
+  namespace: monitor-app
+  labels:
+    app: grafana
+data:
+  prometheus.yml: |
+    apiVersion: 1
+    deleteDatasources:
+      - name: prometheus
+        orgId: 1
+    datasources:
+      - id: 1
+        orgId: 1
+        name: prometheus
+        type: prometheus
+        url: http://svc-prometheus.monitor-app.svc.cluster.local:9090

@@ -21,7 +21,7 @@ metadata:
     app: gitlab
 stringData:
   db-password: 'password'# <5>
-  root-password: '@gitlab-p@ssw0rd' # <6>
+  root-password: 'gitlab-root-password' # <6>
   db-key-secrets: 'WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd'  # <7>
   session-key-secrets: '4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg'  # <7>
   otp-key-secrets: 'psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc' # <7>

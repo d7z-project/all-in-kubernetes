@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>部署 CertManager</title>
+<title>Grafana 部署文档</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -654,20 +654,18 @@ pre.rouge {
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>部署 CertManager</h1>
+<h1>Grafana 部署文档</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
 <li><a href="#_说明">说明</a></li>
-<li><a href="#_导入资源">导入资源</a></li>
-<li><a href="#_创建证书">创建证书</a>
-<ul class="sectlevel2">
-<li><a href="#_创建apikey">创建ApiKey</a></li>
-<li><a href="#_绑定_issuer">绑定 Issuer</a></li>
-<li><a href="#_签发证书">签发证书</a></li>
-<li><a href="#_验证">验证</a></li>
-</ul>
-</li>
+<li><a href="#_创建持久卷">创建持久卷</a></li>
+<li><a href="#_创建用户分组">创建用户分组</a></li>
+<li><a href="#_创建配置">创建配置</a></li>
+<li><a href="#_导入启动配置">导入启动配置</a></li>
+<li><a href="#_创建_service">创建 Service</a></li>
+<li><a href="#_创建_ingress">创建 Ingress</a></li>
+<li><a href="#_测试">测试</a></li>
 </ul>
 </div>
 </div>
@@ -676,112 +674,15 @@ pre.rouge {
 <h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>项目地址： <a target="_blank" href="https://cert-manager.io">cert-manager</a></p>
-</div>
-<div class="paragraph">
-<p>CertManager 需要以下镜像：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="code"><pre>quay.io/jetstack/cert-manager-cainjector:v1.8.2
-quay.io/jetstack/cert-manager-controller:v1.8.2
-quay.io/jetstack/cert-manager-webhook:v1.8.2
-</pre></td></tr></tbody></table></code></pre>
-</div>
+<p>此项目使用镜像 <code>grafana/grafana-oss:9.1.0</code> ，离线环境请在部署前将其导入至 <strong>containerd</strong> 或私有镜像源地址中。</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入资源">导入资源</h2>
+<h2 id="_创建持久卷">创建持久卷</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>由于 CertManager 的配置过于庞大，不便于在此展示，可将文件 <a href="conf/00-cert-manager.yaml">conf/cert-manager.yaml</a>  推送到控制节点,再使用 <code>kubectl apply -f cert-manager.yaml</code> 导入资源。</p>
-</div>
-<div class="paragraph">
-<p>或者你可以使用以下命令在线导入资源：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl apply <span class="nt">-f</span> https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>导入完成后使用以下命令查看结果：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get pods <span class="nt">-n</span> cert-manager
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_创建证书">创建证书</h2>
-<div class="sectionbody">
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-此次测试需要有一个域名，同时需要 Cert-Manager 支持此域名服务商的 DNS API。
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="_创建apikey">创建ApiKey</h3>
-<div class="paragraph">
-<p>添加 <strong>Cloudflare Api</strong> 到 <strong>Secret</strong> 下</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
-<span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
-<span class="na">stringData</span><span class="pi">:</span>
-  <span class="c1"># 需要修改为实际数据</span>
-  <span class="na">api-token</span><span class="pi">:</span> <span class="s1">'</span><span class="s">&lt;请填写你的</span><span class="nv"> </span><span class="s">CloudFlare</span><span class="nv"> </span><span class="s">账户的Token值&gt;'</span> <i class="conum" data-value="1"></i><b>(1)</b>
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<div class="title">其中:</div>
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>此处填写你 CloudFlare API Token</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>将此文件保存至 <code>api.yaml</code> 后执行 <code>kubectl apply -f api.yaml</code> 即可。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_绑定_issuer">绑定 Issuer</h3>
-<div class="paragraph">
-<p>将 Cloudflare API 绑定至 ClusterIssuer。</p>
+<p>使用以下配置创建对应的持久卷:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -799,49 +700,310 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 12
 13
 14
-15
-16
-17
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-grafana</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">acme</span><span class="pi">:</span>
-    <span class="na">privateKeySecretRef</span><span class="pi">:</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">lets-encrypt-dns01</span>
-    <span class="na">server</span><span class="pi">:</span> <span class="s">https://acme-v02.api.letsencrypt.org/directory</span>
-    <span class="na">solvers</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="na">dns01</span><span class="pi">:</span>
-          <span class="na">cloudflare</span><span class="pi">:</span>
-            <span class="na">email</span><span class="pi">:</span> <span class="s1">'</span><span class="s">&lt;请填写你的</span><span class="nv"> </span><span class="s">CloudFlare</span><span class="nv"> </span><span class="s">账户邮箱信息&gt;'</span> <i class="conum" data-value="1"></i><b>(1)</b>
-            <span class="na">apiTokenSecretRef</span><span class="pi">:</span>
-              <span class="na">name</span><span class="pi">:</span> <span class="s">secret-cert-manager-cloudflare-api-token</span> <i class="conum" data-value="2"></i><b>(2)</b>
-              <span class="na">key</span><span class="pi">:</span> <span class="s">api-token</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sc-nfs-share'</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">20Gi</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>此处填写你的 <strong>Cloudflare Email</strong></td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>关联的 <strong>Cloudflare Token</strong></td>
-</tr>
-</table>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_创建用户分组">创建用户分组</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>将此文件保存至 <code>issuer.yaml</code> 后执行 <code>kubectl apply -f issuer.yaml</code> 即可。</p>
+<p><strong>Grafana</strong> 使用 <strong>LDAP</strong> 统一管理用户，需登陆 LDAP 管理控制台，添加如下用户：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>cn=monitor,ou=groups,dc=cluster,dc=local
+</pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_签发证书">签发证书</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建配置">创建配置</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>接下来使用测试域名 <code>d7z.net</code> 签发证书。</p>
+<p>使用以下配置创建 <strong>Grafana</strong> 需要的相关的配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-grafana</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">ADMIN_USER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">admin'</span>
+  <span class="na">LDAP_ADMIN_GROUP_DN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cn=admin,ou=groups,dc=cluster,dc=local'</span>
+  <span class="na">LDAP_EDITOR_GROUP_DN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cn=monitor,ou=groups,dc=cluster,dc=local'</span>
+
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-grafana</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+<span class="na">stringData</span><span class="pi">:</span>
+  <span class="na">ADMIN_PASSWORD</span><span class="pi">:</span> <span class="s1">'</span><span class="s">grafana-admin-password'</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-grafana-data</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">grafana.ini</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">app_mode = production</span>
+    <span class="s">[server]</span>
+    <span class="s">http_port = 3000</span>
+    <span class="s">serve_from_sub_path = true</span>
+    <span class="s">[database]</span>
+    <span class="s">type = sqlite3</span>
+    <span class="s">path = grafana.db</span>
+    <span class="s">[security]</span>
+    <span class="s">admin_user = ${ADMIN_USER}</span>
+    <span class="s">admin_password = ${ADMIN_PASSWORD}</span>
+    
+    <span class="s">[users]</span>
+    <span class="s">allow_sign_up = false</span>
+    <span class="s">default_theme = dark</span>
+    <span class="s">default_locale = zh-CN</span>
+    
+    <span class="s">[auth.anonymous]</span>
+    <span class="s">enabled = false</span>
+    <span class="s">hide_version = false</span>
+    
+    <span class="s">[auth.basic]</span>
+    <span class="s">enabled = false</span>
+    
+    <span class="s">[auth.ldap]</span>
+    <span class="s">enabled = true</span>
+    <span class="s">config_file = /etc/grafana/ldap.toml</span>
+    <span class="s">allow_sign_up = true</span>
+    <span class="s">sync_cron = "0 1 * * *"</span>
+    <span class="s">active_sync_enabled = true</span>
+    
+    <span class="s">[log]</span>
+    <span class="s">mode = console</span>
+    <span class="s">level = warn</span>
+    
+    <span class="s">[help]</span>
+    <span class="s">enabled = false</span>
+  <span class="na">ldap.toml</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">[[servers]]</span>
+    <span class="s">host = "${LDAP_HOST}"</span>
+    <span class="s">port = ${LDAP_PORT}</span>
+    <span class="s">use_ssl = false</span>
+    <span class="s">start_tls = false</span>
+    <span class="s">ssl_skip_verify = false</span>
+    
+    <span class="s">bind_dn = "${LDAP_BIND_DN}"</span>
+    <span class="s">bind_password = "${LDAP_BIND_PASSWORD}"</span>
+    <span class="s">timeout = 10</span>
+    <span class="s">search_filter = "(uid=%s)"</span>
+    <span class="s">search_base_dns = ["${LDAP_USER_BASE_DN}"]</span>
+    
+    <span class="s">## For Posix or LDAP setups that does not support member_of attribute you can define the below settings</span>
+    <span class="s">## Please check grafana LDAP docs for examples</span>
+    <span class="s"># group_search_filter = "(&amp;(objectClass=posixGroup)(memberUid=%s))"</span>
+    <span class="s"># group_search_base_dns = ["ou=groups,dc=grafana,dc=org"]</span>
+    <span class="s"># group_search_filter_user_attribute = "uid"</span>
+    
+    <span class="s"># Specify names of the ldap attributes your ldap uses</span>
+    <span class="s">[servers.attributes]</span>
+    <span class="s">name = "givenName"</span>
+    <span class="s">surname = "sn"</span>
+    <span class="s">username = "cn"</span>
+    <span class="s">member_of = "memberOf"</span>
+    <span class="s">email = "mail"</span>
+    
+    <span class="s"># Map ldap groups to grafana org roles</span>
+    <span class="s">[[servers.group_mappings]]</span>
+    <span class="s">group_dn = "${LDAP_ADMIN_GROUP_DN}"</span>
+    <span class="s">org_role = "Admin"</span>
+    <span class="s">grafana_admin = true</span>
+    
+    <span class="s">[[servers.group_mappings]]</span>
+    <span class="s">group_dn = "${LDAP_EDITOR_GROUP_DN}"</span>
+    <span class="s">org_role = "Editor"</span>
+
+<span class="s">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-grafana-sources</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">prometheus.yml</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">apiVersion: 1</span>
+    <span class="s">deleteDatasources:</span>
+      <span class="s">- name: prometheus</span>
+        <span class="s">orgId: 1</span>
+    <span class="s">datasources:</span>
+      <span class="s">- id: 1</span>
+        <span class="s">orgId: 1</span>
+        <span class="s">name: prometheus</span>
+        <span class="s">type: prometheus</span>
+        <span class="s">url: http://svc-prometheus.monitor-app.svc.cluster.local:9090</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_导入启动配置">导入启动配置</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>使用以下配置创建 <strong>Grafana</strong> 启动配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -871,103 +1033,238 @@ quay.io/jetstack/cert-manager-webhook:v1.8.2
 24
 25
 26
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cert-d7z-net'</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-grafana</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">secretTemplate</span><span class="pi">:</span>
-    <span class="na">annotations</span><span class="pi">:</span>
-      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span> <i class="conum" data-value="1"></i><b>(1)</b>
-      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>  <i class="conum" data-value="2"></i><b>(2)</b>
-      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>  <i class="conum" data-value="3"></i><b>(3)</b>
-      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>  <i class="conum" data-value="4"></i><b>(4)</b>
-  <span class="na">privateKey</span><span class="pi">:</span>
-    <span class="na">algorithm</span><span class="pi">:</span> <span class="s">RSA</span>
-    <span class="na">size</span><span class="pi">:</span> <span class="m">4096</span>
-  <span class="na">dnsNames</span><span class="pi">:</span> <i class="conum" data-value="5"></i><b>(5)</b>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">d7z.net'</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.d7z.net'</span> <span class="c1"># 通用公开地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span> <span class="c1"># gitlab pages 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.gitpod.d7z.net'</span> <span class="c1"># gitpod 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.ws.gitpod.d7z.net'</span> <span class="c1"># gitpod 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.internal.d7z.net'</span> <span class="c1"># 隐私地址</span>
-  <span class="na">issuerRef</span><span class="pi">:</span>
-    <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
-    <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>  <i class="conum" data-value="6"></i><b>(6)</b>
-  <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-grafana</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">grafana/grafana-oss:9.1.0</span>
+          <span class="na">envFrom</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">configMapRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">conf-grafana</span>
+            <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">secret-grafana</span>
+          <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_HOST</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-host</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PORT</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">389"</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-bind-user-dn</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BIND_PASSWORD</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-service</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_USER_BASE_DN</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-ou</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana-conf</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/grafana/</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/grafana</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana-datasource</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/etc/grafana/provisioning/datasources'</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana-datasource</span>
+          <span class="na">configMap</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-grafana-sources</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana-conf</span>
+          <span class="na">configMap</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-grafana-data</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">grafana-data</span>
+          <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-grafana</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
-<div class="colist arabic">
-<div class="title">其中:</div>
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>reflector 相关配置：管理的命名空间</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>reflector 相关配置：允许镜像</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>reflector 相关配置：自动镜像</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>reflector 相关配置：自动镜像的命名空间</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>配置证书下的 <code>dns.01</code> 内容，可添加通配符证书</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>选择对应的 Issuer</td>
-</tr>
-</table>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_验证">验证</h3>
+<div class="sect1">
+<h2 id="_创建_service">创建 Service</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>执行以下命令，查看对应证书的签发状态</p>
+<p>使用以下配置，创建对应的 <strong>Service</strong> 配置</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-grafana</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">3000</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">grafana</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建_ingress">创建 Ingress</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Service</strong> 创建完成后，使用以下配置将对应的 <strong>Service</strong> 暴露到 <strong>Ingress</strong> 中。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-grafana</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">grafana</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">grafana.internal.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">grafana.internal.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-grafana</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">grafana</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_测试">测试</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>配置导入完成后，使用如下命令查看结果：</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-</pre></td><td class="code"><pre><span class="c"># 查看证书签发状态</span>
-kubectl get certificate <span class="nt">-n</span> cert-manager
+</pre></td><td class="code"><pre>kubectl get pods,svc,ingress,configmaps <span class="nt">-n</span> monitor-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>grafana
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>如果 <code>READY</code> 项为 <code>True</code>，则表明证书签发成功。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-</pre></td><td class="code"><pre>NAME               READY   SECRET                 AGE
-cert-d7z-net       True    tls-d7z-net            18h
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-注意，需要填充的内容必须真实有效，否则将导致签发失败。如果没有可用的域名可参考 <a href="NOTE.html">笔记</a> 中的自签名证书。
-</td>
-</tr>
-</table>
-</div>
+<p>待一切完成后，访问 <code><a target="_blank" href="https://grafana.internal.d7z.net" class="bare">https://grafana.internal.d7z.net</a></code> 查看 web 页面。</p>
 </div>
 </div>
 </div>
@@ -1003,11 +1300,11 @@ cert-d7z-net       True    tls-d7z-net            18h
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-08-06 02:40:33 |
+        代码双击可复制 | 最后编辑于 2022-08-19 09:30:13 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/ada7c4fddf727f1065367d38adb15c380dedfc7d/cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/ada7c4fddf727f1065367d38adb15c380dedfc7d/"
-           target="_blank">#ada7c4</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/6f27321a036fb4ae5b6a9dcaa9e934f2bb0fc402/monitor-app-deploy/grafana-deploy/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/6f27321a036fb4ae5b6a9dcaa9e934f2bb0fc402/"
+           target="_blank">#6f2732</a>
         <script>
 
             function toast(msg, duration = 1000) {

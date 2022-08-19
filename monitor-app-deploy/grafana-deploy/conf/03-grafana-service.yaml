@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: grafana
+  name: svc-grafana
+  namespace: monitor-app
+spec:
+  ports:
+    - port: 3000
+      name: grafana
+  selector:
+    app: grafana

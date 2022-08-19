@@ -41,6 +41,14 @@
 
 . link:./dev-ops-app-deploy/gitlab-runner/README.adoc[部署 Gitlab Runner]
 
+=== 平台监控环境部署
+
+. link:./extra-app-deploy/README.adoc[平台监控功能部署准备]
+. link:./monitor-app-deploy/prometheus-deploy/README.adoc[Prometheus 部署]
+. link:./monitor-app-deploy/alert-manager-deploy/README.adoc[AlertManager 部署]
+. link:./monitor-app-deploy/grafana-deploy/README.adoc[Grafana 部署]
+
+
 == 扩展功能
 
 . link:./extra-app-deploy/README.adoc[扩展软件部署准备]

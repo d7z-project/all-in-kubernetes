@@ -1,0 +1,61 @@
+= Alert Manager 部署
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+此项目使用镜像 `prom/alertmanager:v0.24.0` ，离线环境请在部署前将其导入至 `containerd` 或私有镜像源地址中。
+
+*AlertManager* 配置放在 `configmap/conf-alert-manager` 中。
+
+== 创建配置
+
+使用以下配置创建 *AlertManager* 需要的相关的配置文件.
+
+[source%linenums,yaml]
+----
+include::conf/01-alert-manager-conf.yaml[]
+----
+
+
+== 导入启动配置
+
+使用以下配置创建 *AlertManager* 启动配置。
+
+[source%linenums,yaml]
+----
+include::conf/02-alert-manager-sts.yaml[]
+----
+
+== 创建 Service
+
+使用以下配置，创建对应的 *Service* 配置
+
+[source%linenums,yaml]
+----
+include::conf/03-alert-manager-service.yaml[]
+----
+
+== 创建 Ingress
+
+*Service* 创建完成后，使用以下配置将对应的 *Service* 暴露到 *Ingress* 中。
+
+[source%linenums,yaml]
+----
+include::conf/04-alert-manager-ingress.yaml[]
+----
+
+== 测试
+
+配置导入完成后，使用如下命令查看结果：
+
+[source%linenums,bash]
+----
+kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=alert-manager
+----
+
+待一切完成后，访问 `https://alert-manager.internal.d7z.net` 查看 web 页面。

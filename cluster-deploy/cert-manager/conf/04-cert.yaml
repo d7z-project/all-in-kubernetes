@@ -15,8 +15,11 @@ spec:
     size: 4096
   dnsNames: # <5>
     - 'd7z.net'
-    - '*.d7z.net'
-    - '*.pages.d7z.net'
+    - '*.d7z.net' # 通用公开地址
+    - '*.pages.d7z.net' # gitlab pages 相关地址
+    - '*.gitpod.d7z.net' # gitpod 相关地址
+    - '*.ws.gitpod.d7z.net' # gitpod 相关地址
+    - '*.internal.d7z.net' # 隐私地址
   issuerRef:
     kind: ClusterIssuer
     name: issuer-dns01-cloudflare-1  # <6>

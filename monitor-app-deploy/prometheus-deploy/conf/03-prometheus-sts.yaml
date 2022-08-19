@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-prometheus
+  namespace: monitor-app
+  labels:
+    app: prometheus
+spec:
+  serviceName: svc-prometheus
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      serviceAccountName: prometheus
+      containers:
+        - name: prometheus
+          image: prom/prometheus:v2.38.0
+          volumeMounts:
+            - name: prometheus-data
+              mountPath: /prometheus
+            - name: prometheus-conf
+              mountPath: /etc/prometheus/
+            - name: prometheus-rules
+              mountPath: /etc/prometheus/rules/
+      volumes:
+        - name: prometheus-data
+          persistentVolumeClaim:
+            claimName: pvc-prometheus
+        - name: prometheus-conf
+          configMap:
+            name: conf-prometheus
+        - name: prometheus-rules
+          configMap:
+            name: conf-prometheus-rules

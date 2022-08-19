@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-alert-manager
+  namespace: monitor-app
+  labels:
+    app: alert-manager
+data:
+  alertmanager.yml: |
+    global:
+      resolve_timeout: 30s
+    route:
+      group_by: [ 'instance' ]
+      group_wait: 30s
+      group_interval: 2m
+      repeat_interval: 6h
+      receiver: 'webhook'
+    receivers:
+      - name: 'webhook'
+        webhook_configs:
+          - url: 'http://172.16.63.51:8000/power-monitor/receive/receiveAlarmManagerAlarm.shtml'
+    inhibit_rules:
+      - source_matchers: [ severity="disaster" ]
+        target_matchers: [ severity=~"normal|critical" ]
+        equal: [ instanceIp ]
+      - source_matchers: [ severity="critical" ]
+        target_matchers: [ severity="normal" ]
+        equal: [ instanceIp,project ]
+      - source_matchers: [ priority="4" ]
+        target_matchers: [ priority=~"3|2|1" ]
+        equal: [ instance ]
+      - source_matchers: [ priority="3" ]
+        target_matchers: [ priority=~"2|1" ]
+        equal: [ instance ]
+      - source_matchers: [ priority="2" ]
+        target_matchers: [ priority="1" ]
+        equal: [ instance ]

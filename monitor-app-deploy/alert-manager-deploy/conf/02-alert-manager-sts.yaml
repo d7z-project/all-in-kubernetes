@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-alert-manager
+  namespace: monitor-app
+  labels:
+    app: alert-manager
+spec:
+  serviceName: svc-alert-manager
+  selector:
+    matchLabels:
+      app: alert-manager
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: alert-manager
+    spec:
+      containers:
+        - name: alert-manager
+          image: prom/alertmanager:v0.24.0
+          args:
+            - "--config.file=/etc/alertmanager/alertmanager.yml"
+          volumeMounts:
+            - name: alert-manager-conf
+              mountPath: /etc/alertmanager/
+      volumes:
+        - name: alert-manager-conf
+          configMap:
+            name: conf-alert-manager

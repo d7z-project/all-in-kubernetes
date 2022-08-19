@@ -106,6 +106,25 @@
 </ol>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_平台监控环境部署">平台监控环境部署</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="./extra-app-deploy/README.adoc">平台监控功能部署准备</a></p>
+</li>
+<li>
+<p><a href="./monitor-app-deploy/prometheus-deploy/README.adoc">Prometheus 部署</a></p>
+</li>
+<li>
+<p><a href="./monitor-app-deploy/alert-manager-deploy/README.adoc">AlertManager 部署</a></p>
+</li>
+<li>
+<p><a href="./monitor-app-deploy/grafana-deploy/README.adoc">Grafana 部署</a></p>
+</li>
+</ol>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
