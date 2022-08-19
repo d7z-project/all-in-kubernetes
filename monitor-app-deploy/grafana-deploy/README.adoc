@@ -1,0 +1,78 @@
+= Grafana 部署文档
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+
+== 说明
+
+此项目使用镜像 `grafana/grafana-oss:9.1.0` ，离线环境请在部署前将其导入至 *containerd* 或私有镜像源地址中。
+
+
+== 创建持久卷
+
+使用以下配置创建对应的持久卷:
+
+[source%linenums,yaml]
+----
+include::./conf/00-grafana-pvc.yaml[]
+----
+
+== 创建用户分组
+
+*Grafana* 使用 *LDAP* 统一管理用户，需登陆 LDAP 管理控制台，添加如下用户：
+
+[source%linenums,text]
+----
+cn=monitor,ou=groups,dc=cluster,dc=local
+----
+
+== 创建配置
+
+使用以下配置创建 *Grafana* 需要的相关的配置
+
+[source%linenums,yaml]
+----
+include::conf/01-grafana-conf.yaml[]
+----
+
+== 导入启动配置
+
+使用以下配置创建 *Grafana* 启动配置。
+
+[source%linenums,yaml]
+----
+include::conf/02-grafana-sts.yaml[]
+----
+
+== 创建 Service
+
+使用以下配置，创建对应的 *Service* 配置
+
+[source%linenums,yaml]
+----
+include::conf/03-grafana-service.yaml[]
+----
+
+== 创建 Ingress
+
+*Service* 创建完成后，使用以下配置将对应的 *Service* 暴露到 *Ingress* 中。
+
+[source%linenums,yaml]
+----
+include::conf/04-grafana-ingress.yaml[]
+----
+
+== 测试
+
+配置导入完成后，使用如下命令查看结果：
+
+[source%linenums,bash]
+----
+kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=grafana
+----
+
+待一切完成后，访问 `https://grafana.internal.{{var.global.pub-host}}` 查看 web 页面。

@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-grafana
+  namespace: monitor-app
+  labels:
+    app: grafana
+spec:
+  serviceName: svc-grafana
+  selector:
+    matchLabels:
+      app: grafana
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: grafana
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana-oss:9.1.0
+          envFrom:
+            - configMapRef:
+                name: conf-grafana
+            - secretRef:
+                name: secret-grafana
+          env:
+            - name: LDAP_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-host
+                  name: conf-ldap
+            - name: LDAP_PORT
+              value: "389"
+            - name: LDAP_BIND_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-bind-user-dn
+                  name: conf-ldap
+            - name: LDAP_BIND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: secret-ldap-service
+            - name: LDAP_USER_BASE_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-user-ou
+                  name: conf-ldap
+          volumeMounts:
+            - name: grafana-conf
+              mountPath: /etc/grafana/
+            - name: grafana-data
+              mountPath: /var/lib/grafana
+            - name: grafana-datasource
+              mountPath: '/etc/grafana/provisioning/datasources'
+      volumes:
+        - name: grafana-datasource
+          configMap:
+            name: conf-grafana-sources
+        - name: grafana-conf
+          configMap:
+            name: conf-grafana-data
+        - name: grafana-data
+          persistentVolumeClaim:
+            claimName: pvc-grafana
