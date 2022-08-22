@@ -4,6 +4,8 @@ metadata:
   labels:
     app: rook-nfs
   name: '{{var.storage.class.security}}'
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
 parameters:
   exportName: local-share
   nfsServerName: rook-nfs
