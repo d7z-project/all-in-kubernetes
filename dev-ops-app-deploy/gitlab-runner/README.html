@@ -662,6 +662,7 @@ pre.rouge {
 <li><a href="#_导入_rbac_规则">导入 RBAC 规则</a></li>
 <li><a href="#_创建gitlab配置">创建Gitlab配置</a></li>
 <li><a href="#_导入默认内部配置">导入默认内部配置</a></li>
+<li><a href="#_导入_docker_dind_配置">导入 Docker dind 配置</a></li>
 <li><a href="#_导入运行配置">导入运行配置</a></li>
 </ul>
 </div>
@@ -706,9 +707,6 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 <div class="paragraph">
 <p>由于 <strong>Gitlab Runner</strong> 将使用 <code>kubernetes</code> 运行容器，将单独为其创建命名空间 <strong>RBAC</strong> 规则。</p>
 </div>
-<details>
-<summary class="title">点击展开</summary>
-<div class="content">
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -785,8 +783,6 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 </div>
 </div>
 </div>
-</details>
-</div>
 </div>
 <div class="sect1">
 <h2 id="_创建gitlab配置">创建Gitlab配置</h2>
@@ -843,11 +839,8 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 <h2 id="_导入默认内部配置">导入默认内部配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 <a target="_blank" href="https://yuyy.info/?p=1921">Gitlab CI/CD 实践一：Gitlab Runner 安装到 K8S 集群</a>。注意：此配置不支持直接打包 <code>Docker</code> 镜像！</p>
+<p>Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 <a target="_blank" href="https://yuyy.info/?p=1921">Gitlab CI/CD 实践一：Gitlab Runner 安装到 K8S 集群</a>。</p>
 </div>
-<details>
-<summary class="title">点击展开配置</summary>
-<div class="content">
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -914,35 +907,78 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 62
 63
 64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">data</span><span class="pi">:</span>
+  <span class="na">default.toml</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">check_interval = 0</span>
+
+    <span class="s">[session_server]</span>
+    <span class="s">listen_address = "[::]:8093"</span>
+    <span class="s">advertise_address = "{{pod.address}}:8093"</span>
+    <span class="s">session_timeout = 1800</span>
+
+
   <span class="na">run.sh</span><span class="pi">:</span> <span class="pi">|</span>
-    <span class="s">#!/bin/bash</span>
-    <span class="s">env</span>
+    <span class="s">#!/usr/bin/env bash</span>
     <span class="s">export CONF_PATH="/etc/gitlab-runner"</span>
     <span class="s">unregister() {</span>
         <span class="s">kill %1</span>
         <span class="s">echo "Unregistering runner ${RUNNER_NAME} ..."</span>
-        <span class="s">/usr/bin/gitlab-ci-multi-runner unregister -t "$(/usr/bin/gitlab-ci-multi-runner list 2&gt;&amp;1 | tail -n1 | awk '{print $4}' | cut -d'=' -f2)" -n ${RUNNER_NAME}</span>
-        <span class="s">exit $?</span>
+        <span class="s">GITLAB_TOKEN="$(/usr/bin/gitlab-ci-multi-runner list 2&gt;&amp;1 | tail -n1 | awk '{print $4}' | cut -d'=' -f2)"</span>
+        <span class="s">for i in {1..5}; do</span>
+            <span class="s">/usr/bin/gitlab-ci-multi-runner unregister -t "${GITLAB_TOKEN}" -n "${RUNNER_NAME}" &amp;&amp; break</span>
+            <span class="s">if [ "$i" -gt 4 ]; then</span>
+                <span class="s">exit 1</span>
+            <span class="s">fi</span>
+        <span class="s">done</span>
     <span class="s">}</span>
-    <span class="s">export CURRENT_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1 | sed 's/\./-/g')</span>
-    <span class="s">cat &gt;&gt;/etc/gitlab-runner/config.toml &lt;&lt;EOF</span>
-    <span class="s">[session_server]</span>
-    <span class="s">listen_address = "[::]:8093" #  listen on all available interfaces on port 8093</span>
-    <span class="s">advertise_address = "$CURRENT_IP.$KUBERNETES_NAMESPACE.pod.cluster.local:8093"</span>
-    <span class="s">session_timeout = 1800</span>
-    <span class="s">EOF</span>
     <span class="s">trap 'unregister' EXIT HUP INT QUIT PIPE TERM</span>
-    <span class="s">mkdir -p $CONF_PATH/certs</span>
-    <span class="s">cp /certs/ca.crt $CONF_PATH/certs/</span>
+    <span class="s">cp -f /scripts/default.toml "$CONF_PATH"/config.toml</span>
+    <span class="s">CURRENT_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1 | sed 's/\./-/g')</span>
+    <span class="s">sed -i -e "s/{{pod.address}}/$CURRENT_IP.$KUBERNETES_NAMESPACE.pod.cluster.local/g"  "$CONF_PATH"/config.toml</span>
+    <span class="s"># add gitlab custom cert</span>
+    <span class="s">if [ -f /certs/tls.crt ]; then</span>
+        <span class="s">export CI_SERVER_TLS_CERT_FILE=/certs/tls.crt</span>
+    <span class="s">fi</span>
+    <span class="s">if [ -f /certs/ca.crt ]; then</span>
+        <span class="s">export CI_SERVER_TLS_CA_FILE=/certs/ca.crt</span>
+    <span class="s">fi</span>
     <span class="s">echo "Registering runner ${RUNNER_NAME} ..."</span>
-    <span class="s">/usr/bin/gitlab-ci-multi-runner register -r ${GITLAB_CI_TOKEN}</span>
-     <span class="s">sed -i "$CONF_PATH"/config.toml \</span>
-        <span class="s">-e $'s@\[\[runners\]\]@[[runners]]\\\n environment = ["GIT_SSL_NO_VERIFY=true", "CI_SERVER_TLS_CA_FILE=/etc/gitlab-runner/certs/ca.crt"]@g' \</span>
-        <span class="s">-e 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/'            </span>
+    <span class="s">REGISTER_ARGS=(--env GIT_SSL_NO_VERIFY=true --env DOCKER_HOST=$DOCKER_HOST)</span>
+    <span class="s">for i in {1..5}; do</span>
+        <span class="s">/usr/bin/gitlab-ci-multi-runner register -r "${GITLAB_CI_TOKEN}" ${REGISTER_ARGS[*]} &amp;&amp; break</span>
+        <span class="s">if [ "$i" -gt 4 ]; then</span>
+            <span class="s">echo "gitlab ci register fail ." 1&gt;&amp;2</span>
+            <span class="s">exit 1</span>
+        <span class="s">fi</span>
+    <span class="s">sleep 5</span>
+    <span class="s">done</span>
+    <span class="s">sed -i "$CONF_PATH"/config.toml \</span>
+        <span class="s">-e 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/'</span>
     <span class="s">echo "Starting runner ${RUNNER_NAME} ..."</span>
-    <span class="s">/usr/bin/gitlab-ci-multi-runner run -n ${RUNNER_NAME} &amp;</span>
+    <span class="s">/usr/bin/gitlab-ci-multi-runner run -n "${RUNNER_NAME}" &amp;</span>
     <span class="s">wait</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -957,6 +993,7 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
   <span class="na">REGISTER_LOCKED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
   <span class="na">METRICS_SERVER</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0.0.0.0:9100"</span>
   <span class="na">CI_SERVER_URL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">http://svc-gitlab.core-app.svc.cluster.local/ci"</span>
+  <span class="na">DOCKER_HOST</span><span class="pi">:</span> <span class="s2">"</span><span class="s">tcp://svc-docker-dind.dev-ops.svc.cluster.local:2375"</span>
   <span class="na">RUNNER_REQUEST_CONCURRENCY</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
   <span class="na">RUNNER_EXECUTOR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes"</span>
   <span class="na">KUBERNETES_NAMESPACE</span><span class="pi">:</span> <span class="s2">"</span><span class="s">dev-ops"</span>
@@ -971,7 +1008,7 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
   <span class="na">KUBERNETES_TERMINATIONGRACEPERIODSECONDS</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10"</span>
   <span class="na">KUBERNETES_POLL_INTERVAL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5"</span>
   <span class="na">KUBERNETES_POLL_TIMEOUT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">360"</span>
-  <span class="na">RUNNER_NAME</span><span class="pi">:</span> <span class="s2">"</span><span class="s">k8s-runner"</span>
+  <span class="na">RUNNER_NAME</span><span class="pi">:</span> <span class="s2">"</span><span class="s">runner-kubernetes"</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
@@ -982,7 +1019,124 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 </div>
 </div>
 </div>
-</details>
+</div>
+<div class="sect1">
+<h2 id="_导入_docker_dind_配置">导入 Docker dind 配置</h2>
+<div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+<strong>Docker dind</strong> 以特权模式运行容器, 可能会导致严重的安全问题。建议配置节点亲和性使其运行在专门的节点中。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>复制并导入以下配置，启动 <strong>Docker dind</strong>。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-docker-dind</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">dev-ops</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">docker-dind</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">docker-dind</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docker-dind"</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docker:20-dind"</span>
+          <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">Always</span>
+          <span class="na">command</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">dockerd"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">--host"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">tcp://0.0.0.0:2375"</span> <span class="pi">,</span><span class="s2">"</span><span class="s">--insecure-registry"</span><span class="pi">,</span><span class="s2">"</span><span class="s">registry.d7z.net"</span><span class="pi">,</span><span class="s2">"</span><span class="s">--registry-mirror"</span><span class="pi">,</span><span class="s2">"</span><span class="s">https://registry.d7z.net/"</span> <span class="pi">]</span>
+          <span class="na">securityContext</span><span class="pi">:</span>
+            <span class="na">privileged</span><span class="pi">:</span> <span class="no">true</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">mountPath</span><span class="pi">:</span> <span class="s1">'</span><span class="s">/etc/docker/certs.d/registry.d7z.net/'</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">cluster-certs</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cluster-certs</span>
+          <span class="na">secret</span><span class="pi">:</span>
+            <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">docker-dind</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-docker-dind</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">docker-dind</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">svc-docker-dind"</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">dev-ops</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">docker-tcp</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">2375</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">docker-dind</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -991,9 +1145,6 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 <div class="paragraph">
 <p>复制并导入以下配置，启动 <strong>Gitlab Runner</strong>。</p>
 </div>
-<details>
-<summary class="title">点击展开配置</summary>
-<div class="content">
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -1058,6 +1209,9 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 60
 61
 62
+63
+64
+65
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1088,14 +1242,17 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
                     <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">run.sh</span>
                       <span class="na">path</span><span class="pi">:</span> <span class="s">run.sh</span>
                       <span class="na">mode</span><span class="pi">:</span> <span class="m">0755</span>
+                    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">default.toml</span>
+                      <span class="na">path</span><span class="pi">:</span> <span class="s">default.toml</span>
+                      <span class="na">mode</span><span class="pi">:</span> <span class="m">0755</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-ci-runner-certs</span>
           <span class="na">projected</span><span class="pi">:</span>
             <span class="na">sources</span><span class="pi">:</span>
               <span class="pi">-</span> <span class="na">secret</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">tls-'tls-d7z-net'</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
                   <span class="na">items</span><span class="pi">:</span>
-                    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ca.crt'</span>
-                      <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ca.crt'</span>
+                    <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls.crt'</span>
+                      <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls.crt'</span>
                       <span class="na">mode</span><span class="pi">:</span> <span class="m">0777</span>
       <span class="na">serviceAccountName</span><span class="pi">:</span> <span class="s">gitlab-ci</span>
       <span class="na">containers</span><span class="pi">:</span>
@@ -1123,8 +1280,6 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
-</div>
-</details>
 </div>
 </div>
 </div>
@@ -1159,11 +1314,11 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-08-05 07:14:45 |
+        代码双击可复制 | 最后编辑于 2022-08-22 04:15:31 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3614ce701b04a2cbe463f3f5300f5cd1b72ab211/dev-ops-app-deploy/gitlab-runner/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/3614ce701b04a2cbe463f3f5300f5cd1b72ab211/"
-           target="_blank">#3614ce</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/51f8bf3e2273174d9c32ddd9c7db0afabd86e192/dev-ops-app-deploy/gitlab-runner/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/51f8bf3e2273174d9c32ddd9c7db0afabd86e192/"
+           target="_blank">#51f8bf</a>
         <script>
 
             function toast(msg, duration = 1000) {

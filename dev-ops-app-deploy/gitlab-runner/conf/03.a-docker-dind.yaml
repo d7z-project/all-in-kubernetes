@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-docker-dind
+  namespace: dev-ops
+  labels:
+    app: docker-dind
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: docker-dind
+    spec:
+      containers:
+        - name: "docker-dind"
+          image: "docker:20-dind"
+          imagePullPolicy: Always
+          command: [ "dockerd", "--host", "tcp://0.0.0.0:2375" ,"--insecure-registry","registry.d7z.net","--registry-mirror","https://registry.d7z.net/" ]
+          securityContext:
+            privileged: true
+          volumeMounts:
+            - mountPath: '/etc/docker/certs.d/registry.d7z.net/'
+              name: cluster-certs
+      volumes:
+        - name: cluster-certs
+          secret:
+            secretName: 'tls-d7z-net'
+  selector:
+    matchLabels:
+      app: docker-dind
+  serviceName: svc-docker-dind
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: docker-dind
+  name: "svc-docker-dind"
+  namespace: dev-ops
+spec:
+  ports:
+    - name: docker-tcp
+      protocol: TCP
+      port: 2375
+  selector:
+    app: docker-dind

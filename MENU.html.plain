@@ -24,7 +24,7 @@
 <p><a href="cluster-deploy/reflector/README.adoc">部署 reflector 组件</a></p>
 </li>
 <li>
-<p><a href="cluster-deploy/cert-manager/README.adoc">部署 CertManager</a> | <a href="cluster-deploy/cert-manager/NOTE.adoc"> 相关笔记</a></p>
+<p><a href="cluster-deploy/cert-manager/README.adoc">部署 CertManager</a> | <a href="cluster-deploy/cert-manager/NOTE.adoc">相关笔记</a></p>
 </li>
 </ol>
 </div>
@@ -88,10 +88,10 @@
 <p><a href="./core-app-deploy/README.adoc">核心应用部署准备</a></p>
 </li>
 <li>
-<p><a href="./core-app-deploy/nexus3/README.adoc">部署 Nexus3</a></p>
+<p><a href="./core-app-deploy/nexus3/README.adoc">Nexus3 部署</a></p>
 </li>
 <li>
-<p><a href="./core-app-deploy/gitlab/README.adoc">部署 Gitlab CE</a></p>
+<p><a href="./core-app-deploy/gitlab/README.adoc">Gitlab CE部署</a></p>
 </li>
 </ol>
 </div>
@@ -101,7 +101,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="./dev-ops-app-deploy/gitlab-runner/README.adoc">部署 Gitlab Runner</a></p>
+<p><a href="./dev-ops-app-deploy/gitlab-runner/README.adoc">Gitlab Runner部署</a></p>
 </li>
 </ol>
 </div>

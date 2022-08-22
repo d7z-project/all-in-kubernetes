@@ -153,7 +153,7 @@ metadata:
   labels:
     app: nfs-ganesha
   annotations:
-    storageclass.kubernetes.io/is-default-class: "false"
+    storageclass.kubernetes.io/is-default-class: "true"
 provisioner: nfs.3rd.storage.k8s.io/nfs-server-provisioner
 reclaimPolicy: Retain
 allowVolumeExpansion: true

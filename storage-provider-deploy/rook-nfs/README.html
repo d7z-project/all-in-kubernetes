@@ -1637,12 +1637,16 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 11
 12
 13
+14
+15
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">storage.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StorageClass</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">rook-nfs</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sc-nfs-share'</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">storageclass.kubernetes.io/is-default-class</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
 <span class="na">parameters</span><span class="pi">:</span>
   <span class="na">exportName</span><span class="pi">:</span> <span class="s">local-share</span>
   <span class="na">nfsServerName</span><span class="pi">:</span> <span class="s">rook-nfs</span>
