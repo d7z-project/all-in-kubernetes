@@ -12,7 +12,7 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - lam.{{var.global.pub-host}} # <1>
+        - lam.internal.{{var.global.pub-host}} # <1>
       secretName: {{var.global.tls-name}}  # <2>
   rules:
     - host: lam.{{var.global.pub-host}}  # <3>
