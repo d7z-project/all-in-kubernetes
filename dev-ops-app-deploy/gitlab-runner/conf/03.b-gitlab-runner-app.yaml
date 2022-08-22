@@ -28,14 +28,17 @@ spec:
                     - key: run.sh
                       path: run.sh
                       mode: 0755
+                    - key: default.toml
+                      path: default.toml
+                      mode: 0755
         - name: gitlab-ci-runner-certs
           projected:
             sources:
               - secret:
-                  name: tls-'{{var.global.tls-name}}'
+                  name: '{{var.global.tls-name}}'
                   items:
-                    - key: 'ca.crt'
-                      path: 'ca.crt'
+                    - key: 'tls.crt'
+                      path: 'tls.crt'
                       mode: 0777
       serviceAccountName: gitlab-ci
       containers:

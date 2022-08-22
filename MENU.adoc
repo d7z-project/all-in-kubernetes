@@ -10,7 +10,7 @@
 . link:cluster-deploy/metallb/README.adoc[部署 LoadBalancer 实现]
 . link:cluster-deploy/ingress-nginx/README.adoc[部署 Nginx Ingress]
 . link:cluster-deploy/reflector/README.adoc[部署 reflector 组件]
-. link:cluster-deploy/cert-manager/README.adoc[部署 CertManager] | link:cluster-deploy/cert-manager/NOTE.adoc[ 相关笔记]
+. link:cluster-deploy/cert-manager/README.adoc[部署 CertManager] | link:cluster-deploy/cert-manager/NOTE.adoc[相关笔记]
 
 === 存储提供者部署
 
@@ -34,12 +34,12 @@
 === 核心应用部署
 
 . link:./core-app-deploy/README.adoc[核心应用部署准备]
-. link:./core-app-deploy/nexus3/README.adoc[部署 Nexus3]
-. link:./core-app-deploy/gitlab/README.adoc[部署 Gitlab CE]
+. link:./core-app-deploy/nexus3/README.adoc[Nexus3 部署]
+. link:./core-app-deploy/gitlab/README.adoc[Gitlab CE部署]
 
 === DevOps环境部署
 
-. link:./dev-ops-app-deploy/gitlab-runner/README.adoc[部署 Gitlab Runner]
+. link:./dev-ops-app-deploy/gitlab-runner/README.adoc[Gitlab Runner部署]
 
 === 平台监控环境部署
 
@@ -47,7 +47,6 @@
 . link:./monitor-app-deploy/prometheus-deploy/README.adoc[Prometheus 部署]
 . link:./monitor-app-deploy/alert-manager-deploy/README.adoc[AlertManager 部署]
 . link:./monitor-app-deploy/grafana-deploy/README.adoc[Grafana 部署]
-
 
 == 扩展功能
 

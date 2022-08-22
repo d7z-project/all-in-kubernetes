@@ -24,16 +24,10 @@ registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc158
 
 由于 *Gitlab Runner* 将使用 `kubernetes` 运行容器，将单独为其创建命名空间 *RBAC* 规则。
 
-.点击展开
-[%collapsible]
-====
-
 [source%linenums,yaml]
 ----
 include::./conf/00-gitlab-runner-rbac.yaml[]
 ----
-
-====
 
 == 创建Gitlab配置
 
@@ -53,30 +47,29 @@ include::./conf/01-gitlab-runner-conf.yaml[]
 
 == 导入默认内部配置
 
-Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 安装到 K8S 集群]。注意：此配置不支持直接打包 `Docker` 镜像！
-
-.点击展开配置
-[%collapsible]
-====
+Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 安装到 K8S 集群]。
 
 [source%linenums,yaml]
 ----
 include::./conf/02-gitlab-runner-internal-conf.yaml[]
 ----
 
-====
+== 导入 Docker dind 配置
+
+WARNING: *Docker dind* 以特权模式运行容器, 可能会导致严重的安全问题。建议配置节点亲和性使其运行在专门的节点中。
+
+复制并导入以下配置，启动 *Docker dind*。
+
+[source%linenums,yaml]
+----
+include::conf/03.a-docker-dind.yaml[]
+----
 
 == 导入运行配置
 
 复制并导入以下配置，启动 *Gitlab Runner*。
 
-.点击展开配置
-[%collapsible]
-====
-
 [source%linenums,yaml]
 ----
-include::./conf/03-gitlab-runner-app.yaml[]
+include::./conf/03.b-gitlab-runner-app.yaml[]
 ----
-
-====

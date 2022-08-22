@@ -1,32 +1,53 @@
 apiVersion: v1
 data:
+  default.toml: |
+    check_interval = 0
+
+    [session_server]
+    listen_address = "[::]:8093"
+    advertise_address = "{{pod.address}}:8093"
+    session_timeout = 1800
+
+
   run.sh: |
-    #!/bin/bash
-    env
+    #!/usr/bin/env bash
     export CONF_PATH="/etc/gitlab-runner"
     unregister() {
         kill %1
         echo "Unregistering runner ${RUNNER_NAME} ..."
-        /usr/bin/gitlab-ci-multi-runner unregister -t "$(/usr/bin/gitlab-ci-multi-runner list 2>&1 | tail -n1 | awk '{print $4}' | cut -d'=' -f2)" -n ${RUNNER_NAME}
-        exit $?
+        GITLAB_TOKEN="$(/usr/bin/gitlab-ci-multi-runner list 2>&1 | tail -n1 | awk '{print $4}' | cut -d'=' -f2)"
+        for i in {1..5}; do
+            /usr/bin/gitlab-ci-multi-runner unregister -t "${GITLAB_TOKEN}" -n "${RUNNER_NAME}" && break
+            if [ "$i" -gt 4 ]; then
+                exit 1
+            fi
+        done
     }
-    export CURRENT_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1 | sed 's/\./-/g')
-    cat >>/etc/gitlab-runner/config.toml <<EOF
-    [session_server]
-    listen_address = "[::]:8093" #  listen on all available interfaces on port 8093
-    advertise_address = "$CURRENT_IP.$KUBERNETES_NAMESPACE.pod.cluster.local:8093"
-    session_timeout = 1800
-    EOF
     trap 'unregister' EXIT HUP INT QUIT PIPE TERM
-    mkdir -p $CONF_PATH/certs
-    cp /certs/ca.crt $CONF_PATH/certs/
+    cp -f /scripts/default.toml "$CONF_PATH"/config.toml
+    CURRENT_IP=$(/sbin/ip -o -4 addr list eth0 | awk '{print $4}' | cut -d/ -f1 | sed 's/\./-/g')
+    sed -i -e "s/{{pod.address}}/$CURRENT_IP.$KUBERNETES_NAMESPACE.pod.cluster.local/g"  "$CONF_PATH"/config.toml
+    # add gitlab custom cert
+    if [ -f /certs/tls.crt ]; then
+        export CI_SERVER_TLS_CERT_FILE=/certs/tls.crt
+    fi
+    if [ -f /certs/ca.crt ]; then
+        export CI_SERVER_TLS_CA_FILE=/certs/ca.crt
+    fi
     echo "Registering runner ${RUNNER_NAME} ..."
-    /usr/bin/gitlab-ci-multi-runner register -r ${GITLAB_CI_TOKEN}
-     sed -i "$CONF_PATH"/config.toml \
-        -e $'s@\[\[runners\]\]@[[runners]]\\\n environment = ["GIT_SSL_NO_VERIFY=true", "CI_SERVER_TLS_CA_FILE=/etc/gitlab-runner/certs/ca.crt"]@g' \
-        -e 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/'            
+    REGISTER_ARGS=(--env GIT_SSL_NO_VERIFY=true --env DOCKER_HOST=$DOCKER_HOST)
+    for i in {1..5}; do
+        /usr/bin/gitlab-ci-multi-runner register -r "${GITLAB_CI_TOKEN}" ${REGISTER_ARGS[*]} && break
+        if [ "$i" -gt 4 ]; then
+            echo "gitlab ci register fail ." 1>&2
+            exit 1
+        fi
+    sleep 5
+    done
+    sed -i "$CONF_PATH"/config.toml \
+        -e 's/^concurrent.*/concurrent = '"${RUNNER_REQUEST_CONCURRENCY}"'/'
     echo "Starting runner ${RUNNER_NAME} ..."
-    /usr/bin/gitlab-ci-multi-runner run -n ${RUNNER_NAME} &
+    /usr/bin/gitlab-ci-multi-runner run -n "${RUNNER_NAME}" &
     wait
 kind: ConfigMap
 metadata:
@@ -41,6 +62,7 @@ data:
   REGISTER_LOCKED: "false"
   METRICS_SERVER: "0.0.0.0:9100"
   CI_SERVER_URL: "http://svc-gitlab.core-app.svc.cluster.local/ci"
+  DOCKER_HOST: "tcp://svc-docker-dind.dev-ops.svc.cluster.local:2375"
   RUNNER_REQUEST_CONCURRENCY: "4"
   RUNNER_EXECUTOR: "kubernetes"
   KUBERNETES_NAMESPACE: "dev-ops"
@@ -55,7 +77,7 @@ data:
   KUBERNETES_TERMINATIONGRACEPERIODSECONDS: "10"
   KUBERNETES_POLL_INTERVAL: "5"
   KUBERNETES_POLL_TIMEOUT: "360"
-  RUNNER_NAME: "k8s-runner"
+  RUNNER_NAME: "runner-kubernetes"
 kind: ConfigMap
 metadata:
   labels:
