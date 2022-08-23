@@ -1,0 +1,23 @@
+= CentOS 部署相关
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 关闭 Selinux
+
+[source%linenums,bash]
+----
+sudo setenforce 0
+sudo sed -i 's/^SELINUX=.*/SELINUX=permissive/g' /etc/selinux/config
+----
+
+== 关闭 Swap
+
+[source%linenums,bash]
+----
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo swapoff -a
+----

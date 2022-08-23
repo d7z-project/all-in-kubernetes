@@ -50,4 +50,4 @@ spec:
       storage: 2000Gi
   storageClassName: sc-nfs-ganesha-local
   volumeMode: Filesystem
-  volumeName: pv-nfs-ganesha-local # 指定关联的PV 名称
+  volumeName: pv-nfs-ganesha-local

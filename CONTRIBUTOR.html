@@ -842,14 +842,14 @@ pre.rouge {
 <span class="c">################### Gitlab ###############################
 # Gitlab 管理员密码
 </span><span class="py">var.gitlab.root.password</span><span class="p">=</span><span class="s">gitlab-root-password</span>
-<span class="c"># Gitlab 数据库 secrets
-</span><span class="py">var.gitlab.db-secrets</span><span class="p">=</span><span class="s">WWpfMdN4LHkgMWgprkMtCv3vVnfkPTfwsVTbvVnJmqVzctHqK7XTdChRKrmFrJfd</span>
+<span class="c"># Gitlab 数据库 secrets ,可使用 `pwgen -Bsv1 64` 生成
+</span><span class="py">var.gitlab.db-secrets</span><span class="p">=</span><span class="s">long-and-random-alpha-numeric-string</span>
 <span class="c"># Gitlab 会话 secrets
-</span><span class="py">var.gitlab.session-secrets</span><span class="p">=</span><span class="s">4wMhHrs7HhhRVhvfLnJx3wkWNvtFx9rrXtncbWLnPNTRw9vgHPksNt7hWnRdTsMg</span>
+</span><span class="py">var.gitlab.session-secrets</span><span class="p">=</span><span class="s">long-and-random-alpha-numeric-string</span>
 <span class="c"># Gitlab 2FA secrets
-</span><span class="py">var.gitlab.otp-secrets</span><span class="p">=</span><span class="s">psNTdWxsdHhKpmsgsfrPqfHK9wzLHnbXPdwvTP3CwjgM7MjWXz3cfFCmth3jCxRc</span>
+</span><span class="py">var.gitlab.otp-secrets</span><span class="p">=</span><span class="s">long-and-random-alpha-numeric-string</span>
 <span class="c"># Gitlab Pages secrets
-</span><span class="py">var.gitlab.pages-secrets</span><span class="p">=</span><span class="s">dqmhqxTv3XmxqCMk7C7P3Hsxr7WRm9LvgdV9bhz9qxH4cHNdzJzN4V94mp9d3sVC</span>
+</span><span class="py">var.gitlab.pages-secrets</span><span class="p">=</span><span class="s">long-and-random-alpha-numeric-string</span>
 <span class="c"># Gitlab CI Runner Token
 </span><span class="py">var.gitlab.ci.token</span><span class="p">=</span><span class="s">&lt;请填写 Gitlab CI 的 Token&gt;</span>
 <span class="c">################## Postgres ##############################

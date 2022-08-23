@@ -664,6 +664,7 @@ pre.rouge {
 <li><a href="#_安装_nfs_server">安装 NFS Server</a></li>
 <li><a href="#_验证部署情况">验证部署情况</a>
 <ul class="sectlevel2">
+<li><a href="#_查看部署结果">查看部署结果</a></li>
 <li><a href="#_导入测试配置">导入测试配置</a></li>
 <li><a href="#_验证测试">验证测试</a></li>
 </ul>
@@ -680,6 +681,18 @@ pre.rouge {
 </div>
 <div class="paragraph">
 <p>kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+为保证数据安全和方便外部备份，数据将物理存储在主节点上。
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>安装时需要拉取镜像 <code>k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0</code>,同时需要集群上每个节点安装有 <code>nfs-common</code> 软件包。</p>
@@ -942,7 +955,7 @@ pre.rouge {
       <span class="na">storage</span><span class="pi">:</span> <span class="s">2000Gi</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-ganesha-local</span>
   <span class="na">volumeMode</span><span class="pi">:</span> <span class="s">Filesystem</span>
-  <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pv-nfs-ganesha-local</span> <span class="c1"># 指定关联的PV 名称</span>
+  <span class="na">volumeName</span><span class="pi">:</span> <span class="s">pv-nfs-ganesha-local</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -954,7 +967,7 @@ pre.rouge {
 <h2 id="_安装_nfs_server">安装 NFS Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>将上一操作创建的 PVC 绑定至 StatefulSet,然后通过 Service 暴露对应的端口，最后将目标绑定在 SC 即可 ,在此配置中，Provisioner 为 <code>nfs.3rd.storage.k8s.io/nfs-server-provisioner</code> 。</p>
+<p>将上一操作创建的 PVC 绑定至 <code>StatefulSet</code>,然后通过 <code>Service</code> 暴露对应的端口，最后将目标绑定在 <code>StorageClass</code> 即可 ,在此配置中，Provisioner 为 <code>nfs.3rd.storage.k8s.io/nfs-server-provisioner</code> ,根据前面节点亲和性配置和接下来的容忍度配置，<strong>NFS Server</strong> 将被调度到主节点上。</p>
 </div>
 <details>
 <summary class="title">点击展开配置</summary>
@@ -1122,6 +1135,34 @@ pre.rouge {
 159
 160
 161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1208,6 +1249,34 @@ pre.rouge {
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">export-volume</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
             <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-nfs-ganesha-local</span>
+      <span class="na">tolerations</span><span class="pi">:</span> <span class="c1"># 配置污点和容忍度，使其可在主节点运行</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node-role.kubernetes.io/master</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node-role.kubernetes.io/control-plane</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoExecute</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/not-ready</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoExecute</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/unreachable</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/disk-pressure</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/memory-pressure</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/pid-pressure</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/unschedulable</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
+          <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/network-unavailable</span>
+          <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
@@ -1294,9 +1363,22 @@ pre.rouge {
 <h2 id="_验证部署情况">验证部署情况</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_查看部署结果">查看部署结果</h3>
+<div class="paragraph">
+<p>使用以下命令查看部署结果。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>kubectl get pods,svc,ingress,configmaps,sc <span class="nt">-n</span> nfs-ganesha
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_导入测试配置">导入测试配置</h3>
 <div class="paragraph">
-<p>导入以下配置以创建测试 Pod。</p>
+<p>导入以下配置以创建测试 <strong>Pod</strong>。</p>
 </div>
 <details>
 <summary class="title">点击展开配置</summary>
@@ -1535,7 +1617,7 @@ kubectl get deploy,pvc,pods <span class="nt">-l</span> <span class="nv">mode</sp
 <span class="c"># 测试结果</span>
 <span class="nv">CLUSTER_IP</span><span class="o">=</span><span class="si">$(</span>kubectl get services svc-test-nfs-ganesha <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.spec.clusterIP}'</span><span class="si">)</span>
 <span class="nv">POD_NAME</span><span class="o">=</span><span class="si">$(</span>kubectl get pod <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>nfs-ganesha,role<span class="o">=</span>busybox <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.items[0].metadata.name}'</span><span class="si">)</span>
-kubectl <span class="nb">exec</span> <span class="nv">$POD_NAME</span> <span class="nt">--</span> wget <span class="nt">-qO-</span> http://<span class="nv">$CLUSTER_IP</span>
+kubectl <span class="nb">exec</span> <span class="s2">"</span><span class="nv">$POD_NAME</span><span class="s2">"</span> <span class="nt">--</span> wget <span class="nt">-qO-</span> http://<span class="s2">"</span><span class="nv">$CLUSTER_IP</span><span class="s2">"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1586,11 +1668,11 @@ kubectl <span class="nb">exec</span> <span class="nv">$POD_NAME</span> <span cla
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-08-23 06:25:58 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/32ff21cbbbd64215347fed97eee0ee690b025a12/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/32ff21cbbbd64215347fed97eee0ee690b025a12/"
+           target="_blank">#32ff21</a>
         <script>
 
             function toast(msg, duration = 1000) {
