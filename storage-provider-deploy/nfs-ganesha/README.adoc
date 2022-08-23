@@ -12,6 +12,8 @@
 
 kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
 
+TIP: 为保证数据安全和方便外部备份，数据将物理存储在主节点上。
+
 安装时需要拉取镜像 `k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0`,同时需要集群上每个节点安装有 `nfs-common` 软件包。
 
 == 导入 RBAC 规则和初始化
@@ -46,7 +48,7 @@ include::./conf/01-ganesha-local-storage.yaml[]
 
 == 安装 NFS Server
 
-将上一操作创建的 PVC 绑定至 StatefulSet,然后通过 Service 暴露对应的端口，最后将目标绑定在 SC 即可 ,在此配置中，Provisioner 为 `nfs.3rd.storage.k8s.io/nfs-server-provisioner` 。
+将上一操作创建的 PVC 绑定至 `StatefulSet`,然后通过 `Service` 暴露对应的端口，最后将目标绑定在 `StorageClass` 即可 ,在此配置中，Provisioner 为 `nfs.3rd.storage.k8s.io/nfs-server-provisioner` ,根据前面节点亲和性配置和接下来的容忍度配置，*NFS Server* 将被调度到主节点上。
 
 .点击展开配置
 [%collapsible]
@@ -61,9 +63,18 @@ include::./conf/02-ganesha-nfs-server.yaml[]
 
 == 验证部署情况
 
+=== 查看部署结果
+
+使用以下命令查看部署结果。
+
+[source%linenums,bash]
+----
+kubectl get pods,svc,ingress,configmaps,sc -n nfs-ganesha
+----
+
 === 导入测试配置
 
-导入以下配置以创建测试 Pod。
+导入以下配置以创建测试 *Pod*。
 
 .点击展开配置
 [%collapsible]

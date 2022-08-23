@@ -20,7 +20,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - '{{var.nfs.local-path.node-name}}' # 指定部署在 node-worker-01 节点上，可根据实际需求更改
+                - '{{var.nfs.local-path.node-name}}' # 指定部署在 {{var.nfs.local-path.node-name}} 节点上，可根据实际需求更改
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sc-nfs-ganesha-local
   volumeMode: Filesystem
@@ -50,4 +50,4 @@ spec:
       storage: 2000Gi
   storageClassName: sc-nfs-ganesha-local
   volumeMode: Filesystem
-  volumeName: pv-nfs-ganesha-local # 指定关联的PV 名称
+  volumeName: pv-nfs-ganesha-local

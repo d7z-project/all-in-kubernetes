@@ -84,6 +84,34 @@ spec:
         - name: export-volume
           persistentVolumeClaim:
             claimName: pvc-nfs-ganesha-local
+      tolerations: # 配置污点和容忍度，使其可在主节点运行
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/master
+          operator: Exists
+        - effect: NoSchedule
+          key: node-role.kubernetes.io/control-plane
+          operator: Exists
+        - effect: NoExecute
+          key: node.kubernetes.io/not-ready
+          operator: Exists
+        - effect: NoExecute
+          key: node.kubernetes.io/unreachable
+          operator: Exists
+        - effect: NoSchedule
+          key: node.kubernetes.io/disk-pressure
+          operator: Exists
+        - effect: NoSchedule
+          key: node.kubernetes.io/memory-pressure
+          operator: Exists
+        - effect: NoSchedule
+          key: node.kubernetes.io/pid-pressure
+          operator: Exists
+        - effect: NoSchedule
+          key: node.kubernetes.io/unschedulable
+          operator: Exists
+        - effect: NoSchedule
+          key: node.kubernetes.io/network-unavailable
+          operator: Exists
 ---
 apiVersion: v1
 kind: Service
