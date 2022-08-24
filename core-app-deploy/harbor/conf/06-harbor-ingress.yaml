@@ -1,0 +1,62 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: core-app
+  name: ingress-harbor
+  labels:
+    app: harbor
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: nginx
+  tls:
+    - secretName: 'tls-d7z-net'
+      hosts:
+        - harbor.d7z.net
+  rules:
+    - http:
+        paths:
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-harbor-core
+                port:
+                  number: 80
+          - path: /service/
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-harbor-core
+                port:
+                  number: 80
+          - path: /v2/
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-harbor-core
+                port:
+                  number: 80
+          - path: /chartrepo/
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-harbor-core
+                port:
+                  number: 80
+          - path: /c/
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-harbor-core
+                port:
+                  number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-harbor-portal
+                port:
+                  number: 80
+      host: harbor.d7z.net

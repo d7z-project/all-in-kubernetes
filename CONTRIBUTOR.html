@@ -814,6 +814,34 @@ pre.rouge {
 56
 57
 58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
 </pre></td><td class="code"><pre><span class="c"># 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
 <span class="c"># 跳过代理
@@ -872,6 +900,34 @@ pre.rouge {
 </span><span class="py">var.grafana.admin.user</span><span class="p">=</span><span class="s">admin</span>
 <span class="c"># Grafana 管理员密码
 </span><span class="py">var.grafana.admin.password</span><span class="p">=</span><span class="s">grafana-admin-password</span>
+<span class="c">################# Harbor #################################
+# Harbor 管理员密码
+</span><span class="py">var.harbor.admin.password</span><span class="p">=</span><span class="s">harbor-admin-password</span>
+<span class="c"># Harbor Postgres 地址
+</span><span class="py">var.harbor.postgres.host</span><span class="p">=</span><span class="s">svc-postgres.core-middle.svc.cluster.local</span>
+<span class="c"># Harbor Postgres 端口
+</span><span class="py">var.harbor.postgres.port</span><span class="p">=</span><span class="s">5432</span>
+<span class="c"># Harbor Postgres 用户名
+</span><span class="py">var.harbor.postgres.username</span><span class="p">=</span><span class="s">harbor</span>
+<span class="c"># Harbor Postgres 密码
+</span><span class="py">var.harbor.postgres.password</span><span class="p">=</span><span class="s">harbor_password</span>
+<span class="c"># Harbor secret
+</span><span class="py">var.harbor.secret.core</span><span class="p">=</span><span class="s">please_replace_this_to_random_data</span>
+<span class="c"># Harbor csrf secret
+</span><span class="py">var.harbor.secret.csrf</span><span class="p">=</span><span class="s">please_replace_this_to_random_data</span>
+<span class="c"># Harbor job secret
+</span><span class="py">var.harbor.secret.job</span><span class="p">=</span><span class="s">please_replace_this_to_random_data</span>
+<span class="c"># Harbor http secret
+</span><span class="py">var.harbor.secret.http</span><span class="p">=</span><span class="s">please_replace_this_to_random_data</span>
+<span class="c"># Harbor credential user
+</span><span class="py">var.harbor.credential.username</span><span class="p">=</span><span class="s">harbor_registry_user</span>
+<span class="c"># Harbor credential pass
+</span><span class="py">var.harbor.credential.password</span><span class="p">=</span><span class="s">harbor_registry_pass</span>
+<span class="c"># Harbor credential htpasswd
+# 使用 htpasswd -nb  {{var.harbor.credential.username}} {{var.harbor.credential.password}} 生成对应的配置
+</span><span class="py">var.harbor.credential.htpasswd</span><span class="p">=</span><span class="s">harbor_registry_user:$apr1$2sgzkSXn$qVVPi1ezpjwIDaMwWFv44.</span>
+<span class="c"># trivy 拉取配置时使用的 token
+</span><span class="py">var.harbor.github.token</span><span class="p">=</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

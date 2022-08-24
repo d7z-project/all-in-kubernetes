@@ -1,0 +1,637 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: core-app
+  name: deploy-harbor-chart-museum
+  labels:
+    app: harbor
+    component: chart-museum
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: harbor
+      component: chart-museum
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: chart-museum
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      containers:
+        - name: chart-museum
+          image: goharbor/chartmuseum-photon:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTP
+              port: 9999
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTP
+              port: 9999
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: conf-harbor-chart-museum
+            - secretRef:
+                name: secret-harbor-chart-museum
+          env:
+            - name: BASIC_AUTH_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-core
+                  key: secret
+            - # Needed to make AWS' client connect correctly (see https://github.com/helm/chartmuseum/issues/280)
+              name: AWS_SDK_LOAD_CONFIG
+              value: "1"
+          ports:
+            - containerPort: 9999
+          volumeMounts:
+            - name: chart-museum-data
+              mountPath: /chart_storage
+      volumes:
+        - name: chart-museum-data
+          persistentVolumeClaim:
+            claimName: pvc-harbor-chart-museum
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: core-app
+  name: deploy-harbor-core
+  labels:
+    app: harbor
+    component: core
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: harbor
+      component: core
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: core
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: core
+          image: goharbor/harbor-core:v2.5.3
+          imagePullPolicy: IfNotPresent
+          startupProbe:
+            httpGet:
+              path: /api/v2.0/ping
+              scheme: HTTP
+              port: 8080
+            failureThreshold: 360
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /api/v2.0/ping
+              scheme: HTTP
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/v2.0/ping
+              scheme: HTTP
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 10
+          envFrom:
+            - configMapRef:
+                name: conf-harbor-core
+            - secretRef:
+                name: secret-harbor-core
+            - secretRef:
+                name: secret-harbor-internal-tls
+          env:
+            - name: CORE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-core
+                  key: secret
+            - name: JOBSERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-job-service
+                  key: JOBSERVICE_SECRET
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: config
+              mountPath: /etc/core/app.conf
+              subPath: app.conf
+            - name: secret-key
+              mountPath: /etc/core/key
+              subPath: key
+            - name: token-service-private-key
+              mountPath: /etc/core/private_key.pem
+              subPath: tls.key
+            - name: psc
+              mountPath: /etc/core/token
+      volumes:
+        - name: config
+          configMap:
+            name: conf-harbor-core
+            items:
+              - key: app.conf
+                path: app.conf
+        - name: secret-key
+          secret:
+            secretName: secret-harbor-core
+            items:
+              - key: secretKey
+                path: key
+        - name: token-service-private-key
+          secret:
+            secretName: secret-harbor-internal-tls
+        - name: psc
+          emptyDir: { }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: core-app
+  name: deploy-harbor-exporter
+  labels:
+    app: harbor
+    component: exporter
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: harbor
+      component: exporter
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: exporter
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      containers:
+        - name: exporter
+          image: goharbor/harbor-exporter:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8001
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8001
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          args: [ "-log-level", "info" ]
+          envFrom:
+            - configMapRef:
+                name: conf-harbor-exporter-env
+            - secretRef:
+                name: secret-harbor-core
+            - secretRef:
+                name: secret-harbor-internal-tls
+          ports:
+            - containerPort: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: core-app
+  name: deploy-harbor-job-service
+  labels:
+    app: harbor
+    component: job-service
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: harbor
+      component: job-service
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: job-service
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: job-service
+          image: goharbor/harbor-jobservice:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /api/v1/stats
+              scheme: HTTP
+              port: 8080
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/v1/stats
+              scheme: HTTP
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          env:
+            - name: CORE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-core
+                  key: secret
+          envFrom:
+            - configMapRef:
+                name: conf-harbor-job-service-env
+            - secretRef:
+                name: secret-harbor-job-service
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: job-service-config
+              mountPath: /etc/jobservice/config.yml
+              subPath: config.yml
+            - name: job-logs
+              mountPath: /var/log/jobs
+            - name: job-scan-data-exports
+              mountPath: /var/scandata_exports
+      volumes:
+        - name: job-service-config
+          configMap:
+            name: harbor-job-service
+        - name: job-logs
+          persistentVolumeClaim:
+            claimName:  pvc-harbor-job-service
+        - name: job-scan-data-exports
+          persistentVolumeClaim:
+            claimName: pvc-harbor-job-service-scan-data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: core-app
+  name: deploy-harbor-portal
+  labels:
+    app: harbor
+    component: portal
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: harbor
+      component: portal
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: portal
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      containers:
+        - name: portal
+          image: goharbor/harbor-portal:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /
+              scheme: HTTP
+              port: 8080
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              scheme: HTTP
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: portal-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: portal-config
+          configMap:
+            name: conf-harbor-portal
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: core-app
+  name: deploy-harbor-registry
+  labels:
+    app: harbor
+    component: registry
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: harbor
+      component: registry
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: registry
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+        fsGroupChangePolicy: OnRootMismatch
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: registry
+          image: goharbor/registry-photon:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /
+              scheme: HTTP
+              port: 5000
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              scheme: HTTP
+              port: 5000
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          args: [ "serve", "/etc/registry/config.yml" ]
+          envFrom:
+            - secretRef:
+                name: secret-harbor-registry
+          ports:
+            - containerPort: 5000
+            - containerPort: 5001
+          volumeMounts:
+            - name: registry-data
+              mountPath: /storage
+            - name: registry-htpasswd
+              mountPath: /etc/registry/passwd
+              subPath: passwd
+            - name: registry-config
+              mountPath: /etc/registry/config.yml
+              subPath: config.yml
+        - name: registryctl
+          image: goharbor/harbor-registryctl:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              scheme: HTTP
+              port: 8080
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              scheme: HTTP
+              port: 8080
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          envFrom:
+            - secretRef:
+                name: secret-harbor-registry
+          env:
+            - name: CORE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-core
+                  key: secret
+            - name: JOBSERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-job-service
+                  key: JOBSERVICE_SECRET
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: registry-data
+              mountPath: /storage
+            - name: registry-config
+              mountPath: /etc/registry/config.yml
+              subPath: config.yml
+            - name: registry-config
+              mountPath: /etc/registryctl/config.yml
+              subPath: ctl-config.yml
+      volumes:
+        - name: registry-htpasswd
+          secret:
+            secretName: secret-harbor-registry
+
+            items:
+              - key: REGISTRY_HTPASSWD
+                path: passwd
+        - name: registry-config
+          configMap:
+            name: conf-harbor-registry
+        - name: registry-data
+          persistentVolumeClaim:
+            claimName: pvc-harbor-registry
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: core-app
+  name: sts-harbor-redis
+  labels:
+    app: harbor
+    component: redis
+spec:
+  replicas: 1
+  serviceName: svc-harbor-redis
+  selector:
+    matchLabels:
+      app: harbor
+      component: redis
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: redis
+    spec:
+      securityContext:
+        runAsUser: 999
+        fsGroup: 999
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      containers:
+        - name: redis
+          image: goharbor/redis-photon:v2.5.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 300
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 6379
+            initialDelaySeconds: 1
+            periodSeconds: 10
+          volumeMounts:
+            - name: redis-data
+              mountPath: /var/lib/redis
+      volumes:
+        - name: redis-data
+          persistentVolumeClaim:
+            claimName: pvc-harbor-redis-data
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: core-app
+  name: sts-harbor-trivy
+  labels:
+    app: harbor
+    component: trivy
+spec:
+  replicas: 1
+  serviceName: svc-harbor-trivy
+  selector:
+    matchLabels:
+      app: harbor
+      component: trivy
+  template:
+    metadata:
+      labels:
+        app: harbor
+        component: trivy
+    spec:
+      securityContext:
+        runAsUser: 10000
+        fsGroup: 10000
+      automountServiceAccountToken: false
+      containers:
+        - name: trivy
+          image: goharbor/trivy-adapter-photon:v2.5.3
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            privileged: false
+            allowPrivilegeEscalation: false
+          env:
+            - name: HTTP_PROXY
+              value: ""
+            - name: HTTPS_PROXY
+              value: ""
+            - name: NO_PROXY
+              value: "svc-harbor-core,svc-harbor-job-service,harbor-database,svc-harbor-chart-museum,svc-harbor-notary-server,svc-harbor-notary-signer,svc-harbor-registry,svc-harbor-portal,svc-harbor-trivy,svc-harbor-exporter,127.0.0.1,localhost,.local,.internal"
+            - name: "SCANNER_LOG_LEVEL"
+              value: "info"
+            - name: "SCANNER_TRIVY_CACHE_DIR"
+              value: "/home/scanner/.cache/trivy"
+            - name: "SCANNER_TRIVY_REPORTS_DIR"
+              value: "/home/scanner/.cache/reports"
+            - name: "SCANNER_TRIVY_DEBUG_MODE"
+              value: "false"
+            - name: "SCANNER_TRIVY_VULN_TYPE"
+              value: "os,library"
+            - name: "SCANNER_TRIVY_TIMEOUT"
+              value: "5m0s"
+            - name: "SCANNER_TRIVY_GITHUB_TOKEN"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-trivy
+                  key: gitHubToken
+            - name: "SCANNER_TRIVY_SEVERITY"
+              value: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+            - name: "SCANNER_TRIVY_IGNORE_UNFIXED"
+              value: "false"
+            - name: "SCANNER_TRIVY_SKIP_UPDATE"
+              value: "false"
+            - name: "SCANNER_TRIVY_OFFLINE_SCAN"
+              value: "false"
+            - name: "SCANNER_TRIVY_INSECURE"
+              value: "false"
+            - name: SCANNER_API_SERVER_ADDR
+              value: ":8080"
+            - name: "SCANNER_REDIS_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-trivy
+                  key: redisURL
+            - name: "SCANNER_STORE_REDIS_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-trivy
+                  key: redisURL
+            - name: "SCANNER_JOB_QUEUE_REDIS_URL"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-harbor-trivy
+                  key: redisURL
+          ports:
+            - name: api-server
+              containerPort: 8080
+          volumeMounts:
+            - name: cache-data
+              mountPath: /home/scanner/.cache
+              readOnly: false
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /probe/healthy
+              port: api-server
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /probe/ready
+              port: api-server
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+      volumes:
+        - name: cache-data
+          persistentVolumeClaim:
+            claimName: pvc-harbor-trivy-data
