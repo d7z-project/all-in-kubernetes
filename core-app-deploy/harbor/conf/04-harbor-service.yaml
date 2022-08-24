@@ -1,0 +1,129 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-chart-museum
+  labels:
+    app: harbor
+spec:
+  ports:
+    - port: 80
+      targetPort: 9999
+  selector:
+    app: harbor
+    component: chart-museum
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-core
+  labels:
+    app: harbor
+spec:
+  ports:
+    - name: http-web
+      port: 80
+      targetPort: 8080
+    - name: http-metrics
+      port: 8001
+  selector:
+    app: harbor
+    component: core
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-exporter
+  labels:
+    app: harbor
+spec:
+  ports:
+    - name: http-metrics
+      port: 8001
+  selector:
+    app: harbor
+    component: exporter
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-job-service
+  labels:
+    app: harbor
+spec:
+  ports:
+    - name: http-jobservice
+      port: 80
+      targetPort: 8080
+    - name: http-metrics
+      port: 8001
+  selector:
+    app: harbor
+    component: job-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-portal
+  labels:
+    app: harbor
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: harbor
+    component: portal
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-redis
+  labels:
+    app: harbor
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: harbor
+    component: redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-registry
+  labels:
+    app: harbor
+spec:
+  ports:
+    - name: http-registry
+      port: 5000
+    - name: http-controller
+      port: 8080
+    - name: http-metrics
+      port: 8001
+  selector:
+    app: harbor
+    component: registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: core-app
+  name: svc-harbor-trivy
+  labels:
+    app: harbor
+spec:
+  ports:
+    - name: http-trivy
+      protocol: TCP
+      port: 8080
+  selector:
+    app: harbor
+    component: trivy

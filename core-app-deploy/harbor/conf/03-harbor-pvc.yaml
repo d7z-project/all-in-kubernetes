@@ -1,0 +1,95 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: core-app
+  name: pvc-harbor-chart-museum
+  labels:
+    app: harbor
+    component: chart-museum
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: '{{var.storage.class.security}}'
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: core-app
+  name: pvc-harbor-job-service-scan-data
+  labels:
+    app: harbor
+    component: job-service
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: '{{var.storage.class.security}}'
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: core-app
+  name: pvc-harbor-job-service
+  labels:
+    app: harbor
+    component: job-service
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: '{{var.storage.class.security}}'
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: core-app
+  name: pvc-harbor-registry
+  labels:
+    app: harbor
+    component: registry
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: '{{var.storage.class.security}}'
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: core-app
+  name: pvc-harbor-trivy-data
+  labels:
+    app: harbor
+    component: harbor-trivy
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: '{{var.storage.class.fast}}'
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: core-app
+  name: pvc-harbor-redis-data
+  labels:
+    app: harbor
+    component: harbor-redis
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: '{{var.storage.class.fast}}'

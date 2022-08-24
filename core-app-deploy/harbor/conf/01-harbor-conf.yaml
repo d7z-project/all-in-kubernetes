@@ -1,0 +1,267 @@
+# Source: harbor/templates/chartmuseum/chartmuseum-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: conf-harbor-chart-museum
+data:
+  PORT: "9999"
+  CACHE: "redis"
+  CACHE_REDIS_ADDR: "svc-harbor-redis:6379"
+  CACHE_REDIS_DB: "3"
+  BASIC_AUTH_USER: "chart_controller"
+  DEPTH: "1"
+  DEBUG: "false"
+  LOG_JSON: "true"
+  DISABLE_METRICS: "false"
+  DISABLE_API: "false"
+  DISABLE_STATEFILES: "false"
+  ALLOW_OVERWRITE: "true"
+  AUTH_ANONYMOUS_GET: "false"
+  CONTEXT_PATH: ""
+  INDEX_LIMIT: "0"
+  MAX_STORAGE_OBJECTS: "0"
+  MAX_UPLOAD_SIZE: "20971520"
+  CHART_POST_FORM_FIELD_NAME: "chart"
+  PROV_POST_FORM_FIELD_NAME: "prov"
+  STORAGE: "local"
+  STORAGE_LOCAL_ROOTDIR: "/chart_storage"
+  STORAGE_TIMESTAMP_TOLERANCE: 1s
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: conf-harbor-core
+data:
+  app.conf: |+
+    appname = Harbor
+    runmode = prod
+    enablegzip = true
+
+    [prod]
+    httpport = 8080
+  PORT: "8080"
+  DATABASE_TYPE: "postgresql"
+  POSTGRESQL_HOST: "{{var.harbor.postgres.host}}"
+  POSTGRESQL_PORT: "{{var.harbor.postgres.port}}"
+  POSTGRESQL_USERNAME: "{{var.harbor.postgres.username}}"
+  POSTGRESQL_DATABASE: "registry"
+  POSTGRESQL_SSLMODE: "disable"
+  POSTGRESQL_MAX_IDLE_CONNS: "100"
+  POSTGRESQL_MAX_OPEN_CONNS: "900"
+  EXT_ENDPOINT: "https://harbor.{{var.global.pub-host}}"
+  CORE_URL: "http://svc-harbor-core:80"
+  JOBSERVICE_URL: "http://svc-harbor-job-service"
+  REGISTRY_URL: "http://svc-harbor-registry:5000"
+  TOKEN_SERVICE_URL: "http://svc-harbor-core:80/service/token"
+  WITH_NOTARY: "false"
+  CORE_LOCAL_URL: "http://127.0.0.1:8080"
+  WITH_TRIVY: "true"
+  TRIVY_ADAPTER_URL: "http://svc-harbor-trivy:8080"
+  REGISTRY_STORAGE_PROVIDER_NAME: "filesystem"
+  WITH_CHARTMUSEUM: "true"
+  CHART_REPOSITORY_URL: "http://svc-harbor-chart-museum"
+  LOG_LEVEL: "info"
+  CONFIG_PATH: "/etc/core/app.conf"
+  CHART_CACHE_DRIVER: "redis"
+  _REDIS_URL_CORE: "redis://svc-harbor-redis:6379/0?idle_timeout_seconds=30"
+  _REDIS_URL_REG: "redis://svc-harbor-redis:6379/2?idle_timeout_seconds=30"
+  PORTAL_URL: "http://svc-harbor-portal"
+  REGISTRY_CONTROLLER_URL: "http://svc-harbor-registry:8080"
+  REGISTRY_CREDENTIAL_USERNAME: "{{var.harbor.credential.username}}"
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: "svc-harbor-core,svc-harbor-job-service,harbor-database,svc-harbor-chart-museum,svc-harbor-notary-server,svc-harbor-notary-signer,svc-harbor-registry,svc-harbor-portal,svc-harbor-trivy,svc-harbor-exporter,127.0.0.1,localhost,.local,.internal"
+  PERMITTED_REGISTRY_TYPES_FOR_PROXY_CACHE: "docker-hub,harbor,azure-acr,aws-ecr,google-gcr,quay,docker-registry"
+  METRIC_ENABLE: "true"
+  METRIC_PATH: "/metrics"
+  METRIC_PORT: "8001"
+  METRIC_NAMESPACE: harbor
+  METRIC_SUBSYSTEM: core
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: conf-harbor-exporter-env
+data:
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: "svc-harbor-core,svc-harbor-job-service,harbor-database,svc-harbor-chart-museum,svc-harbor-notary-server,svc-harbor-notary-signer,svc-harbor-registry,svc-harbor-portal,svc-harbor-trivy,svc-harbor-exporter,127.0.0.1,localhost,.local,.internal"
+  LOG_LEVEL: "info"
+  HARBOR_EXPORTER_PORT: "8001"
+  HARBOR_EXPORTER_METRICS_PATH: "/metrics"
+  HARBOR_EXPORTER_METRICS_ENABLED: "true"
+  HARBOR_EXPORTER_CACHE_TIME: "23"
+  HARBOR_EXPORTER_CACHE_CLEAN_INTERVAL: "14400"
+  HARBOR_METRIC_NAMESPACE: harbor
+  HARBOR_METRIC_SUBSYSTEM: exporter
+  HARBOR_REDIS_URL: "redis://svc-harbor-redis:6379/1"
+  HARBOR_REDIS_NAMESPACE: harbor_job_service_namespace
+  HARBOR_REDIS_TIMEOUT: "3600"
+  HARBOR_SERVICE_SCHEME: "http"
+  HARBOR_SERVICE_HOST: "svc-harbor-core"
+  HARBOR_SERVICE_PORT: "80"
+  HARBOR_DATABASE_HOST: "{{var.harbor.postgres.host}}"
+  HARBOR_DATABASE_PORT: "{{var.harbor.postgres.port}}"
+  HARBOR_DATABASE_USERNAME: "{{var.harbor.postgres.username}}"
+  HARBOR_DATABASE_DBNAME: "registry"
+  HARBOR_DATABASE_SSLMODE: "disable"
+  HARBOR_DATABASE_MAX_IDLE_CONNS: "100"
+  HARBOR_DATABASE_MAX_OPEN_CONNS: "900"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: conf-harbor-job-service-env
+data:
+  CORE_URL: "http://svc-harbor-core:80"
+  TOKEN_SERVICE_URL: "http://svc-harbor-core:80/service/token"
+  REGISTRY_URL: "http://svc-harbor-registry:5000"
+  REGISTRY_CONTROLLER_URL: "http://svc-harbor-registry:8080"
+  REGISTRY_CREDENTIAL_USERNAME: "harbor_registry_user"
+  HTTP_PROXY: ""
+  HTTPS_PROXY: ""
+  NO_PROXY: "svc-harbor-core,svc-harbor-job-service,harbor-database,svc-harbor-chart-museum,svc-harbor-notary-server,svc-harbor-notary-signer,svc-harbor-registry,svc-harbor-portal,svc-harbor-trivy,svc-harbor-exporter,127.0.0.1,localhost,.local,.internal"
+  METRIC_NAMESPACE: harbor
+  METRIC_SUBSYSTEM: jobservice
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: harbor-job-service
+data:
+  config.yml: |+
+    #Server listening port
+    protocol: "http"
+    port: 8080
+    worker_pool:
+      workers: 10
+      backend: "redis"
+      redis_pool:
+        redis_url: "redis://svc-harbor-redis:6379/1"
+        namespace: "harbor_job_service_namespace"
+        idle_timeout_second: 3600
+    job_loggers:
+      - name: "FILE"
+        level: INFO
+        settings: # Customized settings of logger
+          base_dir: "/var/log/jobs"
+        sweeper:
+          duration: 14 #days
+          settings: # Customized settings of sweeper
+            work_dir: "/var/log/jobs"
+      - name: "STD_OUTPUT"
+        level: INFO
+    metric:
+      enabled: true
+      path: /metrics
+      port: 8001
+    #Loggers for the job service
+    loggers:
+      - name: "STD_OUTPUT"
+        level: INFO
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: conf-harbor-portal
+data:
+  nginx.conf: |+
+    worker_processes auto;
+    pid /tmp/nginx.pid;
+    events {
+        worker_connections  1024;
+    }
+    http {
+        client_body_temp_path /tmp/client_body_temp;
+        proxy_temp_path /tmp/proxy_temp;
+        fastcgi_temp_path /tmp/fastcgi_temp;
+        uwsgi_temp_path /tmp/uwsgi_temp;
+        scgi_temp_path /tmp/scgi_temp;
+        server {
+            listen 8080;
+            listen [::]:8080;
+            server_name  localhost;
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+            include /etc/nginx/mime.types;
+            gzip on;
+            gzip_min_length 1000;
+            gzip_proxied expired no-cache no-store private auth;
+            gzip_types text/plain text/css application/json application/javascript application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+            location / {
+                try_files $uri $uri/ /index.html;
+            }
+            location = /index.html {
+                add_header Cache-Control "no-store, no-cache, must-revalidate";
+            }
+        }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: core-app
+  name: conf-harbor-registry
+data:
+  config.yml: |+
+    version: 0.1
+    log:
+      level: info
+      fields:
+        service: registry
+    storage:
+      filesystem:
+        rootdirectory: /storage
+      cache:
+        layerinfo: redis
+      maintenance:
+        uploadpurging:
+          enabled: true
+          age: 168h
+          interval: 24h
+          dryrun: false
+      delete:
+        enabled: true
+      redirect:
+        disable: false
+    redis:
+      addr: svc-harbor-redis:6379
+      db: 2
+      readtimeout: 10s
+      writetimeout: 10s
+      dialtimeout: 10s
+      pool:
+        maxidle: 100
+        maxactive: 500
+        idletimeout: 60s
+    http:
+      addr: :5000
+      relativeurls: false
+      # set via environment variable
+      # secret: placeholder
+      debug:
+        addr: :8001
+        prometheus:
+          enabled: true
+          path: /metrics
+    auth:
+      htpasswd:
+        realm: harbor-registry-basic-realm
+        path: /etc/registry/passwd
+    validation:
+      disabled: true
+    compatibility:
+      schema1:
+        enabled: true
+  ctl-config.yml: |+
+    ---
+    protocol: "http"
+    port: 8080
+    log_level: info
+    registry_config: "/etc/registry/config.yml"

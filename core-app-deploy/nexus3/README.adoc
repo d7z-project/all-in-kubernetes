@@ -103,8 +103,7 @@ WARNING: 请将 nexus 的管理员密码设置的足够复杂，以防止被暴�
 
 image::images/01.a-bind-ldap.png[title="配置LDAP连接"]
 
-其中，密码为 LDAP 用户 `service-account` 的密码。点击按钮验证输入是否正确，验证完成后开始添加绑定。在添加绑定前，你需要在 *LDAP* 下添加 `cn=docker,ou=groups,dc=cluster,dc=local
-` 的角色，类型为 `groupOfNames` 。
+其中，密码为 LDAP 用户 `service-account` 的密码。点击按钮验证输入是否正确，验证完成后开始添加绑定。在添加绑定前，你需要在 *LDAP* 下添加 `cn=docker,ou=groups,dc=cluster,dc=local` 的角色，类型为 `groupOfNames` 。
 
 image::images/01.b-bind-ldap.png[title="配置LDAP用户"]
 
