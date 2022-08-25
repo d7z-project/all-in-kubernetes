@@ -96,6 +96,9 @@
 <li>
 <p><a href="./core-app-deploy/harbor/README.adoc">Harbor 部署</a></p>
 </li>
+<li>
+<p><a href="./core-app-deploy/minio/README.adoc">MinIO 部署</a></p>
+</li>
 </ol>
 </div>
 </div>

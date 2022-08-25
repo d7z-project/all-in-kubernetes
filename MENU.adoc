@@ -37,6 +37,7 @@
 . link:./core-app-deploy/nexus3/README.adoc[Nexus3 部署]
 . link:./core-app-deploy/gitlab/README.adoc[Gitlab CE部署]
 . link:./core-app-deploy/harbor/README.adoc[Harbor 部署]
+. link:./core-app-deploy/minio/README.adoc[MinIO 部署]
 
 === DevOps环境部署
 

@@ -7,3 +7,117 @@
 :toc-title: 目录
 :toclevels: 4
 :source-highlighter: rouge
+
+== 说明
+
+=== 暴露端点
+
+MinIO 部署完成后将在集群内外暴露如下资源：
+
+* *Ingress*
+** `s3.d7z.net`
+** `minio.internal.d7z.net`
+* *Service*
+
+=== 依赖
+
+此文档部署的 *MinIO* 依赖于 *StorageClass* 和 *LDAP* ，在 *MinIO* 部署之前需准备好。
+
+*MinIO* 使用如下镜像，如需离线环境安装则需要将其导入到 Kubernetes 可拉取的位置中。
+
+[source%linenums,text]
+----
+quay.io/minio/minio:RELEASE.2022-08-22T23-53-06Z
+minio/mc:RELEASE.2022-08-23T05-45-20Z
+----
+
+== 部署准备
+
+=== 创建 LDAP Group
+
+连接你的 *LDAP* 管理器，为其添加如下角色。
+
+[source%linenums,text]
+----
+cn=s3,ou=groups,dc=cluster,dc=local
+----
+
+=== 创建相关的持久卷
+
+在 *Kubernetes* 下导入以下配置，创建对应的持久卷。
+
+[source%linenums,yaml]
+----
+include::conf/01-minio-storage.yaml[]
+----
+
+=== 导入相关配置
+
+在 *MinIO* 安装过程中需要自定义部分配置，在 *Kubernetes* 导入此配置即可。
+
+[source%linenums,yaml]
+----
+include::conf/02-minio-conf.yaml[]
+----
+
+== 开始部署
+
+一切环境准备完成后，即可开始部署 *MinIO*。
+
+=== 创建 MinIO Service
+
+导入以下配置，创建 *MinIO* 的 *Service*。
+
+[source%linenums,yaml]
+----
+include::conf/03-minio-service.yaml[]
+----
+
+=== 创建 MinIO StatefulSet
+
+导入以下配置，创建 *MinIO* 的 *StatefulSet*。
+
+[source%linenums,yaml]
+----
+include::conf/04-minio-deploy.yaml[]
+----
+
+=== 暴露 MinIO 地址
+
+导入以下配置，创建可用的 *Ingress*。
+
+[source%linenums,yaml]
+----
+include::conf/05-minio-ingress.yaml[]
+----
+
+== 测试
+
+=== 查看运行状态
+
+使用以下命令查看 *MinIO* 部署状态：
+
+[source%linenums,bash]
+----
+kubectl get pods,pvc,svc,ingress -n core-app -l app=minio
+----
+
+=== 访问Web控制台
+
+在浏览器访问地址 `https://minio.internal.d7z.net`,使用 *LDAP* 配置的用户登陆，如无错误，将登陆成功。
+
+=== 访问Cli控制台
+
+使用以下命令进入 CLI 控制台
+
+[source%linenums,bash]
+----
+kubectl exec -n core-app sts-minio-0 --container client -it -- bash
+----
+
+进入后可使用 `mc` 操作 *MinIO*，例如：
+
+[source%linenums,bash]
+----
+mc ping minio
+----

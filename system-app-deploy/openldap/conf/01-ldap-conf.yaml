@@ -15,6 +15,7 @@ data:
   ldap-domain: 'cluster.local'
   ldap-host: 'svc-ldap.core-system.svc.cluster.local'
   ldap-url: 'ldap://svc-ldap.core-system.svc.cluster.local:389'
+  ldap-short-url: 'svc-ldap.core-system.svc.cluster.local:389'
   ldap-base-dn: 'dc=cluster,dc=local'
   ldap-user-ou: 'ou=people,dc=cluster,dc=local'
   ldap-group-ou: 'ou=groups,dc=cluster,dc=local'
