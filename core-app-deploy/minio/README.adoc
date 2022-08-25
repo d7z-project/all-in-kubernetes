@@ -14,10 +14,8 @@
 
 MinIO 部署完成后将在集群内外暴露如下资源：
 
-* *Ingress*
-** `s3.{{var.global.pub-host}}`
-** `minio.internal.{{var.global.pub-host}}`
-* *Service*
+* `https://s3.{{var.global.pub-host}}`
+* `https://minio.internal.{{var.global.pub-host}}`
 
 === 依赖
 
