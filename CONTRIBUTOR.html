@@ -842,6 +842,12 @@ pre.rouge {
 84
 85
 86
+87
+88
+89
+90
+91
+92
 </pre></td><td class="code"><pre><span class="c"># 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
 <span class="c"># 跳过代理
@@ -922,12 +928,18 @@ pre.rouge {
 <span class="c"># Harbor credential user
 </span><span class="py">var.harbor.credential.username</span><span class="p">=</span><span class="s">harbor_registry_user</span>
 <span class="c"># Harbor credential pass
-</span><span class="py">var.harbor.credential.password</span><span class="p">=</span><span class="s">harbor_registry_pass</span>
+</span><span class="py">var.harbor.credential.password</span><span class="p">=</span><span class="s">harbor_registry_password</span>
 <span class="c"># Harbor credential htpasswd
 # 使用 htpasswd -nb  {{var.harbor.credential.username}} {{var.harbor.credential.password}} 生成对应的配置
-</span><span class="py">var.harbor.credential.htpasswd</span><span class="p">=</span><span class="s">harbor_registry_user:$apr1$2sgzkSXn$qVVPi1ezpjwIDaMwWFv44.</span>
+</span><span class="py">var.harbor.credential.htpasswd</span><span class="p">=</span><span class="s">harbor_registry_user:$2a$10$WktPbZNT.O/vjv/Y0k.UbuLwxsvddxai/qGu7Kw2TawemGkG2l4H6</span>
 <span class="c"># trivy 拉取配置时使用的 token
-</span><span class="py">var.harbor.github.token</span><span class="p">=</span>
+</span><span class="py">var.harbor.trivy.github.token</span><span class="p">=</span>
+<span class="c"># 跳过更新标志以禁用从 GitHub 下载 Trivy DB
+</span><span class="py">var.harbor.trivy.offline-scan</span><span class="p">=</span><span class="s">false</span>
+<span class="c"># 阻止 Trivy 发送 API 请求来识别依赖关系。
+</span><span class="py">var.harbor.trivy.skip-update</span><span class="p">=</span><span class="s">false</span>
+<span class="c"># 跳过证书验证
+</span><span class="py">var.harbor.trivy.insecure</span><span class="p">=</span><span class="s">false</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

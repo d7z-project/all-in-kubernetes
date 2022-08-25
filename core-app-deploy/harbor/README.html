@@ -667,23 +667,28 @@ pre.rouge {
 <li><a href="#_部署准备">部署准备</a>
 <ul class="sectlevel2">
 <li><a href="#_创建_ldap_group">创建 LDAP Group</a></li>
-<li><a href="#_创建数据库">创建数据库</a></li>
-<li><a href="#_创建持久卷">创建持久卷</a></li>
+<li><a href="#_准备数据库">准备数据库</a></li>
+<li><a href="#_创建相关的持久卷">创建相关的持久卷</a></li>
 </ul>
 </li>
-<li><a href="#_开始部署">开始部署</a>
+<li><a href="#_部署_harbor_应用">部署 Harbor 应用</a>
 <ul class="sectlevel2">
-<li><a href="#_导入配置">导入配置</a></li>
-<li><a href="#_导入秘密配置">导入秘密配置</a></li>
+<li><a href="#_导入_harbor_配置">导入 Harbor 配置</a>
+<ul class="sectlevel3">
+<li><a href="#_导入非敏感配置">导入非敏感配置</a></li>
+<li><a href="#_导入敏感配置">导入敏感配置</a></li>
+</ul>
+</li>
 <li><a href="#_创建_service">创建 Service</a></li>
-<li><a href="#_创建运行时配置">创建运行时配置</a></li>
+<li><a href="#_创建_pod">创建 Pod</a></li>
 <li><a href="#_创建_ingress">创建 Ingress</a></li>
-<li><a href="#_获取状态">获取状态</a></li>
+<li><a href="#_获取部署状态">获取部署状态</a></li>
 </ul>
 </li>
 <li><a href="#_配置_harbor">配置 Harbor</a>
 <ul class="sectlevel2">
 <li><a href="#_配置_ldap_管理器">配置 LDAP 管理器</a></li>
+<li><a href="#_测试镜像推送">测试镜像推送</a></li>
 </ul>
 </li>
 </ul>
@@ -775,7 +780,7 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建数据库">创建数据库</h3>
+<h3 id="_准备数据库">准备数据库</h3>
 <div class="paragraph">
 <p>连接你的外部 <strong>Postgres</strong> 数据库，创建如下数据库和用户，并为其创建关联。</p>
 </div>
@@ -819,9 +824,21 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>如果要清除旧的数据，可执行以下 <strong>SQL</strong> 语句,然后再重新创建即可。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre><span class="k">DROP</span> <span class="k">DATABASE</span> <span class="n">registry</span><span class="p">;</span>
+<span class="k">DROP</span> <span class="k">ROLE</span> <span class="n">harbor</span><span class="p">;</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
 </div>
 <div class="sect2">
-<h3 id="_创建持久卷">创建持久卷</h3>
+<h3 id="_创建相关的持久卷">创建相关的持久卷</h3>
 <div class="paragraph">
 <p>在 <strong>Kubernetes</strong> 下导入以下配置，创建对应的持久卷。</p>
 </div>
@@ -1024,13 +1041,15 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </div>
 </div>
 <div class="sect1">
-<h2 id="_开始部署">开始部署</h2>
+<h2 id="_部署_harbor_应用">部署 Harbor 应用</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>资源准备完成后，即可开始部署 <strong>Harbor</strong> 。</p>
 </div>
 <div class="sect2">
-<h3 id="_导入配置">导入配置</h3>
+<h3 id="_导入_harbor_配置">导入 Harbor 配置</h3>
+<div class="sect3">
+<h4 id="_导入非敏感配置">导入非敏感配置</h4>
 <div class="paragraph">
 <p>在 <strong>Kubernetes</strong> 下导入以下配置，创建 <strong>Harbor</strong> 自定义配置。</p>
 </div>
@@ -1574,10 +1593,10 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_导入秘密配置">导入秘密配置</h3>
+<div class="sect3">
+<h4 id="_导入敏感配置">导入敏感配置</h4>
 <div class="paragraph">
-<p>在 <strong>Kubernetes</strong> 下导入以下配置，创建 <strong>Harbor</strong> 安全相关配置。</p>
+<p>在 <strong>Kubernetes</strong> 下导入以下配置，创建 <strong>Harbor</strong> 账户密码相关配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1690,7 +1709,7 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="na">JOBSERVICE_SECRET</span><span class="pi">:</span> <span class="s2">"</span><span class="s">please_replace_this_to_random_data"</span>
-  <span class="na">REGISTRY_CREDENTIAL_PASSWORD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">harbor_registry_pass"</span>
+  <span class="na">REGISTRY_CREDENTIAL_PASSWORD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">harbor_registry_password"</span>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
@@ -1701,7 +1720,7 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 <span class="na">stringData</span><span class="pi">:</span>
   <span class="na">REGISTRY_REDIS_PASSWORD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
   <span class="na">REGISTRY_HTTP_SECRET</span><span class="pi">:</span> <span class="s2">"</span><span class="s">please_replace_this_to_random_data"</span>
-  <span class="na">REGISTRY_HTPASSWD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">harbor_registry_user:$apr1$2sgzkSXn$qVVPi1ezpjwIDaMwWFv44."</span>
+  <span class="na">REGISTRY_HTPASSWD</span><span class="pi">:</span> <span class="s2">"</span><span class="s">harbor_registry_user:$2a$10$WktPbZNT.O/vjv/Y0k.UbuLwxsvddxai/qGu7Kw2TawemGkG2l4H6"</span>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
@@ -1717,10 +1736,11 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </div>
 </div>
 </div>
+</div>
 <div class="sect2">
 <h3 id="_创建_service">创建 Service</h3>
 <div class="paragraph">
-<p>创建完成后，导入相关的 Service 配置。</p>
+<p>配置导入完成后，创建相关的 <strong>Service</strong> 配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1987,9 +2007,9 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建运行时配置">创建运行时配置</h3>
+<h3 id="_创建_pod">创建 Pod</h3>
 <div class="paragraph">
-<p>在 <strong>Kubernetes</strong> 下导入以下配置，创建运行时配置。</p>
+<p><strong>Service</strong> 创建完成后，在 <strong>Kubernetes</strong> 下导入以下配置来创建 <strong>Harbor</strong> 启动配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3274,7 +3294,7 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 <div class="sect2">
 <h3 id="_创建_ingress">创建 Ingress</h3>
 <div class="paragraph">
-<p>Deployment 创建完成后,将 Service 通过 Ingress 暴露到外部地址。</p>
+<p><strong>Deployment</strong> 创建完成后,将 <strong>Service</strong> 通过 <strong>Ingress</strong> 暴露到外部地址。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -3407,7 +3427,7 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 </div>
 </div>
 <div class="sect2">
-<h3 id="_获取状态">获取状态</h3>
+<h3 id="_获取部署状态">获取部署状态</h3>
 <div class="paragraph">
 <p>使用以下命令获取部署状态。</p>
 </div>
@@ -3430,7 +3450,48 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 <div class="sect2">
 <h3 id="_配置_ldap_管理器">配置 LDAP 管理器</h3>
 <div class="paragraph">
-<p>访问 <code><a target="_blank" href="https://harbor.d7z.net/harbor/configs/auth" class="bare">https://harbor.d7z.net/harbor/configs/auth</a></code></p>
+<p>访问 <code><a target="_blank" href="https://harbor.d7z.net/harbor/configs/auth" class="bare">https://harbor.d7z.net/harbor/configs/auth</a></code>,切换验证模式为 LDAP，按下图填入内容。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/harbor-ldap.png" alt="harbor ldap">
+</div>
+</div>
+<div class="paragraph">
+<p><strong>LDAP</strong> 过滤器内容如下:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p><strong>LDAP</strong> 组过滤器内容如下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>(|(cn=admin)(cn=deploy)(cn=docker))
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>编辑完成后，点击 <code>测试LDAP服务器</code> ，如一切无误，点击保存即可。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_测试镜像推送">测试镜像推送</h3>
+<div class="paragraph">
+<p>使用如下命令登陆 <strong>Harbor</strong>,输入具有写入权限的账户和密码，如一切无误，则登陆成功</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>docker login harbor.d7z.net
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -3467,11 +3528,11 @@ cn=deploy,ou=groups,dc=cluster,dc=local
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-08-24 09:38:54 |
+        代码双击可复制 | 最后编辑于 2022-08-25 03:21:06 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/447d88009edb0d72378d4f54ee7f2f731efc85d6/core-app-deploy/harbor/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/447d88009edb0d72378d4f54ee7f2f731efc85d6/"
-           target="_blank">#447d88</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/4fcfdc184890d427b4a356259728823a32312b89/core-app-deploy/harbor/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/4fcfdc184890d427b4a356259728823a32312b89/"
+           target="_blank">#4fcfdc</a>
         <script>
 
             function toast(msg, duration = 1000) {

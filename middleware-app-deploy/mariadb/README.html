@@ -826,6 +826,16 @@ pre.rouge {
 34
 35
 36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -846,7 +856,7 @@ pre.rouge {
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb:10.5</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">mariadb:10.8</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/mysql</span>
@@ -858,6 +868,16 @@ pre.rouge {
                   <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MARIADB_ROOT_HOST</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">%"</span>
+          <span class="na">livenessProbe</span><span class="pi">:</span>
+            <span class="na">exec</span><span class="pi">:</span>
+              <span class="na">command</span><span class="pi">:</span>
+                <span class="pi">-</span> <span class="s">bash</span>
+                <span class="pi">-</span> <span class="s2">"</span><span class="s">-c"</span>
+                <span class="pi">-</span> <span class="pi">|</span>
+                  <span class="s">mysqladmin -uroot -p$MARIADB_ROOT_PASSWORD ping &amp;&gt; /dev/null</span>
+            <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">20</span>
+            <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">2</span>
+            <span class="na">timeoutSeconds</span><span class="pi">:</span> <span class="m">5</span>
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">mariadb-data</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
