@@ -31,6 +31,8 @@ spec:
             - secretRef:
                 name: secret-minio
           env:
+            - name: MINIO_BROWSER_REDIRECT_URL
+              value: 'https://minio.internal.d7z.net'
             - name: MINIO_IDENTITY_LDAP_SERVER_INSECURE
               value: 'on'
             - name: MINIO_IDENTITY_LDAP_STS_EXPIRY

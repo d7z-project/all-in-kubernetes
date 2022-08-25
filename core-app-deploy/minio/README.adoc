@@ -14,10 +14,8 @@
 
 MinIO 部署完成后将在集群内外暴露如下资源：
 
-* *Ingress*
-** `s3.d7z.net`
-** `minio.internal.d7z.net`
-* *Service*
+* `https://s3.d7z.net`
+* `https://minio.internal.d7z.net`
 
 === 依赖
 

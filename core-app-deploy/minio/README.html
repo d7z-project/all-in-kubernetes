@@ -700,20 +700,10 @@ pre.rouge {
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Ingress</strong></p>
-<div class="ulist">
-<ul>
-<li>
-<p><code>s3.d7z.net</code></p>
+<p><code><a target="_blank" href="https://s3.d7z.net" class="bare">https://s3.d7z.net</a></code></p>
 </li>
 <li>
-<p><code>minio.internal.d7z.net</code></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><strong>Service</strong></p>
+<p><code><a target="_blank" href="https://minio.internal.d7z.net" class="bare">https://minio.internal.d7z.net</a></code></p>
 </li>
 </ul>
 </div>
@@ -934,104 +924,106 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-98
+<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1065,6 +1057,8 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
             <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
                 <span class="na">name</span><span class="pi">:</span> <span class="s">secret-minio</span>
           <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_BROWSER_REDIRECT_URL</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://minio.internal.d7z.net'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_SERVER_INSECURE</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">on'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_STS_EXPIRY</span>
@@ -1302,11 +1296,11 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-08-25 10:12:50 |
+        代码双击可复制 | 最后编辑于 2022-08-25 10:38:48 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/a38062f0b7dbec2edef311935ab0b25777ea9142/core-app-deploy/minio/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/a38062f0b7dbec2edef311935ab0b25777ea9142/"
-           target="_blank">#a38062</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/8fabe1b2a95d6d4c0681b2ad8bcab293a02e2453/core-app-deploy/minio/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/8fabe1b2a95d6d4c0681b2ad8bcab293a02e2453/"
+           target="_blank">#8fabe1</a>
         <script>
 
             function toast(msg, duration = 1000) {
