@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mariadb
-          image: mariadb:10.5
+          image: mariadb:10.8
           volumeMounts:
             - name: mariadb-data
               mountPath: /var/lib/mysql
@@ -30,6 +30,16 @@ spec:
                   key: password
             - name: MARIADB_ROOT_HOST
               value: "%"
+          livenessProbe:
+            exec:
+              command:
+                - bash
+                - "-c"
+                - |
+                  mysqladmin -uroot -p$MARIADB_ROOT_PASSWORD ping &> /dev/null
+            initialDelaySeconds: 20
+            periodSeconds: 2
+            timeoutSeconds: 5
       volumes:
         - name: mariadb-data
           persistentVolumeClaim:
