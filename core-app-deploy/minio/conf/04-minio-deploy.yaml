@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-minio
+  namespace: core-app
+  labels:
+    app: minio
+spec:
+  serviceName: svc-minio
+  selector:
+    matchLabels:
+      app: minio
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      containers:
+        - name: minio
+          image: quay.io/minio/minio:RELEASE.2022-08-22T23-53-06Z
+          command:
+            - minio
+            - server
+            - '/data'
+            - '--console-address'
+            - ":9001"
+          envFrom:
+            - configMapRef:
+                name: conf-minio
+            - secretRef:
+                name: secret-minio
+          env:
+            - name: MINIO_IDENTITY_LDAP_SERVER_INSECURE
+              value: 'on'
+            - name: MINIO_IDENTITY_LDAP_STS_EXPIRY
+              value: '6h'
+            - name: MINIO_IDENTITY_LDAP_SERVER_ADDR
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-short-url
+                  name: conf-ldap
+            - name: MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-bind-user-dn
+                  name: conf-ldap
+            - name: MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: secret-ldap-service
+            - name: MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-user-ou
+                  name: conf-ldap
+            - name: MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN
+              valueFrom:
+                configMapKeyRef:
+                  key: ldap-group-ou
+                  name: conf-ldap
+          volumeMounts:
+            - name: minio-data
+              mountPath: /data
+          readinessProbe:
+            httpGet:
+              port: 9000
+              path: /minio/health/live
+            initialDelaySeconds: 5
+            periodSeconds: 5
+        - name: client
+          image: minio/mc:RELEASE.2022-08-23T05-45-20Z
+          command:
+            - "/bin/sh"
+            - "/scripts/auto.sh"
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - touch
+                  - /exit.hook
+          envFrom:
+            - configMapRef:
+                name: conf-minio
+            - secretRef:
+                name: secret-minio
+          volumeMounts:
+            - mountPath: /scripts
+              name: mc-conf
+
+      volumes:
+        - name: minio-data
+          persistentVolumeClaim:
+            claimName: pvc-minio
+        - name: mc-conf
+          configMap:
+            name: conf-minio

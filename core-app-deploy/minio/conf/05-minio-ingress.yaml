@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-minio
+  namespace: core-app
+  labels:
+    app: minio
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - s3.{{var.global.pub-host}}
+        - minio.internal.{{var.global.pub-host}}
+      secretName: {{var.global.tls-name}}
+  rules:
+    - host: s3.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-minio
+                port:
+                  name: minio-s3
+    - host: minio.internal.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-minio
+                port:
+                  name: minio-console

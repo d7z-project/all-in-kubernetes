@@ -1,0 +1,6 @@
+resources:
+- 01-minio-storage.yaml
+- 02-minio-conf.yaml
+- 03-minio-service.yaml
+- 04-minio-deploy.yaml
+- 05-minio-ingress.yaml
