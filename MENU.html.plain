@@ -18,7 +18,7 @@
 <p><a href="cluster-deploy/metallb/README.adoc">部署 LoadBalancer 实现</a></p>
 </li>
 <li>
-<p><a href="cluster-deploy/ingress-nginx/README.adoc">部署 Nginx Ingress</a></p>
+<p><a href="cluster-deploy/ingress-nginx/README.adoc">部署 Nginx Ingress</a> | <a href="cluster-deploy/ingress-nginx/NOTE.adoc">相关笔记</a></p>
 </li>
 <li>
 <p><a href="cluster-deploy/reflector/README.adoc">部署 reflector 组件</a></p>

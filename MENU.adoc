@@ -8,7 +8,7 @@
 . link:./cluster-deploy/pre-deploy/README.adoc[初始化部署环境]
 . link:./cluster-deploy/kubernetes/README.adoc[部署 Kubernetes] | link:./zz-document/containerd/SET_REGISTRY.adoc[ 容器配置]
 . link:cluster-deploy/metallb/README.adoc[部署 LoadBalancer 实现]
-. link:cluster-deploy/ingress-nginx/README.adoc[部署 Nginx Ingress]
+. link:cluster-deploy/ingress-nginx/README.adoc[部署 Nginx Ingress] | link:cluster-deploy/ingress-nginx/NOTE.adoc[相关笔记]
 . link:cluster-deploy/reflector/README.adoc[部署 reflector 组件]
 . link:cluster-deploy/cert-manager/README.adoc[部署 CertManager] | link:cluster-deploy/cert-manager/NOTE.adoc[相关笔记]
 
