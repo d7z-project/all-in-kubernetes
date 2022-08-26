@@ -1,0 +1,50 @@
+= Ingress 扩展内容
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+==  映射Ingress域名到内部集群
+
+为最大化利用 *Kubernetes* 集群内网络，在添加Ingress 后，可以将 *Ingress* 域名同时添加到 *CoreDNS* 配置中，这样集群内部机器请求域名时将直接使用集群内部网络，避免过多的网络地址转换。具体的操作方法如下：
+
+编辑 *ConfigMap* 配置 `coredns`:
+
+[source%linenums,bash]
+----
+kubectl edit -n kube-system configmaps coredns
+----
+
+按如下配置添加 *CNAME* 配置：
+
+[source%linenums,conf]
+----
+kubernetes cluster.local in-addr.arpa ip6.arpa {
+   pods insecure
+   fallthrough in-addr.arpa ip6.arpa
+   ttl 30
+}
+rewrite name harbor.{{var.global.pub-host}} ingress-nginx-controller.ingress-nginx.svc.cluster.local
+----
+
+TIP: 此处是将 `harbor.{{var.global.pub-host}}` 解析到内部 `nginx-ingress` 上。
+
+修改完成后，使用如下命令查看修改结果:
+
+[source%linenums,bash]
+----
+kubectl get -n kube-system configmaps coredns -o jsonpath='{.data.Corefile}'
+----
+
+如果一切无误， *CoreDNS* 会在一分钟后刷新配置，你也可以强制删除并重建 *CoreDNS* 以刷新配置。
+
+[source%linenums,bash]
+----
+kubectl get pods -n kube-system -o custom-columns=NAME:.metadata.name -l k8s-app=kube-dns  --no-headers | xargs kubectl delete -n kube-system pods
+----
+
+== 参考
+
+- link:https://coredns.io/plugins/rewrite/[CoreDNS rewrite]
