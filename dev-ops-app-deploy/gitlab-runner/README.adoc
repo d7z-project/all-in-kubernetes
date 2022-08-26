@@ -57,7 +57,7 @@ include::./conf/02-gitlab-runner-internal-conf.yaml[]
 
 == 导入 Docker dind 配置
 
-WARNING: *Docker dind* 以特权模式运行容器, 可能会导致严重的安全问题。建议配置节点亲和性使其运行在专门的节点中。
+WARNING: *Docker dind* 以特权模式运行容器, 可能会导致严重的安全问题。建议配置节点亲和性使其运行在专门的节点中，或者将其部署到集群外部。
 
 复制并导入以下配置，启动 *Docker dind*。
 
