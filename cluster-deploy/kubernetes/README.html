@@ -842,6 +842,7 @@ pre.rouge {
 140
 141
 142
+143
 </pre></td><td class="code"><pre><span class="c"># 配置运行时版本</span>
 <span class="c">## https://github.com/containerd/containerd</span>
 <span class="nv">CONTAINERD_VERSION</span><span class="o">=</span>1.6.6
@@ -858,11 +859,11 @@ pre.rouge {
 <span class="c"># 配置系统架构</span>
 <span class="nv">ARCH</span><span class="o">=</span>amd64
 <span class="c"># 下载地址</span>
-<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span>/tmp/k8s
-<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DOWNLOAD_PATH</span>
+<span class="nv">DOWNLOAD_PATH</span><span class="o">=</span><span class="s2">"</span><span class="nv">$HOME</span><span class="s2">/kubernetes-offline"</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$DOWNLOAD_PATH</span><span class="s2">"</span>
 <span class="c"># 镜像地址</span>
 <span class="nv">IMAGE_PATH</span><span class="o">=</span><span class="nv">$DOWNLOAD_PATH</span>/images
-<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$IMAGE_PATH</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$IMAGE_PATH</span><span class="s2">"</span>
 
 down<span class="o">()</span> <span class="o">{</span>
     wget <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> 2&gt;/dev/null <span class="o">||</span> <span class="nb">exit </span>1
@@ -881,7 +882,7 @@ down <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEA
 down <span class="nv">$KUBERNETES_BIN_URL</span>/<span class="nv">$KUBEADM_RELEASE</span>/bin/linux/<span class="nv">$ARCH</span>/kubectl <span class="nv">$DOWNLOAD_PATH</span>/kubectl
 <span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$DOWNLOAD_PATH</span><span class="s2">/crictl"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
     </span>down https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$CRICTL_RELEASE</span>/crictl-<span class="nv">$CRICTL_RELEASE</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
-    <span class="nb">tar</span> <span class="nt">-C</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
+    <span class="nb">tar</span> <span class="nt">-C</span> <span class="s2">"</span><span class="nv">$DOWNLOAD_PATH</span><span class="s2">"</span> <span class="nt">-zxf</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
     <span class="nb">rm</span> <span class="nv">$DOWNLOAD_PATH</span>/cri-tools.tgz
 <span class="k">fi
 </span>down <span class="s2">"https://raw.githubusercontent.com/kubernetes/release/</span><span class="nv">$KUBE_RELEASE_VERSION</span><span class="s2">/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service"</span> <span class="nv">$DOWNLOAD_PATH</span>/kubelet.service
@@ -906,8 +907,8 @@ save_image<span class="o">()</span> <span class="o">{</span>
 
 <span class="c"># 导入自定义镜像</span>
 save_image <span class="s2">"k8s.gcr.io/pause:3.6"</span>
-save_image <span class="s2">"rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"</span>
-save_image <span class="s2">"rancher/mirrored-flannelcni-flannel:v0.18.1"</span>
+save_image <span class="s2">"docker.io/rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"</span>
+save_image <span class="s2">"docker.io/rancher/mirrored-flannelcni-flannel:v0.19.1"</span>
 
 <span class="nv">INSTALL_SCRIPT</span><span class="o">=</span><span class="nv">$DOWNLOAD_PATH</span>/install.sh
 <span class="nb">touch</span> <span class="nv">$INSTALL_SCRIPT</span> <span class="o">||</span>:
@@ -973,15 +974,16 @@ done
 
 </span><span class="c"># 压缩软件包</span>
 <span class="nv">TGZ_PATH</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>
+    <span class="c"># shellcheck disable=SC2086</span>
     <span class="nb">cd</span> <span class="nv">$DOWNLOAD_PATH</span> <span class="o">||</span> <span class="nb">exit </span>1
     <span class="c"># shellcheck disable=SC2046</span>
     <span class="nb">dirname</span> <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
 <span class="si">)</span><span class="s2">/k8s.tgz"</span>
 <span class="o">(</span>
     <span class="c"># shellcheck disable=SC2046</span>
-    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="nv">$DOWNLOAD_PATH</span><span class="si">)</span> <span class="o">||</span> <span class="nb">exit</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="s2">"</span><span class="nv">$DOWNLOAD_PATH</span><span class="s2">"</span><span class="si">)</span> <span class="o">||</span> <span class="nb">exit</span>
     <span class="c"># shellcheck disable=SC2046</span>
-    <span class="nb">tar </span>zcf <span class="s2">"</span><span class="nv">$TGZ_PATH</span><span class="s2">"</span> <span class="si">$(</span><span class="nb">basename</span> <span class="nv">$DOWNLOAD_PATH</span><span class="si">)</span>
+    <span class="nb">tar </span>zcf <span class="s2">"</span><span class="nv">$TGZ_PATH</span><span class="s2">"</span> <span class="si">$(</span><span class="nb">basename</span> <span class="s2">"</span><span class="nv">$DOWNLOAD_PATH</span><span class="s2">"</span><span class="si">)</span>
 <span class="o">)</span>
 <span class="nb">echo</span> <span class="s2">"导出压缩文件位置：</span><span class="nv">$TGZ_PATH</span><span class="s2">."</span>
 </pre></td></tr></tbody></table></code></pre>
@@ -1424,107 +1426,19 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 202
 203
 204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
-228
-229
-230
-231
-232
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244
-245
-246
-247
-248
 </pre></td><td class="code"><pre><span class="nn">---</span>
-<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">policy/v1beta1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">PodSecurityPolicy</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Namespace</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">psp.flannel.unprivileged</span>
-  <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">seccomp.security.alpha.kubernetes.io/allowedProfileNames</span><span class="pi">:</span> <span class="s">docker/default</span>
-    <span class="na">seccomp.security.alpha.kubernetes.io/defaultProfileName</span><span class="pi">:</span> <span class="s">docker/default</span>
-    <span class="na">apparmor.security.beta.kubernetes.io/allowedProfileNames</span><span class="pi">:</span> <span class="s">runtime/default</span>
-    <span class="na">apparmor.security.beta.kubernetes.io/defaultProfileName</span><span class="pi">:</span> <span class="s">runtime/default</span>
-<span class="na">spec</span><span class="pi">:</span>
-  <span class="na">privileged</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">volumes</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="s">configMap</span>
-    <span class="pi">-</span> <span class="s">secret</span>
-    <span class="pi">-</span> <span class="s">emptyDir</span>
-    <span class="pi">-</span> <span class="s">hostPath</span>
-  <span class="na">allowedHostPaths</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">pathPrefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/cni/net.d"</span>
-    <span class="pi">-</span> <span class="na">pathPrefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/etc/kube-flannel"</span>
-    <span class="pi">-</span> <span class="na">pathPrefix</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/run/flannel"</span>
-  <span class="na">readOnlyRootFilesystem</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="c1"># Users and groups</span>
-  <span class="na">runAsUser</span><span class="pi">:</span>
-    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
-  <span class="na">supplementalGroups</span><span class="pi">:</span>
-    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
-  <span class="na">fsGroup</span><span class="pi">:</span>
-    <span class="na">rule</span><span class="pi">:</span> <span class="s">RunAsAny</span>
-  <span class="c1"># Privilege Escalation</span>
-  <span class="na">allowPrivilegeEscalation</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">defaultAllowPrivilegeEscalation</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="c1"># Capabilities</span>
-  <span class="na">allowedCapabilities</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">NET_ADMIN'</span><span class="pi">,</span> <span class="s1">'</span><span class="s">NET_RAW'</span> <span class="pi">]</span>
-  <span class="na">defaultAddCapabilities</span><span class="pi">:</span> <span class="pi">[</span> <span class="pi">]</span>
-  <span class="na">requiredDropCapabilities</span><span class="pi">:</span> <span class="pi">[</span> <span class="pi">]</span>
-  <span class="c1"># Host namespaces</span>
-  <span class="na">hostPID</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">hostIPC</span><span class="pi">:</span> <span class="no">false</span>
-  <span class="na">hostNetwork</span><span class="pi">:</span> <span class="no">true</span>
-  <span class="na">hostPorts</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">min</span><span class="pi">:</span> <span class="m">0</span>
-      <span class="na">max</span><span class="pi">:</span> <span class="m">65535</span>
-  <span class="c1"># SELinux</span>
-  <span class="na">seLinux</span><span class="pi">:</span>
-    <span class="c1"># SELinux is unused in CaaSP</span>
-    <span class="na">rule</span><span class="pi">:</span> <span class="s1">'</span><span class="s">RunAsAny'</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">pod-security.kubernetes.io/enforce</span><span class="pi">:</span> <span class="s">privileged</span>
 <span class="nn">---</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterRole</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">rbac.authorization.k8s.io/v1</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
 <span class="na">rules</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">extensions'</span> <span class="pi">]</span>
-    <span class="na">resources</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">podsecuritypolicies'</span> <span class="pi">]</span>
-    <span class="na">verbs</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">use'</span> <span class="pi">]</span>
-    <span class="na">resourceNames</span><span class="pi">:</span> <span class="pi">[</span> <span class="s1">'</span><span class="s">psp.flannel.unprivileged'</span> <span class="pi">]</span>
   <span class="pi">-</span> <span class="na">apiGroups</span><span class="pi">:</span>
       <span class="pi">-</span> <span class="s2">"</span><span class="s">"</span>
     <span class="na">resources</span><span class="pi">:</span>
@@ -1556,19 +1470,19 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 <span class="na">subjects</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
-    <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+    <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-flannel</span>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ServiceAccount</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">flannel</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-flannel</span>
 <span class="nn">---</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel-cfg</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-flannel</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">tier</span><span class="pi">:</span> <span class="s">node</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">flannel</span>
@@ -1605,7 +1519,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 <span class="na">kind</span><span class="pi">:</span> <span class="s">DaemonSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel-ds</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-flannel</span>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">tier</span><span class="pi">:</span> <span class="s">node</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">flannel</span>
@@ -1637,7 +1551,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
       <span class="na">initContainers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">install-cni-plugin</span>
           <span class="c1">#image: flannelcni/flannel-cni-plugin:v1.1.0 for ppc64le and mips64le (dockerhub limitations may apply)</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0</span>
           <span class="na">command</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">cp</span>
           <span class="na">args</span><span class="pi">:</span>
@@ -1648,8 +1562,8 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cni-plugin</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/opt/cni/bin</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">install-cni</span>
-          <span class="c1">#image: flannelcni/flannel:v0.18.1 for ppc64le and mips64le (dockerhub limitations may apply)</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">rancher/mirrored-flannelcni-flannel:v0.18.1</span>
+          <span class="c1">#image: flannelcni/flannel:v0.19.1 for ppc64le and mips64le (dockerhub limitations may apply)</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/rancher/mirrored-flannelcni-flannel:v0.19.1</span>
           <span class="na">command</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">cp</span>
           <span class="na">args</span><span class="pi">:</span>
@@ -1663,8 +1577,8 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/kube-flannel/</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">kube-flannel</span>
-          <span class="c1">#image: flannelcni/flannel:v0.18.1 for ppc64le and mips64le (dockerhub limitations may apply)</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">rancher/mirrored-flannelcni-flannel:v0.18.1</span>
+          <span class="c1">#image: flannelcni/flannel:v0.19.1 for ppc64le and mips64le (dockerhub limitations may apply)</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/rancher/mirrored-flannelcni-flannel:v0.19.1</span>
           <span class="na">command</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="s">/opt/bin/flanneld</span>
           <span class="na">args</span><span class="pi">:</span>
@@ -1680,7 +1594,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
           <span class="na">securityContext</span><span class="pi">:</span>
             <span class="na">privileged</span><span class="pi">:</span> <span class="no">false</span>
             <span class="na">capabilities</span><span class="pi">:</span>
-              <span class="na">add</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">NET_ADMIN"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">NET_RAW"</span> <span class="pi">]</span>
+              <span class="na">add</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">NET_ADMIN"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">NET_RAW"</span><span class="pi">]</span>
           <span class="na">env</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POD_NAME</span>
               <span class="na">valueFrom</span><span class="pi">:</span>

@@ -15,11 +15,11 @@ KUBE_RELEASE_VERSION="v0.14.0"
 # 配置系统架构
 ARCH=amd64
 # 下载地址
-DOWNLOAD_PATH=/tmp/k8s
-mkdir -p $DOWNLOAD_PATH
+DOWNLOAD_PATH="$HOME/kubernetes-offline"
+mkdir -p "$DOWNLOAD_PATH"
 # 镜像地址
 IMAGE_PATH=$DOWNLOAD_PATH/images
-mkdir -p $IMAGE_PATH
+mkdir -p "$IMAGE_PATH"
 
 down() {
     wget "$1" -c -O "$2" 2>/dev/null || exit 1
@@ -38,7 +38,7 @@ down $KUBERNETES_BIN_URL/$KUBEADM_RELEASE/bin/linux/$ARCH/kubelet $DOWNLOAD_PATH
 down $KUBERNETES_BIN_URL/$KUBEADM_RELEASE/bin/linux/$ARCH/kubectl $DOWNLOAD_PATH/kubectl
 if [ ! -f "$DOWNLOAD_PATH/crictl" ]; then
     down https://github.com/kubernetes-sigs/cri-tools/releases/download/$CRICTL_RELEASE/crictl-$CRICTL_RELEASE-linux-$ARCH.tar.gz $DOWNLOAD_PATH/cri-tools.tgz
-    tar -C $DOWNLOAD_PATH -zxf $DOWNLOAD_PATH/cri-tools.tgz
+    tar -C "$DOWNLOAD_PATH" -zxf $DOWNLOAD_PATH/cri-tools.tgz
     rm $DOWNLOAD_PATH/cri-tools.tgz
 fi
 down "https://raw.githubusercontent.com/kubernetes/release/$KUBE_RELEASE_VERSION/cmd/kubepkg/templates/latest/deb/kubelet/lib/systemd/system/kubelet.service" $DOWNLOAD_PATH/kubelet.service
@@ -63,8 +63,8 @@ done
 
 # 导入自定义镜像
 save_image "k8s.gcr.io/pause:3.6"
-save_image "rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"
-save_image "rancher/mirrored-flannelcni-flannel:v0.18.1"
+save_image "docker.io/rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"
+save_image "docker.io/rancher/mirrored-flannelcni-flannel:v0.19.1"
 
 INSTALL_SCRIPT=$DOWNLOAD_PATH/install.sh
 touch $INSTALL_SCRIPT ||:
@@ -130,14 +130,15 @@ EOD
 
 # 压缩软件包
 TGZ_PATH="$(
+    # shellcheck disable=SC2086
     cd $DOWNLOAD_PATH || exit 1
     # shellcheck disable=SC2046
     dirname $(pwd)
 )/k8s.tgz"
 (
     # shellcheck disable=SC2046
-    cd $(dirname $DOWNLOAD_PATH) || exit
+    cd $(dirname "$DOWNLOAD_PATH") || exit
     # shellcheck disable=SC2046
-    tar zcf "$TGZ_PATH" $(basename $DOWNLOAD_PATH)
+    tar zcf "$TGZ_PATH" $(basename "$DOWNLOAD_PATH")
 )
 echo "导出压缩文件位置：$TGZ_PATH."

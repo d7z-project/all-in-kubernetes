@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>菜单</title>
+<title>CRI-O 部署</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,224 +435,405 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>菜单</h1>
+<h1>CRI-O 部署</h1>
 <div id="toc" class="toc2">
-<div id="toctitle">Table of Contents</div>
+<div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_应用部署">应用部署</a>
-<ul class="sectlevel2">
-<li><a href="#_核心环境部署">核心环境部署</a></li>
-<li><a href="#_存储提供者部署">存储提供者部署</a></li>
-<li><a href="#_核心系统应用部署">核心系统应用部署</a></li>
-<li><a href="#_系统中间件应用部署">系统中间件应用部署</a></li>
-<li><a href="#_核心应用部署">核心应用部署</a></li>
-<li><a href="#_devops环境部署">DevOps环境部署</a></li>
-<li><a href="#_平台监控环境部署">平台监控环境部署</a></li>
-</ul>
-</li>
-<li><a href="#_扩展功能">扩展功能</a></li>
-<li><a href="#_运维指南">运维指南</a></li>
-<li><a href="#_杂项">杂项</a></li>
+<li><a href="#_说明">说明</a></li>
+<li><a href="#_准备_cri_o">准备 CRI-O</a></li>
+<li><a href="#_安装_cri_o">安装 CRI-O</a></li>
+<li><a href="#_查看_cri_o_状态">查看 CRI-O 状态</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_应用部署">应用部署</h2>
+<h2 id="_说明">说明</h2>
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_核心环境部署">核心环境部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./cluster-deploy/pre-deploy/SYSTEM.html">系统环境配置</a></p>
-</li>
-<li>
-<p><a href="./cluster-deploy/pre-deploy/README.html">初始化部署环境</a></p>
-</li>
-<li>
-<p>部署容器运行时 (多选一)</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./cluster-deploy/cri-runtime/containerd/README.html">部署 Containerd</a>| <a href="./zz-document/containerd/SET_REGISTRY.html">容器配置</a></p>
-</li>
-<li>
-<p><a href="./cluster-deploy/cri-runtime/cri-o/README.html">部署 CRI-O</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="./cluster-deploy/kubernetes/README.html">部署 Kubernetes</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/metallb/README.html">部署 LoadBalancer 实现</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/ingress-nginx/README.html">部署 Nginx Ingress</a> | <a href="cluster-deploy/ingress-nginx/NOTE.html">相关笔记</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/reflector/README.html">部署 reflector 组件</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/cert-manager/README.html">部署 CertManager</a> | <a href="cluster-deploy/cert-manager/NOTE.html">相关笔记</a></p>
-</li>
-</ol>
+<div class="paragraph">
+<p>此 <code>CRI-O</code> 为 <code>kubernetes</code> 提供服务，主要保证兼容和稳定，仅会在出现安全问题或兼容性问题时才会更新。</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="_存储提供者部署">存储提供者部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./storage-provider-deploy/rook-nfs/README.html">基于 rook-nfs 配置存储</a></p>
-</li>
-<li>
-<p><a href="./storage-provider-deploy/nfs-ganesha/README.html">基于ganesha 配置存储</a></p>
-</li>
-</ol>
 </div>
-</div>
-<div class="sect2">
-<h3 id="_核心系统应用部署">核心系统应用部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="system-app-deploy/README.html">核心系统应用部署准备</a></p>
-</li>
-<li>
-<p><a href="system-app-deploy/openldap/README.html">部署OpenLDAP</a></p>
-</li>
-<li>
-<p><a href="system-app-deploy/lam/README.html">部署 LDAP Account Manager</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_系统中间件应用部署">系统中间件应用部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./middleware-app-deploy/README.html">核心中间件部署准备</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/mariadb/README.html">MariaDB 单实例部署</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/redis/README.html">Redis 单实例部署</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/postgres/README.html">Postgres 单实例部署</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/elastic/README.html">Elastic 单实例部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_核心应用部署">核心应用部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./core-app-deploy/README.html">核心应用部署准备</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/nexus3/README.html">Nexus3 部署</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/gitlab/README.html">Gitlab CE部署</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/harbor/README.html">Harbor 部署</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/minio/README.html">MinIO 部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_devops环境部署">DevOps环境部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./dev-ops-app-deploy/gitlab-runner/README.html">Gitlab Runner部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_平台监控环境部署">平台监控环境部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./extra-app-deploy/README.html">平台监控功能部署准备</a></p>
-</li>
-<li>
-<p><a href="./monitor-app-deploy/prometheus-deploy/README.html">Prometheus 部署</a></p>
-</li>
-<li>
-<p><a href="./monitor-app-deploy/alert-manager-deploy/README.html">AlertManager 部署</a></p>
-</li>
-<li>
-<p><a href="./monitor-app-deploy/grafana-deploy/README.html">Grafana 部署</a></p>
-</li>
-</ol>
+<div class="sect1">
+<h2 id="_准备_cri_o">准备 CRI-O</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+</pre></td><td class="code"><pre><span class="nv">VERSION</span><span class="o">=</span>1.24.1
+<span class="nv">ARCH</span><span class="o">=</span>amd64
+wget https://github.com/cri-o/cri-o/releases/download/v<span class="nv">$VERSION</span>/cri-o.<span class="nv">$ARCH</span>.v<span class="nv">$VERSION</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> /tmp/cri-o.tgz
+<span class="nb">tar </span>zxf /tmp/cri-o.tgz <span class="nt">-C</span> /tmp
+<span class="nb">mv</span> /tmp/cri-o/install /tmp/cri-o/install-official
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="sh">"</span><span class="no">EOL</span><span class="sh">" &gt;/tmp/cri-o/install.sh
+#!/bin/bash
+PROJECT_HOME=</span><span class="si">$(</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="k">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="k">}</span><span class="si">)</span>
+    <span class="nb">pwd</span>
+<span class="si">)</span><span class="sh">
+cat &lt;&lt;EOF | tee /etc/modules-load.d/cri-o.conf &gt; /dev/null
+br_netfilter
+EOF
+modprobe br_netfilter
+cat &lt;&lt;EOF | tee /etc/sysctl.d/zz-cri-o.conf
+net.ipv4.ip_forward = 1
+net.ipv6.conf.all.forwarding = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables = 1
+fs.may_detach_mounts = 1
+EOF
+sysctl --system
+chmod 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/install-official
+mkdir -p /opt/cni/bin </span><span class="se">\</span><span class="sh">
+    /etc/containers </span><span class="se">\</span><span class="sh">
+    /etc/cni/net.d </span><span class="se">\</span><span class="sh">
+    /etc/crio </span><span class="se">\</span><span class="sh">
+    /etc/crio/crio.conf.d </span><span class="se">\</span><span class="sh">
+    /usr/share/man </span><span class="se">\</span><span class="sh">
+    /usr/share/oci-umount/oci-umount.d </span><span class="se">\</span><span class="sh">
+    /usr/share/bash-completion/completions </span><span class="se">\</span><span class="sh">
+    /usr/share/fish/completions </span><span class="se">\</span><span class="sh">
+    /usr/share/zsh/site-functions
+sed -i "s@/usr/local/bin@/usr/bin@g"  </span><span class="nv">$PROJECT_HOME</span><span class="sh">/contrib/crio.service
+PREFIX=/usr </span><span class="nv">$PROJECT_HOME</span><span class="sh">/install-official
+crictl completion bash &gt; /usr/share/bash-completion/completions/crictl
+chmod 755 /usr/share/bash-completion/completions/crictl
+crictl completion zsh &gt; /usr/share/zsh/site-functions/_crictl
+chmod 755 /usr/share/zsh/site-functions/_crictl
+crictl completion fish &gt; /usr/share/fish/completions/crictl.fish
+chmod 755 /usr/share/fish/completions/crictl.fish
+systemctl daemon-reload
+systemctl enable crio --now
+</span><span class="no">EOL
+</span><span class="nv">dist_path</span><span class="o">=</span>/tmp/cri-o
+<span class="nv">cri_o_path</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>
+    <span class="c"># shellcheck disable=SC2086</span>
+    <span class="nb">cd</span> <span class="nv">$dist_path</span> <span class="o">||</span> <span class="nb">exit </span>1
+    <span class="c"># shellcheck disable=SC2046</span>
+    <span class="nb">dirname</span> <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
+<span class="si">)</span><span class="s2">/cri-o-kubernetes.tgz"</span>
+<span class="o">(</span>
+    <span class="c"># shellcheck disable=SC2046</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="s2">"</span><span class="nv">$dist_path</span><span class="s2">"</span><span class="si">)</span> <span class="o">||</span> <span class="nb">exit</span>
+    <span class="c"># shellcheck disable=SC2046</span>
+    <span class="nb">tar </span>zcf <span class="s2">"</span><span class="nv">$cri_o_path</span><span class="s2">"</span> <span class="si">$(</span><span class="nb">basename</span> <span class="s2">"</span><span class="nv">$dist_path</span><span class="s2">"</span><span class="si">)</span>
+<span class="o">)</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"CRI-O 压缩包已导出到 </span><span class="se">\"</span><span class="nv">$cri_o_path</span><span class="se">\"</span><span class="s2">,请上传解压后执行 bash install.sh"</span>
+</pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_扩展功能">扩展功能</h2>
+<h2 id="_安装_cri_o">安装 CRI-O</h2>
 <div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./extra-app-deploy/README.html">扩展软件部署准备</a></p>
-</li>
-<li>
-<p><a href="./extra-app-deploy/cluster-web-proxy/README.html">转发集群外部 HTTP 请求</a></p>
-</li>
-</ol>
+<div class="paragraph">
+<p>上传完成后，使用如下命令安装 <strong>Containerd</strong></p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre><span class="nb">tar </span>zxf cri-o-kubernetes.tgz
+bash <span class="nt">-x</span> cri-o/installer.sh
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_运维指南">运维指南</h2>
+<h2 id="_查看_cri_o_状态">查看 CRI-O 状态</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>使用如下命令查看 <strong>CRI-O</strong> 状态</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>systemctl status crio.service
+</pre></td></tr></tbody></table></code></pre>
 </div>
-<div class="sect1">
-<h2 id="_杂项">杂项</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./TODO.html">待完成列表</a></p>
-</li>
-<li>
-<p><a href="./CONTRIBUTOR.html">文档编写指南</a></p>
-</li>
-<li>
-<p><a href="./zz-document/static/HARDWARE_INFO.html">测试环境概览</a></p>
-</li>
-<li>
-<p><a href="./zz-document/tools/EXTRA_SCRIPT.html">相关部署脚本</a></p>
-</li>
-<li>
-<p><a href="./REFER.html">文档参考</a></p>
-</li>
-</ul>
 </div>
 <div class="paragraph">
-<p><a href="./zz-document/static/EXTRA_NOTE.html">EOF</a></p>
+<p>如果一切无误，则 <strong>CRI-O</strong> 安装完成。</p>
 </div>
 </div>
 </div>
@@ -690,7 +871,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <p class="custom-footer">
         代码双击可复制 | 最后编辑于 2022-09-01 11:46:52 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/4922386140a08a6accb0252272dab57a15e805fd/MENU.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/4922386140a08a6accb0252272dab57a15e805fd/cluster-deploy/cri-runtime/cri-o/README.adoc">查看源码</a> |
         <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/4922386140a08a6accb0252272dab57a15e805fd/"
            target="_blank">#492238</a>
         <script>
