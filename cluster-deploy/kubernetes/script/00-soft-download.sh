@@ -63,7 +63,7 @@ done
 
 # 导入自定义镜像
 save_image "k8s.gcr.io/pause:3.6"
-save_image "rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"
+save_image "docker.io/rancher/mirrored-flannelcni-flannel-cni-plugin:v1.1.0"
 save_image "docker.io/rancher/mirrored-flannelcni-flannel:v0.19.1"
 
 INSTALL_SCRIPT=$DOWNLOAD_PATH/install.sh
