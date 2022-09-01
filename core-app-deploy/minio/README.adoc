@@ -21,7 +21,7 @@ MinIO 部署完成后将在集群内外暴露如下资源：
 
 此文档部署的 *MinIO* 依赖于 *StorageClass* 和 *LDAP* ，在 *MinIO* 部署之前需准备好。
 
-*MinIO* 使用如下镜像，如需离线环境安装则需要将其导入到 Kubernetes 可拉取的位置中。
+*MinIO* 使用如下镜像，如需离线环境部署则需要将其导入到 Kubernetes 可拉取的位置中。
 
 [source%linenums,text]
 ----
@@ -51,7 +51,7 @@ include::conf/01-minio-storage.yaml[]
 
 === 导入相关配置
 
-在 *MinIO* 安装过程中需要自定义部分配置，在 *Kubernetes* 导入此配置即可。
+在 *MinIO* 部署过程中需要自定义部分配置，在 *Kubernetes* 导入此配置即可。
 
 [source%linenums,yaml]
 ----

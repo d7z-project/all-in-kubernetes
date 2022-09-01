@@ -22,7 +22,7 @@ reflector 用于在各个 `namespace` 下同步 `ConfigMap` 配置。
 emberstack/kubernetes-reflector:6.1.47
 ----
 
-此组件/应用将被安装到 `kube-system` 命名空间下。
+此组件/应用将被部署到 `kube-system` 命名空间下。
 
 == 部署
 

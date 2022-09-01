@@ -1,1 +1,25 @@
-= KubeVela 安装部署
+= KubeVela 部署部署
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+[source%linenums,text]
+----
+oamdev/kube-webhook-certgen:v2.4.1
+oamdev/cluster-gateway:v1.4.0
+oamdev/vela-core:v1.5.2
+oamdev/vela-apiserver:v1.5.2
+----
+
+[source%linenums,bash]
+----
+vela version
+# CLI Version: v1.5.2
+# Core Version: 1.5.2
+# GitRevision: git-3df1776
+# GolangVersion: go1.17.13
+
+----

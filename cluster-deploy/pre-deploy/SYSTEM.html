@@ -658,11 +658,11 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_基础软件安装">基础软件安装</a>
+<li><a href="#_基础软件部署">基础软件部署</a>
 <ul class="sectlevel2">
-<li><a href="#_安装_bash_completion">安装 Bash Completion</a></li>
-<li><a href="#_安装_openssh_server">安装 OpenSSH Server</a></li>
-<li><a href="#_安装_vm_tools_可选">安装 VM tools (可选)</a></li>
+<li><a href="#_部署_bash_completion">部署 Bash Completion</a></li>
+<li><a href="#_部署_openssh_server">部署 OpenSSH Server</a></li>
+<li><a href="#_部署_vm_tools_可选">部署 VM tools (可选)</a></li>
 </ul>
 </li>
 <li><a href="#_基础环境配置">基础环境配置</a>
@@ -678,17 +678,17 @@ pre.rouge {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>本项目使用 <a target="_blank" href="https://www.debian.org/releases/bullseye/">"Debian bullseye"</a> 作底层操作系统，在系统安装完成后的具体的配置情况如下：</p>
+<p>本项目使用 <a target="_blank" href="https://www.debian.org/releases/bullseye/">"Debian bullseye"</a> 作底层操作系统，在系统部署完成后的具体的配置情况如下：</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_基础软件安装">基础软件安装</h2>
+<h2 id="_基础软件部署">基础软件部署</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_安装_bash_completion">安装 Bash Completion</h3>
+<h3 id="_部署_bash_completion">部署 Bash Completion</h3>
 <div class="paragraph">
-<p><strong>Bash Completion</strong> 可为 Shell 添加 <strong>TAB</strong> 补全功能，建议安装。</p>
+<p><strong>Bash Completion</strong> 可为 Shell 添加 <strong>TAB</strong> 补全功能，建议部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -699,30 +699,30 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_安装_openssh_server">安装 OpenSSH Server</h3>
+<h3 id="_部署_openssh_server">部署 OpenSSH Server</h3>
 <div class="paragraph">
-<p><strong>OpenSSH</strong> 能极大的方便远程调试，建议安装。</p>
+<p><strong>OpenSSH</strong> 能极大的方便远程调试，建议部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre><span class="c"># 安装 OpenSSH 软件包</span>
+</pre></td><td class="code"><pre><span class="c"># 部署 OpenSSH 软件包</span>
 apt-get <span class="nt">-y</span> <span class="nb">install </span>openssh-server
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_安装_vm_tools_可选">安装 VM tools (可选)</h3>
+<h3 id="_部署_vm_tools_可选">部署 VM tools (可选)</h3>
 <div class="paragraph">
-<p>在 <strong>KVM</strong> 虚拟机环境下，某些工具包能极大提升部署效率，建议安装。</p>
+<p>在 <strong>KVM</strong> 虚拟机环境下，某些工具包能极大提升部署效率，建议部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre><span class="c"># 安装虚拟化相关的软件包</span>
+</pre></td><td class="code"><pre><span class="c"># 部署虚拟化相关的软件包</span>
 apt-get <span class="nt">-y</span> <span class="nb">install </span>qemu-guest-agent cloud-init
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -849,11 +849,11 @@ systemctl restart ssh
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-09-01 11:48:17 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/cluster-deploy/pre-deploy/SYSTEM.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/cluster-deploy/pre-deploy/SYSTEM.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/"
+           target="_blank">#c4cdd4</a>
         <script>
 
             function toast(msg, duration = 1000) {

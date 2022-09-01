@@ -1,4 +1,4 @@
-= 核心系统应用环境安装准备
+= 核心系统应用环境部署准备
 :experimental:
 :icons: font
 :toc: right

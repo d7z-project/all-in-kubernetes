@@ -1,4 +1,4 @@
-= 安装 LoadBalancer 组件实现 (MetalLB)
+= 部署 LoadBalancer 组件实现 (MetalLB)
 :experimental:
 :icons: font
 :toc: right
@@ -55,7 +55,7 @@ kubectl get pods -n metallb-system -o wide
 
 == 配置 LoadBalancer 地址
 
-安装完成后，需要指定 LoadBalancer 可分配的地址。
+部署完成后，需要指定 LoadBalancer 可分配的地址。
 
 TIP: 由于是小型化部署，所以 L2 模式已经够用，当然，如果你是自建机房，想使用 BGP 的方案的话可自行查阅文档。
 

@@ -661,7 +661,7 @@ pre.rouge {
 <li><a href="#_说明">说明</a></li>
 <li><a href="#_导入_rbac_规则和初始化">导入 RBAC 规则和初始化</a></li>
 <li><a href="#_映射节点目录">映射节点目录</a></li>
-<li><a href="#_安装_nfs_server">安装 NFS Server</a></li>
+<li><a href="#_部署_nfs_server">部署 NFS Server</a></li>
 <li><a href="#_验证部署情况">验证部署情况</a>
 <ul class="sectlevel2">
 <li><a href="#_查看部署结果">查看部署结果</a></li>
@@ -680,7 +680,7 @@ pre.rouge {
 <p>项目地址：<a target="_blank" href="https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner">nfs-ganesha-server-and-external-provisioner</a></p>
 </div>
 <div class="paragraph">
-<p>kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。</p>
+<p>kubernetes 部署后可选择一个节点的某个目录作为集群数据存储目录。</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -695,7 +695,7 @@ pre.rouge {
 </table>
 </div>
 <div class="paragraph">
-<p>安装时需要拉取镜像 <code>k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0</code>,同时需要集群上每个节点安装有 <code>nfs-common</code> 软件包。</p>
+<p>部署时需要拉取镜像 <code>k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0</code>,同时需要集群上每个节点部署有 <code>nfs-common</code> 软件包。</p>
 </div>
 </div>
 </div>
@@ -964,7 +964,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_安装_nfs_server">安装 NFS Server</h2>
+<h2 id="_部署_nfs_server">部署 NFS Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>将上一操作创建的 PVC 绑定至 <code>StatefulSet</code>,然后通过 <code>Service</code> 暴露对应的端口，最后将目标绑定在 <code>StorageClass</code> 即可 ,在此配置中，Provisioner 为 <code>nfs.3rd.storage.k8s.io/nfs-server-provisioner</code> ,根据前面节点亲和性配置和接下来的容忍度配置，<strong>NFS Server</strong> 将被调度到主节点上。</p>
@@ -1668,11 +1668,11 @@ kubectl <span class="nb">exec</span> <span class="s2">"</span><span class="nv">$
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-08-23 06:25:58 |
+        代码双击可复制 | 最后编辑于 2022-09-01 11:48:17 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/32ff21cbbbd64215347fed97eee0ee690b025a12/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/32ff21cbbbd64215347fed97eee0ee690b025a12/"
-           target="_blank">#32ff21</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/"
+           target="_blank">#c4cdd4</a>
         <script>
 
             function toast(msg, duration = 1000) {

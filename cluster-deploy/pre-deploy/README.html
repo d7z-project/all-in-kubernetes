@@ -668,7 +668,7 @@ pre.rouge {
 <ul class="sectlevel2">
 <li><a href="#_启用内核模块">启用内核模块</a></li>
 <li><a href="#_配置内核参数">配置内核参数</a></li>
-<li><a href="#_安装附加软件包">安装附加软件包</a></li>
+<li><a href="#_部署附加软件包">部署附加软件包</a></li>
 </ul>
 </li>
 </ul>
@@ -678,7 +678,7 @@ pre.rouge {
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>安装 <code>kubernetes</code> 需要对系统进行某些必要的配置，此文档适用于所有需要安装 <code>kubernetes</code> 节点。</p>
+<p>部署 <code>kubernetes</code> 需要对系统进行某些必要的配置，此文档适用于所有需要部署 <code>kubernetes</code> 节点。</p>
 </div>
 </div>
 </div>
@@ -688,7 +688,7 @@ pre.rouge {
 <div class="sect2">
 <h3 id="_验证机器属性">验证机器属性</h3>
 <div class="paragraph">
-<p>安装 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上一致，可能会导致安装失败。可使用如下命令确认：</p>
+<p>部署 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上一致，可能会导致部署失败。可使用如下命令确认：</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -760,7 +760,7 @@ net.bridge.bridge-nf-call-iptables = 1
 </div>
 </div>
 <div class="sect2">
-<h3 id="_安装附加软件包">安装附加软件包</h3>
+<h3 id="_部署附加软件包">部署附加软件包</h3>
 <div class="paragraph">
 <p><code>kubernetes</code> 部分组件在运行中需要某些软件支撑，否则将导致 kubernetes 无法正常运行。</p>
 </div>
@@ -808,11 +808,11 @@ apt-get <span class="nb">install</span> <span class="nt">-y</span> wireguard wir
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:34:31 |
+        代码双击可复制 | 最后编辑于 2022-09-01 11:48:17 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/cluster-deploy/pre-deploy/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/abf0fa605c3b7fe3675c2a794a5ecec83ff01de6/"
-           target="_blank">#abf0fa</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/cluster-deploy/pre-deploy/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/"
+           target="_blank">#c4cdd4</a>
         <script>
 
             function toast(msg, duration = 1000) {

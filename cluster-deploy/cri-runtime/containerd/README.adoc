@@ -21,9 +21,9 @@ include::script/download.sh[lines=2..-1]
 
 复制脚本到有网络的机器上运行，在脚本执行完成后将输出的文件上传到需要部署 *Containerd* 的机器上。
 
-== 安装 Containerd
+== 部署 Containerd
 
-上传完成后，使用如下命令安装 *Containerd*
+上传完成后，使用如下命令部署 *Containerd*
 
 [source%linenums,bash]
 ----
@@ -39,11 +39,11 @@ include::script/install.sh[lines=2..-1]
 systemctl status containerd.service
 ----
 
-如果一切无误，则 *Containerd* 安装完成。
+如果一切无误，则 *Containerd* 部署完成。
 
 == 测试
 
-安装完成后，使用如下步骤测试 Containerd 安装结果
+部署完成后，使用如下步骤测试 Containerd 部署结果
 
 === 启动 nginx 容器
 

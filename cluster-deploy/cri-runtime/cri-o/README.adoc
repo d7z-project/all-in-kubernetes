@@ -17,9 +17,9 @@
 include::script/download.sh[lines=2..-1]
 ----
 
-== 安装 CRI-O
+== 部署 CRI-O
 
-上传完成后，使用如下命令安装 *Containerd*
+上传完成后，使用如下命令部署 *Containerd*
 
 [source%linenums,bash]
 ----
@@ -35,4 +35,4 @@ include::script/install.sh[lines=2..-1]
 systemctl status crio.service
 ----
 
-如果一切无误，则 *CRI-O* 安装完成。
+如果一切无误，则 *CRI-O* 部署完成。

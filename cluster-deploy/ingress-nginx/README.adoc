@@ -1,4 +1,4 @@
-= 安装 Ingress Controller 组件实现 (Nginx)
+= 部署 Ingress Controller 组件实现 (Nginx)
 :experimental:
 :icons: font
 :toc: right

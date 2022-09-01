@@ -700,7 +700,7 @@ pre.rouge {
 <h2 id="_注意事项">注意事项</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>由于 <strong>Gitlab CE</strong> 不支持 LDAP 分配管理员 （这是 <strong>Gitlab EE</strong> 的功能） ，所以需要安装后手动为用户分配管理员权限，如无法接受可使用 <strong>Gitea</strong> 部署。</p>
+<p>由于 <strong>Gitlab CE</strong> 不支持 LDAP 分配管理员 （这是 <strong>Gitlab EE</strong> 的功能） ，所以需要部署后手动为用户分配管理员权限，如无法接受可使用 <strong>Gitea</strong> 部署。</p>
 </div>
 </div>
 </div>
@@ -708,7 +708,7 @@ pre.rouge {
 <h2 id="_部署前准备">部署前准备</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><strong>Gitlab</strong> 依赖于 <strong>Postgres</strong> 和 <strong>Redis</strong>，在安装前你需要预先配置其依赖。</p>
+<p><strong>Gitlab</strong> 依赖于 <strong>Postgres</strong> 和 <strong>Redis</strong>，在部署前你需要预先配置其依赖。</p>
 </div>
 <div class="sect2">
 <h3 id="_配置数据源">配置数据源</h3>
@@ -881,7 +881,7 @@ pre.rouge {
 </tr>
 <tr>
 <td><i class="conum" data-value="7"></i><b>7</b></td>
-<td>在安装时请自定义 <strong>Secrets</strong> ,可使用 <code>pwgen -Bsv1 64</code> 生成 （<strong>请不要使用默认配置</strong>）。</td>
+<td>在部署时请自定义 <strong>Secrets</strong> ,可使用 <code>pwgen -Bsv1 64</code> 生成 （<strong>请不要使用默认配置</strong>）。</td>
 </tr>
 </table>
 </div>
@@ -1570,7 +1570,7 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
 <div class="sect2">
 <h3 id="_测试_ldap_登陆">测试 LDAP 登陆</h3>
 <div class="paragraph">
-<p>创建一个测试用户，并在 <code>cn=gitlab</code> 下添加对此用户的绑定，然后在 <strong>Gitlab</strong> 测试登陆，登陆成功后，退出用户并在 <strong>LDAP</strong> 下删除此用户，然后再次测试，如无法登陆则表明安装成功。</p>
+<p>创建一个测试用户，并在 <code>cn=gitlab</code> 下添加对此用户的绑定，然后在 <strong>Gitlab</strong> 测试登陆，登陆成功后，退出用户并在 <strong>LDAP</strong> 下删除此用户，然后再次测试，如无法登陆则表明部署成功。</p>
 </div>
 </div>
 </div>
@@ -1607,11 +1607,11 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 19:22:27 |
+        代码双击可复制 | 最后编辑于 2022-09-01 11:48:17 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/bd5fc41a096a71c60bc9bec0754bbb72a6e24de3/core-app-deploy/gitlab/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/bd5fc41a096a71c60bc9bec0754bbb72a6e24de3/"
-           target="_blank">#bd5fc4</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/core-app-deploy/gitlab/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/"
+           target="_blank">#c4cdd4</a>
         <script>
 
             function toast(msg, duration = 1000) {

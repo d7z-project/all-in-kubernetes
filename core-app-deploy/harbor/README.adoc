@@ -156,7 +156,7 @@ kubectl get pods,pvc,svc,ingress -n core-app -l app=harbor
 
 == 配置 Harbor
 
-安装完成后，访问 `https://harbor.d7z.net/` , 使用用户名 `admin` 和配置的密码 `harbor-admin-password` 登陆 *Harbor* 。
+部署完成后，访问 `https://harbor.d7z.net/` , 使用用户名 `admin` 和配置的密码 `harbor-admin-password` 登陆 *Harbor* 。
 
 === 配置 LDAP 管理器
 

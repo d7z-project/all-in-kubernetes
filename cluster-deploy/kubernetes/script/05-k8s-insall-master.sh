@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 unset http_proxy
 unset https_proxy
-# 安装控制节点
+# 部署控制节点
 kubeadm init \
     --upload-certs \
     --pod-network-cidr 10.254.0.0/16 \

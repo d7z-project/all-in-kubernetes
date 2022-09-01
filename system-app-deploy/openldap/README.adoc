@@ -40,9 +40,9 @@ include::./conf/02-ldap-secret.yaml[]
 <2> 配置共享用户秘密共享
 <3> 只读用户密码
 
-WARNING: 生产环境安装一定要更改为复杂的密码！
+WARNING: 生产环境部署一定要更改为复杂的密码！
 
-== 安装 OpenLDAP
+== 部署 OpenLDAP
 
 === 创建 `pvc`
 
@@ -94,7 +94,7 @@ kubectl get secrets,configmaps  -n core-system
 kubectl get pods,service -n core-system
 ----
 
-确认 Pod 状态均为 `Running` 且未多次重启即表示安装无误。
+确认 Pod 状态均为 `Running` 且未多次重启即表示部署无误。
 
 == 扩展
 

@@ -73,7 +73,7 @@ include::conf/04-nexus-ingress.yaml[]
 
 == 管理 Nexus3
 
-安装完成后，你需要对 Nexus3 进行一些配置。
+部署完成后，你需要对 Nexus3 进行一些配置。
 
 === 查看 Nexus3 部署情况
 
@@ -163,4 +163,4 @@ docker tag nginx:1.21.1 registry.d7z.net/public/nginx:1.21.1
 docker push registry.d7z.net/public/nginx:1.21.1
 ----
 
-如果推送一切无误，则表明安装成功。
+如果推送一切无误，则表明部署成功。

@@ -683,7 +683,7 @@ pre.rouge {
 <h2 id="_说明">说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>此文档已在 <code>Debian Bullseye</code> 和 <code>CentOS</code> 下验证 （仅使用 <strong>AMD64</strong>）。安装过程中需要网络。</p>
+<p>此文档已在 <code>Debian Bullseye</code> 和 <code>CentOS</code> 下验证 （仅使用 <strong>AMD64</strong>）。部署过程中需要网络。</p>
 </div>
 </div>
 </div>
@@ -1186,7 +1186,7 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 12
 </pre></td><td class="code"><pre><span class="nb">unset </span>http_proxy
 <span class="nb">unset </span>https_proxy
-<span class="c"># 安装控制节点</span>
+<span class="c"># 部署控制节点</span>
 kubeadm init <span class="se">\</span>
     <span class="nt">--upload-certs</span> <span class="se">\</span>
     <span class="nt">--pod-network-cidr</span> 10.254.0.0/16 <span class="se">\</span>
@@ -1636,7 +1636,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 </div>
 </details>
 <div class="paragraph">
-<p>执行命令 <code>watch kubectl get pods --all-namespaces</code>, 直到出现类似于如下示例的回显即表示安装成功。</p>
+<p>执行命令 <code>watch kubectl get pods --all-namespaces</code>, 直到出现类似于如下示例的回显即表示部署成功。</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1687,7 +1687,7 @@ node-worker-02   Ready    &lt;none&gt;          105s   v1.24.2
 </div>
 </div>
 <div class="paragraph">
-<p>至此，kubernetes (Google) 安装完成。</p>
+<p>至此，kubernetes (Google) 部署完成。</p>
 </div>
 </div>
 </div>
@@ -1724,11 +1724,11 @@ node-worker-02   Ready    &lt;none&gt;          105s   v1.24.2
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-07-29 14:44:16 |
+        代码双击可复制 | 最后编辑于 2022-09-01 11:48:17 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/16f7c850db1842c1c3b0903d06164ab73386b3be/cluster-deploy/kubernetes/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/16f7c850db1842c1c3b0903d06164ab73386b3be/"
-           target="_blank">#16f7c8</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/cluster-deploy/kubernetes/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c4cdd422c7a05154ffd7fc0f0ff443ed6be25b98/"
+           target="_blank">#c4cdd4</a>
         <script>
 
             function toast(msg, duration = 1000) {
