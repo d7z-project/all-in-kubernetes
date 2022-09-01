@@ -8,7 +8,7 @@
 
 == 说明
 
-此文档已在 `Debian Bullseye` 和 `CentOS` 下验证 （仅使用 *AMD64*）。安装过程中需要网络。
+此文档已在 `Debian Bullseye` 和 `CentOS` 下验证 （仅使用 *AMD64*）。部署过程中需要网络。
 
 == 部署软件包
 
@@ -121,7 +121,7 @@ include::./conf/kube-flannel.yml[]
 
 ====
 
-执行命令 `watch kubectl get pods --all-namespaces`, 直到出现类似于如下示例的回显即表示安装成功。
+执行命令 `watch kubectl get pods --all-namespaces`, 直到出现类似于如下示例的回显即表示部署成功。
 
 [source%linenums,text]
 ----
@@ -153,4 +153,4 @@ node-worker-01   Ready    <none>          13m    v1.24.2
 node-worker-02   Ready    <none>          105s   v1.24.2
 ----
 
-至此，kubernetes (Google) 安装完成。
+至此，kubernetes (Google) 部署完成。

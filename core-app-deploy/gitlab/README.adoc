@@ -14,11 +14,11 @@ Gitlab 依赖镜像 `sameersbn/gitlab:15.1.2`, 如在离线环境请自行导入
 
 == 注意事项
 
-由于 *Gitlab CE* 不支持 LDAP 分配管理员 （这是 *Gitlab EE* 的功能） ，所以需要安装后手动为用户分配管理员权限，如无法接受可使用 *Gitea* 部署。
+由于 *Gitlab CE* 不支持 LDAP 分配管理员 （这是 *Gitlab EE* 的功能） ，所以需要部署后手动为用户分配管理员权限，如无法接受可使用 *Gitea* 部署。
 
 == 部署前准备
 
-*Gitlab* 依赖于 *Postgres* 和 *Redis*，在安装前你需要预先配置其依赖。
+*Gitlab* 依赖于 *Postgres* 和 *Redis*，在部署前你需要预先配置其依赖。
 
 === 配置数据源
 
@@ -77,7 +77,7 @@ include::./conf/00-gitlab-conf.yaml[]
 <4> LDAP 的过滤条件
 <5> 如果你修改了 *Postgres* 的密码，则需要在此更改
 <6> 由于 `Gitlab CE` 无法动态分配管理员，请修改默认管理员密码并妥善保存（*请不要使用默认配置*）。
-<7> 在安装时请自定义 *Secrets* ,可使用 `pwgen -Bsv1 64` 生成 （*请不要使用默认配置*）。
+<7> 在部署时请自定义 *Secrets* ,可使用 `pwgen -Bsv1 64` 生成 （*请不要使用默认配置*）。
 
 === 创建 Gitlab 持久卷
 
@@ -152,4 +152,4 @@ kubectl get pods,pvc,service,ingress -n core-app -l app=gitlab
 
 === 测试 LDAP 登陆
 
-创建一个测试用户，并在 `cn=gitlab` 下添加对此用户的绑定，然后在 *Gitlab* 测试登陆，登陆成功后，退出用户并在 *LDAP* 下删除此用户，然后再次测试，如无法登陆则表明安装成功。
+创建一个测试用户，并在 `cn=gitlab` 下添加对此用户的绑定，然后在 *Gitlab* 测试登陆，登陆成功后，退出用户并在 *LDAP* 下删除此用户，然后再次测试，如无法登陆则表明部署成功。

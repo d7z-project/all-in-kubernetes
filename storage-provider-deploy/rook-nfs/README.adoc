@@ -6,13 +6,13 @@
 :toclevels: 4
 :source-highlighter: rouge
 
-kubernetes 安装后可选择一个节点的某个目录作为集群数据存储目录。
+kubernetes 部署后可选择一个节点的某个目录作为集群数据存储目录。
 
 WARNING: rook-nfs 项目已经link:https://github.com/rook/nfs#deprecated[过时]，未来此文档可能会被替换,正在寻找替代方案，如果你有好的方案可告诉我，[.line-through]#暂不考虑 `Ceph` 等类似的块存储方案# 。
 
 == 导入规则
 
-在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 `rook/nfs:v1.7.3`,同时需要集群上每个节点安装有 `nfs-common` 软件包。
+在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 `rook/nfs:v1.7.3`,同时需要集群上每个节点部署有 `nfs-common` 软件包。
 
 .点击展开配置
 [%collapsible]

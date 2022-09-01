@@ -52,7 +52,7 @@ include::./conf/03-lam-ingress.yaml[]
 
 == 验证
 
-访问地址 `https://lam.internal.{{var.global.pub-host}}` , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明安装正确。
+访问地址 `https://lam.internal.{{var.global.pub-host}}` , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明部署正确。
 
 TIP: 在测试时，你需要将 `lam.internal.{{var.global.pub-host}}` 改为实际的地址
 

@@ -48,7 +48,7 @@ include::./conf/01-gitlab-runner-conf.yaml[]
 
 == 导入默认内部配置
 
-Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 安装到 K8S 集群]。
+Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 部署到 K8S 集群]。
 
 [source%linenums,yaml]
 ----

@@ -11,4 +11,4 @@
 > 此文档记录项目编写过程中参考的第三方资源。
 
 . link:https://kubernetes.io/zh-cn/docs/setup/production-environment/tools/kubeadm/install-kubeadm/[部署 kubeadm]
-. link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 安装到 K8S 集群]
+. link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 部署到 K8S 集群]

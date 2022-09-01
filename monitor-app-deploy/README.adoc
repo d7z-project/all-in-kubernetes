@@ -1,4 +1,4 @@
-= 监控平台安装准备
+= 监控平台部署准备
 :experimental:
 :icons: font
 :toc: right
