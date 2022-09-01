@@ -1,0 +1,61 @@
+= Containerd 部署
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+此 `Containerd` 为 `kubernetes` 提供服务，主要保证兼容和稳定，仅会在出现安全问题或兼容性问题时才会更新。
+
+== 准备 Containerd 资源
+
+使用如下命令准备所有需要的文件:
+
+[source%linenums,bash]
+----
+include::script/download.sh[lines=2..-1]
+----
+
+复制脚本到有网络的机器上运行，在脚本执行完成后将输出的文件上传到需要部署 *Containerd* 的机器上。
+
+== 安装 Containerd
+
+上传完成后，使用如下命令安装 *Containerd*
+
+[source%linenums,bash]
+----
+include::script/install.sh[lines=2..-1]
+----
+
+== 查看 Containerd 状态
+
+使用如下命令查看 *Containerd* 状态
+
+[source%linenums,bash]
+----
+systemctl status containerd.service
+----
+
+如果一切无误，则 *Containerd* 安装完成。
+
+== 测试
+
+安装完成后，使用如下步骤测试 Containerd 安装结果
+
+=== 启动 nginx 容器
+
+执行如下命令，启动 nginx 容器
+
+[source%linenums,bash]
+----
+nerdctl run -d -p 8080:80 nginx:1.21.1
+----
+
+此操作将会从远端拉取镜像并启动，同时转发 `8080` 端口
+
+=== 测试部署结果
+
+使用浏览器访问 `http://127.0.0.1:8080`, 如果能访问成功则表明部署成功。

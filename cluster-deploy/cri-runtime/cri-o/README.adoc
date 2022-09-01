@@ -1,0 +1,38 @@
+= CRI-O 部署
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+此 `CRI-O` 为 `kubernetes` 提供服务，主要保证兼容和稳定，仅会在出现安全问题或兼容性问题时才会更新。
+
+== 准备 CRI-O
+
+[source%linenums,bash]
+----
+include::script/download.sh[lines=2..-1]
+----
+
+== 安装 CRI-O
+
+上传完成后，使用如下命令安装 *Containerd*
+
+[source%linenums,bash]
+----
+include::script/install.sh[lines=2..-1]
+----
+
+== 查看 CRI-O 状态
+
+使用如下命令查看 *CRI-O* 状态
+
+[source%linenums,bash]
+----
+systemctl status crio.service
+----
+
+如果一切无误，则 *CRI-O* 安装完成。

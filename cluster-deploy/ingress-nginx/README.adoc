@@ -14,8 +14,7 @@ Nginx Ingress Controller 需要以下镜像：
 
 [source%linenums,bash]
 ----
-crictl pull k8s.gcr.io/ingress-nginx/controller:v1.2.1
-crictl pull k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
+include::offline/images.txt[]
 ----
 
 == 导入配置
