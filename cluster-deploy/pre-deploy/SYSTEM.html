@@ -658,17 +658,17 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_基础软件部署">基础软件部署</a>
+<li><a href="#_基础软件部署">1. 基础软件部署</a>
 <ul class="sectlevel2">
-<li><a href="#_部署_bash_completion">部署 Bash Completion</a></li>
-<li><a href="#_部署_openssh_server">部署 OpenSSH Server</a></li>
-<li><a href="#_部署_vm_tools_可选">部署 VM tools (可选)</a></li>
+<li><a href="#_部署_bash_completion">1.1. 部署 Bash Completion</a></li>
+<li><a href="#_部署_openssh_server">1.2. 部署 OpenSSH Server</a></li>
+<li><a href="#_部署_vm_tools_可选">1.3. 部署 VM tools (可选)</a></li>
 </ul>
 </li>
-<li><a href="#_基础环境配置">基础环境配置</a>
+<li><a href="#_基础环境配置">2. 基础环境配置</a>
 <ul class="sectlevel2">
-<li><a href="#_修改_apt_远程仓库地址_可选">修改 APT 远程仓库地址 (可选)</a></li>
-<li><a href="#_修改openssh_配置_可选">修改OpenSSH 配置 (可选)</a></li>
+<li><a href="#_修改_apt_远程仓库地址_可选">2.1. 修改 APT 远程仓库地址 (可选)</a></li>
+<li><a href="#_修改openssh_配置_可选">2.2. 修改OpenSSH 配置 (可选)</a></li>
 </ul>
 </li>
 </ul>
@@ -683,29 +683,29 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_基础软件部署">基础软件部署</h2>
+<h2 id="_基础软件部署">1. 基础软件部署</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_部署_bash_completion">部署 Bash Completion</h3>
+<h3 id="_部署_bash_completion">1.1. 部署 Bash Completion</h3>
 <div class="paragraph">
 <p><strong>Bash Completion</strong> 可为 Shell 添加 <strong>TAB</strong> 补全功能，建议部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>apt-get <span class="nb">install</span> <span class="nt">-y</span>  bash-completion
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署_openssh_server">部署 OpenSSH Server</h3>
+<h3 id="_部署_openssh_server">1.2. 部署 OpenSSH Server</h3>
 <div class="paragraph">
 <p><strong>OpenSSH</strong> 能极大的方便远程调试，建议部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre><span class="c"># 部署 OpenSSH 软件包</span>
 apt-get <span class="nt">-y</span> <span class="nb">install </span>openssh-server
@@ -714,13 +714,13 @@ apt-get <span class="nt">-y</span> <span class="nb">install </span>openssh-serve
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署_vm_tools_可选">部署 VM tools (可选)</h3>
+<h3 id="_部署_vm_tools_可选">1.3. 部署 VM tools (可选)</h3>
 <div class="paragraph">
 <p>在 <strong>KVM</strong> 虚拟机环境下，某些工具包能极大提升部署效率，建议部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre><span class="c"># 部署虚拟化相关的软件包</span>
 apt-get <span class="nt">-y</span> <span class="nb">install </span>qemu-guest-agent cloud-init
@@ -731,16 +731,16 @@ apt-get <span class="nt">-y</span> <span class="nb">install </span>qemu-guest-ag
 </div>
 </div>
 <div class="sect1">
-<h2 id="_基础环境配置">基础环境配置</h2>
+<h2 id="_基础环境配置">2. 基础环境配置</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_修改_apt_远程仓库地址_可选">修改 APT 远程仓库地址 (可选)</h3>
+<h3 id="_修改_apt_远程仓库地址_可选">2.1. 修改 APT 远程仓库地址 (可选)</h3>
 <div class="paragraph">
 <p>受地域影响，默认的 APT 下载可能会非常慢，可根据实际需求更改为合适的地址，例如：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -765,7 +765,7 @@ deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main contrib 
 </div>
 </div>
 <div class="sect2">
-<h3 id="_修改openssh_配置_可选">修改OpenSSH 配置 (可选)</h3>
+<h3 id="_修改openssh_配置_可选">2.2. 修改OpenSSH 配置 (可选)</h3>
 <div class="paragraph">
 <p>关闭密码登陆可提高服务器安全性。同时，在后续部署中可能会用到 22 端口，所以将默认 OpenSSH 端口替换成 <code>2222</code> ，如果没有使用需求则可以跳过。</p>
 </div>
@@ -783,7 +783,7 @@ deb https://mirrors.ustc.edu.cn/debian-security/ bullseye-security main contrib 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -875,24 +875,54 @@ systemctl restart ssh
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

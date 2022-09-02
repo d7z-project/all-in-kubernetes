@@ -658,16 +658,16 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_创建配置">创建配置</a></li>
-<li><a href="#_创建转发程序">创建转发程序</a></li>
-<li><a href="#_创建_ingress_配置">创建 Ingress 配置</a></li>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_创建配置">2. 创建配置</a></li>
+<li><a href="#_创建转发程序">3. 创建转发程序</a></li>
+<li><a href="#_创建_ingress_配置">4. 创建 Ingress 配置</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此文档描述了一种转发集群外部 HTTP 站点并利用 <strong>Ingress</strong> 进行重映射的方法。在本文中使用 <code>nginx</code> 进行转发。</p>
@@ -678,14 +678,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建配置">创建配置</h2>
+<h2 id="_创建配置">2. 创建配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>根据需求创建以下配置：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -766,14 +766,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建转发程序">创建转发程序</h2>
+<h2 id="_创建转发程序">3. 创建转发程序</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>导入以下配置，创建地址转发, 如果你的节点网络环境复杂，则需要配置节点亲和性：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -865,14 +865,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_ingress_配置">创建 Ingress 配置</h2>
+<h2 id="_创建_ingress_配置">4. 创建 Ingress 配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置，创建可用的 Ingress 配置, 注意，在部署完成再次更改配置后可能需要重建 Pod。在 <code>Conf</code> 配置中有多个域名，则需要在 <code>Ingress</code> 下配置多个转发。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -989,24 +989,54 @@ pre.rouge {
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

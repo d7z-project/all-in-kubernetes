@@ -55,19 +55,20 @@
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>

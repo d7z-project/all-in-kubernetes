@@ -658,15 +658,15 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_部署">部署</a></li>
-<li><a href="#_验证">验证</a></li>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_部署">2. 部署</a></li>
+<li><a href="#_验证">3. 验证</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>reflector 用于在各个 <code>namespace</code> 下同步 <code>ConfigMap</code> 配置。</p>
@@ -679,7 +679,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>emberstack/kubernetes-reflector:6.1.47
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -690,7 +690,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署">部署</h2>
+<h2 id="_部署">2. 部署</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>导入以下配置，创建 <code>reflector</code> 相关的资源。</p>
@@ -700,7 +700,7 @@ pre.rouge {
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -952,7 +952,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl apply <span class="nt">-n</span> kube-system <span class="nt">-f</span> https://github.com/emberstack/kubernetes-reflector/releases/download/v6.1.47/reflector.yaml
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -962,7 +962,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get pods <span class="nt">-n</span> kube-system <span class="nt">-l</span> app.kubernetes.io/name<span class="o">=</span>reflector
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -970,14 +970,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_验证">验证</h2>
+<h2 id="_验证">3. 验证</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>在 kubernetes 中导入以下配置.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1019,7 +1019,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre> kubectl get configmaps <span class="nt">-n</span> default test-reflector <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.test}'</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1084,24 +1084,54 @@ pre.rouge {
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

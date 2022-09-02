@@ -658,20 +658,20 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_快速导入镜像">快速导入镜像</a></li>
+<li><a href="#_快速导入镜像">1. 快速导入镜像</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_快速导入镜像">快速导入镜像</h2>
+<h2 id="_快速导入镜像">1. 快速导入镜像</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>对于离线部署环境可使用此脚本从本机快速复制脚本至部署机器，支持多镜像多机器同时导入，需要本机装有 <code>docker</code> 、<code>openssh-client</code> 和 <code>scp</code> 软件包。此脚本只支持 <code>Containerd</code> 。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -866,24 +866,54 @@ done</span>
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

@@ -658,12 +658,12 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_自签名证书">自签名证书</a>
+<li><a href="#_自签名证书">1. 自签名证书</a>
 <ul class="sectlevel2">
-<li><a href="#_创建_ca_证书_issuer">创建 CA 证书 Issuer</a></li>
-<li><a href="#_创建_ca_证书">创建 CA 证书</a></li>
-<li><a href="#_创建证书_issuer">创建证书 Issuer</a></li>
-<li><a href="#_签发证书">签发证书</a></li>
+<li><a href="#_创建_ca_证书_issuer">1.1. 创建 CA 证书 Issuer</a></li>
+<li><a href="#_创建_ca_证书">1.2. 创建 CA 证书</a></li>
+<li><a href="#_创建证书_issuer">1.3. 创建证书 Issuer</a></li>
+<li><a href="#_签发证书">1.4. 签发证书</a></li>
 </ul>
 </li>
 </ul>
@@ -671,13 +671,13 @@ pre.rouge {
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_自签名证书">自签名证书</h2>
+<h2 id="_自签名证书">1. 自签名证书</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_创建_ca_证书_issuer">创建 CA 证书 Issuer</h3>
+<h3 id="_创建_ca_证书_issuer">1.1. 创建 CA 证书 Issuer</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -712,10 +712,10 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建_ca_证书">创建 CA 证书</h3>
+<h3 id="_创建_ca_证书">1.2. 创建 CA 证书</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -744,10 +744,10 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建证书_issuer">创建证书 Issuer</h3>
+<h3 id="_创建证书_issuer">1.3. 创建证书 Issuer</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -768,10 +768,10 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_签发证书">签发证书</h3>
+<h3 id="_签发证书">1.4. 签发证书</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -883,24 +883,54 @@ pre.rouge {
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

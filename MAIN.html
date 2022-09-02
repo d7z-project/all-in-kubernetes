@@ -443,10 +443,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_特性">特性</a></li>
-<li><a href="#_入门">入门</a></li>
-<li><a href="#_注意事项">注意事项</a></li>
-<li><a href="#_license">LICENSE</a></li>
+<li><a href="#_特性">1. 特性</a></li>
+<li><a href="#_入门">2. 入门</a></li>
+<li><a href="#_注意事项">3. 注意事项</a></li>
+<li><a href="#_license">4. LICENSE</a></li>
 </ul>
 </div>
 </div>
@@ -466,7 +466,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_特性">特性</h2>
+<h2 id="_特性">1. 特性</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -499,7 +499,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_入门">入门</h2>
+<h2 id="_入门">2. 入门</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目发布在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes">d7z-project/all-in-kubernetes</a>。 有问题可在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/issues">Github</a> 提问。</p>
@@ -525,7 +525,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_注意事项">注意事项</h2>
+<h2 id="_注意事项">3. 注意事项</h2>
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -542,7 +542,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_license">LICENSE</h2>
+<h2 id="_license">4. LICENSE</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此文档/工程/仓库使用 <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>，具体细节请查看 <a href="./LICENSE">LICENSE</a> 文件.</p>
@@ -607,24 +607,54 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

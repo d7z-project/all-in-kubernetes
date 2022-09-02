@@ -658,16 +658,16 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_准备_cri_o">准备 CRI-O</a></li>
-<li><a href="#_部署_cri_o">部署 CRI-O</a></li>
-<li><a href="#_查看_cri_o_状态">查看 CRI-O 状态</a></li>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_准备_cri_o">2. 准备 CRI-O</a></li>
+<li><a href="#_部署_cri_o">3. 部署 CRI-O</a></li>
+<li><a href="#_查看_cri_o_状态">4. 查看 CRI-O 状态</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此 <code>CRI-O</code> 为 <code>kubernetes</code> 提供服务，主要保证兼容和稳定，仅会在出现安全问题或兼容性问题时才会更新。</p>
@@ -675,11 +675,11 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_准备_cri_o">准备 CRI-O</h2>
+<h2 id="_准备_cri_o">2. 准备 CRI-O</h2>
 <div class="sectionbody">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -803,14 +803,14 @@ systemctl enable crio --now
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署_cri_o">部署 CRI-O</h2>
+<h2 id="_部署_cri_o">3. 部署 CRI-O</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>上传完成后，使用如下命令部署 <strong>Containerd</strong></p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre><span class="nb">tar </span>zxf cri-o-kubernetes.tgz
 bash <span class="nt">-x</span> cri-o/installer.sh
@@ -820,14 +820,14 @@ bash <span class="nt">-x</span> cri-o/installer.sh
 </div>
 </div>
 <div class="sect1">
-<h2 id="_查看_cri_o_状态">查看 CRI-O 状态</h2>
+<h2 id="_查看_cri_o_状态">4. 查看 CRI-O 状态</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用如下命令查看 <strong>CRI-O</strong> 状态</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>systemctl status crio.service
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -895,24 +895,54 @@ bash <span class="nt">-x</span> cri-o/installer.sh
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

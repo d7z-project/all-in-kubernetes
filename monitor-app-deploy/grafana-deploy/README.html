@@ -658,20 +658,20 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_创建持久卷">创建持久卷</a></li>
-<li><a href="#_创建用户分组">创建用户分组</a></li>
-<li><a href="#_创建配置">创建配置</a></li>
-<li><a href="#_导入启动配置">导入启动配置</a></li>
-<li><a href="#_创建_service">创建 Service</a></li>
-<li><a href="#_创建_ingress">创建 Ingress</a></li>
-<li><a href="#_测试">测试</a></li>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_创建持久卷">2. 创建持久卷</a></li>
+<li><a href="#_创建用户分组">3. 创建用户分组</a></li>
+<li><a href="#_创建配置">4. 创建配置</a></li>
+<li><a href="#_导入启动配置">5. 导入启动配置</a></li>
+<li><a href="#_创建_service">6. 创建 Service</a></li>
+<li><a href="#_创建_ingress">7. 创建 Ingress</a></li>
+<li><a href="#_测试">8. 测试</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此项目使用镜像 <code>grafana/grafana-oss:9.1.0</code> ，离线环境请在部署前将其导入至 <strong>containerd</strong> 或私有镜像源地址中。</p>
@@ -679,14 +679,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建持久卷">创建持久卷</h2>
+<h2 id="_创建持久卷">2. 创建持久卷</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置创建对应的持久卷:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -720,14 +720,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建用户分组">创建用户分组</h2>
+<h2 id="_创建用户分组">3. 创建用户分组</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Grafana</strong> 使用 <strong>LDAP</strong> 统一管理用户，需登陆 LDAP 管理控制台，添加如下用户：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>cn=monitor,ou=groups,dc=cluster,dc=local
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -735,14 +735,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建配置">创建配置</h2>
+<h2 id="_创建配置">4. 创建配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置创建 <strong>Grafana</strong> 需要的相关的配置</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1000,14 +1000,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入启动配置">导入启动配置</h2>
+<h2 id="_导入启动配置">5. 导入启动配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置创建 <strong>Grafana</strong> 启动配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1145,14 +1145,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_service">创建 Service</h2>
+<h2 id="_创建_service">6. 创建 Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置，创建对应的 <strong>Service</strong> 配置</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1184,14 +1184,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_ingress">创建 Ingress</h2>
+<h2 id="_创建_ingress">7. 创建 Ingress</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>Service</strong> 创建完成后，使用以下配置将对应的 <strong>Service</strong> 暴露到 <strong>Ingress</strong> 中。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1251,14 +1251,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_测试">测试</h2>
+<h2 id="_测试">8. 测试</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>配置导入完成后，使用如下命令查看结果：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get pods,svc,ingress,configmaps <span class="nt">-n</span> monitor-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>grafana
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1326,24 +1326,54 @@ pre.rouge {
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

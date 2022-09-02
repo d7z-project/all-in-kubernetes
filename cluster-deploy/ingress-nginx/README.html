@@ -658,17 +658,17 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_导入配置">导入配置</a>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_导入配置">2. 导入配置</a>
 <ul class="sectlevel2">
-<li><a href="#_导入资源">导入资源</a></li>
-<li><a href="#_应用修复">应用修复</a></li>
+<li><a href="#_导入资源">2.1. 导入资源</a></li>
+<li><a href="#_应用修复">2.2. 应用修复</a></li>
 </ul>
 </li>
-<li><a href="#_测试">测试</a>
+<li><a href="#_测试">3. 测试</a>
 <ul class="sectlevel2">
-<li><a href="#_导入测试配置">导入测试配置</a></li>
-<li><a href="#_验证测试结果">验证测试结果</a></li>
+<li><a href="#_导入测试配置">3.1. 导入测试配置</a></li>
+<li><a href="#_验证测试结果">3.2. 验证测试结果</a></li>
 </ul>
 </li>
 </ul>
@@ -676,7 +676,7 @@ pre.rouge {
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址：<a target="_blank" href="https://github.com/kubernetes/ingress-nginx/">ingress-nginx</a></p>
@@ -686,7 +686,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>k8s.gcr.io/ingress-nginx/controller:v1.2.1
 k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
@@ -696,10 +696,10 @@ k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入配置">导入配置</h2>
+<h2 id="_导入配置">2. 导入配置</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_导入资源">导入资源</h3>
+<h3 id="_导入资源">2.1. 导入资源</h3>
 <div class="paragraph">
 <p>由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 <a href="conf/00-ingress-nginx.yaml">conf/ingress-nginx.yaml</a> 推送到控制节点，再使用 <code>kubectl apply -f ingress-nginx.yaml</code> 导入资源。</p>
 </div>
@@ -708,20 +708,20 @@ k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_应用修复">应用修复</h3>
+<h3 id="_应用修复">2.2. 应用修复</h3>
 <div class="paragraph">
 <p>由于需要多个 LoadBalancer Service 共享同一个IP,所以需要对 <code>Ingress</code> 单独进行配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -798,7 +798,7 @@ k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get service,pods <span class="nt">-n</span> ingress-nginx <span class="nt">-o</span> wide
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -810,10 +810,10 @@ k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </div>
 </div>
 <div class="sect1">
-<h2 id="_测试">测试</h2>
+<h2 id="_测试">3. 测试</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_导入测试配置">导入测试配置</h3>
+<h3 id="_导入测试配置">3.1. 导入测试配置</h3>
 <div class="paragraph">
 <p>将以下配置导入到 <code>kubernetes</code> 下：</p>
 </div>
@@ -822,7 +822,7 @@ k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1077,13 +1077,13 @@ k8s.gcr.io/ingress-nginx/kube-webhook-certgen:v1.1.1
 </details>
 </div>
 <div class="sect2">
-<h3 id="_验证测试结果">验证测试结果</h3>
+<h3 id="_验证测试结果">3.2. 验证测试结果</h3>
 <div class="paragraph">
 <p>导入完成后，执行以下命令验证部署结果。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1114,7 +1114,7 @@ curl http://<span class="nv">$CLIENT_IP</span>/second
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>first web demo.
 second web demo.
@@ -1182,24 +1182,54 @@ second web demo.
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

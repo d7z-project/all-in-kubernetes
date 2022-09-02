@@ -658,17 +658,17 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_创建持久化磁盘">创建持久化磁盘</a></li>
-<li><a href="#_创建配置">创建配置</a>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_创建持久化磁盘">2. 创建持久化磁盘</a></li>
+<li><a href="#_创建配置">3. 创建配置</a>
 <ul class="sectlevel2">
-<li><a href="#_redis_管理配置">Redis 管理配置</a></li>
-<li><a href="#_redis_配置">Redis  配置</a></li>
+<li><a href="#_redis_管理配置">3.1. Redis 管理配置</a></li>
+<li><a href="#_redis_配置">3.2. Redis  配置</a></li>
 </ul>
 </li>
-<li><a href="#_部署_redis">部署 Redis</a></li>
-<li><a href="#_创建_service">创建 Service</a></li>
-<li><a href="#_测试">测试</a></li>
+<li><a href="#_部署_redis">4. 部署 Redis</a></li>
+<li><a href="#_创建_service">5. 创建 Service</a></li>
+<li><a href="#_测试">6. 测试</a></li>
 </ul>
 </div>
 </div>
@@ -690,14 +690,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此项目需要镜像 <code>redis:7</code>。部署完成后，集群内部地址为：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>svc-redis.core-middle.svc.cluster.local:6379
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -705,14 +705,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建持久化磁盘">创建持久化磁盘</h2>
+<h2 id="_创建持久化磁盘">2. 创建持久化磁盘</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Redis 需要将内存中存储的键值对数据缓存到本地磁盘</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -746,16 +746,16 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建配置">创建配置</h2>
+<h2 id="_创建配置">3. 创建配置</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_redis_管理配置">Redis 管理配置</h3>
+<h3 id="_redis_管理配置">3.1. Redis 管理配置</h3>
 <div class="paragraph">
 <p>使用此配置文件映射 Redis 管理员密码</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -799,13 +799,13 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_redis_配置">Redis  配置</h3>
+<h3 id="_redis_配置">3.2. Redis  配置</h3>
 <div class="paragraph">
 <p>Redis 带有大量参数需要配置，使用 ConfigMap 创建 Redis 相关的配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -956,14 +956,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署_redis">部署 Redis</h2>
+<h2 id="_部署_redis">4. 部署 Redis</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>现在可以部署 Redis Server了。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1057,14 +1057,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_service">创建 Service</h2>
+<h2 id="_创建_service">5. 创建 Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>部署完成后，需为 Redis Server 创建 Service 关联。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1096,14 +1096,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_测试">测试</h2>
+<h2 id="_测试">6. 测试</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>当所有机器部署完成后，使用以下目录查看部署结果：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre> kubectl get pvc,secrets,configmaps,pods,service <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>redis
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1113,7 +1113,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre><span class="nv">REDIS_PASSWD</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle  secret-redis <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.password}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
 kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle pods/sts-redis-0  <span class="nt">--</span> redis-cli <span class="nt">-h</span> svc-redis.core-middle.svc.cluster.local AUTH <span class="nv">$REDIS_PASSWD</span>
@@ -1180,24 +1180,54 @@ kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

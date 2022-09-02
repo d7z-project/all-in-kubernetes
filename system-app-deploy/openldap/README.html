@@ -658,32 +658,32 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_导入配置">导入配置</a>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_导入配置">2. 导入配置</a>
 <ul class="sectlevel2">
-<li><a href="#_创建共享配置">创建共享配置</a></li>
-<li><a href="#_创建_secret">创建 Secret</a></li>
+<li><a href="#_创建共享配置">2.1. 创建共享配置</a></li>
+<li><a href="#_创建_secret">2.2. 创建 Secret</a></li>
 </ul>
 </li>
-<li><a href="#_部署_openldap">部署 OpenLDAP</a>
+<li><a href="#_部署_openldap">3. 部署 OpenLDAP</a>
 <ul class="sectlevel2">
-<li><a href="#_创建_pvc">创建 <code>pvc</code></a></li>
-<li><a href="#_部署_openldap_服务">部署 OpenLDAP 服务</a></li>
+<li><a href="#_创建_pvc">3.1. 创建 <code>pvc</code></a></li>
+<li><a href="#_部署_openldap_服务">3.2. 部署 OpenLDAP 服务</a></li>
 </ul>
 </li>
-<li><a href="#_导入ldap配置">导入LDAP配置</a>
+<li><a href="#_导入ldap配置">4. 导入LDAP配置</a>
 <ul class="sectlevel2">
-<li><a href="#_导入_memberof_配置">导入 MemberOf 配置</a></li>
+<li><a href="#_导入_memberof_配置">4.1. 导入 MemberOf 配置</a></li>
 </ul>
 </li>
-<li><a href="#_验证">验证</a></li>
-<li><a href="#_扩展">扩展</a></li>
+<li><a href="#_验证">5. 验证</a></li>
+<li><a href="#_扩展">6. 扩展</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此项目需要镜像 <code>osixia/openldap:1.5.0</code>。</p>
@@ -691,19 +691,19 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入配置">导入配置</h2>
+<h2 id="_导入配置">2. 导入配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>OpenLDAP 需要一些初始化配置才能工作。</p>
 </div>
 <div class="sect2">
-<h3 id="_创建共享配置">创建共享配置</h3>
+<h3 id="_创建共享配置">2.1. 创建共享配置</h3>
 <div class="paragraph">
 <p>我们可创建一个共享的 ConfigMap 以供系统使用。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -763,13 +763,13 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建_secret">创建 Secret</h3>
+<h3 id="_创建_secret">2.2. 创建 Secret</h3>
 <div class="paragraph">
 <p>部署 OpenLDAP 前，需要配置管理员密码和共享用户密码。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -857,16 +857,16 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署_openldap">部署 OpenLDAP</h2>
+<h2 id="_部署_openldap">3. 部署 OpenLDAP</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_创建_pvc">创建 <code>pvc</code></h3>
+<h3 id="_创建_pvc">3.1. 创建 <code>pvc</code></h3>
 <div class="paragraph">
 <p>OpenLDAP 运行过程中需要存储数据。使用以下 YAML 创建，注意，此处需要用到之前教程创建的 <code>StroageClass</code> 。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -929,13 +929,13 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署_openldap_服务">部署 OpenLDAP 服务</h3>
+<h3 id="_部署_openldap_服务">3.2. 部署 OpenLDAP 服务</h3>
 <div class="paragraph">
 <p>现在可以部署 LDAP 服务了，导入以下配置即可。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1166,26 +1166,26 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入ldap配置">导入LDAP配置</h2>
+<h2 id="_导入ldap配置">4. 导入LDAP配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下命令登陆 LDAP 控制台，导入LDAP配置。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-system pods/sts-ldap-0 <span class="nt">--</span> /bin/bash
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_导入_memberof_配置">导入 MemberOf 配置</h3>
+<h3 id="_导入_memberof_配置">4.1. 导入 MemberOf 配置</h3>
 <div class="paragraph">
 <p>MemberOf 能非常方便的绑定用户和组的关系。进入 LDAP 控制台，执行以下命令：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1240,14 +1240,14 @@ olcModuleLoad: refint.la
 </div>
 </div>
 <div class="sect1">
-<h2 id="_验证">验证</h2>
+<h2 id="_验证">5. 验证</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>部署完成后，执行以下命令验证部署的完整性。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 </pre></td><td class="code"><pre><span class="c"># 检查配置是否同步到 default 命名空间</span>
@@ -1262,14 +1262,14 @@ kubectl get pods,service <span class="nt">-n</span> core-system
 </div>
 </div>
 <div class="sect1">
-<h2 id="_扩展">扩展</h2>
+<h2 id="_扩展">6. 扩展</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>可使用 <code>CURL</code> 测试 LDAP .</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>curl <span class="nt">--user</span> <span class="nv">$LDAP_BIND_DN</span>:<span class="nv">$LDAP_PASS</span> ldap://<span class="nv">$LDAP_HOST</span>/<span class="nv">$LDAP_BASE</span>?uid?one?<span class="s2">"</span><span class="nv">$LDAP_USER_FILTER</span><span class="s2">"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1334,24 +1334,54 @@ kubectl get pods,service <span class="nt">-n</span> core-system
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

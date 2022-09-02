@@ -658,12 +658,12 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_创建_pvc">创建 PVC</a></li>
-<li><a href="#_管理员用户配置">管理员用户配置</a></li>
-<li><a href="#_创建_postgressql_服务器">创建 PostgresSQL 服务器</a></li>
-<li><a href="#_关联service">关联Service</a></li>
-<li><a href="#_测试">测试</a></li>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_创建_pvc">2. 创建 PVC</a></li>
+<li><a href="#_管理员用户配置">3. 管理员用户配置</a></li>
+<li><a href="#_创建_postgressql_服务器">4. 创建 PostgresSQL 服务器</a></li>
+<li><a href="#_关联service">5. 关联Service</a></li>
+<li><a href="#_测试">6. 测试</a></li>
 </ul>
 </div>
 </div>
@@ -685,14 +685,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此文档需要镜像 <code>postgres:14</code>。部署完成后，集群内部地址为：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>svc-postgres.core-middle.svc.cluster.local:5432
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -700,14 +700,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_pvc">创建 PVC</h2>
+<h2 id="_创建_pvc">2. 创建 PVC</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>导入以下配置，创建PVC。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -741,14 +741,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_管理员用户配置">管理员用户配置</h2>
+<h2 id="_管理员用户配置">3. 管理员用户配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>将管理员用户配置导入到 Secret 中。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -785,14 +785,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建_postgressql_服务器">创建 PostgresSQL 服务器</h2>
+<h2 id="_创建_postgressql_服务器">4. 创建 PostgresSQL 服务器</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下配置创建 PostgresSQL 服务器。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -886,14 +886,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_关联service">关联Service</h2>
+<h2 id="_关联service">5. 关联Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>将 PostgresSQL 服务关联到 Service 下。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -925,14 +925,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_测试">测试</h2>
+<h2 id="_测试">6. 测试</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>使用以下命令查看实例部署情况：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get pods,secrets,services,deployments,pvc <span class="nt">-n</span> core-middle <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>postgres
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -943,7 +943,7 @@ pre.rouge {
 <div class="listingblock">
 <div class="title">测试命令</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 </pre></td><td class="code"><pre><span class="nv">PG_NAME</span><span class="o">=</span><span class="si">$(</span>kubectl get secrets <span class="nt">-n</span> core-middle secret-postgres-root <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.username}'</span> | <span class="nb">base64</span> <span class="nt">-d</span><span class="si">)</span>
@@ -955,7 +955,7 @@ kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt
 <div class="listingblock">
 <div class="title">输出结果</div>
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1026,24 +1026,54 @@ kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

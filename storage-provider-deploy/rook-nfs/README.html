@@ -658,20 +658,20 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_导入规则">导入规则</a></li>
-<li><a href="#_映射节点目录">映射节点目录</a>
+<li><a href="#_导入规则">1. 导入规则</a></li>
+<li><a href="#_映射节点目录">2. 映射节点目录</a>
 <ul class="sectlevel2">
-<li><a href="#_创建_local_pv">创建 Local PV</a></li>
-<li><a href="#_创建_host_storageclass">创建 Host StorageClass</a></li>
-<li><a href="#_创建_host_persistentvolumeclaim">创建 Host PersistentVolumeClaim</a></li>
+<li><a href="#_创建_local_pv">2.1. 创建 Local PV</a></li>
+<li><a href="#_创建_host_storageclass">2.2. 创建 Host StorageClass</a></li>
+<li><a href="#_创建_host_persistentvolumeclaim">2.3. 创建 Host PersistentVolumeClaim</a></li>
 </ul>
 </li>
-<li><a href="#_创建nfs_server">创建NFS Server</a></li>
-<li><a href="#_创建nfs_storage_class_关联">创建NFS Storage Class 关联</a></li>
-<li><a href="#_验证部署情况">验证部署情况</a>
+<li><a href="#_创建nfs_server">3. 创建NFS Server</a></li>
+<li><a href="#_创建nfs_storage_class_关联">4. 创建NFS Storage Class 关联</a></li>
+<li><a href="#_验证部署情况">5. 验证部署情况</a>
 <ul class="sectlevel2">
-<li><a href="#_导入测试配置">导入测试配置</a></li>
-<li><a href="#_验证测试">验证测试</a></li>
+<li><a href="#_导入测试配置">5.1. 导入测试配置</a></li>
+<li><a href="#_验证测试">5.2. 验证测试</a></li>
 </ul>
 </li>
 </ul>
@@ -698,7 +698,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入规则">导入规则</h2>
+<h2 id="_导入规则">1. 导入规则</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>在开始前需要导入RBAC规则和初始化配置，此过程需要拉取镜像 <code>rook/nfs:v1.7.3</code>,同时需要集群上每个节点部署有 <code>nfs-common</code> 软件包。</p>
@@ -708,7 +708,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1395,16 +1395,16 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_映射节点目录">映射节点目录</h2>
+<h2 id="_映射节点目录">2. 映射节点目录</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_创建_local_pv">创建 Local PV</h3>
+<h3 id="_创建_local_pv">2.1. 创建 Local PV</h3>
 <div class="paragraph">
 <p>首先在集群的宿主机创建挂载点，这里使用的是 <code>/share</code>。使用以下配置创建 <code>PersistentVolume</code>, 如下所示:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1475,13 +1475,13 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建_host_storageclass">创建 Host StorageClass</h3>
+<h3 id="_创建_host_storageclass">2.2. 创建 Host StorageClass</h3>
 <div class="paragraph">
 <p>创建 StorageClass 关联刚刚创建的PV, 创建配置如下:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1517,13 +1517,13 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建_host_persistentvolumeclaim">创建 Host PersistentVolumeClaim</h3>
+<h3 id="_创建_host_persistentvolumeclaim">2.3. 创建 Host PersistentVolumeClaim</h3>
 <div class="paragraph">
 <p>创建 PVC，供之后创建的 NFS Server 使用。可使用以下配置创建：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1565,14 +1565,14 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建nfs_server">创建NFS Server</h2>
+<h2 id="_创建nfs_server">3. 创建NFS Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>我们可以通过创建 <code>nfsservers.nfs.rook.io</code> 资源的实例来创建NFS服务器的实例。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1617,14 +1617,14 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_创建nfs_storage_class_关联">创建NFS Storage Class 关联</h2>
+<h2 id="_创建nfs_storage_class_关联">4. 创建NFS Storage Class 关联</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>部署 <strong>Operator</strong> 和 <strong>NFS Server</strong> 实例之后, 须创建 <code>StrorageClass</code> 来动态配置 <code>Volume</code>。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1660,10 +1660,10 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 </div>
 </div>
 <div class="sect1">
-<h2 id="_验证部署情况">验证部署情况</h2>
+<h2 id="_验证部署情况">5. 验证部署情况</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_导入测试配置">导入测试配置</h3>
+<h3 id="_导入测试配置">5.1. 导入测试配置</h3>
 <div class="paragraph">
 <p>导入以下配置以创建测试 Pod。</p>
 </div>
@@ -1672,7 +1672,7 @@ rook-nfs 项目已经<a target="_blank" href="https://github.com/rook/nfs#deprec
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1887,13 +1887,13 @@ metadata:
 </details>
 </div>
 <div class="sect2">
-<h3 id="_验证测试">验证测试</h3>
+<h3 id="_验证测试">5.2. 验证测试</h3>
 <div class="paragraph">
 <p>创建完成后，执行以下命令，有数据返回则表示成功：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1981,24 +1981,54 @@ kubectl <span class="nb">exec</span> <span class="nv">$POD_NAME</span> <span cla
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

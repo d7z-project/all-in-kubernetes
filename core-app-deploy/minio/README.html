@@ -658,31 +658,31 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a>
+<li><a href="#_说明">1. 说明</a>
 <ul class="sectlevel2">
-<li><a href="#_暴露端点">暴露端点</a></li>
-<li><a href="#_依赖">依赖</a></li>
+<li><a href="#_暴露端点">1.1. 暴露端点</a></li>
+<li><a href="#_依赖">1.2. 依赖</a></li>
 </ul>
 </li>
-<li><a href="#_部署准备">部署准备</a>
+<li><a href="#_部署准备">2. 部署准备</a>
 <ul class="sectlevel2">
-<li><a href="#_创建_ldap_group">创建 LDAP Group</a></li>
-<li><a href="#_创建相关的持久卷">创建相关的持久卷</a></li>
-<li><a href="#_导入相关配置">导入相关配置</a></li>
+<li><a href="#_创建_ldap_group">2.1. 创建 LDAP Group</a></li>
+<li><a href="#_创建相关的持久卷">2.2. 创建相关的持久卷</a></li>
+<li><a href="#_导入相关配置">2.3. 导入相关配置</a></li>
 </ul>
 </li>
-<li><a href="#_开始部署">开始部署</a>
+<li><a href="#_开始部署">3. 开始部署</a>
 <ul class="sectlevel2">
-<li><a href="#_创建_minio_service">创建 MinIO Service</a></li>
-<li><a href="#_创建_minio_statefulset">创建 MinIO StatefulSet</a></li>
-<li><a href="#_暴露_minio_地址">暴露 MinIO 地址</a></li>
+<li><a href="#_创建_minio_service">3.1. 创建 MinIO Service</a></li>
+<li><a href="#_创建_minio_statefulset">3.2. 创建 MinIO StatefulSet</a></li>
+<li><a href="#_暴露_minio_地址">3.3. 暴露 MinIO 地址</a></li>
 </ul>
 </li>
-<li><a href="#_测试">测试</a>
+<li><a href="#_测试">4. 测试</a>
 <ul class="sectlevel2">
-<li><a href="#_查看运行状态">查看运行状态</a></li>
-<li><a href="#_访问web控制台">访问Web控制台</a></li>
-<li><a href="#_访问cli控制台">访问Cli控制台</a></li>
+<li><a href="#_查看运行状态">4.1. 查看运行状态</a></li>
+<li><a href="#_访问web控制台">4.2. 访问Web控制台</a></li>
+<li><a href="#_访问cli控制台">4.3. 访问Cli控制台</a></li>
 </ul>
 </li>
 </ul>
@@ -690,10 +690,10 @@ pre.rouge {
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_暴露端点">暴露端点</h3>
+<h3 id="_暴露端点">1.1. 暴露端点</h3>
 <div class="paragraph">
 <p>MinIO 部署完成后将在集群内外暴露如下资源：</p>
 </div>
@@ -709,7 +709,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect2">
-<h3 id="_依赖">依赖</h3>
+<h3 id="_依赖">1.2. 依赖</h3>
 <div class="paragraph">
 <p>此文档部署的 <strong>MinIO</strong> 依赖于 <strong>StorageClass</strong> 和 <strong>LDAP</strong> ，在 <strong>MinIO</strong> 部署之前需准备好。</p>
 </div>
@@ -718,7 +718,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>quay.io/minio/minio:RELEASE.2022-08-22T23-53-06Z
 minio/mc:RELEASE.2022-08-23T05-45-20Z
@@ -729,29 +729,29 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署准备">部署准备</h2>
+<h2 id="_部署准备">2. 部署准备</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_创建_ldap_group">创建 LDAP Group</h3>
+<h3 id="_创建_ldap_group">2.1. 创建 LDAP Group</h3>
 <div class="paragraph">
 <p>连接你的 <strong>LDAP</strong> 管理器，为其添加如下角色。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>cn=s3,ou=groups,dc=cluster,dc=local
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建相关的持久卷">创建相关的持久卷</h3>
+<h3 id="_创建相关的持久卷">2.2. 创建相关的持久卷</h3>
 <div class="paragraph">
 <p>在 <strong>Kubernetes</strong> 下导入以下配置，创建对应的持久卷。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -784,13 +784,13 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect2">
-<h3 id="_导入相关配置">导入相关配置</h3>
+<h3 id="_导入相关配置">2.3. 导入相关配置</h3>
 <div class="paragraph">
 <p>在 <strong>MinIO</strong> 部署过程中需要自定义部分配置，在 <strong>Kubernetes</strong> 导入此配置即可。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -867,19 +867,19 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect1">
-<h2 id="_开始部署">开始部署</h2>
+<h2 id="_开始部署">3. 开始部署</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>一切环境准备完成后，即可开始部署 <strong>MinIO</strong>。</p>
 </div>
 <div class="sect2">
-<h3 id="_创建_minio_service">创建 MinIO Service</h3>
+<h3 id="_创建_minio_service">3.1. 创建 MinIO Service</h3>
 <div class="paragraph">
 <p>导入以下配置，创建 <strong>MinIO</strong> 的 <strong>Service</strong>。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -918,13 +918,13 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect2">
-<h3 id="_创建_minio_statefulset">创建 MinIO StatefulSet</h3>
+<h3 id="_创建_minio_statefulset">3.2. 创建 MinIO StatefulSet</h3>
 <div class="paragraph">
 <p>导入以下配置，创建 <strong>MinIO</strong> 的 <strong>StatefulSet</strong>。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1129,13 +1129,13 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect2">
-<h3 id="_暴露_minio_地址">暴露 MinIO 地址</h3>
+<h3 id="_暴露_minio_地址">3.3. 暴露 MinIO 地址</h3>
 <div class="paragraph">
 <p>导入以下配置，创建可用的 <strong>Ingress</strong>。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1218,35 +1218,35 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect1">
-<h2 id="_测试">测试</h2>
+<h2 id="_测试">4. 测试</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_查看运行状态">查看运行状态</h3>
+<h3 id="_查看运行状态">4.1. 查看运行状态</h3>
 <div class="paragraph">
 <p>使用以下命令查看 <strong>MinIO</strong> 部署状态：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get pods,pvc,svc,ingress <span class="nt">-n</span> core-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>minio
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_访问web控制台">访问Web控制台</h3>
+<h3 id="_访问web控制台">4.2. 访问Web控制台</h3>
 <div class="paragraph">
 <p>在浏览器访问地址 <code><a target="_blank" href="https://minio.internal.d7z.net" class="bare">https://minio.internal.d7z.net</a></code>,使用 <strong>LDAP</strong> 配置的用户登陆，如无错误，将登陆成功。</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_访问cli控制台">访问Cli控制台</h3>
+<h3 id="_访问cli控制台">4.3. 访问Cli控制台</h3>
 <div class="paragraph">
 <p>使用以下命令进入 CLI 控制台</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-n</span> core-app sts-minio-0 <span class="nt">--container</span> client <span class="nt">-it</span> <span class="nt">--</span> bash
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1256,7 +1256,7 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>mc ping minio
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1322,24 +1322,54 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

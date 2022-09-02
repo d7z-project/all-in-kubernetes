@@ -658,14 +658,14 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_映射ingress域名到内部集群">映射Ingress域名到内部集群</a></li>
-<li><a href="#_参考">参考</a></li>
+<li><a href="#_映射ingress域名到内部集群">1. 映射Ingress域名到内部集群</a></li>
+<li><a href="#_参考">2. 参考</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_映射ingress域名到内部集群">映射Ingress域名到内部集群</h2>
+<h2 id="_映射ingress域名到内部集群">1. 映射Ingress域名到内部集群</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>为最大化利用 <strong>Kubernetes</strong> 集群内网络，在添加Ingress 后，可以将 <strong>Ingress</strong> 域名同时添加到 <strong>CoreDNS</strong> 配置中，这样集群内部机器请求域名时将直接使用集群内部网络，避免过多的网络地址转换。具体的操作方法如下：</p>
@@ -675,7 +675,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl edit <span class="nt">-n</span> kube-system configmaps coredns
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -685,7 +685,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="conf"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="conf"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -717,7 +717,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get <span class="nt">-n</span> kube-system configmaps coredns <span class="nt">-o</span> <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">'{.data.Corefile}'</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -727,7 +727,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get pods <span class="nt">-n</span> kube-system <span class="nt">-o</span> custom-columns<span class="o">=</span>NAME:.metadata.name <span class="nt">-l</span> k8s-app<span class="o">=</span>kube-dns  <span class="nt">--no-headers</span> | xargs kubectl delete <span class="nt">-n</span> kube-system pods
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -735,7 +735,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_参考">参考</h2>
+<h2 id="_参考">2. 参考</h2>
 <div class="sectionbody">
 <div class="ulist">
 <ul>
@@ -804,24 +804,54 @@ pre.rouge {
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

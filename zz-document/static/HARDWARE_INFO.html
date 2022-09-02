@@ -443,17 +443,17 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_物理机机器">物理机机器</a>
+<li><a href="#_物理机机器">1. 物理机机器</a>
 <ul class="sectlevel2">
-<li><a href="#_物理机器一">物理机器一</a></li>
-<li><a href="#_物理机器二">物理机器二</a></li>
+<li><a href="#_物理机器一">1.1. 物理机器一</a></li>
+<li><a href="#_物理机器二">1.2. 物理机器二</a></li>
 </ul>
 </li>
-<li><a href="#_kubernetes_部署机器">Kubernetes 部署机器</a>
+<li><a href="#_kubernetes_部署机器">2. Kubernetes 部署机器</a>
 <ul class="sectlevel2">
-<li><a href="#_kubernetes_部署机器一">Kubernetes 部署机器一</a></li>
-<li><a href="#_kubernetes_部署机器二">Kubernetes 部署机器二</a></li>
-<li><a href="#_kubernetes_部署机器三">Kubernetes 部署机器三</a></li>
+<li><a href="#_kubernetes_部署机器一">2.1. Kubernetes 部署机器一</a></li>
+<li><a href="#_kubernetes_部署机器二">2.2. Kubernetes 部署机器二</a></li>
+<li><a href="#_kubernetes_部署机器三">2.3. Kubernetes 部署机器三</a></li>
 </ul>
 </li>
 </ul>
@@ -461,13 +461,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_物理机机器">物理机机器</h2>
+<h2 id="_物理机机器">1. 物理机机器</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p><strong>注意</strong>：非特殊情况，请不要直接使用物理机器部署，否则一旦因为某些问题导致系统崩溃，在没有IPMI、iLO等其他类似硬件的环境下很难远程恢复。</p>
 </div>
 <div class="sect2">
-<h3 id="_物理机器一">物理机器一</h3>
+<h3 id="_物理机器一">1.1. 物理机器一</h3>
 <div class="paragraph">
 <p>此机器带有ECC内存纠错、磁盘冗余设计和UPS断电保护，所有数据敏感业务均运行会在此机器上。</p>
 </div>
@@ -514,7 +514,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_物理机器二">物理机器二</h3>
+<h3 id="_物理机器二">1.2. 物理机器二</h3>
 <div class="paragraph">
 <p>此机器带有较新的 <strong>GPU</strong>，适合做音视频硬解；同时硬盘 <strong>IOPS</strong> 较高，适合跑一些IO密集型任务。</p>
 </div>
@@ -563,13 +563,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_kubernetes_部署机器">Kubernetes 部署机器</h2>
+<h2 id="_kubernetes_部署机器">2. Kubernetes 部署机器</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>所有机器均采用 <a target="_blank" href="https://www.debian.org/releases/bullseye/">Debian "bullseye"</a> 作为底层操作系统，并在物理机配置了定时备份任务，具体配置请查看 <a href="../../cluster-deploy/pre-deploy/SYSTEM.html">Debian 系统配置</a>。</p>
 </div>
 <div class="sect2">
-<h3 id="_kubernetes_部署机器一">Kubernetes 部署机器一</h3>
+<h3 id="_kubernetes_部署机器一">2.1. Kubernetes 部署机器一</h3>
 <div class="paragraph">
 <p>此机器作为 kubernetes 控制节点</p>
 </div>
@@ -626,7 +626,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_kubernetes_部署机器二">Kubernetes 部署机器二</h3>
+<h3 id="_kubernetes_部署机器二">2.2. Kubernetes 部署机器二</h3>
 <div class="paragraph">
 <p>此机器作为 kubernetes 数据节点。</p>
 </div>
@@ -688,7 +688,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </table>
 </div>
 <div class="sect2">
-<h3 id="_kubernetes_部署机器三">Kubernetes 部署机器三</h3>
+<h3 id="_kubernetes_部署机器三">2.3. Kubernetes 部署机器三</h3>
 <div class="paragraph">
 <p>此机器作为 kubernetes 数据节点，如果机器不够则无需此节点。</p>
 </div>
@@ -804,24 +804,54 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

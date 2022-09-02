@@ -658,21 +658,21 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_部署软件包">部署软件包</a>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_部署软件包">2. 部署软件包</a>
 <ul class="sectlevel2">
-<li><a href="#_下载需要的资源">下载需要的资源</a></li>
-<li><a href="#_部署容器运行时_和_kubeadmkubelet_和_kubectl">部署容器运行时 和 kubeadm、kubelet 和 kubectl</a></li>
-<li><a href="#_配置_containerd_网络代理_可选">配置 <code>containerd</code> 网络代理 (可选)</a></li>
-<li><a href="#_添加_tab_命令补全_可选">添加 TAB 命令补全 （可选）</a></li>
+<li><a href="#_下载需要的资源">2.1. 下载需要的资源</a></li>
+<li><a href="#_部署容器运行时_和_kubeadmkubelet_和_kubectl">2.2. 部署容器运行时 和 kubeadm、kubelet 和 kubectl</a></li>
+<li><a href="#_配置_containerd_网络代理_可选">2.3. 配置 <code>containerd</code> 网络代理 (可选)</a></li>
+<li><a href="#_添加_tab_命令补全_可选">2.4. 添加 TAB 命令补全 （可选）</a></li>
 </ul>
 </li>
-<li><a href="#_部署_kubernetes">部署 kubernetes</a>
+<li><a href="#_部署_kubernetes">3. 部署 kubernetes</a>
 <ul class="sectlevel2">
-<li><a href="#_重置_kubernetes_可选">重置 kubernetes (可选)</a></li>
-<li><a href="#_部署控制节点">部署控制节点</a></li>
-<li><a href="#_部署_cni_插件">部署 CNI 插件</a></li>
-<li><a href="#_部署工作节点">部署工作节点</a></li>
+<li><a href="#_重置_kubernetes_可选">3.1. 重置 kubernetes (可选)</a></li>
+<li><a href="#_部署控制节点">3.2. 部署控制节点</a></li>
+<li><a href="#_部署_cni_插件">3.3. 部署 CNI 插件</a></li>
+<li><a href="#_部署工作节点">3.4. 部署工作节点</a></li>
 </ul>
 </li>
 </ul>
@@ -680,7 +680,7 @@ pre.rouge {
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>此文档已在 <code>Debian Bullseye</code> 和 <code>CentOS</code> 下验证 （仅使用 <strong>AMD64</strong>）。部署过程中需要网络。</p>
@@ -688,10 +688,10 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署软件包">部署软件包</h2>
+<h2 id="_部署软件包">2. 部署软件包</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_下载需要的资源">下载需要的资源</h3>
+<h3 id="_下载需要的资源">2.1. 下载需要的资源</h3>
 <div class="paragraph">
 <p>Kubernetes 需要以下资源才可正常运行，可在有网络的机器上下载并打包上传。注意，<strong>此脚本仅适配 AMD64 !</strong></p>
 </div>
@@ -700,7 +700,7 @@ pre.rouge {
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -993,7 +993,7 @@ done
 </details>
 </div>
 <div class="sect2">
-<h3 id="_部署容器运行时_和_kubeadmkubelet_和_kubectl">部署容器运行时 和 kubeadm、kubelet 和 kubectl</h3>
+<h3 id="_部署容器运行时_和_kubeadmkubelet_和_kubectl">2.2. 部署容器运行时 和 kubeadm、kubelet 和 kubectl</h3>
 <div class="paragraph">
 <p>Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 <a target="_blank" href="https://containerd.io/">containerd</a>。你需要在每台机器上部署以下的软件包：</p>
 </div>
@@ -1024,7 +1024,7 @@ done
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 </pre></td><td class="code"><pre><span class="nb">tar </span>zxvf k8s.tgz
@@ -1035,13 +1035,13 @@ bash <span class="nt">-x</span> install.sh
 </div>
 </div>
 <div class="sect2">
-<h3 id="_配置_containerd_网络代理_可选">配置 <code>containerd</code> 网络代理 (可选)</h3>
+<h3 id="_配置_containerd_网络代理_可选">2.3. 配置 <code>containerd</code> 网络代理 (可选)</h3>
 <div class="paragraph">
 <p>在某些情况下，镜像可能因为网络原因无法拉取,此时可为 <code>containerd</code> 配置代理。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1073,7 +1073,7 @@ systemctl restart containerd.service
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 </pre></td><td class="code"><pre><span class="nb">rm</span> /etc/systemd/system/containerd.service.d/http_proxy.conf <span class="o">||</span>:
@@ -1084,13 +1084,13 @@ systemctl restart containerd.service
 </div>
 </div>
 <div class="sect2">
-<h3 id="_添加_tab_命令补全_可选">添加 TAB 命令补全 （可选）</h3>
+<h3 id="_添加_tab_命令补全_可选">2.4. 添加 TAB 命令补全 （可选）</h3>
 <div class="paragraph">
 <p>对常用命令增加补全功能可极大提升效率。此功能需要部署 <code>bash-completion</code> 软件包。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1116,7 +1116,7 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 </pre></td><td class="code"><pre><span class="nb">echo</span> <span class="s1">'alias k=kubectl'</span> <span class="o">&gt;&gt;</span>~/.bashrc
@@ -1129,19 +1129,19 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 </div>
 </div>
 <div class="sect1">
-<h2 id="_部署_kubernetes">部署 kubernetes</h2>
+<h2 id="_部署_kubernetes">3. 部署 kubernetes</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>一切环境准备完成后，即可开始部署 kubernetes。</p>
 </div>
 <div class="sect2">
-<h3 id="_重置_kubernetes_可选">重置 kubernetes (可选)</h3>
+<h3 id="_重置_kubernetes_可选">3.1. 重置 kubernetes (可选)</h3>
 <div class="paragraph">
 <p>如果部署失败，可尝试重置 <code>kubernetes</code> 后重新部署。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1154,7 +1154,7 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署控制节点">部署控制节点</h3>
+<h3 id="_部署控制节点">3.2. 部署控制节点</h3>
 <div class="admonitionblock tip">
 <table>
 <tr>
@@ -1172,7 +1172,7 @@ crictl completion bash | <span class="nb">tee</span> /etc/bash_completion.d/cric
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1204,7 +1204,7 @@ kubectl get nodes
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>NAME          STATUS     ROLES           AGE     VERSION
 node-master   NotReady   control-plane   7m54s   v1.24.2
@@ -1213,7 +1213,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署_cni_插件">部署 CNI 插件</h3>
+<h3 id="_部署_cni_插件">3.3. 部署 CNI 插件</h3>
 <div class="paragraph">
 <p>kubernetes 控制节点部署完成后，需要配置CNI网络插件实现各个节点之间的通信。</p>
 </div>
@@ -1222,7 +1222,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 <div class="content">
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
   2
   3
   4
@@ -1640,7 +1640,7 @@ node-master   NotReady   control-plane   7m54s   v1.24.2
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1666,7 +1666,7 @@ kube-system   kube-scheduler-node-master            1/1     Running   2         
 </div>
 </div>
 <div class="sect2">
-<h3 id="_部署工作节点">部署工作节点</h3>
+<h3 id="_部署工作节点">3.4. 部署工作节点</h3>
 <div class="paragraph">
 <p>在部署控制节点时，<code>kubeadm</code> 已将部署工作节点的命令展示到控制台，你还可以使用   <code>tail -n 2 /tmp/kubectl-installer.log</code> 查看命令。注意：Token 过期时间为 24小时，如果超过24小时，可在控制节点执行 <code>kubeadm token create</code> 重新生成 token.</p>
 </div>
@@ -1675,7 +1675,7 @@ kube-system   kube-scheduler-node-master            1/1     Running   2         
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -1750,24 +1750,54 @@ node-worker-02   Ready    &lt;none&gt;          105s   v1.24.2
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

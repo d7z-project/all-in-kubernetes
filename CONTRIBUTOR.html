@@ -658,10 +658,10 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_文档编写指南">文档编写指南</a></li>
-<li><a href="#_命名规范">命名规范</a></li>
-<li><a href="#_注意事项">注意事项</a></li>
-<li><a href="#_变量参考">变量参考</a></li>
+<li><a href="#_文档编写指南">1. 文档编写指南</a></li>
+<li><a href="#_命名规范">2. 命名规范</a></li>
+<li><a href="#_注意事项">3. 注意事项</a></li>
+<li><a href="#_变量参考">4. 变量参考</a></li>
 </ul>
 </div>
 </div>
@@ -674,7 +674,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_文档编写指南">文档编写指南</h2>
+<h2 id="_文档编写指南">1. 文档编写指南</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -710,7 +710,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_命名规范">命名规范</h2>
+<h2 id="_命名规范">2. 命名规范</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -725,7 +725,7 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_注意事项">注意事项</h2>
+<h2 id="_注意事项">3. 注意事项</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -749,14 +749,14 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_变量参考">变量参考</h2>
+<h2 id="_变量参考">4. 变量参考</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>文档引入了 <strong>变量功能</strong>，方便动态渲染内容，文档中所使用到的变量如下：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="properties"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="properties"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -1016,24 +1016,54 @@ pre.rouge {
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

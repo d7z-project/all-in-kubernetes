@@ -442,8 +442,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_修改配置">修改配置</a></li>
-<li><a href="#_添加自定义镜像源">添加自定义镜像源</a></li>
+<li><a href="#_修改配置">1. 修改配置</a></li>
+<li><a href="#_添加自定义镜像源">2. 添加自定义镜像源</a></li>
 </ul>
 </div>
 </div>
@@ -456,14 +456,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_修改配置">修改配置</h2>
+<h2 id="_修改配置">1. 修改配置</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>编辑配置文件 <code>/etc/containerd/config.toml</code>,修改为如下内容。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-toml" data-lang="toml">[plugins."io.containerd.grpc.v1.cri".registry]
+<pre class="highlight nowrap"><code class="language-toml" data-lang="toml">[plugins."io.containerd.grpc.v1.cri".registry]
    config_path = "/etc/containerd/certs.d"</code></pre>
 </div>
 </div>
@@ -473,14 +473,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 </div>
 <div class="sect1">
-<h2 id="_添加自定义镜像源">添加自定义镜像源</h2>
+<h2 id="_添加自定义镜像源">2. 添加自定义镜像源</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>编辑文件 <code>/etc/containerd/certs.d/docker.io/hosts.toml</code> ，添加如下配置:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-toml" data-lang="toml">server = "https://docker.io"
+<pre class="highlight nowrap"><code class="language-toml" data-lang="toml">server = "https://docker.io"
 
 [host."https://registry.d7z.net"]
   capabilities = ["pull", "resolve"]
@@ -547,24 +547,54 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>

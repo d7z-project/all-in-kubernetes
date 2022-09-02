@@ -658,23 +658,23 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_说明">说明</a></li>
-<li><a href="#_环境准备">环境准备</a></li>
-<li><a href="#_导入资源">导入资源</a></li>
-<li><a href="#_配置_loadbalancer_地址">配置 LoadBalancer 地址</a></li>
-<li><a href="#_验证部署结果">验证部署结果</a>
+<li><a href="#_说明">1. 说明</a></li>
+<li><a href="#_环境准备">2. 环境准备</a></li>
+<li><a href="#_导入资源">3. 导入资源</a></li>
+<li><a href="#_配置_loadbalancer_地址">4. 配置 LoadBalancer 地址</a></li>
+<li><a href="#_验证部署结果">5. 验证部署结果</a>
 <ul class="sectlevel2">
-<li><a href="#_导入测试配置">导入测试配置</a></li>
-<li><a href="#_验证测试结果">验证测试结果</a></li>
+<li><a href="#_导入测试配置">5.1. 导入测试配置</a></li>
+<li><a href="#_验证测试结果">5.2. 验证测试结果</a></li>
 </ul>
 </li>
-<li><a href="#_扩展">扩展</a></li>
+<li><a href="#_扩展">6. 扩展</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_说明">说明</h2>
+<h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>项目地址：<a target="_blank" href="https://metallb.universe.tf/">MetalLB</a></p>
@@ -687,7 +687,7 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 </pre></td><td class="code"><pre>crictl pull quay.io/metallb/controller:v0.13.3
 crictl pull quay.io/metallb/speaker:v0.13.3
@@ -700,7 +700,7 @@ crictl pull quay.io/metallb/speaker:v0.13.3
 </div>
 </div>
 <div class="sect1">
-<h2 id="_环境准备">环境准备</h2>
+<h2 id="_环境准备">2. 环境准备</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>如果您在 <strong>IPVS</strong> 模式下使用 <code>kube-proxy</code>，从 <strong>Kubernetes v1.14.2</strong> 开始，您必须启用严格的 <strong>ARP</strong> 模式。</p>
@@ -710,7 +710,7 @@ crictl pull quay.io/metallb/speaker:v0.13.3
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -734,7 +734,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入资源">导入资源</h2>
+<h2 id="_导入资源">3. 导入资源</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>由于 MetalLB 的配置过于庞大，不便于在此展示，可将文件 <a href="conf/00-metallb-native.yaml">conf/metallb-native.yaml</a> 推送到控制节点，再使用 <code>kubectl apply -f metallb-native.yaml</code> 导入资源。</p>
@@ -744,7 +744,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl apply <span class="nt">-f</span> https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -754,7 +754,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 </pre></td><td class="code"><pre>kubectl get pods <span class="nt">-n</span> metallb-system <span class="nt">-o</span> wide
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -765,7 +765,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 </div>
 <div class="sect1">
-<h2 id="_配置_loadbalancer_地址">配置 LoadBalancer 地址</h2>
+<h2 id="_配置_loadbalancer_地址">4. 配置 LoadBalancer 地址</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>部署完成后，需要指定 LoadBalancer 可分配的地址。</p>
@@ -784,7 +784,7 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -835,16 +835,16 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 </div>
 <div class="sect1">
-<h2 id="_验证部署结果">验证部署结果</h2>
+<h2 id="_验证部署结果">5. 验证部署结果</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>执行以下步骤，验证部署结果。</p>
 </div>
 <div class="sect2">
-<h3 id="_导入测试配置">导入测试配置</h3>
+<h3 id="_导入测试配置">5.1. 导入测试配置</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
  2
  3
  4
@@ -911,13 +911,13 @@ kubectl apply <span class="nt">-f</span> - <span class="nt">-n</span> kube-syste
 </div>
 </div>
 <div class="sect2">
-<h3 id="_验证测试结果">验证测试结果</h3>
+<h3 id="_验证测试结果">5.2. 验证测试结果</h3>
 <div class="paragraph">
 <p>执行以下命令，验证测试结果</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
 4
@@ -937,7 +937,7 @@ curl http://<span class="nv">$ADDRESS</span>/
 </div>
 </div>
 <div class="sect1">
-<h2 id="_扩展">扩展</h2>
+<h2 id="_扩展">6. 扩展</h2>
 <div class="sectionbody">
 <div class="olist arabic">
 <ol class="arabic">
@@ -1006,24 +1006,54 @@ curl http://<span class="nv">$ADDRESS</span>/
                 if (navigator.clipboard) {
                     navigator.clipboard.writeText(data);
                     toast("复制成功！")
+                } else {
+                    toast("当前浏览器不支持剪切板！")
                 }
             }
 
             window.onload = function () {
                 for (let pre of document.getElementsByTagName('pre')) {
                     if (pre.className.includes('rouge') || pre.className.includes('highlight')) {
-                        let code = pre.getElementsByClassName('code')[0].innerText;
                         pre.ondblclick = function () {
+                            let code = pre.getElementsByClassName('code')[0].innerText;
                             copyData(code)
                         }
                     }
                 }
-
             };
         </script>
 </div>
 <style>.paragraph > p {
     text-indent: 2em;
+}
+
+
+.adoc-menu ul {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu ol {
+    padding-inline-start: 20px;
+    margin: 0;
+}
+
+.adoc-menu li p {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.adoc-menu h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.adoc-menu a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo-text {
+    color: black;
 }
 </style> <script></script>
 </html>
