@@ -18,7 +18,7 @@
 
 *Harbor* 需要以下镜像才可运行，离线环境中请将所有镜像导入至所有工作节点。
 
-[source%linenums,text]
+[source,text]
 ----
 goharbor/chartmuseum-photon:v2.5.3
 goharbor/harbor-core:v2.5.3
@@ -39,7 +39,7 @@ goharbor/trivy-adapter-photon:v2.5.3
 
 连接你的 *LDAP* 管理器，为其添加如下角色。
 
-[source%linenums,text]
+[source,text]
 ----
 cn=docker,ou=groups,dc=cluster,dc=local
 cn=deploy,ou=groups,dc=cluster,dc=local
@@ -62,14 +62,14 @@ cn=deploy,ou=groups,dc=cluster,dc=local
 
 使用如下命令连接 `Postgres` 控制台。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl exec -it -n core-middle sts-postgres-0 -- psql -U postgres
 ----
 
 连接建立后，执行如下 *SQL* 语句创建账户和数据库，执行完成后，使用 `\q` 退出。。
 
-[source%linenums,sql]
+[source,sql]
 ----
 CREATE ROLE {{var.harbor.postgres.username}} with LOGIN CREATEDB PASSWORD '{{var.harbor.postgres.password}}';
 CREATE DATABASE registry;
@@ -78,7 +78,7 @@ GRANT ALL PRIVILEGES ON DATABASE registry to {{var.harbor.postgres.username}};
 
 如果要清除旧的数据，可执行以下 *SQL* 语句,然后再重新创建即可。
 
-[source%linenums,sql]
+[source,sql]
 ----
 DROP DATABASE registry;
 DROP ROLE {{var.harbor.postgres.username}};
@@ -88,7 +88,7 @@ DROP ROLE {{var.harbor.postgres.username}};
 
 在 *Kubernetes* 下导入以下配置，创建对应的持久卷。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-harbor-pvc.yaml[]
 ----
@@ -103,7 +103,7 @@ include::conf/03-harbor-pvc.yaml[]
 
 在 *Kubernetes* 下导入以下配置，创建 *Harbor* 自定义配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-harbor-conf.yaml[]
 ----
@@ -112,7 +112,7 @@ include::conf/01-harbor-conf.yaml[]
 
 在 *Kubernetes* 下导入以下配置，创建 *Harbor* 账户密码相关配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 ---
 include::conf/02-harbor-secrets.yaml[]
@@ -122,7 +122,7 @@ include::conf/02-harbor-secrets.yaml[]
 
 配置导入完成后，创建相关的 *Service* 配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/04-harbor-service.yaml[]
 ----
@@ -131,7 +131,7 @@ include::conf/04-harbor-service.yaml[]
 
 *Service* 创建完成后，在 *Kubernetes* 下导入以下配置来创建 *Harbor* 启动配置。
 
-[source%linenums,yml]
+[source,yml]
 ----
 include::conf/05-harbor-deploy.yaml[]
 ----
@@ -140,7 +140,7 @@ include::conf/05-harbor-deploy.yaml[]
 
 *Deployment* 创建完成后,将 *Service* 通过 *Ingress* 暴露到外部地址。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/06-harbor-ingress.yaml[]
 ----
@@ -149,7 +149,7 @@ include::conf/06-harbor-ingress.yaml[]
 
 使用以下命令获取部署状态。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,pvc,svc,ingress -n core-app -l app=harbor
 ----
@@ -166,14 +166,14 @@ image::images/harbor-ldap.png[]
 
 *LDAP* 过滤器内容如下:
 
-[source%linenums,text]
+[source,text]
 ----
 (|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
 ----
 
 *LDAP* 组过滤器内容如下：
 
-[source%linenums,text]
+[source,text]
 ----
 (|(cn=admin)(cn=deploy)(cn=docker))
 ----
@@ -184,7 +184,7 @@ image::images/harbor-ldap.png[]
 
 使用如下命令登陆 *Harbor*,输入具有写入权限的账户和密码，如一切无误，则登陆成功
 
-[source%linenums,bash]
+[source,bash]
 ----
 docker login harbor.{{var.global.pub-host}}
 ----

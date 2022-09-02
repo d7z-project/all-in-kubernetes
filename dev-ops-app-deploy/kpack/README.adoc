@@ -10,7 +10,7 @@
 
 == 说明
 
-[source%linenums,text]
+[source,text]
 ----
 gcr.io/cf-build-service-public/kpack/build-init@sha256:b1debaa42ad0141dcaf18f41e116d1ad52596ffd8fb6c554506157642ee64d6f
 gcr.io/cf-build-service-public/kpack/build-init-windows@sha256:58e3e097dca779281ce4fe2838fee6f2bb3edba8723b0178ad9520ee1c82e4d0

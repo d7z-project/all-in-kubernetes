@@ -26,14 +26,14 @@ TIP: 在生产环境部署建议使用 *Gitlab* 推荐的 *Postgres* 版本，�
 
 使用如下命令连接 `Postgres` 控制台。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl exec -it -n core-middle sts-postgres-0 -- psql -U postgres
 ----
 
 连接建立后，执行如下 *SQL* 语句创建 *Gitlab* 的 *Postgres* 账户和数据库，执行完成后，使用 `\q` 退出。。
 
-[source%linenums,sql]
+[source,sql]
 ----
 CREATE ROLE gitlab with LOGIN CREATEDB PASSWORD 'password'; -- <1>
 CREATE DATABASE gitlabhq_production;
@@ -45,7 +45,7 @@ GRANT ALL PRIVILEGES ON DATABASE gitlabhq_production to gitlab;
 
 创建完成后执行如下命令为数据库 `gitlabhq_production` 增加 `pg_trgm` 扩展。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl exec -it -n core-middle sts-postgres-0 -- psql -U gitlab -d gitlabhq_production -c "CREATE EXTENSION pg_trgm;"
 ----
@@ -56,7 +56,7 @@ kubectl exec -it -n core-middle sts-postgres-0 -- psql -U gitlab -d gitlabhq_pro
 
 *Gitlab* 被配置为只有归属于 `cn=gitlab` 的用户和管理员才能登陆，需要在 *LDAP* 下创建名为 `gitlab` 的 `groupOfNames` 用户组。
 
-[source%linenums,text]
+[source,text]
 ----
 cn=gitlab,ou=groups,dc=cluster,dc=local
 ----
@@ -65,7 +65,7 @@ cn=gitlab,ou=groups,dc=cluster,dc=local
 
 === 创建 Gitlab 配置
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/00-gitlab-conf.yaml[]
 ----
@@ -85,7 +85,7 @@ include::./conf/00-gitlab-conf.yaml[]
 
 TIP: *Gitlab* 将提交保存至持久卷，可按照实际需求调整大小，较高的磁盘性能可提升 *Gitlab* 提交速度。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-gitlab-pvc.yaml[]
 ----
@@ -98,7 +98,7 @@ include::./conf/01-gitlab-pvc.yaml[]
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-gitlab-server.yaml[]
 ----
@@ -107,7 +107,7 @@ include::./conf/02-gitlab-server.yaml[]
 
 配置导入完成后，使用如下命令监控启动结果。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods -n core-app -l app=gitlab
 ----
@@ -118,14 +118,14 @@ Server 创建完成且工作正常后，使用以下配置创建对应的 `Servi
 
 WARNING: Gitlab 需要暴露 `22` 端口以便使用 `ssh` 提交，请根据对应的 `LoadBalancer` 实现自行配置，此处使用的是 `metallb` 。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/03-gitlab-service.yaml[]
 ----
 
 创建完成后使用如下命令查看结果。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get service -n core-app -l app=gitlab
 ----
@@ -134,7 +134,7 @@ kubectl get service -n core-app -l app=gitlab
 
 使用以下配置将 Service 与 Ingress 相关联。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/04-gitlab-ingress.yaml[]
 ----
@@ -145,7 +145,7 @@ include::./conf/04-gitlab-ingress.yaml[]
 
 使用以下命令查看各个组件的部署结果。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,pvc,service,ingress -n core-app -l app=gitlab
 ----

@@ -39,7 +39,7 @@
 
 文档引入了 *变量功能*，方便动态渲染内容，文档中所使用到的变量如下：
 
-[source%linenums,properties]
+[source,properties]
 ----
 include::value.properties[lines=2..-1]
 ----

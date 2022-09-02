@@ -14,7 +14,7 @@
 
 *Bash Completion* 可为 Shell 添加 *TAB* 补全功能，建议部署。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00.c-soft-install-bash-completion.sh[lines=2..-1]
 ----
@@ -23,7 +23,7 @@ include::./script/00.c-soft-install-bash-completion.sh[lines=2..-1]
 
 *OpenSSH* 能极大的方便远程调试，建议部署。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00.b-soft-install-openssh.sh[lines=2..-1]
 ----
@@ -32,7 +32,7 @@ include::./script/00.b-soft-install-openssh.sh[lines=2..-1]
 
 在 *KVM* 虚拟机环境下，某些工具包能极大提升部署效率，建议部署。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00.e-soft-install-vm-tools.sh[lines=2..-1]
 ----
@@ -43,7 +43,7 @@ include::./script/00.e-soft-install-vm-tools.sh[lines=2..-1]
 
 受地域影响，默认的 APT 下载可能会非常慢，可根据实际需求更改为合适的地址，例如：
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00.a-conf-update-apt-source.sh[lines=2..-1]
 ----
@@ -54,7 +54,7 @@ include::./script/00.a-conf-update-apt-source.sh[lines=2..-1]
 
 CAUTION: 在关闭密码登陆之前请 *务必* 将公钥复制到目标服务器，否则可能会导致无法使用SSH远程登陆。可以使用 `ssh-copy-id <user>@<address>` 快速复制本机的公钥到目标服务器下。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00.f-conf-update-openssh-server.sh[lines=2..-1]
 ----

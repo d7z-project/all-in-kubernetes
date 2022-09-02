@@ -20,7 +20,7 @@ Kubernetes 需要以下资源才可正常运行，可在有网络的机器上下
 [%collapsible]
 ====
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00-soft-download.sh[lines=2..-1]
 ----
@@ -37,7 +37,7 @@ Kubernetes 需要支撑 Pod 运行的实现。这里采用的是 link:https://co
 
 WARNING: 你需要将上一步生成的 `k8s.tgz` 上传到目标服务器上。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/01-install-kubeadm.sh[lines=2..-1]
 ----
@@ -46,14 +46,14 @@ include::./script/01-install-kubeadm.sh[lines=2..-1]
 
 在某些情况下，镜像可能因为网络原因无法拉取,此时可为 `containerd` 配置代理。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/02.a-conf-containerd-http-proxy.sh[lines=2..-1]
 ----
 
 取消代理可执行以下命令:
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/02.b-conf-containerd-clear-http-proxy.sh[lines=2..-1]
 ----
@@ -62,14 +62,14 @@ include::./script/02.b-conf-containerd-clear-http-proxy.sh[lines=2..-1]
 
 对常用命令增加补全功能可极大提升效率。此功能需要部署 `bash-completion` 软件包。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/06-k8s-shell-completion-bash.sh[lines=2..-1]
 ----
 
 如果你想创建 `kubectl` 的别名的话可使用如下命令添加命令补全功能。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/07-k8s-shell-alias.sh[lines=2..-1]
 ----
@@ -82,7 +82,7 @@ include::./script/07-k8s-shell-alias.sh[lines=2..-1]
 
 如果部署失败，可尝试重置 `kubernetes` 后重新部署。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/03-k8s-reset.sh[lines=2..-1]
 ----
@@ -93,14 +93,14 @@ TIP:  `kubernetes` 需要 `conntrack` 软件包。
 
 控制节点部署在 `dragon-k8s-master` 机器上，SSH 连接机器，执行以下命令：
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/05-k8s-insall-master.sh[lines=2..-1]
 ----
 
 如果一切无误，则执行 `kubectl get nodes` 命令时会显示如下内容:
 
-[source%linenums,text]
+[source,text]
 ----
 NAME          STATUS     ROLES           AGE     VERSION
 node-master   NotReady   control-plane   7m54s   v1.24.2
@@ -114,7 +114,7 @@ kubernetes 控制节点部署完成后，需要配置CNI网络插件实现各个
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/kube-flannel.yml[]
 ----
@@ -123,7 +123,7 @@ include::./conf/kube-flannel.yml[]
 
 执行命令 `watch kubectl get pods --all-namespaces`, 直到出现类似于如下示例的回显即表示部署成功。
 
-[source%linenums,text]
+[source,text]
 ----
 NAMESPACE     NAME                                  READY   STATUS    RESTARTS      AGE
 kube-system   coredns-6d4b75cb6d-5tmll              1/1     Running   0             15m
@@ -145,7 +145,7 @@ kube-system   kube-scheduler-node-master            1/1     Running   2         
 
 在加入集群时，需为每个节点添加唯一标识，使用参数 `--node-name` 即可。 部署完成后，执行 `kubectl get nodes` ，控制台回显如下：
 
-[source%linenums,text]
+[source,text]
 ----
 NAME             STATUS   ROLES           AGE    VERSION
 node-master      Ready    control-plane   46m    v1.24.2

@@ -14,7 +14,7 @@
 
 部署 Kubernetes 需要保证机器硬件 UUID 和网卡 MAC 地址是独一无二的，如果这些值在每个节点上一致，可能会导致部署失败。可使用如下命令确认：
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/03-info-hardware-info-uuid.sh[lines=2..-1]
 ----
@@ -29,7 +29,7 @@ include::./script/03-info-hardware-info-uuid.sh[lines=2..-1]
 
 kubernetes 需要 `br_netfilter` 模块才能工作，Debian 内核已带有此模块，可使用 `lsmod | grep br_netfilter` 验证是否加载，装入以下配置以显式加载模块。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/01-conf-modprobe.sh[lines=2..-1]
 ----
@@ -38,7 +38,7 @@ include::./script/01-conf-modprobe.sh[lines=2..-1]
 
 为了让节点上的 `iptables` 能够正确地查看桥接流量，你需要确保 `sysctl` 配置中将 net.bridge.bridge-nf-call-iptables 设置为 1。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/02-conf-sysctl.sh[lines=2..-1]
 ----
@@ -47,7 +47,7 @@ include::./script/02-conf-sysctl.sh[lines=2..-1]
 
 `kubernetes` 部分组件在运行中需要某些软件支撑，否则将导致 kubernetes 无法正常运行。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00.d-soft-install-k8s-extra.sh[lines=2..-1]
 ----

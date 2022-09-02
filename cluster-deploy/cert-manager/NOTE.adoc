@@ -12,28 +12,28 @@
 
 === 创建 CA 证书 Issuer
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/self/00-ca-issuer.yaml[]
 ----
 
 === 创建 CA 证书
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/self/01-ca-cert.yaml[]
 ----
 
 === 创建证书 Issuer
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/self/02-self-issuer.yaml[]
 ----
 
 === 签发证书
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/self/03-self-cert.yaml[]
 ----

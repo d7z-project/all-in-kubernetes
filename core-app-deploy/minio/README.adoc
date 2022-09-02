@@ -23,7 +23,7 @@ MinIO 部署完成后将在集群内外暴露如下资源：
 
 *MinIO* 使用如下镜像，如需离线环境部署则需要将其导入到 Kubernetes 可拉取的位置中。
 
-[source%linenums,text]
+[source,text]
 ----
 quay.io/minio/minio:RELEASE.2022-08-22T23-53-06Z
 minio/mc:RELEASE.2022-08-23T05-45-20Z
@@ -35,7 +35,7 @@ minio/mc:RELEASE.2022-08-23T05-45-20Z
 
 连接你的 *LDAP* 管理器，为其添加如下角色。
 
-[source%linenums,text]
+[source,text]
 ----
 cn=s3,ou=groups,dc=cluster,dc=local
 ----
@@ -44,7 +44,7 @@ cn=s3,ou=groups,dc=cluster,dc=local
 
 在 *Kubernetes* 下导入以下配置，创建对应的持久卷。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-minio-storage.yaml[]
 ----
@@ -53,7 +53,7 @@ include::conf/01-minio-storage.yaml[]
 
 在 *MinIO* 部署过程中需要自定义部分配置，在 *Kubernetes* 导入此配置即可。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-minio-conf.yaml[]
 ----
@@ -66,7 +66,7 @@ include::conf/02-minio-conf.yaml[]
 
 导入以下配置，创建 *MinIO* 的 *Service*。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-minio-service.yaml[]
 ----
@@ -75,7 +75,7 @@ include::conf/03-minio-service.yaml[]
 
 导入以下配置，创建 *MinIO* 的 *StatefulSet*。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/04-minio-deploy.yaml[]
 ----
@@ -84,7 +84,7 @@ include::conf/04-minio-deploy.yaml[]
 
 导入以下配置，创建可用的 *Ingress*。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/05-minio-ingress.yaml[]
 ----
@@ -95,7 +95,7 @@ include::conf/05-minio-ingress.yaml[]
 
 使用以下命令查看 *MinIO* 部署状态：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,pvc,svc,ingress -n core-app -l app=minio
 ----
@@ -108,14 +108,14 @@ kubectl get pods,pvc,svc,ingress -n core-app -l app=minio
 
 使用以下命令进入 CLI 控制台
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl exec -n core-app sts-minio-0 --container client -it -- bash
 ----
 
 进入后可使用 `mc` 操作 *MinIO*，例如：
 
-[source%linenums,bash]
+[source,bash]
 ----
 mc ping minio
 ----

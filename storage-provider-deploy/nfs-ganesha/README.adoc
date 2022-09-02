@@ -24,7 +24,7 @@ TIP: 为保证数据安全和方便外部备份，数据将物理存储在主节
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/00-ganesha-rbac.yaml[]
 ----
@@ -39,7 +39,7 @@ include::./conf/00-ganesha-rbac.yaml[]
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-ganesha-local-storage.yaml[]
 ----
@@ -54,7 +54,7 @@ include::./conf/01-ganesha-local-storage.yaml[]
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-ganesha-nfs-server.yaml[]
 ----
@@ -67,7 +67,7 @@ include::./conf/02-ganesha-nfs-server.yaml[]
 
 使用以下命令查看部署结果。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,svc,ingress,configmaps,sc -n nfs-ganesha
 ----
@@ -80,7 +80,7 @@ kubectl get pods,svc,ingress,configmaps,sc -n nfs-ganesha
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/t-00-nfs-2-test.yaml[]
 ----
@@ -91,7 +91,7 @@ include::./conf/t-00-nfs-2-test.yaml[]
 
 导入完成后使用 `kubectl get pods` 查看创建情况。创建完成后，执行以下命令，有数据返回则表示成功：
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/t-00-test-nfs-2.sh[lines=2..-1]
 ----

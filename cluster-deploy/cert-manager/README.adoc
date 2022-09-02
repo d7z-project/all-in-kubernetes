@@ -15,7 +15,7 @@
 
 CertManager 需要以下镜像：
 
-[source%linenums,text]
+[source,text]
 ----
 include::offline/images.txt[]
 ----
@@ -26,14 +26,14 @@ include::offline/images.txt[]
 
 或者你可以使用以下命令在线导入资源：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
 ----
 
 导入完成后使用以下命令查看结果：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods -n cert-manager
 ----
@@ -46,7 +46,7 @@ WARNING: 此次测试需要有一个域名，同时需要 Cert-Manager 支持此
 
 添加 *Cloudflare Api* 到 *Secret* 下
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-cloudflare-apikey.yaml[]
 ----
@@ -60,7 +60,7 @@ include::./conf/02-cloudflare-apikey.yaml[]
 
 将 Cloudflare API 绑定至 ClusterIssuer。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/03-cloudflare-issuer.yaml[]
 ----
@@ -74,7 +74,7 @@ include::./conf/03-cloudflare-issuer.yaml[]
 
 接下来使用测试域名 `{{var.global.pub-host}}` 签发证书。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/04-cert.yaml[]
 ----
@@ -91,7 +91,7 @@ include::./conf/04-cert.yaml[]
 
 执行以下命令，查看对应证书的签发状态
 
-[source%linenums,bash]
+[source,bash]
 ----
 # 查看证书签发状态
 kubectl get certificate -n cert-manager
@@ -99,7 +99,7 @@ kubectl get certificate -n cert-manager
 
 如果 `READY` 项为 `True`，则表明证书签发成功。
 
-[source%linenums,text]
+[source,text]
 ----
 NAME               READY   SECRET                 AGE
 cert-{{var.global.pub-hostname}}       True    {{var.global.tls-name}}            18h

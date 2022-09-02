@@ -18,7 +18,7 @@ OpenLDAP 需要一些初始化配置才能工作。
 
 我们可创建一个共享的 ConfigMap 以供系统使用。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-ldap-conf.yaml[]
 ----
@@ -30,7 +30,7 @@ include::conf/01-ldap-conf.yaml[]
 
 部署 OpenLDAP 前，需要配置管理员密码和共享用户密码。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-ldap-secret.yaml[]
 ----
@@ -48,7 +48,7 @@ WARNING: 生产环境部署一定要更改为复杂的密码！
 
 OpenLDAP 运行过程中需要存储数据。使用以下 YAML 创建，注意，此处需要用到之前教程创建的 `StroageClass` 。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/03-ldap-pvc.yaml[]
 ----
@@ -57,7 +57,7 @@ include::./conf/03-ldap-pvc.yaml[]
 
 现在可以部署 LDAP 服务了，导入以下配置即可。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/04-ldap-app.yaml[]
 ----
@@ -66,7 +66,7 @@ include::conf/04-ldap-app.yaml[]
 
 使用以下命令登陆 LDAP 控制台，导入LDAP配置。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl exec -it -n core-system pods/sts-ldap-0 -- /bin/bash
 ----
@@ -75,7 +75,7 @@ kubectl exec -it -n core-system pods/sts-ldap-0 -- /bin/bash
 
 MemberOf 能非常方便的绑定用户和组的关系。进入 LDAP 控制台，执行以下命令：
 
-[source%linenums,bash]
+[source,bash]
 ----
 cat << "EOF" > mem.ldif
 include::./conf/05-import-memberof.ldif[]
@@ -87,7 +87,7 @@ ldapadd -Y EXTERNAL -H ldapi:/// -f ./mem.ldif
 
 部署完成后，执行以下命令验证部署的完整性。
 
-[source%linenums,bash]
+[source,bash]
 ----
 # 检查配置是否同步到 default 命名空间
 kubectl get secrets,configmaps  -n core-system
@@ -100,7 +100,7 @@ kubectl get pods,service -n core-system
 
 可使用 `CURL` 测试 LDAP .
 
-[source%linenums,bash]
+[source,bash]
 ----
 curl --user $LDAP_BIND_DN:$LDAP_PASS ldap://$LDAP_HOST/$LDAP_BASE?uid?one?"$LDAP_USER_FILTER"
 ----

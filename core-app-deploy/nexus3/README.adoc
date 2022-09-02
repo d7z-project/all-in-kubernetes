@@ -16,7 +16,7 @@ Nexus3 项目依赖镜像 `sonatype/nexus3:3.40.1` 和 `nginx:1.21.1`。
 
 导入以下配置，创建持久卷;由于 *Nexus* 要存储 *Docker* 镜像和 *Maven* 编译结果以及 *RPM*/*DEB* 镜像包，可适当调大容量。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/00-nexus-pvc.yaml[]
 ----
@@ -29,7 +29,7 @@ include::conf/00-nexus-pvc.yaml[]
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-nexus-conf-nginx.yaml[]
 ----
@@ -45,7 +45,7 @@ include::./conf/01-nexus-conf-nginx.yaml[]
 
 使用以下配置创建 Nexus3 启动配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-nexus-deploy.yaml[]
 ----
@@ -54,7 +54,7 @@ include::conf/02-nexus-deploy.yaml[]
 
 使用以下配置创建 Nexus3 Service。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-nexus-service.yaml[]
 ----
@@ -63,7 +63,7 @@ include::conf/03-nexus-service.yaml[]
 
 创建 Service 完成后，将其映射到 Ingress 上。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/04-nexus-ingress.yaml[]
 ----
@@ -79,7 +79,7 @@ include::conf/04-nexus-ingress.yaml[]
 
 使用以下命令查看 `nexus3` 部署状态。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,configmaps,secrets,statefulsets.apps,service,ingress  -n core-app -l app=nexus
 ----
@@ -88,7 +88,7 @@ kubectl get pods,configmaps,secrets,statefulsets.apps,service,ingress  -n core-a
 
 `Nexus3` 密码在程序第一次启动时自动生成 ，可使用以下命令获取密码。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl exec -it -n core-app pods/sts-nexus-0  --container nexus  -- cat /nexus-data/admin.password
 ----
@@ -109,7 +109,7 @@ image::images/01.b-bind-ldap.png[title="配置LDAP用户"]
 
 UserFilter 的内容如下所示
 
-[source%linenums,ldif]
+[source,ldif]
 ----
 (|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
 ----
@@ -154,7 +154,7 @@ image::images/03.c-create-docker-group.png[title="归组"]
 
 一切完成后，使用以下命令测试配置是否成功。
 
-[source%linenums,bash]
+[source,bash]
 ----
 # 登陆 docker
 docker login registry.{{var.global.pub-host}}

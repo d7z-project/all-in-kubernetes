@@ -10,7 +10,7 @@
 
 扩展软件需要独立的 namespace，使用以下 `YAML` 创建即可。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 apiVersion: v1
 kind: Namespace
