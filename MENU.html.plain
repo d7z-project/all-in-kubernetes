@@ -16,7 +16,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p><a href="./cluster-deploy/cri-runtime/containerd/README.adoc">部署 Containerd</a>| <a href="./zz-document/containerd/SET_REGISTRY.adoc">容器配置</a></p>
+<p><a href="./cluster-deploy/cri-runtime/containerd/README.adoc">部署 Containerd</a> | <a href="./zz-document/containerd/SET_REGISTRY.adoc">容器配置</a></p>
 </li>
 <li>
 <p><a href="./cluster-deploy/cri-runtime/cri-o/README.adoc">部署 CRI-O</a></p>
