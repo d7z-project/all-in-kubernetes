@@ -12,7 +12,7 @@ WARNING: 此项目采用单实例部署，切勿在生产环境使用！
 
 MariaDB 需要镜像 `mariadb:10.5`。部署完成后，集群内部地址为：
 
-[source%linenums,text]
+[source,text]
 ----
 svc-mariadb.core-middle.svc.cluster.local:3306
 ----
@@ -21,7 +21,7 @@ svc-mariadb.core-middle.svc.cluster.local:3306
 
 导入以下配置，创建PVC。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/00-mariadb-pvc.yaml[]
 ----
@@ -30,7 +30,7 @@ include::conf/00-mariadb-pvc.yaml[]
 
 将管理员用户配置导入到 Secret 中。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-mariadb-secret.yaml[]
 ----
@@ -42,7 +42,7 @@ include::conf/01-mariadb-secret.yaml[]
 
 使用以下配置创建 MariaDB 服务器。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-mariadb-deploy.yaml[]
 ----
@@ -51,7 +51,7 @@ include::conf/02-mariadb-deploy.yaml[]
 
 将 MariaDB 服务关联到 Service 下。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-mariadb-service.yaml[]
 ----
@@ -60,7 +60,7 @@ include::conf/03-mariadb-service.yaml[]
 
 使用以下命令查看实例部署情况：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,secrets,services,deployments,pvc -n core-middle -l app=mariadb
 ----
@@ -68,14 +68,14 @@ kubectl get pods,secrets,services,deployments,pvc -n core-middle -l app=mariadb
 如果一切无误的话可使用以下命令测试 MariaDB ，输出结果如下所示。
 
 .测试命令
-[source%linenums,bash]
+[source,bash]
 ----
 MYSQL_PASSWD=$(kubectl get secrets -n core-middle  secret-mariadb-root -o jsonpath='{.data.password}' | base64 -d)
 kubectl exec -it -n core-middle pods/sts-mariadb-0 -- mysql -h svc-mariadb.core-middle.svc.cluster.local -uroot -p$MYSQL_PASSWD -e "select 1;"
 ----
 
 .输出结果
-[source%linenums,text]
+[source,text]
 ----
 +---+
 | 1 |

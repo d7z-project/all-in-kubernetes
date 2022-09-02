@@ -1,4 +1,4 @@
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/deploy.yaml[]
 ----

@@ -14,7 +14,7 @@ WARNING: 此项目采用单实例部署，切勿在生产环境使用！
 
 此文档需要镜像 `postgres:14`。部署完成后，集群内部地址为：
 
-[source%linenums,text]
+[source,text]
 ----
 svc-postgres.core-middle.svc.cluster.local:5432
 ----
@@ -23,7 +23,7 @@ svc-postgres.core-middle.svc.cluster.local:5432
 
 导入以下配置，创建PVC。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/00-postgres-pvc.yaml[]
 ----
@@ -32,7 +32,7 @@ include::conf/00-postgres-pvc.yaml[]
 
 将管理员用户配置导入到 Secret 中。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-postgres-secret.yaml[]
 ----
@@ -44,7 +44,7 @@ include::conf/01-postgres-secret.yaml[]
 
 使用以下配置创建 PostgresSQL 服务器。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-postgres-deploy.yaml[]
 ----
@@ -53,7 +53,7 @@ include::conf/02-postgres-deploy.yaml[]
 
 将 PostgresSQL 服务关联到 Service 下。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-postgres-service.yaml[]
 ----
@@ -62,7 +62,7 @@ include::conf/03-postgres-service.yaml[]
 
 使用以下命令查看实例部署情况：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,secrets,services,deployments,pvc -n core-middle -l app=postgres
 ----
@@ -70,7 +70,7 @@ kubectl get pods,secrets,services,deployments,pvc -n core-middle -l app=postgres
 如果一切无误的话可使用以下命令测试 PostgresSQL ，输出结果如下所示。
 
 .测试命令
-[source%linenums,bash]
+[source,bash]
 ----
 PG_NAME=$(kubectl get secrets -n core-middle secret-postgres-root -o jsonpath='{.data.username}' | base64 -d)
 PG_PASSWD=$(kubectl get secrets -n core-middle secret-postgres-root  -o jsonpath='{.data.password}' | base64 -d)
@@ -78,7 +78,7 @@ kubectl exec -it -n core-middle pods/sts-postgres-0 -- psql  postgresql://$PG_NA
 ----
 
 .输出结果
-[source%linenums,text]
+[source,text]
 ----
  ?column?
 ----------

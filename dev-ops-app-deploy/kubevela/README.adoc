@@ -6,7 +6,7 @@
 :toclevels: 4
 :source-highlighter: rouge
 
-[source%linenums,text]
+[source,text]
 ----
 oamdev/kube-webhook-certgen:v2.4.1
 oamdev/cluster-gateway:v1.4.0
@@ -14,7 +14,7 @@ oamdev/vela-core:v1.5.2
 oamdev/vela-apiserver:v1.5.2
 ----
 
-[source%linenums,bash]
+[source,bash]
 ----
 vela version
 # CLI Version: v1.5.2

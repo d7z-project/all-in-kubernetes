@@ -14,7 +14,7 @@ WARNING: 此为单实例部署，切勿用于生产环境。
 
 *Elastic Search* 部署需要镜像 `docker.elastic.co/elasticsearch/elasticsearch:8.3.2`。部署完成后，集群内部地址为：
 
-[source%linenums,text]
+[source,text]
 ----
 svc-elastic.core-middle.svc.cluster.local:9200
 ----
@@ -24,7 +24,7 @@ svc-elastic.core-middle.svc.cluster.local:9200
 
 导入以下配置，创建PVC。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/00-elastic-pvc.yaml[]
 ----
@@ -33,7 +33,7 @@ include::conf/00-elastic-pvc.yaml[]
 
 Elastic 运行时需要一些默认配置，导入以下配置即可。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-elastic-config.yaml[]
 ----
@@ -46,7 +46,7 @@ include::conf/01-elastic-config.yaml[]
 
 使用以下配置创建 Elastic Master 启动配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-elastic-deploy.yaml[]
 ----
@@ -55,7 +55,7 @@ include::conf/02-elastic-deploy.yaml[]
 
 将 Elastic Master 服务关联到 Service 下。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-elastic-service.yaml[]
 ----
@@ -64,7 +64,7 @@ include::conf/03-elastic-service.yaml[]
 
 使用以下命令查看实例部署情况：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,configmap,secrets,services,deployments,pvc -n core-middle -l app=elastic
 ----
@@ -72,7 +72,7 @@ kubectl get pods,configmap,secrets,services,deployments,pvc -n core-middle -l ap
 如果一切无误的话可使用以下命令测试 Elastic Search ，输出结果如下所示 （有输出即可）。
 
 .测试命令
-[source%linenums,bash]
+[source,bash]
 ----
 ES_USER=$(kubectl get secrets -n core-middle secret-elastic -o jsonpath='{.data.username}' | base64 -d)
 ES_PASSWD=$(kubectl get secrets -n core-middle secret-elastic  -o jsonpath='{.data.password}' | base64 -d)
@@ -80,7 +80,7 @@ kubectl exec -it -n core-middle pods/sts-elastic-0 -- curl http://svc-elastic.co
 ----
 
 .输出结果
-[source%linenums,text]
+[source,text]
 ----
 192.168.1.97 27 96 0 0.14 0.16 0.14 cdfhilmrstw * elastic-server-0
 ----

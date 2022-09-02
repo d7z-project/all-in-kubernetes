@@ -14,7 +14,7 @@ WARNING: 此项目采用单实例部署，切勿在生产环境使用！
 
 此项目需要镜像 `redis:7`。部署完成后，集群内部地址为：
 
-[source%linenums,text]
+[source,text]
 ----
 svc-redis.core-middle.svc.cluster.local:6379
 ----
@@ -23,7 +23,7 @@ svc-redis.core-middle.svc.cluster.local:6379
 
 Redis 需要将内存中存储的键值对数据缓存到本地磁盘
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/00-redis-pvc.yaml[]
 ----
@@ -34,7 +34,7 @@ include::./conf/00-redis-pvc.yaml[]
 
 使用此配置文件映射 Redis 管理员密码
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-redis-secret.yaml[]
 ----
@@ -46,7 +46,7 @@ include::./conf/01-redis-secret.yaml[]
 
 Redis 带有大量参数需要配置，使用 ConfigMap 创建 Redis 相关的配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-redis-conf.yaml[]
 ----
@@ -55,7 +55,7 @@ include::./conf/02-redis-conf.yaml[]
 
 现在可以部署 Redis Server了。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-redis-deploy.yaml[]
 ----
@@ -64,7 +64,7 @@ include::conf/03-redis-deploy.yaml[]
 
 部署完成后，需为 Redis Server 创建 Service 关联。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/04-redis-service.yaml[]
 ----
@@ -73,14 +73,14 @@ include::./conf/04-redis-service.yaml[]
 
 当所有机器部署完成后，使用以下目录查看部署结果：
 
-[source%linenums,bash]
+[source,bash]
 ----
  kubectl get pvc,secrets,configmaps,pods,service -n core-middle -l app=redis
 ----
 
 如果一切无误，可使用以下命令测试，正常情况下将会显示 *OK* 然后退出。
 
-[source%linenums,bash]
+[source,bash]
 ----
 REDIS_PASSWD=$(kubectl get secrets -n core-middle  secret-redis -o jsonpath='{.data.password}' | base64 -d)
 kubectl exec -it -n core-middle pods/sts-redis-0  -- redis-cli -h svc-redis.core-middle.svc.cluster.local AUTH $REDIS_PASSWD

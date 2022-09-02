@@ -17,7 +17,7 @@
 
 使用以下配置创建关联的 `Deployment`。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-lam-deploy.yaml[]
 ----
@@ -28,7 +28,7 @@ include::./conf/01-lam-deploy.yaml[]
 
 使用以下配置创建 Service ，关联之前创建的 Deployment。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-lam-service.yaml[]
 ----
@@ -39,7 +39,7 @@ include::./conf/02-lam-service.yaml[]
 
 导入此配置，绑定 Ingress, 将 LAM 映射到外部地址。注意：里面标注的内容请按照实际情况修改。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/03-lam-ingress.yaml[]
 ----

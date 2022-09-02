@@ -6,7 +6,7 @@
 
 编辑配置文件 `/etc/containerd/config.toml`,修改为如下内容。
 
-[source%linenums,toml]
+[source,toml]
 ----
 [plugins."io.containerd.grpc.v1.cri".registry]
    config_path = "/etc/containerd/certs.d"
@@ -18,7 +18,7 @@
 
 编辑文件 `/etc/containerd/certs.d/docker.io/hosts.toml` ，添加如下配置:
 
-[source%linenums,toml]
+[source,toml]
 ----
 server = "https://docker.io"
 

@@ -18,7 +18,7 @@
 
 根据需求创建以下配置：
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/01-web-proxy-conf.yaml[]
 ----
@@ -33,7 +33,7 @@ include::conf/01-web-proxy-conf.yaml[]
 
 导入以下配置，创建地址转发, 如果你的节点网络环境复杂，则需要配置节点亲和性：
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-proxy-server.yaml[]
 ----
@@ -42,7 +42,7 @@ include::conf/02-proxy-server.yaml[]
 
 使用以下配置，创建可用的 Ingress 配置, 注意，在部署完成再次更改配置后可能需要重建 Pod。在 `Conf` 配置中有多个域名，则需要在 `Ingress` 下配置多个转发。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-proxy-ingress.yaml[]
 ----

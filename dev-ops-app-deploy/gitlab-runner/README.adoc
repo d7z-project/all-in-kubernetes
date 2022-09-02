@@ -14,7 +14,7 @@ WARNING: 注意：在集群内使用 `Gitlab Runner` 可能会导致内部网络
 
 *Gitlab Runner* 需要如下镜像：
 
-[source%linenums,text]
+[source,text]
 ----
 gitlab-org/gitlab-runner:alpine-v15.2.1
 registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc1585
@@ -25,7 +25,7 @@ docker:20-dind
 
 由于 *Gitlab Runner* 将使用 `kubernetes` 运行容器，将单独为其创建命名空间 *RBAC* 规则。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/00-gitlab-runner-rbac.yaml[]
 ----
@@ -38,7 +38,7 @@ image::images/copy-register-id.png[title="复制注册令牌"]
 
 然后修改如下配置文件，将指示位置的令牌修改为你复制的令牌：
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-gitlab-runner-conf.yaml[]
 ----
@@ -50,7 +50,7 @@ include::./conf/01-gitlab-runner-conf.yaml[]
 
 Gitlab CI 需要指定脚本配置部分配置才可正常运行，此处脚本参考至 link:https://yuyy.info/?p=1921[Gitlab CI/CD 实践一：Gitlab Runner 部署到 K8S 集群]。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-gitlab-runner-internal-conf.yaml[]
 ----
@@ -61,7 +61,7 @@ WARNING: *Docker dind* 以特权模式运行容器, 可能会导致严重的安�
 
 复制并导入以下配置，启动 *Docker dind*。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03.a-docker-dind.yaml[]
 ----
@@ -70,7 +70,7 @@ include::conf/03.a-docker-dind.yaml[]
 
 复制并导入以下配置，启动 *Gitlab Runner*。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/03.b-gitlab-runner-app.yaml[]
 ----

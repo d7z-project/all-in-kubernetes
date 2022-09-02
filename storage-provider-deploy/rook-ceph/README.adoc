@@ -20,14 +20,14 @@ WARNING:  部署 Ceph 的宿主机需要有未初始化的磁盘
 
 导入完成后，使用以下命令查看结果并 Pod 启动完成：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods -n rook-ceph
 ----
 
 启动完成后，为需要装载 Ceph 的节点打上标签,让 Rook-Ceph 将服务部署在对应节点上。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl label node node-worker-01  role=storage-node
 kubectl label node node-worker-02  role=storage-node
@@ -44,7 +44,7 @@ kubectl get nodes -L role
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-cluster.yaml[]
 ----
@@ -60,7 +60,7 @@ WARNING: 请根据自己的服务器配置自行调整！否则将可能对系�
 
 部署完成后，执行以下命令，如无问题，将得到如图一所示的结果：
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 kubectl get pods -n rook-ceph  -o wide
 ----
@@ -71,14 +71,14 @@ image::images/01-cluster-init.png[title="部署 Ceph"]
 
 导入以下配置，部署 `ceph-toolbox`。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-ceph-toolbox.yaml[]
 ----
 
 部署完成后 ，使用如下命令进入控制台。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- bash
 ----

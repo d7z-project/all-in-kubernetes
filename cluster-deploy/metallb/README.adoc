@@ -14,7 +14,7 @@
 
 MetalLB 需要以下镜像：
 
-[source%linenums,bash]
+[source,bash]
 ----
 crictl pull quay.io/metallb/controller:v0.13.3
 crictl pull quay.io/metallb/speaker:v0.13.3
@@ -28,7 +28,7 @@ crictl pull quay.io/metallb/speaker:v0.13.3
 
 执行如下命令完成配置：
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/00-ipvs-patch.sh[lines=3..-1]
 ----
@@ -39,14 +39,14 @@ include::./script/00-ipvs-patch.sh[lines=3..-1]
 
 或者你可以使用以下命令在线导入资源：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
 ----
 
 导入完成后使用以下命令查看结果：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods -n metallb-system -o wide
 ----
@@ -59,7 +59,7 @@ kubectl get pods -n metallb-system -o wide
 
 TIP: 由于是小型化部署，所以 L2 模式已经够用，当然，如果你是自建机房，想使用 BGP 的方案的话可自行查阅文档。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-l2-netwok.yaml[]
 ----
@@ -73,7 +73,7 @@ include::./conf/01-l2-netwok.yaml[]
 
 === 导入测试配置
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/t-00-metallb-test.yml[]
 
@@ -83,7 +83,7 @@ include::./conf/t-00-metallb-test.yml[]
 
 执行以下命令，验证测试结果
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/t-00-test-metallb.sh[lines=2..-1]
 ----

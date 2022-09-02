@@ -12,7 +12,7 @@
 
 Nginx Ingress Controller 需要以下镜像：
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::offline/images.txt[]
 ----
@@ -25,7 +25,7 @@ include::offline/images.txt[]
 
 或者你可以使用以下命令在线导入资源：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
 
@@ -35,7 +35,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/cont
 
 由于需要多个 LoadBalancer Service 共享同一个IP,所以需要对 `Ingress` 单独进行配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-patch-service.yaml[]
 ----
@@ -45,7 +45,7 @@ include::./conf/01-patch-service.yaml[]
 
 导入完成后使用以下命令查看结果：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get service,pods -n ingress-nginx -o wide
 ----
@@ -62,7 +62,7 @@ kubectl get service,pods -n ingress-nginx -o wide
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/t-00-test.yml[]
 ----
@@ -72,7 +72,7 @@ include::./conf/t-00-test.yml[]
 
 导入完成后，执行以下命令验证部署结果。
 
-[source%linenums,bash]
+[source,bash]
 ----
 include::./script/t-00-test.sh[lines=2...-1]
 ----
@@ -82,7 +82,7 @@ include::./script/t-00-test.sh[lines=2...-1]
 
 如果一切无误，则控制台会展示如下结果。
 
-[source%linenums,text]
+[source,text]
 ----
 first web demo.
 second web demo.

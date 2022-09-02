@@ -16,7 +16,7 @@
 
 *prometheus* 需要从 *kubernetes* 下抓取配置，导入以下配置创建 *RBAC* 规则。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/00-prometheus-rbac.yaml[]
 ----
@@ -25,7 +25,7 @@ include::conf/00-prometheus-rbac.yaml[]
 
 使用以下配置创建对应的持久卷:
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-prometheus-pvc.yaml[]
 ----
@@ -34,7 +34,7 @@ include::./conf/01-prometheus-pvc.yaml[]
 
 使用以下配置创建 *Prometheus* 需要的相关的配置文件，其中包括 *prometheus* 本身的配置和报警规则的配置：
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/02-prometheus-conf.yaml[]
 ----
@@ -43,7 +43,7 @@ include::conf/02-prometheus-conf.yaml[]
 
 使用以下配置创建 *Prometheus* 启动配置。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/03-prometheus-sts.yaml[]
 ----
@@ -52,7 +52,7 @@ include::conf/03-prometheus-sts.yaml[]
 
 使用以下配置，创建对应的 *Service* 配置
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/04-prometheus-service.yaml[]
 ----
@@ -61,7 +61,7 @@ include::conf/04-prometheus-service.yaml[]
 
 *Service* 创建完成后，使用以下配置将对应的 *Service* 暴露到 *Ingress* 中。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::conf/05-prometheus-ingress.yaml[]
 ----
@@ -70,7 +70,7 @@ include::conf/05-prometheus-ingress.yaml[]
 
 配置导入完成后，使用如下命令查看结果：
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=prometheus
 ----

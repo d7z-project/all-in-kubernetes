@@ -12,14 +12,14 @@
 
 编辑 *ConfigMap* 配置 `coredns`:
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl edit -n kube-system configmaps coredns
 ----
 
 按如下配置添加 *CNAME* 配置：
 
-[source%linenums,conf]
+[source,conf]
 ----
 kubernetes cluster.local in-addr.arpa ip6.arpa {
    pods insecure
@@ -33,14 +33,14 @@ TIP: 此处是将 `harbor.d7z.net` 解析到内部 `nginx-ingress` 上。
 
 修改完成后，使用如下命令查看修改结果:
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get -n kube-system configmaps coredns -o jsonpath='{.data.Corefile}'
 ----
 
 如果一切无误， *CoreDNS* 会在一分钟后刷新配置，你也可以强制删除并重建 *CoreDNS* 以刷新配置。
 
-[source%linenums,bash]
+[source,bash]
 ----
 kubectl get pods -n kube-system -o custom-columns=NAME:.metadata.name -l k8s-app=kube-dns  --no-headers | xargs kubectl delete -n kube-system pods
 ----

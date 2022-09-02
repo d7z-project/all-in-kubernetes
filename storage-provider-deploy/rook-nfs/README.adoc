@@ -18,7 +18,7 @@ WARNING: rook-nfs 项目已经link:https://github.com/rook/nfs#deprecated[过时
 [%collapsible]
 ====
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/00-rook-nfs-rbac.yaml[]
 ----
@@ -33,7 +33,7 @@ include::./conf/00-rook-nfs-rbac.yaml[]
 
 首先在集群的宿主机创建挂载点，这里使用的是 `/share`。使用以下配置创建 `PersistentVolume`, 如下所示:
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/01-local-pv.yml[]
 ----
@@ -48,7 +48,7 @@ include::./conf/01-local-pv.yml[]
 
 创建 StorageClass 关联刚刚创建的PV, 创建配置如下:
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/02-local-sc.yml[]
 ----
@@ -61,7 +61,7 @@ include::./conf/02-local-sc.yml[]
 
 创建 PVC，供之后创建的 NFS Server 使用。可使用以下配置创建：
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/03-local-pvc.yml[]
 ----
@@ -72,7 +72,7 @@ include::./conf/03-local-pvc.yml[]
 
 我们可以通过创建 `nfsservers.nfs.rook.io` 资源的实例来创建NFS服务器的实例。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/04-nfs-server.yml[]
 ----
@@ -83,7 +83,7 @@ include::./conf/04-nfs-server.yml[]
 
 部署 *Operator* 和 *NFS Server* 实例之后, 须创建 `StrorageClass` 来动态配置 `Volume`。
 
-[source%linenums,yaml]
+[source,yaml]
 ----
 include::./conf/05-nfs-sc.yml[]
 ----
@@ -97,7 +97,7 @@ include::./conf/05-nfs-sc.yml[]
 .点击展开配置
 [%collapsible]
 ====
-[source%linenums,bash]
+[source,bash]
 ----
 include::./conf/t-00-nfs-test-1.yml[]
 ----
@@ -107,7 +107,7 @@ include::./conf/t-00-nfs-test-1.yml[]
 
 创建完成后，执行以下命令，有数据返回则表示成功：
 
-[source%linenums,bash]
+[source,bash]
 ----
 # 验证创建结果
 kubectl get deploy,pvc,pods -l mode=test,app=rook-nfs
