@@ -10,7 +10,13 @@
 
 == 说明
 
-Gitlab 依赖镜像 `sameersbn/gitlab:15.1.2`, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 `Postgres` 数据库 ，请在部署 `Gitlab` 前对其配置。
+Gitlab 依赖如下镜像, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 `Postgres` 数据库 ，请在部署 `Gitlab` 前对其配置。
+
+[sources,text]
+----
+docker.io/library/redis:6.2
+docker.io/sameersbn/gitlab:15.2.4
+----
 
 == 注意事项
 

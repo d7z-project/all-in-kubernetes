@@ -10,7 +10,13 @@
 
 == 说明
 
-Nexus3 项目依赖镜像 `sonatype/nexus3:3.40.1` 和 `nginx:1.21.1`。
+Nexus3 项目依赖如下镜像：
+
+[source,text]
+----
+docker.io/sonatype/nexus3:3.41.1
+docker.io/library/nginx:1.21.1
+----
 
 == 创建持久卷
 

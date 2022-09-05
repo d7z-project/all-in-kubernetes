@@ -18,12 +18,12 @@ spec:
     spec:
       containers:
         - name: gitlab-redis
-          image: redis:6.2
+          image: docker.io/library/redis:6.2
           volumeMounts:
             - name: gitlab-redis
               mountPath: /data
         - name: gitlab-server
-          image: sameersbn/gitlab:15.1.2
+          image: docker.io/sameersbn/gitlab:15.2.4
           volumeMounts:
             - name: gitlab-data
               mountPath: /home/git/data
