@@ -7,6 +7,8 @@ runc_version=1.1.4
 cni_version=1.1.1
 #https://github.com/containerd/nerdctl/
 nerdctl_version=0.22.2
+# https://github.com/kubernetes-sigs/cri-tools
+crictl_version="v1.24.2"
 # 配置系统架构
 ARCH=amd64
 # 工作目录
@@ -22,6 +24,9 @@ c-wget https://github.com/opencontainers/runc/releases/download/v$runc_version/r
 c-wget https://github.com/containernetworking/plugins/releases/download/v$cni_version/cni-plugins-linux-$ARCH-v$cni_version.tgz $down_path/cni-plugin.tgz
 c-wget https://github.com/containerd/nerdctl/releases/download/v$nerdctl_version/nerdctl-$nerdctl_version-linux-amd64.tar.gz $down_path/nerdctl.tgz
 c-wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service $down_path/containerd.service
+c-wget https://github.com/kubernetes-sigs/cri-tools/releases/download/$crictl_version/crictl-$crictl_version-linux-$ARCH.tar.gz $down_path/cri-tools.tgz
+tar -C "$down_path" -zxf $down_path/cri-tools.tgz
+/bin/rm $down_path/cri-tools.tgz
 
 cat <<"EOL" >$down_path/installer.sh
 #!/bin/bash
@@ -31,6 +36,7 @@ PROJECT_HOME=$(
 )
 tar zxf $PROJECT_HOME/containerd.tgz -C /usr/local
 tar zxf $PROJECT_HOME/nerdctl.tgz -C /usr/local/bin
+install -m 755 $PROJECT_HOME/crictl /usr/bin/crictl
 mkdir /etc/containerd/
 containerd config default >/etc/containerd/config.toml
 sed -i 's|SystemdCgroup = false|SystemdCgroup = true|' /etc/containerd/config.toml
@@ -58,6 +64,7 @@ sysctl --system
 nerdctl completion bash > /etc/bash_completion.d/nerdctl
 chmod 755 /etc/bash_completion.d/nerdctl
 source /etc/bash_completion.d/nerdctl
+ln -s /usr/local/bin/nerdctl /usr/local/bin/docker
 EOL
 
 containerd_path="$(
