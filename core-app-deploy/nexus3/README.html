@@ -687,7 +687,16 @@ pre.rouge {
 <h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Nexus3 项目依赖镜像 <code>sonatype/nexus3:3.40.1</code> 和 <code>nginx:1.21.1</code>。</p>
+<p>Nexus3 项目依赖如下镜像：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+2
+</pre></td><td class="code"><pre>docker.io/sonatype/nexus3:3.41.1
+docker.io/library/nginx:1.21.1
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -958,7 +967,7 @@ pre.rouge {
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">sonatype/nexus3:3.40.1</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/sonatype/nexus3:3.41.1</span>
           <span class="na">resources</span><span class="pi">:</span>
             <span class="na">requests</span><span class="pi">:</span>
               <span class="na">memory</span><span class="pi">:</span> <span class="s">3Gi</span>
@@ -969,7 +978,7 @@ pre.rouge {
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">INSTALL4J_ADD_VM_PARAMS</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-Xms2703m</span><span class="nv"> </span><span class="s">-Xmx2703m</span><span class="nv"> </span><span class="s">-XX:MaxDirectMemorySize=2703m</span><span class="nv"> </span><span class="s">-Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.21.1</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/nginx:1.21.1</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/conf.d/</span>
@@ -1339,11 +1348,11 @@ docker push registry.d7z.net/public/nginx:1.21.1
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-02 16:18:33 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-05 20:30:07 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/core-app-deploy/nexus3/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/"
-           target="_blank">#c5dfe6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/core-app-deploy/nexus3/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/"
+           target="_blank">#db0e5e</a>
         <script>
 
             function toast(msg, duration = 1000) {

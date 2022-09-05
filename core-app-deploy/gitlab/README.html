@@ -692,7 +692,13 @@ pre.rouge {
 <h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Gitlab 依赖镜像 <code>sameersbn/gitlab:15.1.2</code>, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 <code>Postgres</code> 数据库 ，请在部署 <code>Gitlab</code> 前对其配置。</p>
+<p>Gitlab 依赖如下镜像, 如在离线环境请自行导入镜像;同时，Gitlab 还需要 <code>Postgres</code> 数据库 ，请在部署 <code>Gitlab</code> 前对其配置。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="nowrap">docker.io/library/redis:6.2
+docker.io/sameersbn/gitlab:15.2.4</pre>
+</div>
 </div>
 </div>
 </div>
@@ -1153,12 +1159,12 @@ pre.rouge {
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">redis:6.2</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/redis:6.2</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/data</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-server</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">sameersbn/gitlab:15.1.2</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/sameersbn/gitlab:15.2.4</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/home/git/data</span>
@@ -1607,11 +1613,11 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-02 16:18:33 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-05 20:30:07 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/core-app-deploy/gitlab/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/"
-           target="_blank">#c5dfe6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/core-app-deploy/gitlab/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/"
+           target="_blank">#db0e5e</a>
         <script>
 
             function toast(msg, duration = 1000) {

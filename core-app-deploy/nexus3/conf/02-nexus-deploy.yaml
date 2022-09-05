@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: nexus
-          image: sonatype/nexus3:3.40.1
+          image: docker.io/sonatype/nexus3:3.41.1
           resources:
             requests:
               memory: 3Gi
@@ -29,7 +29,7 @@ spec:
             - name: INSTALL4J_ADD_VM_PARAMS
               value: "-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
         - name: nginx
-          image: nginx:1.21.1
+          image: docker.io/library/nginx:1.21.1
           volumeMounts:
             - name: nginx-data
               mountPath: /etc/nginx/conf.d/

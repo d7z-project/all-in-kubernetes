@@ -14,8 +14,7 @@ spec:
     spec:
       containers:
         - name: "docker-dind"
-          image: "docker:20-dind"
-          imagePullPolicy: Always
+          image: "docker.io/library/docker:20-dind"
           command: [ "dockerd", "--host", "tcp://0.0.0.0:2375" ,"--insecure-registry","registry.d7z.net","--registry-mirror","https://registry.d7z.net/" ]
           securityContext:
             privileged: true
