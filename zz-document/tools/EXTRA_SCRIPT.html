@@ -737,6 +737,7 @@ pre.rouge {
 64
 65
 66
+67
 </pre></td><td class="code"><pre><span class="c">#!/usr/bin/env bash</span>
 
 <span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="o">]</span> <span class="o">||</span> <span class="o">[</span> <span class="o">!</span> <span class="s2">"</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
@@ -766,7 +767,7 @@ pre.rouge {
     <span class="k">fi
 done
 for </span>IMAGE_NAME <span class="k">in</span> <span class="k">${</span><span class="nv">IMAGES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
-    </span><span class="nv">SAVE_IMG_NAME</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-e</span> s@/@-@g <span class="nt">-e</span> s/@/-/g<span class="si">)</span>
+    </span><span class="nv">SAVE_IMG_NAME</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-e</span> s@/@-@g <span class="nt">-e</span> s/@/-/g <span class="nt">-e</span> <span class="s2">"s/:/-/g"</span><span class="si">)</span>
     <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$DEBUG</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
         </span>docker pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> <span class="o">||</span> <span class="nb">exit </span>1
     <span class="k">else
@@ -785,7 +786,8 @@ for </span>IMAGE_NAME <span class="k">in</span> <span class="k">${</span><span c
 <span class="nb">echo</span> <span class="s2">"#!/bin/bash"</span> <span class="o">&gt;</span><span class="s2">"</span><span class="nv">$SCRIPT_PATH</span><span class="s2">"</span>
 <span class="k">for </span>LOCAL_FILE <span class="k">in</span> <span class="k">${</span><span class="nv">FILES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do</span>
     <span class="c"># shellcheck disable=SC2129</span>
-    <span class="nb">echo</span> <span class="s2">"ctr -n=k8s.io image import </span><span class="nv">$LOCAL_FILE</span><span class="s2">"</span> <span class="o">&gt;&gt;</span><span class="s2">"</span><span class="nv">$SCRIPT_PATH</span><span class="s2">"</span>
+    <span class="nb">echo</span> <span class="s2">"ctr -n=k8s.io image import </span><span class="nv">$LOCAL_FILE</span><span class="s2"> 2&gt;/dev/null ||:"</span> <span class="o">&gt;&gt;</span><span class="s2">"</span><span class="nv">$SCRIPT_PATH</span><span class="s2">"</span> <span class="o">||</span>
+        <span class="nb">echo</span> <span class="s2">"docker -n=k8s.io load --input </span><span class="nv">$LOCAL_FILE</span><span class="s2"> 2&gt;/dev/null ||: "</span> <span class="o">&gt;&gt;</span><span class="s2">"</span><span class="nv">$SCRIPT_PATH</span><span class="s2">"</span> <span class="o">||</span> <span class="nb">exit </span>1
     <span class="nb">echo</span> <span class="s2">"/bin/rm -f </span><span class="nv">$LOCAL_FILE</span><span class="s2">"</span> <span class="o">&gt;&gt;</span><span class="s2">"</span><span class="nv">$SCRIPT_PATH</span><span class="s2">"</span>
 <span class="k">done
 

@@ -27,7 +27,7 @@ for IMAGE_SOURCE in ${IMAGE_SOURCES[*]}; do
     fi
 done
 for IMAGE_NAME in ${IMAGES[*]}; do
-    SAVE_IMG_NAME=$(echo "$IMAGE_NAME" | sed -e s@/@-@g -e s/@/-/g)
+    SAVE_IMG_NAME=$(echo "$IMAGE_NAME" | sed -e s@/@-@g -e s/@/-/g -e "s/:/-/g")
     if [ "$DEBUG" ]; then
         docker pull "$IMAGE_NAME" || exit 1
     else
@@ -46,7 +46,8 @@ rm -f "$SCRIPT_PATH" 1>/dev/null || :
 echo "#!/bin/bash" >"$SCRIPT_PATH"
 for LOCAL_FILE in ${FILES[*]}; do
     # shellcheck disable=SC2129
-    echo "ctr -n=k8s.io image import $LOCAL_FILE" >>"$SCRIPT_PATH"
+    echo "ctr -n=k8s.io image import $LOCAL_FILE 2>/dev/null ||:" >>"$SCRIPT_PATH" ||
+        echo "docker -n=k8s.io load --input $LOCAL_FILE 2>/dev/null ||: " >>"$SCRIPT_PATH" || exit 1
     echo "/bin/rm -f $LOCAL_FILE" >>"$SCRIPT_PATH"
 done
 

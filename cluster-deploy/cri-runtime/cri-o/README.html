@@ -738,65 +738,123 @@ pre.rouge {
 57
 58
 59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
 </pre></td><td class="code"><pre><span class="nv">VERSION</span><span class="o">=</span>1.24.1
+<span class="nv">PODMAN_VERSION</span><span class="o">=</span>4.2.0
 <span class="nv">ARCH</span><span class="o">=</span>amd64
-wget https://github.com/cri-o/cri-o/releases/download/v<span class="nv">$VERSION</span>/cri-o.<span class="nv">$ARCH</span>.v<span class="nv">$VERSION</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> /tmp/cri-o.tgz
-<span class="nb">tar </span>zxf /tmp/cri-o.tgz <span class="nt">-C</span> /tmp
-<span class="nb">mv</span> /tmp/cri-o/install /tmp/cri-o/install-official
-<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="sh">"</span><span class="no">EOL</span><span class="sh">" &gt;/tmp/cri-o/install.sh
-#!/bin/bash
-PROJECT_HOME=</span><span class="si">$(</span>
-    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="k">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="k">}</span><span class="si">)</span>
-    <span class="nb">pwd</span>
-<span class="si">)</span><span class="sh">
-cat &lt;&lt;EOF | tee /etc/modules-load.d/cri-o.conf &gt; /dev/null
+<span class="nv">WORK_DIR</span><span class="o">=</span>/tmp/cri-o
+<span class="nv">BUILD_ROOT</span><span class="o">=</span><span class="nv">$WORK_DIR</span>/buildroot
+<span class="nv">DIST_ROOT</span><span class="o">=</span><span class="nv">$WORK_DIR</span>/cri-o
+
+<span class="c">############## start</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> <span class="nv">$BUILD_ROOT</span> <span class="nv">$DIST_ROOT</span>
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$WORK_DIR</span> <span class="nv">$WORK_DIR</span>/src <span class="se">\</span>
+    <span class="nv">$BUILD_ROOT</span> <span class="se">\</span>
+    <span class="nv">$BUILD_ROOT</span>/etc/modules-load.d <span class="se">\</span>
+    <span class="nv">$BUILD_ROOT</span>/etc/sysctl.d <span class="se">\</span>
+    <span class="nv">$BUILD_ROOT</span>/etc/cni/net.d <span class="se">\</span>
+    <span class="nv">$BUILD_ROOT</span>/usr/lib/systemd/system <span class="se">\</span>
+    <span class="nv">$DIST_ROOT</span>
+
+wget https://github.com/cri-o/cri-o/releases/download/v<span class="nv">$VERSION</span>/cri-o.<span class="nv">$ARCH</span>.v<span class="nv">$VERSION</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$WORK_DIR</span>/src/cri-o.tgz
+wget https://github.com/mgoltzsche/podman-static/releases/download/v4.2.0/podman-linux-<span class="k">${</span><span class="nv">ARCH</span><span class="k">}</span>.tar.gz <span class="nt">-c</span> <span class="nt">-O</span> <span class="nv">$WORK_DIR</span>/src/podman.tgz
+<span class="nb">tar </span>zxf <span class="nv">$WORK_DIR</span>/src/cri-o.tgz <span class="nt">-C</span> <span class="nv">$WORK_DIR</span>/src
+<span class="nb">tar </span>zxf <span class="nv">$WORK_DIR</span>/src/podman.tgz <span class="nt">-C</span> <span class="nv">$WORK_DIR</span>/src
+<span class="nb">cp</span> <span class="nt">-rf</span> <span class="nv">$WORK_DIR</span>/src/podman-linux-<span class="k">${</span><span class="nv">ARCH</span><span class="k">}</span>/<span class="k">*</span> <span class="nv">$BUILD_ROOT</span>
+<span class="nb">rm</span> <span class="nv">$BUILD_ROOT</span>/README.md
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/etc/modules-load.d/cri-o.conf &gt;/dev/null
 br_netfilter
-EOF
-modprobe br_netfilter
-cat &lt;&lt;EOF | tee /etc/sysctl.d/zz-cri-o.conf
+</span><span class="no">EOF
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/etc/sysctl.d/zz-cri-o.conf &gt;/dev/null
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 fs.may_detach_mounts = 1
-EOF
+</span><span class="no">EOF
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/usr/lib/systemd/system/podman.service &gt;/dev/null
+[Unit]
+Description=Podman API Service
+Requires=podman.socket
+After=podman.socket
+StartLimitIntervalSec=0
+[Service]
+Delegate=true
+Type=exec
+KillMode=process
+Environment=LOGGING="--log-level=info"
+ExecStart=/usr/local/bin/podman </span><span class="nv">$LOGGING</span><span class="sh"> system service
+[Install]
+WantedBy=default.target
+</span><span class="no">EOF
+
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/usr/lib/systemd/system/podman.socket &gt;/dev/null
+[Unit]
+Description=Podman API Socket
+
+[Socket]
+ListenStream=%t/podman/podman.sock
+SocketMode=0660
+
+[Install]
+WantedBy=sockets.target
+</span><span class="no">EOF
+</span><span class="o">(</span>
+    <span class="nb">cd</span> <span class="nv">$WORK_DIR</span>/src/cri-o/ <span class="o">||</span> <span class="nb">exit </span>1
+    <span class="nv">PREFIX</span><span class="o">=</span><span class="nv">$BUILD_ROOT</span>/usr/local <span class="nv">ETCDIR</span><span class="o">=</span><span class="nv">$BUILD_ROOT</span>/etc <span class="nv">OPT_CNI_BIN_DIR</span><span class="o">=</span><span class="nv">$BUILD_ROOT</span>/opt/cni/bin ./install
+<span class="o">)</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="sh">"</span><span class="no">EOL</span><span class="sh">" &gt;</span><span class="nv">$WORK_DIR</span><span class="sh">/install.sh
+#!/bin/bash
+PROJECT_HOME=</span><span class="si">$(</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="k">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="k">}</span><span class="si">)</span>
+    <span class="nb">pwd</span>
+<span class="si">)</span><span class="sh">
+cp -rfv </span><span class="nv">$PROJECT_HOME</span><span class="sh">/dist/* /
+modprobe br_netfilter
 sysctl --system
-chmod 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/install-official
-mkdir -p /opt/cni/bin </span><span class="se">\</span><span class="sh">
-    /etc/containers </span><span class="se">\</span><span class="sh">
-    /etc/cni/net.d </span><span class="se">\</span><span class="sh">
-    /etc/crio </span><span class="se">\</span><span class="sh">
-    /etc/crio/crio.conf.d </span><span class="se">\</span><span class="sh">
-    /usr/share/man </span><span class="se">\</span><span class="sh">
-    /usr/share/oci-umount/oci-umount.d </span><span class="se">\</span><span class="sh">
-    /usr/share/bash-completion/completions </span><span class="se">\</span><span class="sh">
-    /usr/share/fish/completions </span><span class="se">\</span><span class="sh">
-    /usr/share/zsh/site-functions
-sed -i "s@/usr/local/bin@/usr/bin@g"  </span><span class="nv">$PROJECT_HOME</span><span class="sh">/contrib/crio.service
-PREFIX=/usr </span><span class="nv">$PROJECT_HOME</span><span class="sh">/install-official
-crictl completion bash &gt; /usr/share/bash-completion/completions/crictl
-chmod 755 /usr/share/bash-completion/completions/crictl
-crictl completion zsh &gt; /usr/share/zsh/site-functions/_crictl
-chmod 755 /usr/share/zsh/site-functions/_crictl
-crictl completion fish &gt; /usr/share/fish/completions/crictl.fish
-chmod 755 /usr/share/fish/completions/crictl.fish
 systemctl daemon-reload
 systemctl enable crio --now
+systemctl enable podman --now
+ln -sf /usr/local/bin/podman /usr/local/bin/docker
 </span><span class="no">EOL
-</span><span class="nv">dist_path</span><span class="o">=</span>/tmp/cri-o
-<span class="nv">cri_o_path</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>
-    <span class="c"># shellcheck disable=SC2086</span>
-    <span class="nb">cd</span> <span class="nv">$dist_path</span> <span class="o">||</span> <span class="nb">exit </span>1
-    <span class="c"># shellcheck disable=SC2046</span>
-    <span class="nb">dirname</span> <span class="si">$(</span><span class="nb">pwd</span><span class="si">)</span>
-<span class="si">)</span><span class="s2">/cri-o-kubernetes.tgz"</span>
+</span><span class="nv">dist_path</span><span class="o">=</span><span class="s2">"</span><span class="nv">$WORK_DIR</span><span class="s2">/cri-o-dist.tgz"</span>
 <span class="o">(</span>
     <span class="c"># shellcheck disable=SC2046</span>
-    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="s2">"</span><span class="nv">$dist_path</span><span class="s2">"</span><span class="si">)</span> <span class="o">||</span> <span class="nb">exit</span>
+    <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="s2">"</span><span class="nv">$DIST_ROOT</span><span class="s2">"</span><span class="si">)</span> <span class="o">||</span> <span class="nb">exit</span>
     <span class="c"># shellcheck disable=SC2046</span>
-    <span class="nb">tar </span>zcf <span class="s2">"</span><span class="nv">$cri_o_path</span><span class="s2">"</span> <span class="si">$(</span><span class="nb">basename</span> <span class="s2">"</span><span class="nv">$dist_path</span><span class="s2">"</span><span class="si">)</span>
+    <span class="nb">mv</span> <span class="nv">$BUILD_ROOT</span> <span class="nv">$DIST_ROOT</span>/dist
+    <span class="nb">mv</span> <span class="nt">-f</span> <span class="nv">$WORK_DIR</span>/install.sh <span class="nv">$DIST_ROOT</span>/install.sh
+    <span class="nb">tar </span>zcf <span class="s2">"</span><span class="nv">$dist_path</span><span class="s2">"</span> <span class="s2">"</span><span class="si">$(</span><span class="nb">basename</span> <span class="nv">$DIST_ROOT</span><span class="si">)</span><span class="s2">"</span>
 <span class="o">)</span>
-<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"CRI-O 压缩包已导出到 </span><span class="se">\"</span><span class="nv">$cri_o_path</span><span class="se">\"</span><span class="s2">,请上传解压后执行 bash install.sh"</span>
+<span class="nb">echo</span> <span class="nt">-e</span> <span class="s2">"CRI-O 压缩包已导出到 </span><span class="se">\"</span><span class="nv">$dist_path</span><span class="se">\"</span><span class="s2">,请上传解压后执行 bash install.sh"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -812,8 +870,8 @@ systemctl enable crio --now
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre><span class="nb">tar </span>zxf cri-o-kubernetes.tgz
-bash <span class="nt">-x</span> cri-o/installer.sh
+</pre></td><td class="code"><pre><span class="nb">tar </span>zxf cri-o-dist.tgz
+bash <span class="nt">-x</span> cri-o/install.sh
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

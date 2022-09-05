@@ -762,6 +762,13 @@ pre.rouge {
 72
 73
 74
+75
+76
+77
+78
+79
+80
+81
 </pre></td><td class="code"><pre><span class="c">## https://github.com/containerd/containerd</span>
 <span class="nv">containerd_version</span><span class="o">=</span>1.6.8
 <span class="c">## https://github.com/opencontainers/runc</span>
@@ -770,6 +777,8 @@ pre.rouge {
 <span class="nv">cni_version</span><span class="o">=</span>1.1.1
 <span class="c">#https://github.com/containerd/nerdctl/</span>
 <span class="nv">nerdctl_version</span><span class="o">=</span>0.22.2
+<span class="c"># https://github.com/kubernetes-sigs/cri-tools</span>
+<span class="nv">crictl_version</span><span class="o">=</span><span class="s2">"v1.24.2"</span>
 <span class="c"># 配置系统架构</span>
 <span class="nv">ARCH</span><span class="o">=</span>amd64
 <span class="c"># 工作目录</span>
@@ -785,6 +794,9 @@ c-wget https://github.com/opencontainers/runc/releases/download/v<span class="nv
 c-wget https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$cni_version</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$cni_version</span>.tgz <span class="nv">$down_path</span>/cni-plugin.tgz
 c-wget https://github.com/containerd/nerdctl/releases/download/v<span class="nv">$nerdctl_version</span>/nerdctl-<span class="nv">$nerdctl_version</span><span class="nt">-linux-amd64</span>.tar.gz <span class="nv">$down_path</span>/nerdctl.tgz
 c-wget https://raw.githubusercontent.com/containerd/containerd/main/containerd.service <span class="nv">$down_path</span>/containerd.service
+c-wget https://github.com/kubernetes-sigs/cri-tools/releases/download/<span class="nv">$crictl_version</span>/crictl-<span class="nv">$crictl_version</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz <span class="nv">$down_path</span>/cri-tools.tgz
+<span class="nb">tar</span> <span class="nt">-C</span> <span class="s2">"</span><span class="nv">$down_path</span><span class="s2">"</span> <span class="nt">-zxf</span> <span class="nv">$down_path</span>/cri-tools.tgz
+/bin/rm <span class="nv">$down_path</span>/cri-tools.tgz
 
 <span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="sh">"</span><span class="no">EOL</span><span class="sh">" &gt;</span><span class="nv">$down_path</span><span class="sh">/installer.sh
 #!/bin/bash
@@ -794,6 +806,7 @@ PROJECT_HOME=</span><span class="si">$(</span>
 <span class="si">)</span><span class="sh">
 tar zxf </span><span class="nv">$PROJECT_HOME</span><span class="sh">/containerd.tgz -C /usr/local
 tar zxf </span><span class="nv">$PROJECT_HOME</span><span class="sh">/nerdctl.tgz -C /usr/local/bin
+install -m 755 </span><span class="nv">$PROJECT_HOME</span><span class="sh">/crictl /usr/bin/crictl
 mkdir /etc/containerd/
 containerd config default &gt;/etc/containerd/config.toml
 sed -i 's|SystemdCgroup = false|SystemdCgroup = true|' /etc/containerd/config.toml
@@ -821,6 +834,7 @@ sysctl --system
 nerdctl completion bash &gt; /etc/bash_completion.d/nerdctl
 chmod 755 /etc/bash_completion.d/nerdctl
 source /etc/bash_completion.d/nerdctl
+ln -s /usr/local/bin/nerdctl /usr/local/bin/docker
 </span><span class="no">EOL
 
 </span><span class="nv">containerd_path</span><span class="o">=</span><span class="s2">"</span><span class="si">$(</span>
