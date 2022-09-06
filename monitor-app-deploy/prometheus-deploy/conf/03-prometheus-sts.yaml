@@ -19,7 +19,7 @@ spec:
       serviceAccountName: prometheus
       containers:
         - name: prometheus
-          image: prom/prometheus:v2.38.0
+          image: docker.io/prom/prometheus:v2.38.0
           volumeMounts:
             - name: prometheus-data
               mountPath: /prometheus
