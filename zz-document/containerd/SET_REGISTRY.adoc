@@ -1,4 +1,10 @@
 = containerd 自定义镜像
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
 
 详细配置可参考 link:https://github.com/containerd/containerd/blob/main/docs/cri/config.md#registry-configuration[在线文档]。
 
@@ -25,4 +31,13 @@ server = "https://docker.io"
 [host."https://registry.{{var.global.pub-host}}"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
+----
+
+== 快速添加常用镜像地址
+
+WARNING: 注意, 请在部署本地 *registry* 并配置好代理后再添加此配置，否则将导致镜像无法拉取！
+
+[source,bash]
+----
+include::script/include-registry.sh[lines=2..-1]
 ----
