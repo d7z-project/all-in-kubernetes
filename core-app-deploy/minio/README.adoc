@@ -26,7 +26,7 @@ MinIO 部署完成后将在集群内外暴露如下资源：
 [source,text]
 ----
 quay.io/minio/minio:RELEASE.2022-08-22T23-53-06Z
-minio/mc:RELEASE.2022-08-23T05-45-20Z
+quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
 ----
 
 == 部署准备
