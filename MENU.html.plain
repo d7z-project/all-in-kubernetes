@@ -130,7 +130,7 @@
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="./extra-app-deploy/README.adoc">平台监控功能部署准备</a></p>
+<p><a href="./monitor-app-deploy/README.adoc">平台监控功能部署准备</a></p>
 </li>
 <li>
 <p><a href="./monitor-app-deploy/prometheus-deploy/README.adoc">Prometheus 部署</a></p>

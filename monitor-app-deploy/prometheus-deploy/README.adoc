@@ -8,7 +8,7 @@
 
 == 说明
 
-此项目使用镜像 `prom/prometheus:v2.38.0` ，离线环境请在部署前将其导入至 *containerd* 或私有镜像源地址中。
+此项目使用镜像 `docker.io/prom/prometheus:v2.38.0` ，离线环境请在部署前将其导入至 *containerd* 或私有镜像源地址中。
 
 *prometheus* 配置放在 `configmap/conf-prometheus` 中，报警规则配置放在 `configmap/conf-prometheus-rules` 中。
 

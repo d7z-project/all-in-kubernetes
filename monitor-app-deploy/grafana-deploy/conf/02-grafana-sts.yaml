@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana-oss:9.1.0
+          image: docker.io/grafana/grafana-oss:9.1.0
           envFrom:
             - configMapRef:
                 name: conf-grafana

@@ -674,7 +674,7 @@ pre.rouge {
 <h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>此项目使用镜像 <code>prom/prometheus:v2.38.0</code> ，离线环境请在部署前将其导入至 <strong>containerd</strong> 或私有镜像源地址中。</p>
+<p>此项目使用镜像 <code>docker.io/prom/prometheus:v2.38.0</code> ，离线环境请在部署前将其导入至 <strong>containerd</strong> 或私有镜像源地址中。</p>
 </div>
 <div class="paragraph">
 <p><strong>prometheus</strong> 配置放在 <code>configmap/conf-prometheus</code> 中，报警规则配置放在 <code>configmap/conf-prometheus-rules</code> 中。</p>
@@ -1012,7 +1012,7 @@ pre.rouge {
       <span class="na">serviceAccountName</span><span class="pi">:</span> <span class="s">prometheus</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">prometheus</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">prom/prometheus:v2.38.0</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/prom/prometheus:v2.38.0</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">prometheus-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/prometheus</span>
@@ -1191,11 +1191,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-02 16:18:33 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-06 09:34:14 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/monitor-app-deploy/prometheus-deploy/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/"
-           target="_blank">#c5dfe6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dab53652de4712c86693ce3d091e2ff71814a211/monitor-app-deploy/prometheus-deploy/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dab53652de4712c86693ce3d091e2ff71814a211/"
+           target="_blank">#dab536</a>
         <script>
 
             function toast(msg, duration = 1000) {

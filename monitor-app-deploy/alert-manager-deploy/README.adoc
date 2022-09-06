@@ -8,7 +8,7 @@
 
 == 说明
 
-此项目使用镜像 `prom/alertmanager:v0.24.0` ，离线环境请在部署前将其导入至 `containerd` 或私有镜像源地址中。
+此项目使用镜像 `docker.io/prom/alertmanager:v0.24.0` ，离线环境请在部署前将其导入至 `containerd` 或私有镜像源地址中。
 
 *AlertManager* 配置放在 `configmap/conf-alert-manager` 中。
 

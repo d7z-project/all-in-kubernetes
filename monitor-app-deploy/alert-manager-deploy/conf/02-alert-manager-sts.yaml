@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: alert-manager
-          image: prom/alertmanager:v0.24.0
+          image: docker.io/prom/alertmanager:v0.24.0
           args:
             - "--config.file=/etc/alertmanager/alertmanager.yml"
           volumeMounts:
