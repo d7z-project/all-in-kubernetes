@@ -13,5 +13,8 @@ spec:
     - name: nexus-docker
       protocol: TCP
       port: 81
+    - name: nexus-maven
+      protocol: TCP
+      port: 82
   selector:
     app: nexus

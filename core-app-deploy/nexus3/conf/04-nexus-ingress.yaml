@@ -36,3 +36,13 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-docker
+    - host: maven.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-maven
