@@ -36,3 +36,13 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-docker
+    - host: maven.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-maven
