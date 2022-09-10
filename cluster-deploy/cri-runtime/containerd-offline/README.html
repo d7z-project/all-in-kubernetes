@@ -789,6 +789,7 @@ pre.rouge {
  99
 100
 101
+102
 </pre></td><td class="code"><pre><span class="nb">set</span> <span class="nt">-e</span>
 <span class="c">## https://github.com/containerd/containerd</span>
 <span class="nv">VERSION_CONTAINERD</span><span class="o">=</span>1.6.8
@@ -804,46 +805,47 @@ pre.rouge {
 <span class="nv">WORK_PATH</span><span class="o">=</span>/tmp/containerd
 <span class="nv">SRC_PATH</span><span class="o">=</span><span class="nv">$WORK_PATH</span>/src
 <span class="nv">DIST_PATH</span><span class="o">=</span><span class="nv">$WORK_PATH</span>/containerd-<span class="nv">$VERSION_CONTAINERD</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$SRC_PATH</span> <span class="nv">$DIST_PATH</span>
+<span class="nv">BUILD_ROOT</span><span class="o">=</span><span class="nv">$DIST_PATH</span>/rootfs
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$SRC_PATH</span> <span class="nv">$DIST_PATH</span> <span class="nv">$BUILD_ROOT</span>
 
 <span class="c"># download</span>
-c-wget-src<span class="o">()</span> <span class="o">{</span>
+c_down<span class="o">()</span> <span class="o">{</span>
     <span class="k">if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s2">"</span><span class="nv">$SRC_PATH</span><span class="s2">/</span><span class="nv">$2</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
         </span>wget <span class="s2">"</span><span class="nv">$1</span><span class="s2">"</span> <span class="nt">-c</span> <span class="nt">-O</span> <span class="s2">"</span><span class="nv">$SRC_PATH</span><span class="s2">/</span><span class="nv">$2</span><span class="s2">.tmp"</span> <span class="o">||</span> <span class="nb">exit </span>1
         <span class="nb">mv</span> <span class="s2">"</span><span class="nv">$SRC_PATH</span><span class="s2">/</span><span class="nv">$2</span><span class="s2">.tmp"</span> <span class="s2">"</span><span class="nv">$SRC_PATH</span><span class="s2">/</span><span class="nv">$2</span><span class="s2">"</span>
     <span class="k">fi</span>
 <span class="o">}</span>
 
-c-wget-src https://github.com/containerd/containerd/releases/download/v<span class="nv">$VERSION_CONTAINERD</span>/containerd-<span class="nv">$VERSION_CONTAINERD</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz containerd.tgz
-c-wget-src https://github.com/opencontainers/runc/releases/download/v<span class="nv">$VERSION_RUNC</span>/runc.<span class="nv">$ARCH</span> runc
-c-wget-src https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$VERSION_CNI_PLUGIN</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$VERSION_CNI_PLUGIN</span>.tgz cni.tgz
-c-wget-src https://github.com/containerd/nerdctl/releases/download/v<span class="nv">$VERSION_NERDCTL</span>/nerdctl-<span class="nv">$VERSION_NERDCTL</span><span class="nt">-linux-amd64</span>.tar.gz nerdctl.tgz
-c-wget-src https://raw.githubusercontent.com/containerd/containerd/main/containerd.service containerd.service
+c_down https://github.com/containerd/containerd/releases/download/v<span class="nv">$VERSION_CONTAINERD</span>/containerd-<span class="nv">$VERSION_CONTAINERD</span><span class="nt">-linux-</span><span class="nv">$ARCH</span>.tar.gz containerd.tgz
+c_down https://github.com/opencontainers/runc/releases/download/v<span class="nv">$VERSION_RUNC</span>/runc.<span class="nv">$ARCH</span> runc
+c_down https://github.com/containernetworking/plugins/releases/download/v<span class="nv">$VERSION_CNI_PLUGIN</span>/cni-plugins-linux-<span class="nv">$ARCH</span><span class="nt">-v</span><span class="nv">$VERSION_CNI_PLUGIN</span>.tgz cni.tgz
+c_down https://github.com/containerd/nerdctl/releases/download/v<span class="nv">$VERSION_NERDCTL</span>/nerdctl-<span class="nv">$VERSION_NERDCTL</span><span class="nt">-linux-amd64</span>.tar.gz nerdctl.tgz
+c_down https://raw.githubusercontent.com/containerd/containerd/main/containerd.service containerd.service
 <span class="c"># build</span>
 <span class="nb">rm</span> <span class="nt">-r</span> <span class="nv">$DIST_PATH</span>
-<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$DIST_PATH</span>/usr/local/bin <span class="nv">$DIST_PATH</span>/usr/lib/systemd/system/ <span class="nv">$DIST_PATH</span>/etc/containerd/certs.d/ <span class="se">\</span>
-    <span class="nv">$DIST_PATH</span>/opt/cni/bin <span class="nv">$DIST_PATH</span>/etc/modules-load.d/ <span class="nv">$DIST_PATH</span>/etc/sysctl.d <span class="nv">$DIST_PATH</span>/usr/share/bash-completion/completions
-<span class="nb">tar </span>zxf <span class="nv">$SRC_PATH</span>/containerd.tgz <span class="nt">-C</span> <span class="nv">$DIST_PATH</span>/usr/local
-<span class="nb">tar </span>zxf <span class="nv">$SRC_PATH</span>/nerdctl.tgz <span class="nt">-C</span> <span class="nv">$DIST_PATH</span>/usr/local/bin
-<span class="nb">tar </span>zxf <span class="nv">$SRC_PATH</span>/cni.tgz <span class="nt">-C</span> <span class="nv">$DIST_PATH</span>/opt/cni/bin
-<span class="nb">cp</span> <span class="nv">$SRC_PATH</span>/runc <span class="nv">$DIST_PATH</span>/usr/local/bin
-<span class="nb">cp</span> <span class="nv">$SRC_PATH</span>/containerd.service <span class="nv">$DIST_PATH</span>/usr/lib/systemd/system/containerd.service
-<span class="nv">$DIST_PATH</span>/usr/local/bin/containerd config default |
+<span class="nb">mkdir</span> <span class="nt">-p</span> <span class="nv">$BUILD_ROOT</span>/usr/local/bin <span class="nv">$BUILD_ROOT</span>/usr/lib/systemd/system/ <span class="nv">$BUILD_ROOT</span>/etc/containerd/certs.d/ <span class="se">\</span>
+    <span class="nv">$BUILD_ROOT</span>/opt/cni/bin <span class="nv">$BUILD_ROOT</span>/etc/modules-load.d/ <span class="nv">$BUILD_ROOT</span>/etc/sysctl.d <span class="nv">$BUILD_ROOT</span>/usr/share/bash-completion/completions
+<span class="nb">tar </span>zxf <span class="nv">$SRC_PATH</span>/containerd.tgz <span class="nt">-C</span> <span class="nv">$BUILD_ROOT</span>/usr/local
+<span class="nb">tar </span>zxf <span class="nv">$SRC_PATH</span>/nerdctl.tgz <span class="nt">-C</span> <span class="nv">$BUILD_ROOT</span>/usr/local/bin
+<span class="nb">tar </span>zxf <span class="nv">$SRC_PATH</span>/cni.tgz <span class="nt">-C</span> <span class="nv">$BUILD_ROOT</span>/opt/cni/bin
+<span class="nb">cp</span> <span class="nv">$SRC_PATH</span>/runc <span class="nv">$BUILD_ROOT</span>/usr/local/bin
+<span class="nb">cp</span> <span class="nv">$SRC_PATH</span>/containerd.service <span class="nv">$BUILD_ROOT</span>/usr/lib/systemd/system/containerd.service
+<span class="nv">$BUILD_ROOT</span>/usr/local/bin/containerd config default |
     <span class="nb">sed</span> <span class="nt">-e</span> <span class="s1">'s|SystemdCgroup = false|SystemdCgroup = true|'</span> <span class="se">\</span>
         <span class="nt">-e</span> <span class="s1">'s|config_path = ""|config_path = "/etc/containerd/certs.d"|g'</span> |
-    <span class="nb">tee</span> <span class="nv">$DIST_PATH</span>/etc/containerd/config.toml <span class="o">&gt;</span>/dev/null
-<span class="nv">$DIST_PATH</span>/usr/local/bin/nerdctl completion bash | <span class="nb">tee</span> <span class="nv">$DIST_PATH</span>/usr/share/bash-completion/completions/nerdctl <span class="o">&gt;</span>/dev/null
-<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$DIST_PATH</span><span class="sh">/etc/modules-load.d/containerd.conf &gt;/dev/null
+    <span class="nb">tee</span> <span class="nv">$BUILD_ROOT</span>/etc/containerd/config.toml <span class="o">&gt;</span>/dev/null
+<span class="nv">$BUILD_ROOT</span>/usr/local/bin/nerdctl completion bash | <span class="nb">tee</span> <span class="nv">$BUILD_ROOT</span>/usr/share/bash-completion/completions/nerdctl <span class="o">&gt;</span>/dev/null
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/etc/modules-load.d/containerd.conf &gt;/dev/null
 overlay
 br_netfilter
 </span><span class="no">EOF
-</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$DIST_PATH</span><span class="sh">/etc/sysctl.d/zz-containerd.conf &gt;/dev/null
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/etc/sysctl.d/zz-containerd.conf &gt;/dev/null
 net.ipv4.ip_forward = 1
 net.ipv6.conf.all.forwarding = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables = 1
 </span><span class="no">EOF
-</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$DIST_PATH</span><span class="sh">/etc/crictl.yaml &gt;/dev/null
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$BUILD_ROOT</span><span class="sh">/etc/crictl.yaml &gt;/dev/null
 runtime-endpoint: unix:///run/containerd/containerd.sock
 image-endpoint: unix:///run/containerd/containerd.sock
 </span><span class="no">EOF
@@ -851,20 +853,20 @@ image-endpoint: unix:///run/containerd/containerd.sock
 <span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="sh">"</span><span class="no">EOD</span><span class="sh">" | tee </span><span class="nv">$DIST_PATH</span><span class="sh">/install.sh &gt;/dev/null
 #!/bin/bash
 set -e
-ROOT_PATH=</span><span class="k">${</span><span class="nv">ROOT_PATH</span><span class="k">:-</span><span class="p">/</span><span class="k">}</span><span class="sh">
+INSTALL_PATH=</span><span class="k">${</span><span class="nv">INSTALLED_PATH</span><span class="k">:-</span><span class="p">/</span><span class="k">}</span><span class="sh">
 PWD_PATH=</span><span class="si">$(</span>
     <span class="nb">cd</span> <span class="si">$(</span><span class="nb">dirname</span> <span class="k">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="k">}</span><span class="si">)</span>
     <span class="nb">pwd</span>
 <span class="si">)</span><span class="sh">
+BUILD_ROOT_PATH=</span><span class="nv">$PWD_PATH</span><span class="sh">/rootfs
 cd </span><span class="nv">$PWD_PATH</span><span class="sh"> || exit 1
 pre(){
-    chown -Rv root:root </span><span class="nv">$PWD_PATH</span><span class="sh">
-    chmod -Rv 755 </span><span class="nv">$PWD_PATH</span><span class="sh">/opt </span><span class="nv">$PWD_PATH</span><span class="sh">/usr
-    chmod -Rv 644 </span><span class="nv">$PWD_PATH</span><span class="sh">/etc </span><span class="nv">$PWD_PATH</span><span class="sh">/usr/lib
+    chown -Rv root:root </span><span class="nv">$BUILD_ROOT_PATH</span><span class="sh">
+    chmod -Rv 755 </span><span class="nv">$BUILD_ROOT_PATH</span><span class="sh">/opt </span><span class="nv">$BUILD_ROOT_PATH</span><span class="sh">/usr
+    chmod -Rv 644 </span><span class="nv">$BUILD_ROOT_PATH</span><span class="sh">/etc </span><span class="nv">$BUILD_ROOT_PATH</span><span class="sh">/usr/lib
 }
 copy(){
-    cp -rvf </span><span class="nv">$PWD_PATH</span><span class="sh">/* </span><span class="nv">$ROOT_PATH</span><span class="sh">
-    rm /</span><span class="k">${</span><span class="nv">BASH_SOURCE</span><span class="p">[0]</span><span class="k">}</span><span class="sh">
+    cp -rvf </span><span class="nv">$BUILD_ROOT_PATH</span><span class="sh">/* </span><span class="nv">$INSTALL_PATH</span><span class="sh">
 }
 configure(){
     modprobe br_netfilter
