@@ -474,20 +474,33 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <p><a href="./cluster-deploy/pre-deploy/README.html">初始化部署环境</a></p>
 </li>
 <li>
-<p>部署容器运行时 (多选一)</p>
+<p>部署容器运行时</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="./cluster-deploy/cri-runtime/containerd/README.html">部署 Containerd</a> | <a href="./zz-document/containerd/SET_REGISTRY.html">容器配置</a></p>
+<p>Containerd</p>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="./cluster-deploy/cri-runtime/containerd-offline/README.html">离线部署</a></p>
 </li>
 <li>
-<p><span class="line-through"><a href="./cluster-deploy/cri-runtime/cri-o/README.html">部署 CRI-O</a></span> (暂不可用)</p>
+<p><a href="./cluster-deploy/cri-runtime/containerd-online/README.html">在线部署</a></p>
+</li>
+<li>
+<p><a href="./zz-document/containerd/SET_REGISTRY.html">镜像配置</a></p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><a href="./cluster-deploy/kubernetes/README.html">部署 Kubernetes</a></p>
+<p>CRI-O</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><a href="./cluster-deploy/kubernetes-old/README.html">部署 Kubernetes</a></p>
 </li>
 <li>
 <p><a href="cluster-deploy/metallb/README.html">部署 LoadBalancer 实现</a></p>
@@ -688,11 +701,11 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-06 09:40:13 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-10 16:20:44 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/32addf9ffc0c36313255c445663773a5cd4c778f/MENU.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/32addf9ffc0c36313255c445663773a5cd4c778f/"
-           target="_blank">#32addf</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/89a2f1a9ab3df2252dde8b3d445d750230b0a516/MENU.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/89a2f1a9ab3df2252dde8b3d445d750230b0a516/"
+           target="_blank">#89a2f1</a>
         <script>
 
             function toast(msg, duration = 1000) {

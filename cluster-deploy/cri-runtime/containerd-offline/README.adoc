@@ -16,7 +16,7 @@
 
 [source,bash]
 ----
-include::script/download.sh[lines=2..-1]
+include::script/down.sh[lines=2..-1]
 ----
 
 复制脚本到有网络的机器上运行，在脚本执行完成后将输出的文件上传到需要部署 *Containerd* 的机器上。

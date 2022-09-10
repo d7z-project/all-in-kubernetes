@@ -1,0 +1,9 @@
+= 安装 CRI-O
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+> 为最大化利用系统功能，这里将使用 apt 工具包在线安装，如想要离线安装可参考其他文档。
