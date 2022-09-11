@@ -1,0 +1,54 @@
+= All In Kubernetes
+:homepage: https://gitlab.open-edgn.cn/document/all-in-kubernetes
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+
+> All-In-One（[.line-through]#all in boom#）。
+
+== 特性
+
+* 统一化应用管理，降低传统的硬件虚拟化带来的应用碎片化问题
+* 控制节点与数据存储相绑定，方便备份和集群扩缩容
+* 整合账户系统，使用 *LDAP* 来管理用户，一套账户密码管理整个集群
+* 使用 `yaml` 配置部署和管理集群，配置公开透明可查
+* 所有文档告知所需要的镜像，支持快速离线部署
+
+TIP: 离线部署需用户在有网络的环境下准备好部署的 OCI 镜像和 kubernetes 运行时。
+
+== 入门
+
+项目发布在 link:https://github.com/d7z-project/all-in-kubernetes[d7z-project/all-in-kubernetes]。 有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问。
+
+如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[d7z-project.github.io/all-in-kubernetes] 或者是 link:https://all-in-kubernetes.docs.d7z.net[all-in-kubernetes.docs.d7z.net]。
+
+项目默认使用 `d7z.net` 域名作为模板来渲染文档，你可以克隆此项目后修改 link:./value.properties[value.properties] 文件实现自定义配置。
+
+TIP:  由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请在阅读文档内容后谨慎使用。
+
+== 使用说明
+
+如果你想部署自己的 `kubernetes` 集群并自定义域名等信息，你可克隆此项目后编辑 `value.properties` 文件，将默认配置修改为你的自定义配置后使用如下命令渲染项目：
+
+[source,bash]
+----
+podman pull ghcr.io/d7z-team/asciidoc-static-pages:v2
+# 请将 `pwd` 改为具体的路径
+podman run -ti --rm -v `pwd`:/workspace ghcr.io/d7z-team/asciidoc-static-pages:v2 pages -c /workspace/.pages.yaml
+----
+
+命令退出后，前往 `/build` 文件夹，打开 `index.html` 即可。
+
+TIP: 推荐使用 `podman` 非特权容器执行操作，避免应文件权限问题造成不必要的麻烦。
+
+关于文档渲染使用的程序位于 link:https://github.com/d7z-team/asciidoc-static-pages[d7z-team/asciidoc-static-pages]。
+
+== 注意事项
+
+由于此项目仅供个人使用，并未考虑集群安全和高可用，请勿在生产环境使用，如因参照此文档造成个人、公司财产损失，均与此文档相关作者无关。
+
+== LICENSE
+
+此文档/工程/仓库使用 link:https://creativecommons.org/licenses/by/4.0/[CC BY 4.0]，具体细节请查看 link:./LICENSE[LICENSE] 文件.

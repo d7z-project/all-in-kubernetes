@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>CentOS 部署相关</title>
+<title>All In Kubernetes</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -654,41 +654,142 @@ pre.rouge {
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>CentOS 部署相关</h1>
+<h1>All In Kubernetes</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_关闭_selinux">1. 关闭 Selinux</a></li>
-<li><a href="#_关闭_swap">2. 关闭 Swap</a></li>
+<li><a href="#_特性">1. 特性</a></li>
+<li><a href="#_入门">2. 入门</a></li>
+<li><a href="#_使用说明">3. 使用说明</a></li>
+<li><a href="#_注意事项">4. 注意事项</a></li>
+<li><a href="#_license">5. LICENSE</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_关闭_selinux">1. 关闭 Selinux</h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-</pre></td><td class="code"><pre><span class="nb">sudo </span>setenforce 0
-<span class="nb">sudo sed</span> <span class="nt">-i</span> <span class="s1">'s/^SELINUX=.*/SELINUX=permissive/g'</span> /etc/selinux/config
-</pre></td></tr></tbody></table></code></pre>
+<div class="quoteblock">
+<blockquote>
+<div class="paragraph">
+<p>All-In-One（<span class="line-through">all in boom</span>）。</p>
 </div>
+</blockquote>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_关闭_swap">2. 关闭 Swap</h2>
+<h2 id="_特性">1. 特性</h2>
 <div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>统一化应用管理，降低传统的硬件虚拟化带来的应用碎片化问题</p>
+</li>
+<li>
+<p>控制节点与数据存储相绑定，方便备份和集群扩缩容</p>
+</li>
+<li>
+<p>整合账户系统，使用 <strong>LDAP</strong> 来管理用户，一套账户密码管理整个集群</p>
+</li>
+<li>
+<p>使用 <code>yaml</code> 配置部署和管理集群，配置公开透明可查</p>
+</li>
+<li>
+<p>所有文档告知所需要的镜像，支持快速离线部署</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+离线部署需用户在有网络的环境下准备好部署的 OCI 镜像和 kubernetes 运行时。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_入门">2. 入门</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>项目发布在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes">d7z-project/all-in-kubernetes</a>。 有问题可在 <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/issues">Github</a> 提问。</p>
+</div>
+<div class="paragraph">
+<p>如需在线阅读请访问 <a target="_blank" href="https://d7z-project.github.io/all-in-kubernetes/">d7z-project.github.io/all-in-kubernetes</a> 或者是 <a target="_blank" href="https://all-in-kubernetes.docs.d7z.net">all-in-kubernetes.docs.d7z.net</a>。</p>
+</div>
+<div class="paragraph">
+<p>项目默认使用 <code>d7z.net</code> 域名作为模板来渲染文档，你可以克隆此项目后修改 <a href="./value.properties">value.properties</a> 文件实现自定义配置。</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+由于技术在不断更新迭代，我们无法保证此项目/文档的内容能在新版本中可行，请在阅读文档内容后谨慎使用。
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_使用说明">3. 使用说明</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>如果你想部署自己的 <code>kubernetes</code> 集群并自定义域名等信息，你可克隆此项目后编辑 <code>value.properties</code> 文件，将默认配置修改为你的自定义配置后使用如下命令渲染项目：</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre><span class="nb">sudo sed</span> <span class="nt">-i</span> <span class="s1">'/ swap / s/^\(.*\)$/#\1/g'</span> /etc/fstab
-<span class="nb">sudo </span>swapoff <span class="nt">-a</span>
+3
+</pre></td><td class="code"><pre>podman pull ghcr.io/d7z-team/asciidoc-static-pages:v2
+<span class="c"># 请将 `pwd` 改为具体的路径</span>
+podman run <span class="nt">-ti</span> <span class="nt">--rm</span> <span class="nt">-v</span> <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>:/workspace ghcr.io/d7z-team/asciidoc-static-pages:v2 pages <span class="nt">-c</span> /workspace/.pages.yaml
 </pre></td></tr></tbody></table></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>命令退出后，前往 <code>/build</code> 文件夹，打开 <code>index.html</code> 即可。</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+推荐使用 <code>podman</code> 非特权容器执行操作，避免应文件权限问题造成不必要的麻烦。
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>关于文档渲染使用的程序位于 <a target="_blank" href="https://github.com/d7z-team/asciidoc-static-pages">d7z-team/asciidoc-static-pages</a>。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_注意事项">4. 注意事项</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>由于此项目仅供个人使用，并未考虑集群安全和高可用，请勿在生产环境使用，如因参照此文档造成个人、公司财产损失，均与此文档相关作者无关。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_license">5. LICENSE</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>此文档/工程/仓库使用 <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>，具体细节请查看 <a href="./LICENSE">LICENSE</a> 文件.</p>
 </div>
 </div>
 </div>
@@ -724,11 +825,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-10 16:20:44 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-11 20:27:42 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/89a2f1a9ab3df2252dde8b3d445d750230b0a516/cluster-deploy/kubernetes-old/CentOS.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/89a2f1a9ab3df2252dde8b3d445d750230b0a516/"
-           target="_blank">#89a2f1</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/e228a8a37546593cdf25b10df8c3a1e92c666c84/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/e228a8a37546593cdf25b10df8c3a1e92c666c84/"
+           target="_blank">#e228a8</a>
         <script>
 
             function toast(msg, duration = 1000) {
