@@ -14,7 +14,12 @@ kubernetes 部署后可选择一个节点的某个目录作为集群数据存储
 
 TIP: 为保证数据安全和方便外部备份，数据将物理存储在主节点上。
 
-部署时需要拉取镜像 `k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0`,同时需要集群上每个节点部署有 `nfs-common` 软件包。
+部署时需要如下镜像,同时需要集群上每个节点部署有 `nfs-common` 软件包。
+
+[source,text]
+----
+registry.k8s.io/sig-storage/nfs-provisioner:v3.0.0
+----
 
 == 导入 RBAC 规则和初始化
 
@@ -34,6 +39,8 @@ include::./conf/00-ganesha-rbac.yaml[]
 == 映射节点目录
 
 具体步骤可参考 link:../rook-nfs/README.adoc[RookNFS] , 此处仅放置最终配置。
+
+WARNING: 在导入配置前前需在对应的节点创建或挂载相关目录 `/share`。
 
 .点击展开配置
 [%collapsible]

@@ -769,12 +769,12 @@ done
 for </span>IMAGE_NAME <span class="k">in</span> <span class="k">${</span><span class="nv">IMAGES</span><span class="p">[*]</span><span class="k">}</span><span class="p">;</span> <span class="k">do
     </span><span class="nv">SAVE_IMG_NAME</span><span class="o">=</span><span class="si">$(</span><span class="nb">echo</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> | <span class="nb">sed</span> <span class="nt">-e</span> s@/@-@g <span class="nt">-e</span> s/@/-/g <span class="nt">-e</span> <span class="s2">"s/:/-/g"</span><span class="si">)</span>
     <span class="k">if</span> <span class="o">[</span> <span class="s2">"</span><span class="nv">$DEBUG</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
-        </span>docker pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> <span class="o">||</span> <span class="nb">exit </span>1
+        </span>podman pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> <span class="o">||</span> <span class="nb">exit </span>1
     <span class="k">else
-        </span>docker pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> 1&gt;/dev/null <span class="o">||</span> <span class="nb">exit </span>1
+        </span>podman pull <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> 1&gt;/dev/null <span class="o">||</span> <span class="nb">exit </span>1
     <span class="k">fi
     if</span> <span class="o">[</span> <span class="o">!</span> <span class="nt">-f</span> /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="o">]</span><span class="p">;</span> <span class="k">then
-        </span>docker save <span class="nt">-o</span> /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> 1&gt;/dev/null
+        </span>podman save <span class="nt">-o</span> /tmp/<span class="s2">"</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$IMAGE_NAME</span><span class="s2">"</span> 1&gt;/dev/null
     <span class="k">fi</span>
     <span class="c"># shellcheck disable=SC2179</span>
     FILES+<span class="o">=(</span><span class="s2">"/tmp/</span><span class="nv">$SAVE_IMG_NAME</span><span class="s2">"</span><span class="o">)</span>

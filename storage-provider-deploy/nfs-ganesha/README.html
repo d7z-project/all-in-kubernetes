@@ -695,7 +695,14 @@ pre.rouge {
 </table>
 </div>
 <div class="paragraph">
-<p>部署时需要拉取镜像 <code>k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0</code>,同时需要集群上每个节点部署有 <code>nfs-common</code> 软件包。</p>
+<p>部署时需要如下镜像,同时需要集群上每个节点部署有 <code>nfs-common</code> 软件包。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>registry.k8s.io/sig-storage/nfs-provisioner:v3.0.0
+</pre></td></tr></tbody></table></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -845,6 +852,18 @@ pre.rouge {
 <div class="paragraph">
 <p>具体步骤可参考 <a href="../rook-nfs/README.html">RookNFS</a> , 此处仅放置最终配置。</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+在导入配置前前需在对应的节点创建或挂载相关目录 <code>/share</code>。
+</td>
+</tr>
+</table>
+</div>
 <details>
 <summary class="title">点击展开配置</summary>
 <div class="content">
@@ -925,7 +944,7 @@ pre.rouge {
             <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s">kubernetes.io/hostname</span>
               <span class="na">operator</span><span class="pi">:</span> <span class="s">In</span>
               <span class="na">values</span><span class="pi">:</span>
-                <span class="pi">-</span> <span class="s1">'</span><span class="s">node-worker-01'</span> <span class="c1"># 指定部署在 node-worker-01 节点上，可根据实际需求更改</span>
+                <span class="pi">-</span> <span class="s1">'</span><span class="s">node-master'</span> <span class="c1"># 指定部署在 node-master 节点上，可根据实际需求更改</span>
   <span class="na">persistentVolumeReclaimPolicy</span><span class="pi">:</span> <span class="s">Retain</span>
   <span class="na">storageClassName</span><span class="pi">:</span> <span class="s">sc-nfs-ganesha-local</span>
   <span class="na">volumeMode</span><span class="pi">:</span> <span class="s">Filesystem</span>
@@ -1185,7 +1204,7 @@ pre.rouge {
       <span class="na">serviceAccountName</span><span class="pi">:</span> <span class="s">nfs-server-provisioner</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nfs-server-provisioner</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0"</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">registry.k8s.io/sig-storage/nfs-provisioner:v3.0.0"</span>
           <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
           <span class="na">ports</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nfs</span>
@@ -1668,11 +1687,11 @@ kubectl <span class="nb">exec</span> <span class="s2">"</span><span class="nv">$
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-02 16:18:33 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-12 02:42:05 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/"
-           target="_blank">#c5dfe6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/826c7d536e9b522f01483a07e58df96a44d93c2c/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/826c7d536e9b522f01483a07e58df96a44d93c2c/"
+           target="_blank">#826c7d</a>
         <script>
 
             function toast(msg, duration = 1000) {

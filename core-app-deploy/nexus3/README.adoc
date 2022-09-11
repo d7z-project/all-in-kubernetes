@@ -18,6 +18,13 @@ docker.io/sonatype/nexus3:3.41.1
 docker.io/library/nginx:1.21.1
 ----
 
+部署完成后，将具有以下功能：
+
+* 私有镜像仓库
+* 私有 *Maven* 仓库
+
+其他功能可自行添加
+
 == 创建持久卷
 
 导入以下配置，创建持久卷;由于 *Nexus* 要存储 *Docker* 镜像和 *Maven* 编译结果以及 *RPM*/*DEB* 镜像包，可适当调大容量。
@@ -99,13 +106,13 @@ kubectl get pods,configmaps,secrets,statefulsets.apps,service,ingress  -n core-a
 kubectl exec -it -n core-app pods/sts-nexus-0  --container nexus  -- cat /nexus-data/admin.password
 ----
 
-得到密码后，访问 `https://nexus.d7z.net` 来管理。
+得到密码后，访问 `https://nexus.internal.d7z.net` 来管理。
 
 WARNING: 请将 nexus 的管理员密码设置的足够复杂，以防止被暴力破解！
 
 === 绑定 LDAP
 
-登陆 Nexus 后，访问 `https://nexus.d7z.net/#admin/security/ldap` ，添加一个 LDAP 服务。具体配置参加如下图片即可。
+登陆 Nexus 后，访问 `https://nexus.internal.d7z.net/#admin/security/ldap` ，添加一个 LDAP 服务。具体配置参加如下图片即可。
 
 image::images/01.a-bind-ldap.png[title="配置LDAP连接"]
 
@@ -117,14 +124,14 @@ UserFilter 的内容如下所示
 
 [source,ldif]
 ----
-(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
+(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local)(memberOf=cn=maven,ou=groups,dc=cluster,dc=local))
 ----
 
 配置完成后，点击 `Verify user mapping` , 检查是否找到用户和角色。一切无误后保存即可。
 
 === 绑定角色权限
 
-前往 `https://nexus.d7z.net/#admin/security/roles` 页面，对LDAP相关的角色进行管理。
+前往 `https://nexus.internal.d7z.net/#admin/security/roles` 页面，对LDAP相关的角色进行管理。
 
 ==== 绑定管理员
 
@@ -144,9 +151,18 @@ image::images/02.b-bind-docker-roles.png[title="绑定Docker角色"]
 
 image::images/02.c-bind-deploy-roles.png[title="绑定Deploy角色"]
 
+
+==== 绑定Maven用户组
+
+绑定Maven角色的参考如下，注意配置权限：
+
+image::images/02.d-bind-maven-roles.png[title="绑定Maven角色"]
+
+== 创建仓库
+
 === 创建 Docker 仓库
 
-前往 `https://nexus.d7z.net/#admin/repository/repositories`，删除默认创建的所有仓库，然后点击新建，选择 `docker (hosted)`, 创建本地私有仓库。具体配置如下：
+前往 `https://nexus.internal.d7z.net/#admin/repository/repositories`，删除默认创建的所有仓库，然后点击新建，选择 `docker (hosted)`, 创建本地私有仓库。具体配置如下：
 
 image::images/03.a-create-docker-hosted.png[title="创建 Docker 本地仓库"]
 
@@ -163,10 +179,26 @@ image::images/03.c-create-docker-group.png[title="归组"]
 [source,bash]
 ----
 # 登陆 docker
-docker login registry.d7z.net
-docker pull nginx:1.21.1
-docker tag nginx:1.21.1 registry.d7z.net/public/nginx:1.21.1
-docker push registry.d7z.net/public/nginx:1.21.1
+podman login registry.internal.d7z.net
+podman pull docker.io/library/nginx:1.21.1
+podman tag docker.io/library/nginx:1.21.1 registry.internal.d7z.net/library/nginx:1.21.1
+podman push registry.internal.d7z.net/library/nginx:1.21.1
 ----
 
 如果推送一切无误，则表明部署成功。
+
+== 创建 Maven 仓库
+
+前往 `https://nexus.internal.d7z.net/#admin/repository/repositories`，点击新建，选择 `maven2 (hosted)`, 创建本地私有仓库。具体配置如下：
+
+image::images/04.a-create-m2-host.png[]
+
+本地仓库创建完成后，即可开始创建仓库代理，这里使用的是官方 `maven` 仓库。
+
+image::images/04.b-create-m2-proxy-default.png[]
+
+最后，组合所有仓库到同一个 Group。
+
+image::images/04.c-create-m2-group.png[]
+
+至此，Maven 仓库配置完成。

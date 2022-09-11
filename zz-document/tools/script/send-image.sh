@@ -29,12 +29,12 @@ done
 for IMAGE_NAME in ${IMAGES[*]}; do
     SAVE_IMG_NAME=$(echo "$IMAGE_NAME" | sed -e s@/@-@g -e s/@/-/g -e "s/:/-/g")
     if [ "$DEBUG" ]; then
-        docker pull "$IMAGE_NAME" || exit 1
+        podman pull "$IMAGE_NAME" || exit 1
     else
-        docker pull "$IMAGE_NAME" 1>/dev/null || exit 1
+        podman pull "$IMAGE_NAME" 1>/dev/null || exit 1
     fi
     if [ ! -f /tmp/"$SAVE_IMG_NAME" ]; then
-        docker save -o /tmp/"$SAVE_IMG_NAME" "$IMAGE_NAME" 1>/dev/null
+        podman save -o /tmp/"$SAVE_IMG_NAME" "$IMAGE_NAME" 1>/dev/null
     fi
     # shellcheck disable=SC2179
     FILES+=("/tmp/$SAVE_IMG_NAME")

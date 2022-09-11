@@ -684,12 +684,15 @@ pre.rouge {
 <div class="paragraph">
 <p>Nginx Ingress Controller 需要以下镜像：</p>
 </div>
+<div class="paragraph">
+<p>注意，离线模式导入镜像请去除配置文件中 <code>image</code> 定义的 <code>@sha256</code> 配置。</p>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
-</pre></td><td class="code"><pre>registry.k8s.io/ingress-nginx/controller:v1.3.1@sha256:54f7fe2c6c5a9db9a0ebf1131797109bb7a4d91f56b9b362bde2abd237dd1974
-registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.3.0@sha256:549e71a6ca248c5abd51cdb73dbc3083df62cf92ed5e6147c780e30f7e007a47
+</pre></td><td class="code"><pre>registry.k8s.io/ingress-nginx/controller:v1.3.1
+registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.3.0
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1168,11 +1171,11 @@ second web demo.
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-11 20:27:42 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-12 02:42:05 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/e228a8a37546593cdf25b10df8c3a1e92c666c84/cluster-deploy/ingress-nginx/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/e228a8a37546593cdf25b10df8c3a1e92c666c84/"
-           target="_blank">#e228a8</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/826c7d536e9b522f01483a07e58df96a44d93c2c/cluster-deploy/ingress-nginx/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/826c7d536e9b522f01483a07e58df96a44d93c2c/"
+           target="_blank">#826c7d</a>
         <script>
 
             function toast(msg, duration = 1000) {

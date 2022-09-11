@@ -866,7 +866,7 @@ pre.rouge {
 <span class="c"># config-map 和 secrets 共享的命名空间
 </span><span class="py">var.global.shared-namespace</span><span class="p">=</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops</span>
 <span class="c"># 使用 NFS 创建 PV 时关联的存储节点
-</span><span class="py">var.nfs.local-path.node-name</span><span class="p">=</span><span class="s">node-worker-01</span>
+</span><span class="py">var.nfs.local-path.node-name</span><span class="p">=</span><span class="s">node-master</span>
 <span class="c"># 部署时使用的存储类对象（数据安全大于性能）
 </span><span class="py">var.storage.class.security</span><span class="p">=</span><span class="s">sc-nfs-share</span>
 <span class="c"># 部署时使用的存储类对象（对数据安全性无太大要求）
@@ -877,7 +877,7 @@ pre.rouge {
 <span class="c"># 你CF账户的 API Token值
 </span><span class="py">var.cloudflare.api.token</span><span class="p">=</span><span class="s">&lt;请填写你的 CloudFlare 账户的Token值&gt;</span>
 <span class="c"># LoadBalancer 可用的地址
-</span><span class="py">var.load-balancer.addrs</span><span class="p">=</span><span class="s">10.0.0.35-10.0.0.39</span>
+</span><span class="py">var.load-balancer.addrs</span><span class="p">=</span><span class="s">10.0.0.5-10.0.0.9</span>
 <span class="c">################### Gitlab ###############################
 # Gitlab 管理员密码
 </span><span class="py">var.gitlab.root.password</span><span class="p">=</span><span class="s">gitlab-root-password</span>

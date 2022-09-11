@@ -1024,6 +1024,8 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
  98
  99
 100
+101
+102
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1057,6 +1059,8 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
             <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
                 <span class="na">name</span><span class="pi">:</span> <span class="s">secret-minio</span>
           <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_DOMAIN</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">s3.d7z.net'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_BROWSER_REDIRECT_URL</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://minio.internal.d7z.net'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_SERVER_INSECURE</span>

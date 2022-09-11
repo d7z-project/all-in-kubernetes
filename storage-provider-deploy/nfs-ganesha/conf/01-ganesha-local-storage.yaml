@@ -20,7 +20,7 @@ spec:
             - key: kubernetes.io/hostname
               operator: In
               values:
-                - 'node-worker-01' # 指定部署在 node-worker-01 节点上，可根据实际需求更改
+                - 'node-master' # 指定部署在 node-master 节点上，可根据实际需求更改
   persistentVolumeReclaimPolicy: Retain
   storageClassName: sc-nfs-ganesha-local
   volumeMode: Filesystem
