@@ -1,0 +1,9 @@
+= 使用 kubeadm 安装 kubernetes （在线安装）
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明

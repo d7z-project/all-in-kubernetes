@@ -1,0 +1,44 @@
+= 使用 kubeadm 安装 kubernetes （离线安装）
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+此文档需要在有网络的机器上准备好需要的镜像和安装的软件。需要此机器上安装有 link:https://podman.io/[*Podman*] (用于导出镜像)。
+
+== 准备资源
+
+复制以下脚本到可连接网络的机器（或配置 `http_proxy` 或 `https_proxy` 环境变量），然后执行脚本即可。
+
+
+WARNING: 此脚本生成的离线安装包仅支持 `amd64` ，且仅在 `Debian bullseye` 上测试。
+
+.点击展开脚本
+[%collapsible]
+====
+
+[source,bash]
+----
+include::script/offline-down.sh[]
+----
+
+====
+
+如无问题，数据将打包并压缩在 `/tmp/kubernetes/kubernetes-1.25.0.tgz`,将此压缩包上传到远程机器即可。
+
+== 导入并初始化 kubernetes 环境
+
+将离线压缩包上传后，使用如下命令解压并准备环境：
+
+[source,bash]
+----
+include::script/offline-install.sh[lines=2..-1]
+----
+
+执行完成后，脚本会把接下来安装需要的资源和镜像安装到系统，同时会将CNI 网络组件的镜像导入到系统，一切无误后，即可正式开始安装 `kubernetes`。
+
+include::README.install.adoc[lines=2..-1]

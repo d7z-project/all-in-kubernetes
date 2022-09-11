@@ -12,7 +12,7 @@
 
 WARNING: 由于 `debian bullseye` 默认源中的 *Containerd* 版本太老，我们将使用由 *docker* 提供的仓库安装。
 
-== 安装依赖工具包
+=== 安装依赖工具包
 
 使用如下命令准备好需要工具包
 
@@ -21,7 +21,7 @@ WARNING: 由于 `debian bullseye` 默认源中的 *Containerd* 版本太老，�
 include::script/add-tools.sh[lines=2..-1]
 ----
 
-== 导入gpg key
+=== 导入gpg key
 
 使用如下命令导入需要用到的 gpg key
 
@@ -30,7 +30,7 @@ include::script/add-tools.sh[lines=2..-1]
 include::script/include-gpg.sh[lines=2..-1]
 ----
 
-== 添加 apt 仓库
+=== 添加 apt 仓库
 
 gpg key 导入完成后，使用如下命令配置仓库地址，添加完成后刷新本地缓存即可
 
@@ -51,3 +51,7 @@ include::script/add-apt-list.sh[lines=2..-1]
 ----
 include::script/install-containerd.sh[lines=2..-1]
 ----
+
+=== 配置 containerd
+
+安装完成后，使用如下命令对安装的软件进行配置
