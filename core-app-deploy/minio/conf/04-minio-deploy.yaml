@@ -31,6 +31,8 @@ spec:
             - secretRef:
                 name: secret-minio
           env:
+            - name: MINIO_DOMAIN
+              value: 's3.{{var.global.pub-host}}'
             - name: MINIO_BROWSER_REDIRECT_URL
               value: 'https://minio.internal.{{var.global.pub-host}}'
             - name: MINIO_IDENTITY_LDAP_SERVER_INSECURE

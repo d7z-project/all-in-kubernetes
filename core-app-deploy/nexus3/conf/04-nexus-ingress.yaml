@@ -12,11 +12,12 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - nexus.{{var.global.pub-host}}
-        - registry.{{var.global.pub-host}}
+        - nexus.internal.{{var.global.pub-host}}
+        - registry.internal.{{var.global.pub-host}}
+        - maven.internal.{{var.global.pub-host}}
       secretName: {{var.global.tls-name}}
   rules:
-    - host: nexus.{{var.global.pub-host}}
+    - host: nexus.internal.{{var.global.pub-host}}
       http:
         paths:
           - path: /
@@ -26,7 +27,7 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-web
-    - host: registry.{{var.global.pub-host}}
+    - host: registry.internal.{{var.global.pub-host}}
       http:
         paths:
           - path: /
@@ -36,7 +37,7 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-docker
-    - host: maven.{{var.global.pub-host}}
+    - host: maven.internal.{{var.global.pub-host}}
       http:
         paths:
           - path: /

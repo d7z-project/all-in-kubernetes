@@ -12,6 +12,8 @@
 
 Nginx Ingress Controller 需要以下镜像：
 
+注意，离线模式导入镜像请去除配置文件中 `image` 定义的 `@sha256` 配置。
+
 [source,bash]
 ----
 include::offline/images.txt[]

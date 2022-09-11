@@ -20,7 +20,7 @@ spec:
       serviceAccountName: nfs-server-provisioner
       containers:
         - name: nfs-server-provisioner
-          image: "k8s.gcr.io/sig-storage/nfs-provisioner:v3.0.0"
+          image: "registry.k8s.io/sig-storage/nfs-provisioner:v3.0.0"
           imagePullPolicy: IfNotPresent
           ports:
             - name: nfs
