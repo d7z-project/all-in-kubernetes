@@ -16,8 +16,8 @@ MetalLB 需要以下镜像：
 
 [source,bash]
 ----
-crictl pull quay.io/metallb/controller:v0.13.3
-crictl pull quay.io/metallb/speaker:v0.13.3
+quay.io/metallb/controller:v0.13.5
+quay.io/metallb/speaker:v0.13.5
 ----
 
 本文仅介绍了使用 `L2` 模式，BGP 模式请查看官网。
@@ -41,7 +41,7 @@ include::./script/00-ipvs-patch.sh[lines=3..-1]
 
 [source,bash]
 ----
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.3/config/manifests/metallb-native.yaml
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.5/config/manifests/metallb-native.yaml
 ----
 
 导入完成后使用以下命令查看结果：

@@ -6,7 +6,6 @@
 :toclevels: 4
 :source-highlighter: rouge
 :project-home: https://cert-manager.io
-:var.deploy.host: d7z.net
 :deploy-tls-name: deploy-tls-name
 
 == 说明
@@ -28,7 +27,7 @@ include::offline/images.txt[]
 
 [source,bash]
 ----
-kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.8.2/cert-manager.yaml
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.9.1/cert-manager.yaml
 ----
 
 导入完成后使用以下命令查看结果：

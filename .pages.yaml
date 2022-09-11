@@ -4,7 +4,7 @@ pages:
     home: 'https://github.com/d7z-project/all-in-kubernetes'
   location:
     menu: '/MENU.adoc'
-    main: '/MAIN.adoc'
+    main: '/README.adoc'
     icon: '/logo.svg'
     output: '/build'
   conf: # 功能配置

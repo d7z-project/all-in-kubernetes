@@ -27,8 +27,7 @@ include::offline/images.txt[]
 
 [source,bash]
 ----
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.2.1/deploy/static/provider/cloud/deploy.yaml
-
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/cloud/deploy.yaml
 ----
 
 === 应用修复
@@ -41,7 +40,8 @@ include::./conf/01-patch-service.yaml[]
 ----
 
 .其中
-<1> 移除了独占配置，并配置 IP 共享 key ( metallb 提供支持 )
+<1> 移除了独占配置，并配置 IP 共享 key ( `metallb` 提供支持 )
+<2> 如果你想保留客户端源 IP,则可添加此参数,此参数会导致 `metallb` 无法共享同IP端口
 
 导入完成后使用以下命令查看结果：
 

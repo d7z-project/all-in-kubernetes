@@ -30,7 +30,7 @@ include::script/offline-down.sh[]
 
 如无问题，数据将打包并压缩在 `/tmp/kubernetes/kubernetes-1.25.0.tgz`,将此压缩包上传到远程机器即可。
 
-== 导入并初始化 kubernetes 环境
+== 导入并初始化环境
 
 将离线压缩包上传后，使用如下命令解压并准备环境：
 

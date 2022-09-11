@@ -7,3 +7,85 @@
 :source-highlighter: rouge
 
 == 部署 kubernetes
+
+一切环境准备完成后，即可开始部署 *kubernetes*。
+
+=== 重置 kubernetes (可选)
+
+如果部署失败，可尝试重置 *kubernetes* 后重新部署。
+
+[source,bash]
+----
+include::./script/reset.sh[lines=2..-1]
+----
+
+
+=== 部署控制节点
+
+TIP:  `kubernetes` 需要 `conntrack` 软件包。
+
+控制节点部署在 `dragon-k8s-master` 机器上，SSH 连接机器，执行以下命令：
+
+[source,bash]
+----
+include::./script/insall-master.sh[lines=2..-1]
+----
+
+如果一切无误，则执行 `kubectl get nodes` 命令时会显示如下内容:
+
+[source,text]
+----
+NAME          STATUS     ROLES           AGE     VERSION
+node-master   NotReady   control-plane   7m54s   v1.24.2
+----
+
+=== 部署 CNI 插件
+
+kubernetes 控制节点部署完成后，需要配置CNI网络插件实现各个节点之间的通信。这里我们使用的是 `flannel`。
+
+WARNING: 注意，此处变更了 `flannel` 的部分配置，使用 `wireguard` 进行节点间通信，同时集群内部地址改为 `10.254.0.0/16`。
+
+.点击展开部署配置
+[%collapsible]
+====
+
+[source,yaml]
+----
+include::./conf/kube-flannel.yml[]
+----
+
+====
+
+执行命令 `watch kubectl get pods --all-namespaces`, 直到出现类似于如下示例的回显即表示部署成功。
+
+[source,text]
+----
+NAMESPACE     NAME                                  READY   STATUS    RESTARTS      AGE
+kube-system   coredns-6d4b75cb6d-5tmll              1/1     Running   0             15m
+kube-system   coredns-6d4b75cb6d-j98fd              1/1     Running   0             15m
+kube-system   etcd-node-master                      1/1     Running   2             15m
+kube-system   kube-apiserver-node-master            1/1     Running   2 (16m ago)   16m
+kube-system   kube-controller-manager-node-master   1/1     Running   2             16m
+kube-system   kube-flannel-ds-d54gd                 1/1     Running   0             3m33s
+kube-system   kube-proxy-n95j9                      1/1     Running   0             15m
+kube-system   kube-scheduler-node-master            1/1     Running   2             16m
+
+----
+
+此时你可以使用 `wg` 命令查看部署的 `flannel`。
+
+=== 部署工作节点
+
+在部署控制节点时，`kubeadm` 已将部署工作节点的命令展示到控制台，你还可以使用   `tail -n 2 ~/kubectl-installer.log` 查看命令。注意：Token 过期时间为 24小时，如果超过24小时，可在控制节点执行 `kubeadm token create` 重新生成 token.
+
+在加入集群时，需为每个节点添加唯一标识，使用参数 `--node-name` 即可。 部署完成后，执行 `kubectl get nodes` ，控制台回显如下：
+
+[source,text]
+----
+NAME             STATUS   ROLES           AGE    VERSION
+node-master      Ready    control-plane   46m    v1.24.2
+node-worker-01   Ready    <none>          13m    v1.24.2
+node-worker-02   Ready    <none>          105s   v1.24.2
+----
+
+至此，Kubernetes 部署完成。
