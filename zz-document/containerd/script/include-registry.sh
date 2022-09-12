@@ -5,19 +5,30 @@ ALIAS_LIST=(
     "registry.gitlab.com"
     "quay.io"
     "k8s.gcr.io"
-    "registry.{{var.global.pub-host}}"
+    "registry.k8s.io"
 )
+
+mkdir -p /etc/containerd/certs.d/
+cat << EOF | tee "/etc/containerd/certs.d/registry.internal.{{var.global.pub-host}}.toml" >/dev/null
+server = "https://$url"
+
+[host."https://registry.internal.{{var.global.pub-host}}"]
+  capabilities = ["pull", "resolve"]
+  skip_verify = true
+
+EOF
 
 for url in "${ALIAS_LIST[@]}"; do
     current_directory="/etc/containerd/certs.d/$url"
     current_config_path="$current_directory/hosts.toml"
     mkdir -p "$current_directory"
-    cat <<EOF | tee $current_config_path >/dev/null
+    cat <<EOF | tee "$current_config_path" >/dev/null
 server = "https://$url"
 
-[host."https://registry.{{var.global.pub-host}}"]
+[host."https://registry.internal.{{var.global.pub-host}}"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
+
 EOF
 done
 systemctl restart containerd
