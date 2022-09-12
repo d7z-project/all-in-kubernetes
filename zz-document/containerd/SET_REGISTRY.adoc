@@ -8,7 +8,7 @@
 
 详细配置可参考 link:https://github.com/containerd/containerd/blob/main/docs/cri/config.md#registry-configuration[在线文档]。
 
-WARNING: 如果你的服务器可联网，则无需配置，否则可能影响程序
+WARNING: 如果你的服务器可联网，则无需配置，否则可能影响 Containerd 拉取镜像。
 
 == 修改配置
 
