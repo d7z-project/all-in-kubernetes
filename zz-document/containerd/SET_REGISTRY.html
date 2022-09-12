@@ -670,6 +670,18 @@ pre.rouge {
 <div class="paragraph">
 <p>详细配置可参考 <a target="_blank" href="https://github.com/containerd/containerd/blob/main/docs/cri/config.md#registry-configuration">在线文档</a>。</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+如果你的服务器可联网，则无需配置，否则可能影响程序
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -754,26 +766,48 @@ pre.rouge {
 20
 21
 22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
 </pre></td><td class="code"><pre><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s@config_path = ""@config_path = "/etc/containerd/certs.d"@g'</span> /etc/containerd/config.toml
 <span class="nv">ALIAS_LIST</span><span class="o">=(</span>
     <span class="s2">"docker.io"</span>
     <span class="s2">"registry.gitlab.com"</span>
     <span class="s2">"quay.io"</span>
     <span class="s2">"k8s.gcr.io"</span>
-    <span class="s2">"registry.d7z.net"</span>
+    <span class="s2">"registry.k8s.io"</span>
 <span class="o">)</span>
 
-<span class="k">for </span>url <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">ALIAS_LIST</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
+<span class="nb">mkdir</span> <span class="nt">-p</span> /etc/containerd/certs.d/
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> | tee "/etc/containerd/certs.d/registry.internal.d7z.net.toml" &gt;/dev/null
+server = "https://</span><span class="nv">$url</span><span class="sh">"
+
+[host."https://registry.internal.d7z.net"]
+  capabilities = ["pull", "resolve"]
+  skip_verify = true
+</span><span class="no">
+EOF
+
+</span><span class="k">for </span>url <span class="k">in</span> <span class="s2">"</span><span class="k">${</span><span class="nv">ALIAS_LIST</span><span class="p">[@]</span><span class="k">}</span><span class="s2">"</span><span class="p">;</span> <span class="k">do
     </span><span class="nv">current_directory</span><span class="o">=</span><span class="s2">"/etc/containerd/certs.d/</span><span class="nv">$url</span><span class="s2">"</span>
     <span class="nv">current_config_path</span><span class="o">=</span><span class="s2">"</span><span class="nv">$current_directory</span><span class="s2">/hosts.toml"</span>
     <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s2">"</span><span class="nv">$current_directory</span><span class="s2">"</span>
-    <span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee </span><span class="nv">$current_config_path</span><span class="sh"> &gt;/dev/null
+    <span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee "</span><span class="nv">$current_config_path</span><span class="sh">" &gt;/dev/null
 server = "https://</span><span class="nv">$url</span><span class="sh">"
 
-[host."https://registry.d7z.net"]
+[host."https://registry.internal.d7z.net"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
-</span><span class="no">EOF
+</span><span class="no">
+EOF
 </span><span class="k">done
 </span>systemctl restart containerd
 </pre></td></tr></tbody></table></code></pre>
@@ -813,11 +847,11 @@ server = "https://</span><span class="nv">$url</span><span class="sh">"
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-06 09:23:30 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-12 23:09:50 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/9ed015f715230c6e8cb49d3d4d53e55d2abe22c1/zz-document/containerd/SET_REGISTRY.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/9ed015f715230c6e8cb49d3d4d53e55d2abe22c1/"
-           target="_blank">#9ed015</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/b7a558d2bbd2dd9beff9069c84154179dd48d5a3/zz-document/containerd/SET_REGISTRY.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/b7a558d2bbd2dd9beff9069c84154179dd48d5a3/"
+           target="_blank">#b7a558</a>
         <script>
 
             function toast(msg, duration = 1000) {
