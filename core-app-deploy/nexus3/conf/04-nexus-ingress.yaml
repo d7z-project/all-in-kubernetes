@@ -47,7 +47,7 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-maven
-    - host: rpm.internal.{{var.global.pub-host}}
+    - host: yum.internal.{{var.global.pub-host}}
       http:
         paths:
           - path: /
@@ -57,3 +57,13 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-rpm
+    - host: apt.internal.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-apt
