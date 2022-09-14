@@ -47,3 +47,13 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-maven
+    - host: rpm.internal.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-rpm

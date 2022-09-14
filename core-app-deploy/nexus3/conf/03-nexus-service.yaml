@@ -16,5 +16,8 @@ spec:
     - name: nexus-maven
       protocol: TCP
       port: 82
+    - name: nexus-rpm
+      protocol: TCP
+      port: 83
   selector:
     app: nexus
