@@ -901,6 +901,129 @@ docker.io/library/nginx:1.21.1
 125
 126
 127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213
+214
+215
+216
+217
+218
+219
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231
+232
+233
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -980,9 +1103,6 @@ docker.io/library/nginx:1.21.1
     <span class="s">set $upstream "nexus_maven_group";</span>
     <span class="s">}</span>
     <span class="s">location / {</span>
-    <span class="s">sub_filter_types text/html application/x-javascript;</span>
-    <span class="s">sub_filter 'http://192.168.50.3:8081' '/static/';</span>
-    <span class="s">sub_filter_once off;</span>
     <span class="s">proxy_pass http://$upstream;</span>
     <span class="s">proxy_connect_timeout 3600s;</span>
     <span class="s">proxy_read_timeout 3600s;</span>
@@ -1019,6 +1139,132 @@ docker.io/library/nginx:1.21.1
     <span class="s">chunked_transfer_encoding on;</span>
     <span class="s">location / {</span>
     <span class="s">proxy_pass http://127.0.0.1/repository/maven-host/;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+
+  <span class="na">yum.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">upstream nexus_yum_hosted {</span>
+    <span class="s">server 127.0.0.1:13000;</span>
+    <span class="s">}</span>
+    <span class="s">upstream nexus_yum_group {</span>
+    <span class="s">server 127.0.0.1:13001;</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 83;</span>
+    <span class="s">listen  [::]:83;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">set $upstream "nexus_yum_hosted";</span>
+    <span class="s">if ( $request_method ~* 'GET') {</span>
+    <span class="s">set $upstream "nexus_yum_group";</span>
+    <span class="s">}</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://$upstream;</span>
+    <span class="s">proxy_connect_timeout 3600s;</span>
+    <span class="s">proxy_read_timeout 3600s;</span>
+    <span class="s">proxy_send_timeout 3600s;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 13001;</span>
+    <span class="s">listen  [::]:13001;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://127.0.0.1/repository/yum-group/;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 13000;</span>
+    <span class="s">listen  [::]:13000;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://127.0.0.1/repository/yum-host/;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+
+  <span class="na">apt.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">upstream nexus_apt_hosted {</span>
+    <span class="s">server 127.0.0.1:14000;</span>
+    <span class="s">}</span>
+    <span class="s">upstream nexus_apt_group {</span>
+    <span class="s">server 127.0.0.1:14001;</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 84;</span>
+    <span class="s">listen  [::]:83;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">set $upstream "nexus_apt_hosted";</span>
+    <span class="s">if ( $request_method ~* 'GET') {</span>
+    <span class="s">set $upstream "nexus_apt_group";</span>
+    <span class="s">}</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://$upstream;</span>
+    <span class="s">proxy_connect_timeout 3600s;</span>
+    <span class="s">proxy_read_timeout 3600s;</span>
+    <span class="s">proxy_send_timeout 3600s;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 14001;</span>
+    <span class="s">listen  [::]:14001;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://127.0.0.1/repository/apt-group/;</span>
+    <span class="s">proxy_set_header Host $host;</span>
+    <span class="s">proxy_buffering off;</span>
+    <span class="s">client_max_body_size 0;</span>
+    <span class="s">send_timeout 3600s;</span>
+    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
+    <span class="s">proxy_request_buffering off;</span>
+    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
+    <span class="s">}</span>
+    <span class="s">}</span>
+    <span class="s">server{</span>
+    <span class="s">listen 14000;</span>
+    <span class="s">listen  [::]:14000;</span>
+    <span class="s">client_max_body_size 10G;</span>
+    <span class="s">chunked_transfer_encoding on;</span>
+    <span class="s">location / {</span>
+    <span class="s">proxy_pass http://127.0.0.1/repository/apt-host/;</span>
     <span class="s">proxy_set_header Host $host;</span>
     <span class="s">proxy_buffering off;</span>
     <span class="s">client_max_body_size 0;</span>
@@ -1103,6 +1349,22 @@ docker.io/library/nginx:1.21.1
 41
 42
 43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1133,12 +1395,28 @@ docker.io/library/nginx:1.21.1
           <span class="na">env</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">INSTALL4J_ADD_VM_PARAMS</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">-Xms2703m</span><span class="nv"> </span><span class="s">-Xmx2703m</span><span class="nv"> </span><span class="s">-XX:MaxDirectMemorySize=2703m</span><span class="nv"> </span><span class="s">-Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"</span>
+          <span class="na">ports</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">8081</span>
+              <span class="na">hostPort</span><span class="pi">:</span> <span class="m">8081</span>
+              <span class="na">name</span><span class="pi">:</span> <span class="s">work-port</span>
+          <span class="na">startupProbe</span><span class="pi">:</span>
+            <span class="na">httpGet</span><span class="pi">:</span>
+              <span class="na">port</span><span class="pi">:</span> <span class="s">work-port</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">/service/rest/v1/status</span>
+            <span class="na">failureThreshold</span><span class="pi">:</span> <span class="m">60</span>
+            <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">5</span>
+          <span class="na">livenessProbe</span><span class="pi">:</span>
+            <span class="na">httpGet</span><span class="pi">:</span>
+              <span class="na">port</span><span class="pi">:</span> <span class="s">work-port</span>
+              <span class="na">path</span><span class="pi">:</span> <span class="s">/service/rest/v1/status</span>
+            <span class="na">initialDelaySeconds</span><span class="pi">:</span> <span class="m">120</span>
+            <span class="na">periodSeconds</span><span class="pi">:</span> <span class="m">10</span>
+            <span class="na">failureThreshold</span><span class="pi">:</span> <span class="m">5</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/nginx:1.21.1</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/conf.d/</span>
-
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-data</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
@@ -1179,6 +1457,12 @@ docker.io/library/nginx:1.21.1
 18
 19
 20
+21
+22
+23
+24
+25
+26
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1197,6 +1481,12 @@ docker.io/library/nginx:1.21.1
     <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-maven</span>
       <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
       <span class="na">port</span><span class="pi">:</span> <span class="m">82</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-yum</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">83</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-apt</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">84</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
 </pre></td></tr></tbody></table></code></pre>
@@ -1261,6 +1551,26 @@ docker.io/library/nginx:1.21.1
 47
 48
 49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1310,6 +1620,26 @@ docker.io/library/nginx:1.21.1
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-maven</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">yum.internal.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-rpm</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">apt.internal.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-apt</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

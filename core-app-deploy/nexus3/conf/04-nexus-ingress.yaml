@@ -47,3 +47,23 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-maven
+    - host: yum.internal.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-rpm
+    - host: apt.internal.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-apt

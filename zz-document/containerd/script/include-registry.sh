@@ -6,13 +6,16 @@ ALIAS_LIST=(
     "quay.io"
     "k8s.gcr.io"
     "registry.k8s.io"
+    "ghcr.io"
 )
 
-mkdir -p /etc/containerd/certs.d/
-cat << EOF | tee "/etc/containerd/certs.d/registry.internal.d7z.net.toml" >/dev/null
+replace_host="registry.internal.d7z.net"
+
+mkdir -p /etc/containerd/certs.d/ /etc/containerd/certs.d/$replace_host
+cat << EOF | tee "/etc/containerd/certs.d/$replace_host/hosts.toml" >/dev/null
 server = "https://$url"
 
-[host."https://registry.internal.d7z.net"]
+[host."https://$replace_host"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
 
@@ -25,7 +28,7 @@ for url in "${ALIAS_LIST[@]}"; do
     cat <<EOF | tee "$current_config_path" >/dev/null
 server = "https://$url"
 
-[host."https://registry.internal.d7z.net"]
+[host."https://$replace_host"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
 

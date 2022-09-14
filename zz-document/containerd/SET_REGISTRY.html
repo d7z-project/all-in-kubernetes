@@ -777,6 +777,9 @@ pre.rouge {
 31
 32
 33
+34
+35
+36
 </pre></td><td class="code"><pre><span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'s@config_path = ""@config_path = "/etc/containerd/certs.d"@g'</span> /etc/containerd/config.toml
 <span class="nv">ALIAS_LIST</span><span class="o">=(</span>
     <span class="s2">"docker.io"</span>
@@ -784,13 +787,16 @@ pre.rouge {
     <span class="s2">"quay.io"</span>
     <span class="s2">"k8s.gcr.io"</span>
     <span class="s2">"registry.k8s.io"</span>
+    <span class="s2">"ghcr.io"</span>
 <span class="o">)</span>
 
-<span class="nb">mkdir</span> <span class="nt">-p</span> /etc/containerd/certs.d/
-<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> | tee "/etc/containerd/certs.d/registry.internal.d7z.net.toml" &gt;/dev/null
+<span class="nv">replace_host</span><span class="o">=</span><span class="s2">"registry.internal.d7z.net"</span>
+
+<span class="nb">mkdir</span> <span class="nt">-p</span> /etc/containerd/certs.d/ /etc/containerd/certs.d/<span class="nv">$replace_host</span>
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOF</span><span class="sh"> | tee "/etc/containerd/certs.d/</span><span class="nv">$replace_host</span><span class="sh">/hosts.toml" &gt;/dev/null
 server = "https://</span><span class="nv">$url</span><span class="sh">"
 
-[host."https://registry.internal.d7z.net"]
+[host."https://</span><span class="nv">$replace_host</span><span class="sh">"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
 </span><span class="no">
@@ -803,7 +809,7 @@ EOF
     <span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOF</span><span class="sh"> | tee "</span><span class="nv">$current_config_path</span><span class="sh">" &gt;/dev/null
 server = "https://</span><span class="nv">$url</span><span class="sh">"
 
-[host."https://registry.internal.d7z.net"]
+[host."https://</span><span class="nv">$replace_host</span><span class="sh">"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
 </span><span class="no">
