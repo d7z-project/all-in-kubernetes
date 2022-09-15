@@ -124,7 +124,7 @@ UserFilter 的内容如下所示
 
 [source,ldif]
 ----
-(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local)(memberOf=cn=maven,ou=groups,dc=cluster,dc=local))
+(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local)(memberOf=cn=maven,ou=groups,dc=cluster,dc=local)(memberOf=cn=yum,ou=groups,dc=cluster,dc=local)(memberOf=cn=apt,ou=groups,dc=cluster,dc=local))
 ----
 
 配置完成后，点击 `Verify user mapping` , 检查是否找到用户和角色。一切无误后保存即可。
