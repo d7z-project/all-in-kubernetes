@@ -28,12 +28,28 @@ spec:
           env:
             - name: INSTALL4J_ADD_VM_PARAMS
               value: "-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
+          ports:
+            - containerPort: 8081
+              hostPort: 8081
+              name: work-port
+          startupProbe:
+            httpGet:
+              port: work-port
+              path: /service/rest/v1/status
+            failureThreshold: 60
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              port: work-port
+              path: /service/rest/v1/status
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 5
         - name: nginx
           image: docker.io/library/nginx:1.21.1
           volumeMounts:
             - name: nginx-data
               mountPath: /etc/nginx/conf.d/
-
       volumes:
         - name: nexus-data
           persistentVolumeClaim:

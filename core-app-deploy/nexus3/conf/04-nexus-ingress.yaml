@@ -8,6 +8,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
+#    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   ingressClassName: nginx
   tls:
@@ -47,3 +48,23 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-maven
+    - host: yum.internal.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-yum
+    - host: apt.internal.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-nexus
+                port:
+                  name: nexus-apt
