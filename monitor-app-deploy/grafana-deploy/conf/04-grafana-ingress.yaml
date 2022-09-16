@@ -12,10 +12,10 @@ spec:
   ingressClassName: nginx
   tls:
     - hosts:
-        - grafana.{{var.global.pub-host}}
+        - grafana.internal.{{var.global.pub-host}}
       secretName: {{var.global.tls-name}}
   rules:
-    - host: grafana.{{var.global.pub-host}}
+    - host: grafana.internal.{{var.global.pub-host}}
       http:
         paths:
           - path: /

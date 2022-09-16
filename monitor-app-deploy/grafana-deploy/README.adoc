@@ -75,4 +75,4 @@ include::conf/04-grafana-ingress.yaml[]
 kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=grafana
 ----
 
-待一切完成后，访问 `https://grafana.{{var.global.pub-host}}` 查看 web 页面。
+待一切完成后，访问 `https://grafana.internal.{{var.global.pub-host}}` 查看 web 页面。
