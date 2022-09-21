@@ -7,15 +7,13 @@ metadata:
   namespace: core-app
 data:
   MINIO_ROOT_USER: '{{var.minio.admin.account}}'
-  MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER: '(&(uid=%s)(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=s3,ou=groups,dc=cluster,dc=local)))'
+  MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER: '(&(uid=%s)(memberOf=cn=admin,ou=groups,dc=cluster,dc=local))'
   MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER: '(&(objectClass=groupOfNames)(member=%d))'
   auto.sh: |
     #!/usr/bin/env bash
     sleep 10
     mc config host add minio http://127.0.0.1:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} --api S3v4
-    mc admin policy set minio consoleAdmin group=cn=admin,ou=groups,dc=cluster,dc=local
-    mc admin policy set minio readwrite group=cn=s3,ou=groups,dc=cluster,dc=local
-    # MinIO CLI Wait
+    mc admin policy set minio consoleAdmin group=cn=admin,ou=groups,dc=cluster,dc=local    # MinIO CLI Wait
     while true; do
         if [ -f "/exit.hook" ]; then
             break 
