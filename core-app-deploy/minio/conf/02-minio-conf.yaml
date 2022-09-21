@@ -13,7 +13,7 @@ data:
     #!/usr/bin/env bash
     sleep 10
     mc config host add minio http://127.0.0.1:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} --api S3v4
-    mc admin policy set minio consoleAdmin group=cn=admin,ou=groups,dc=cluster,dc=local    # MinIO CLI Wait
+    mc admin policy set minio consoleAdmin group=cn=admin,ou=groups,dc=cluster,dc=local
     while true; do
         if [ -f "/exit.hook" ]; then
             break 
