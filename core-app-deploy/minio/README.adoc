@@ -31,15 +31,6 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
 
 == 部署准备
 
-=== 创建 LDAP Group
-
-连接你的 *LDAP* 管理器，为其添加如下角色。
-
-[source,text]
-----
-cn=s3,ou=groups,dc=cluster,dc=local
-----
-
 === 创建相关的持久卷
 
 在 *Kubernetes* 下导入以下配置，创建对应的持久卷。

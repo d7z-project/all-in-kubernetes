@@ -666,9 +666,8 @@ pre.rouge {
 </li>
 <li><a href="#_部署准备">2. 部署准备</a>
 <ul class="sectlevel2">
-<li><a href="#_创建_ldap_group">2.1. 创建 LDAP Group</a></li>
-<li><a href="#_创建相关的持久卷">2.2. 创建相关的持久卷</a></li>
-<li><a href="#_导入相关配置">2.3. 导入相关配置</a></li>
+<li><a href="#_创建相关的持久卷">2.1. 创建相关的持久卷</a></li>
+<li><a href="#_导入相关配置">2.2. 导入相关配置</a></li>
 </ul>
 </li>
 <li><a href="#_开始部署">3. 开始部署</a>
@@ -732,20 +731,7 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
 <h2 id="_部署准备">2. 部署准备</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_创建_ldap_group">2.1. 创建 LDAP Group</h3>
-<div class="paragraph">
-<p>连接你的 <strong>LDAP</strong> 管理器，为其添加如下角色。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>cn=s3,ou=groups,dc=cluster,dc=local
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_创建相关的持久卷">2.2. 创建相关的持久卷</h3>
+<h3 id="_创建相关的持久卷">2.1. 创建相关的持久卷</h3>
 <div class="paragraph">
 <p>在 <strong>Kubernetes</strong> 下导入以下配置，创建对应的持久卷。</p>
 </div>
@@ -784,7 +770,7 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
 </div>
 </div>
 <div class="sect2">
-<h3 id="_导入相关配置">2.3. 导入相关配置</h3>
+<h3 id="_导入相关配置">2.2. 导入相关配置</h3>
 <div class="paragraph">
 <p>在 <strong>MinIO</strong> 部署过程中需要自定义部分配置，在 <strong>Kubernetes</strong> 导入此配置即可。</p>
 </div>
@@ -823,8 +809,6 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
 31
 32
 33
-34
-35
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -834,15 +818,13 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">MINIO_ROOT_USER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">minio'</span>
-  <span class="na">MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(&amp;(uid=%s)(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=s3,ou=groups,dc=cluster,dc=local)))'</span>
+  <span class="na">MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(&amp;(uid=%s)(memberOf=cn=admin,ou=groups,dc=cluster,dc=local))'</span>
   <span class="na">MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(&amp;(objectClass=groupOfNames)(member=%d))'</span>
   <span class="na">auto.sh</span><span class="pi">:</span> <span class="pi">|</span>
     <span class="s">#!/usr/bin/env bash</span>
     <span class="s">sleep 10</span>
     <span class="s">mc config host add minio http://127.0.0.1:9000 ${MINIO_ROOT_USER} ${MINIO_ROOT_PASSWORD} --api S3v4</span>
     <span class="s">mc admin policy set minio consoleAdmin group=cn=admin,ou=groups,dc=cluster,dc=local</span>
-    <span class="s">mc admin policy set minio readwrite group=cn=s3,ou=groups,dc=cluster,dc=local</span>
-    <span class="s"># MinIO CLI Wait</span>
     <span class="s">while true; do</span>
         <span class="s">if [ -f "/exit.hook" ]; then</span>
             <span class="s">break </span>
@@ -1300,11 +1282,11 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-06 09:08:12 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-21 21:37:14 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/3ac10cae55febde6422a0a96c6e4f278bef47f27/core-app-deploy/minio/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/3ac10cae55febde6422a0a96c6e4f278bef47f27/"
-           target="_blank">#3ac10c</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ad2d3b07eb63cbe146f6c0466267a2637f342b70/core-app-deploy/minio/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/ad2d3b07eb63cbe146f6c0466267a2637f342b70/"
+           target="_blank">#ad2d3b</a>
         <script>
 
             function toast(msg, duration = 1000) {
