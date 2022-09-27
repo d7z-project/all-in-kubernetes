@@ -930,7 +930,6 @@ docker.io/library/docker:20-dind
 83
 84
 85
-86
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">default.toml</span><span class="pi">:</span> <span class="pi">|</span>
@@ -999,13 +998,12 @@ docker.io/library/docker:20-dind
   <span class="na">RUNNER_REQUEST_CONCURRENCY</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
   <span class="na">RUNNER_EXECUTOR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes"</span>
   <span class="na">KUBERNETES_NAMESPACE</span><span class="pi">:</span> <span class="s2">"</span><span class="s">dev-ops"</span>
-  <span class="na">KUBERNETES_PRIVILEGED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
-  <span class="na">KUBERNETES_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
-  <span class="na">KUBERNETES_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4Gi"</span>
-  <span class="na">KUBERNETES_SERVICE_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">3"</span>
-  <span class="na">KUBERNETES_SERVICE_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4Gi"</span>
+  <span class="na">KUBERNETES_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
+  <span class="na">KUBERNETES_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2Gi"</span>
+  <span class="na">KUBERNETES_SERVICE_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
+  <span class="na">KUBERNETES_SERVICE_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2Gi"</span>
   <span class="na">KUBERNETES_HELPER_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
-  <span class="na">KUBERNETES_HELPER_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500Mi"</span>
+  <span class="na">KUBERNETES_HELPER_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2Gi"</span>
   <span class="na">KUBERNETES_PULL_POLICY</span><span class="pi">:</span> <span class="s2">"</span><span class="s">always"</span>
   <span class="na">KUBERNETES_TERMINATIONGRACEPERIODSECONDS</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10"</span>
   <span class="na">KUBERNETES_POLL_INTERVAL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5"</span>
