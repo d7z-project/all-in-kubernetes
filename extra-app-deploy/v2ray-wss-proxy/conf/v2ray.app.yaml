@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-v2ray
+  namespace: share-app
+spec:
+  #  type: LoadBalancer # <1>
+  ports:
+    - port: 8080
+      name: v2ray
+  selector:
+    app: v2ray
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-v2ray
+  namespace: share-app
+spec:
+  serviceName: svc-v2ray
+  selector:
+    matchLabels:
+      app: v2ray
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: v2ray
+    spec:
+      containers:
+        - name: v2ray
+          image: "docker.io/v2fly/v2fly-core:v4.44.0"
+          args:
+            - v2ray
+            - -c
+            - /data/config.json
+          volumeMounts:
+            - name: conf
+              mountPath: /data/
+      volumes:
+        - name: conf
+          configMap:
+            name: conf-v2ray

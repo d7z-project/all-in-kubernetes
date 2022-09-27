@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-v2ray
+  namespace: share-app
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - {{v2ray.url.name}}.{{var.global.pub-host}}
+      secretName: {{var.global.tls-name}}
+  rules:
+    - host: {{v2ray.url.name}}.{{var.global.pub-host}}
+      http:
+        paths:
+          - path: {{v2ray.location}}
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-v2ray
+                port:
+                  name: v2ray

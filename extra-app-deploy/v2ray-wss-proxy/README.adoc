@@ -1,0 +1,52 @@
+= V2ray Server 部署
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+有时候需要在集群外部连接集群内部网络，可以在集群内安装相关的网络代理软件，这里使用的是 `v2ray`。
+
+== 准备
+
+安装此软件需要如下镜像。
+
+[source,text]
+----
+include::conf/images.txt[]
+----
+
+== 导入配置
+
+v2ray 的配置定义在 `ConfigMap` 下：
+
+[source,yaml]
+----
+include::conf/v2ray.conf.yaml[]
+----
+
+== 创建应用
+
+配置应用完成后，即可开始创建 v2ray 应用：
+
+[source,yaml]
+----
+include::conf/v2ray.app.yaml[]
+----
+
+.其中
+<1> 你可以直接将内部端口暴露，不使用 Ingress
+
+== 映射 Ingress
+
+为最大化保证网络安全，防止暴露协议特征，将使用 tls 隧道包裹:
+
+[source,yaml]
+----
+include::conf/v2ray.ingress.yaml[]
+----
+
+== 测试
+
+执行完成后，在相关的客户端软件添加新连接，协议为 `vmess` ，远程地址填入 `{{v2ray.url.name}}.{{var.global.pub-host}}`，端口为 `443`，传输层协议选择 `tls+websocket`，UUID 填入 `{{v2ray.uuid}}`, *Header* 请求头填入 `Host={{v2ray.url.name}}.{{var.global.pub-host}}`,路径填入 `{{v2ray.location}}` ，如无问题，集群内网络连接成功。

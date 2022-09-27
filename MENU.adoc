@@ -64,6 +64,7 @@
 
 . link:./extra-app-deploy/README.adoc[扩展软件部署准备]
 . link:./extra-app-deploy/cluster-web-proxy/README.adoc[转发集群外部 HTTP 请求]
+. link:./extra-app-deploy/v2ray-wss-proxy/README.adoc[V2fly 转发集群内部网络]
 
 == 运维指南
 
