@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>菜单</title>
+<title>V2ray Server 部署</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -435,257 +435,529 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 #footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
 @media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+pre.rouge table td { padding: 5px; }
+pre.rouge table pre { margin: 0; }
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
+}
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
+}
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
+}
+pre.rouge .si {
+  color: #d14;
+}
+pre.rouge .sx {
+  color: #d14;
+}
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
+}
+</style>
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>菜单</h1>
+<h1>V2ray Server 部署</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
-<li><a href="#_应用部署">1. 应用部署</a>
-<ul class="sectlevel2">
-<li><a href="#_核心环境部署">1.1. 核心环境部署</a></li>
-<li><a href="#_存储提供者部署">1.2. 存储提供者部署</a></li>
-<li><a href="#_核心系统应用部署">1.3. 核心系统应用部署</a></li>
-<li><a href="#_系统中间件应用部署">1.4. 系统中间件应用部署</a></li>
-<li><a href="#_核心应用部署">1.5. 核心应用部署</a></li>
-<li><a href="#_devops环境部署">1.6. DevOps环境部署</a></li>
-<li><a href="#_平台监控环境部署">1.7. 平台监控环境部署</a></li>
-</ul>
-</li>
-<li><a href="#_扩展功能">2. 扩展功能</a></li>
-<li><a href="#_运维指南">3. 运维指南</a></li>
-<li><a href="#_杂项">4. 杂项</a></li>
+<li><a href="#_准备">1. 准备</a></li>
+<li><a href="#_导入配置">2. 导入配置</a></li>
+<li><a href="#_创建应用">3. 创建应用</a></li>
+<li><a href="#_映射_ingress">4. 映射 Ingress</a></li>
+<li><a href="#_测试">5. 测试</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_应用部署">1. 应用部署</h2>
+<div id="preamble">
 <div class="sectionbody">
-<div class="sect2">
-<h3 id="_核心环境部署">1.1. 核心环境部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./cluster-deploy/pre-deploy/SYSTEM.html">系统环境配置</a></p>
-</li>
-<li>
-<p><a href="./cluster-deploy/pre-deploy/README.html">初始化部署环境</a></p>
-</li>
-<li>
-<p>部署容器运行时</p>
-<div class="ulist">
-<ul>
-<li>
-<p>部署 Containerd</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./cluster-deploy/cri-runtime/containerd-offline/README.html">离线部署</a></p>
-</li>
-<li>
-<p><a href="./cluster-deploy/cri-runtime/containerd-online/README.html">在线部署</a></p>
-</li>
-<li>
-<p><a href="./zz-document/containerd/SET_REGISTRY.html">镜像配置</a></p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>部署 CRI-O</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>部署 Kubernetes</p>
-<div class="ulist">
-<ul>
-<li>
-<p>使用 kubeadm</p>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./cluster-deploy/kubernetes/kubeadm/README.online.html">在线部署</a></p>
-</li>
-<li>
-<p><a href="./cluster-deploy/kubernetes/kubeadm/README.offline.html">离线部署</a></p>
-</li>
-</ul>
-</div>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p><a href="cluster-deploy/metallb/README.html">部署 LoadBalancer 实现</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/ingress-nginx/README.html">部署 Nginx Ingress</a> | <a href="cluster-deploy/ingress-nginx/NOTE.html">相关笔记</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/reflector/README.html">部署 reflector 组件</a></p>
-</li>
-<li>
-<p><a href="cluster-deploy/cert-manager/README.html">部署 CertManager</a> | <a href="cluster-deploy/cert-manager/NOTE.html">相关笔记</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_存储提供者部署">1.2. 存储提供者部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./storage-provider-deploy/rook-nfs/README.html">基于 rook-nfs 配置存储</a></p>
-</li>
-<li>
-<p><a href="./storage-provider-deploy/nfs-ganesha/README.html">基于ganesha 配置存储</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_核心系统应用部署">1.3. 核心系统应用部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="system-app-deploy/README.html">核心系统应用部署准备</a></p>
-</li>
-<li>
-<p><a href="system-app-deploy/openldap/README.html">部署OpenLDAP</a></p>
-</li>
-<li>
-<p><a href="system-app-deploy/lam/README.html">部署 LDAP Account Manager</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_系统中间件应用部署">1.4. 系统中间件应用部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./middleware-app-deploy/README.html">核心中间件部署准备</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/mariadb/README.html">MariaDB 单实例部署</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/redis/README.html">Redis 单实例部署</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/postgres/README.html">Postgres 单实例部署</a></p>
-</li>
-<li>
-<p><a href="./middleware-app-deploy/elastic/README.html">Elastic 单实例部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_核心应用部署">1.5. 核心应用部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./core-app-deploy/README.html">核心应用部署准备</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/nexus3/README.html">Nexus3 部署</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/gitlab/README.html">Gitlab CE部署</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/harbor/README.html">Harbor 部署</a></p>
-</li>
-<li>
-<p><a href="./core-app-deploy/minio/README.html">MinIO 部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_devops环境部署">1.6. DevOps环境部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./dev-ops-app-deploy/gitlab-runner/README.html">Gitlab Runner部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_平台监控环境部署">1.7. 平台监控环境部署</h3>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./monitor-app-deploy/README.html">平台监控功能部署准备</a></p>
-</li>
-<li>
-<p><a href="./monitor-app-deploy/prometheus-deploy/README.html">Prometheus 部署</a></p>
-</li>
-<li>
-<p><a href="./monitor-app-deploy/alert-manager-deploy/README.html">AlertManager 部署</a></p>
-</li>
-<li>
-<p><a href="./monitor-app-deploy/grafana-deploy/README.html">Grafana 部署</a></p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_扩展功能">2. 扩展功能</h2>
-<div class="sectionbody">
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p><a href="./extra-app-deploy/README.html">扩展软件部署准备</a></p>
-</li>
-<li>
-<p><a href="./extra-app-deploy/cluster-web-proxy/README.html">转发集群外部 HTTP 请求</a></p>
-</li>
-<li>
-<p><a href="./extra-app-deploy/v2ray-wss-proxy/README.html">V2fly 转发集群内部网络</a></p>
-</li>
-</ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_运维指南">3. 运维指南</h2>
-<div class="sectionbody">
-
-</div>
-</div>
-<div class="sect1">
-<h2 id="_杂项">4. 杂项</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="./TODO.html">待完成列表</a></p>
-</li>
-<li>
-<p><a href="./CONTRIBUTOR.html">文档编写指南</a></p>
-</li>
-<li>
-<p><a href="./zz-document/static/HARDWARE_INFO.html">测试环境概览</a></p>
-</li>
-<li>
-<p><a href="./zz-document/tools/EXTRA_SCRIPT.html">相关部署脚本</a></p>
-</li>
-<li>
-<p><a href="./REFER.html">文档参考</a></p>
-</li>
-</ul>
-</div>
 <div class="paragraph">
-<p><a href="./zz-document/static/EXTRA_NOTE.html">EOF</a></p>
+<p>有时候需要在集群外部连接集群内部网络，可以在集群内安装相关的网络代理软件，这里使用的是 <code>v2ray</code>。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_准备">1. 准备</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>安装此软件需要如下镜像。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>docker.io/v2fly/v2fly-core:v4.44.0
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_导入配置">2. 导入配置</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>v2ray 的配置定义在 <code>ConfigMap</code> 下：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-v2ray</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">config.json</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">{</span>
+      <span class="s">"inbounds": [</span>
+        <span class="s">{</span>
+          <span class="s">"port": 8080,</span>
+          <span class="s">"listen": "0.0.0.0",</span>
+          <span class="s">"protocol": "vmess",</span>
+          <span class="s">"settings": {</span>
+            <span class="s">"clients": [</span>
+              <span class="s">{</span>
+                <span class="s">"id": "75aa04d6-3e00-11ed-807a-373594a59655"</span>
+              <span class="s">}</span>
+            <span class="s">]</span>
+          <span class="s">},</span>
+          <span class="s">"streamSettings": {</span>
+            <span class="s">"network": "ws",</span>
+            <span class="s">"wsSettings": {</span>
+              <span class="s">"acceptProxyProtocol": false,</span>
+              <span class="s">"headers": {</span>
+                <span class="s">"Host": "api.d7z.net" </span>
+              <span class="s">},</span>
+              <span class="s">"path": "/"</span>
+            <span class="s">}</span>
+          <span class="s">}</span>
+        <span class="s">}</span>
+      <span class="s">],</span>
+      <span class="s">"outbounds": [</span>
+        <span class="s">{</span>
+          <span class="s">"protocol": "freedom",</span>
+          <span class="s">"settings": {}</span>
+        <span class="s">}</span>
+      <span class="s">]</span>
+    <span class="s">}</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_创建应用">3. 创建应用</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>配置应用完成后，即可开始创建 v2ray 应用：</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-v2ray</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="c1">#  type: LoadBalancer </span><i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">8080</span>
+      <span class="na">name</span><span class="pi">:</span> <span class="s">v2ray</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">v2ray</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-v2ray</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-v2ray</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">v2ray</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">v2ray</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">v2ray</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s2">"</span><span class="s">docker.io/v2fly/v2fly-core:v4.44.0"</span>
+          <span class="na">args</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s">v2ray</span>
+            <span class="pi">-</span> <span class="s">-c</span>
+            <span class="pi">-</span> <span class="s">/data/config.json</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">conf</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/data/</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">conf</span>
+          <span class="na">configMap</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-v2ray</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<div class="title">其中</div>
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>你可以直接将内部端口暴露，不使用 Ingress</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_映射_ingress">4. 映射 Ingress</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>为最大化保证网络安全，防止暴露协议特征，将使用 tls 隧道包裹:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-v2ray</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">api.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+  <span class="na">rules</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">api.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/api/info</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-v2ray</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">v2ray</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_测试">5. 测试</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>执行完成后，在相关的客户端软件添加新连接，协议为 <code>vmess</code> ，远程地址填入 <code>api.d7z.net</code>，端口为 <code>443</code>，传输层协议选择 <code>tls+websocket</code>，UUID 填入 <code>75aa04d6-3e00-11ed-807a-373594a59655</code>, <strong>Header</strong> 请求头填入 <code>Host=api.d7z.net</code>,路径填入 <code>/api/info</code> ，如无问题，集群内网络连接成功。</p>
 </div>
 </div>
 </div>
@@ -723,7 +995,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
     <p class="custom-footer">
         代码双击可复制 | 最后编辑于 2022-09-27 10:13:02 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/bd0dab3a51eacfdfebe5e0164e9c0833eb2bc897/MENU.adoc">查看源码</a> |
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/bd0dab3a51eacfdfebe5e0164e9c0833eb2bc897/extra-app-deploy/v2ray-wss-proxy/README.adoc">查看源码</a> |
         <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/bd0dab3a51eacfdfebe5e0164e9c0833eb2bc897/"
            target="_blank">#bd0dab</a>
         <script>

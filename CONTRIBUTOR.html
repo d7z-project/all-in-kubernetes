@@ -756,104 +756,113 @@ pre.rouge {
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="properties"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-49
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86
-87
-88
-89
-90
-91
-92
-93
-94
-95
-96
-97
-</pre></td><td class="code"><pre><span class="c"># 代理配置
+<pre class="rouge highlight nowrap"><code data-lang="properties"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+</pre></td><td class="code"><pre><span class="c">################# Global ###############################
+# 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
 <span class="c"># 跳过代理
 </span><span class="py">var.network.no-proxy</span><span class="p">=</span><span class="s">10.0.0.2</span>
@@ -950,6 +959,13 @@ pre.rouge {
 </span><span class="py">var.minio.admin.account</span><span class="p">=</span><span class="s">minio</span>
 <span class="c"># MinIO 管理员密码
 </span><span class="py">var.minio.admin.password</span><span class="p">=</span><span class="s">minio123</span>
+<span class="c">############################# V2ray ###################################
+# V2ray 客户端 UUID
+</span><span class="py">v2ray.uuid</span><span class="p">=</span><span class="s">75aa04d6-3e00-11ed-807a-373594a59655</span>
+<span class="c"># V2ray 子域名名称
+</span><span class="py">v2ray.url.name</span><span class="p">=</span><span class="s">api</span>
+<span class="c"># V2ray websocket 路径
+</span><span class="py">v2ray.location</span><span class="p">=</span><span class="s">/api/info</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-v2ray
+  namespace: share-app
+data:
+  config.json: |
+    {
+      "inbounds": [
+        {
+          "port": 8080,
+          "listen": "0.0.0.0",
+          "protocol": "vmess",
+          "settings": {
+            "clients": [
+              {
+                "id": "75aa04d6-3e00-11ed-807a-373594a59655"
+              }
+            ]
+          },
+          "streamSettings": {
+            "network": "ws",
+            "wsSettings": {
+              "acceptProxyProtocol": false,
+              "headers": {
+                "Host": "api.d7z.net" 
+              },
+              "path": "/"
+            }
+          }
+        }
+      ],
+      "outbounds": [
+        {
+          "protocol": "freedom",
+          "settings": {}
+        }
+      ]
+    }
