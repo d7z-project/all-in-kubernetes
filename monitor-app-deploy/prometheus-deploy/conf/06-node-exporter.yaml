@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: daemon-cluster-node-exporter
+  namespace: kube-system
+  labels:
+    app: cluster-node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: cluster-node-exporter
+  template:
+    metadata:
+      labels:
+        app: cluster-node-exporter
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '9100'
+        prometheus.io/path: 'metrics'
+    spec:
+      containers:
+        - name: node-exporter
+          image: docker.io/prom/node-exporter:v1.3.1
+          ports:
+            - name: metrics
+              containerPort: 9100
+          args:
+            - "--path.procfs=/host/proc"
+            - "--path.sysfs=/host/sys"
+            - "--path.rootfs=/host"
+          volumeMounts:
+            - name: dev
+              mountPath: /host/dev
+            - name: proc
+              mountPath: /host/proc
+            - name: sys
+              mountPath: /host/sys
+            - name: rootfs
+              mountPath: /host
+      volumes:
+        - name: dev
+          hostPath:
+            path: /dev
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+        - name: rootfs
+          hostPath:
+            path: /
+      hostPID: true
+      hostNetwork: true
+      hostIPC: true
+      tolerations:
+        - operator: "Exists"

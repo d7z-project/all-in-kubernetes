@@ -930,6 +930,12 @@ docker.io/library/docker:20-dind
 83
 84
 85
+86
+87
+88
+89
+90
+91
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">data</span><span class="pi">:</span>
   <span class="na">default.toml</span><span class="pi">:</span> <span class="pi">|</span>
@@ -998,12 +1004,18 @@ docker.io/library/docker:20-dind
   <span class="na">RUNNER_REQUEST_CONCURRENCY</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
   <span class="na">RUNNER_EXECUTOR</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kubernetes"</span>
   <span class="na">KUBERNETES_NAMESPACE</span><span class="pi">:</span> <span class="s2">"</span><span class="s">dev-ops"</span>
-  <span class="na">KUBERNETES_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
-  <span class="na">KUBERNETES_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2Gi"</span>
-  <span class="na">KUBERNETES_SERVICE_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">4"</span>
-  <span class="na">KUBERNETES_SERVICE_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2Gi"</span>
-  <span class="na">KUBERNETES_HELPER_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">500m"</span>
-  <span class="na">KUBERNETES_HELPER_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">2Gi"</span>
+  <span class="na">KUBERNETES_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_CPU_LIMIT_OVERWRITE_MAX_ALLOWED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_MEMORY_LIMIT_OVERWRITE_MAX_ALLOWED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_CPU_REQUEST</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_CPU_REQUEST_OVERWRITE_MAX_ALLOWED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_MEMORY_REQUEST</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_MEMORY_REQUEST_OVERWRITE_MAX_ALLOWED</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_SERVICE_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_SERVICE_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_HELPER_CPU_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
+  <span class="na">KUBERNETES_HELPER_MEMORY_LIMIT</span><span class="pi">:</span> <span class="s2">"</span><span class="s">"</span>
   <span class="na">KUBERNETES_PULL_POLICY</span><span class="pi">:</span> <span class="s2">"</span><span class="s">always"</span>
   <span class="na">KUBERNETES_TERMINATIONGRACEPERIODSECONDS</span><span class="pi">:</span> <span class="s2">"</span><span class="s">10"</span>
   <span class="na">KUBERNETES_POLL_INTERVAL</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5"</span>

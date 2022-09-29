@@ -22,20 +22,33 @@ data:
       - job_name: "prometheus"
         static_configs:
           - targets: [ "localhost:9090" ]
-      - job_name: 'kubernetes'
-        kubernetes_sd_configs:
-          - role: endpoints
-        scheme: https
+      - job_name: 'cluster-node-monitor'
         tls_config:
           ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
         bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: pod
         relabel_configs:
-          - source_labels:
-              - __meta_kubernetes_namespace
-              - __meta_kubernetes_service_name
-              - __meta_kubernetes_endpoint_port_name
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
             action: keep
-            regex: default;kubernetes;https
+            regex: true
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+            action: replace
+            target_label: __metrics_path__
+            regex: (.+)
+          - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+            action: replace
+            regex: ([^:]+)(?::\d+)?;(\d+)
+            replacement: $1:$2
+            target_label: __address__
+          - action: labelmap
+            regex: __meta_kubernetes_pod_label_(.+)
+          - source_labels: [__meta_kubernetes_namespace]
+            action: replace
+            target_label: kubernetes_namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            action: replace
+            target_label: kubernetes_pod_name
 
 ---
 apiVersion: v1
@@ -55,4 +68,4 @@ data:
             annotations:
               summary: "服务器的PostgresSQL在线情况产生告警。"
               description: "POSTGRESQL组件 - PostgresSQL在线情况告警 "
-            expr: "pg_up{instance=~\".*\",acc=~\".*\"} == 0"
+            expr: "pg_up == 0"

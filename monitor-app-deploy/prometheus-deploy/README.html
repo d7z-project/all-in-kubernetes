@@ -665,7 +665,8 @@ pre.rouge {
 <li><a href="#_导入启动配置">5. 导入启动配置</a></li>
 <li><a href="#_创建_service">6. 创建 Service</a></li>
 <li><a href="#_创建_ingress">7. 创建 Ingress</a></li>
-<li><a href="#_测试">8. 测试</a></li>
+<li><a href="#_创建集群服务器监控">8. 创建集群服务器监控</a></li>
+<li><a href="#_测试">9. 测试</a></li>
 </ul>
 </div>
 </div>
@@ -881,6 +882,19 @@ pre.rouge {
 56
 57
 58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -905,20 +919,33 @@ pre.rouge {
       <span class="s">- job_name: "prometheus"</span>
         <span class="s">static_configs:</span>
           <span class="s">- targets: [ "localhost:9090" ]</span>
-      <span class="s">- job_name: 'kubernetes'</span>
-        <span class="s">kubernetes_sd_configs:</span>
-          <span class="s">- role: endpoints</span>
-        <span class="s">scheme: https</span>
+      <span class="s">- job_name: 'cluster-node-monitor'</span>
         <span class="s">tls_config:</span>
           <span class="s">ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt</span>
         <span class="s">bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token</span>
+        <span class="s">kubernetes_sd_configs:</span>
+          <span class="s">- role: pod</span>
         <span class="s">relabel_configs:</span>
-          <span class="s">- source_labels:</span>
-              <span class="s">- __meta_kubernetes_namespace</span>
-              <span class="s">- __meta_kubernetes_service_name</span>
-              <span class="s">- __meta_kubernetes_endpoint_port_name</span>
+          <span class="s">- source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]</span>
             <span class="s">action: keep</span>
-            <span class="s">regex: default;kubernetes;https</span>
+            <span class="s">regex: true</span>
+          <span class="s">- source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]</span>
+            <span class="s">action: replace</span>
+            <span class="s">target_label: __metrics_path__</span>
+            <span class="s">regex: (.+)</span>
+          <span class="s">- source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]</span>
+            <span class="s">action: replace</span>
+            <span class="s">regex: ([^:]+)(?::\d+)?;(\d+)</span>
+            <span class="s">replacement: $1:$2</span>
+            <span class="s">target_label: __address__</span>
+          <span class="s">- action: labelmap</span>
+            <span class="s">regex: __meta_kubernetes_pod_label_(.+)</span>
+          <span class="s">- source_labels: [__meta_kubernetes_namespace]</span>
+            <span class="s">action: replace</span>
+            <span class="s">target_label: kubernetes_namespace</span>
+          <span class="s">- source_labels: [__meta_kubernetes_pod_name]</span>
+            <span class="s">action: replace</span>
+            <span class="s">target_label: kubernetes_pod_name</span>
 
 <span class="s">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
@@ -938,7 +965,7 @@ pre.rouge {
             <span class="s">annotations:</span>
               <span class="s">summary: "服务器的PostgresSQL在线情况产生告警。"</span>
               <span class="s">description: "POSTGRESQL组件 - PostgresSQL在线情况告警 "</span>
-            <span class="s">expr: "pg_up{instance=~\".*\",acc=~\".*\"} == 0"</span>
+            <span class="s">expr: "pg_up == 0"</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1142,7 +1169,134 @@ pre.rouge {
 </div>
 </div>
 <div class="sect1">
-<h2 id="_测试">8. 测试</h2>
+<h2 id="_创建集群服务器监控">8. 创建集群服务器监控</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>prometheus</code> 部署完成后，导入以下配置开启对 <code>kubernetes</code> 集群节点本身的监控。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">DaemonSet</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">daemon-cluster-node-exporter</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">kube-system</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">cluster-node-exporter</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">matchLabels</span><span class="pi">:</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">cluster-node-exporter</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">cluster-node-exporter</span>
+      <span class="na">annotations</span><span class="pi">:</span>
+        <span class="na">prometheus.io/scrape</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
+        <span class="na">prometheus.io/port</span><span class="pi">:</span> <span class="s1">'</span><span class="s">9100'</span>
+        <span class="na">prometheus.io/path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">metrics'</span>
+    <span class="na">spec</span><span class="pi">:</span>
+      <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">node-exporter</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/prom/node-exporter:v1.3.1</span>
+          <span class="na">ports</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">metrics</span>
+              <span class="na">containerPort</span><span class="pi">:</span> <span class="m">9100</span>
+          <span class="na">args</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">--path.procfs=/host/proc"</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">--path.sysfs=/host/sys"</span>
+            <span class="pi">-</span> <span class="s2">"</span><span class="s">--path.rootfs=/host"</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">dev</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/host/dev</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">proc</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/host/proc</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">sys</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/host/sys</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">rootfs</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/host</span>
+      <span class="na">volumes</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">dev</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/dev</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">proc</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/proc</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">sys</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/sys</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">rootfs</span>
+          <span class="na">hostPath</span><span class="pi">:</span>
+            <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+      <span class="na">hostPID</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">hostNetwork</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">hostIPC</span><span class="pi">:</span> <span class="no">true</span>
+      <span class="na">tolerations</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">operator</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Exists"</span>
+</pre></td></tr></tbody></table></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_测试">9. 测试</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>配置导入完成后，使用如下命令查看结果：</p>
@@ -1191,11 +1345,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-06 09:34:14 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-09-29 15:24:40 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/dab53652de4712c86693ce3d091e2ff71814a211/monitor-app-deploy/prometheus-deploy/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dab53652de4712c86693ce3d091e2ff71814a211/"
-           target="_blank">#dab536</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/ff024caa777540eebe941bf2b9bec8504f2d26f6/monitor-app-deploy/prometheus-deploy/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/ff024caa777540eebe941bf2b9bec8504f2d26f6/"
+           target="_blank">#ff024c</a>
         <script>
 
             function toast(msg, duration = 1000) {
