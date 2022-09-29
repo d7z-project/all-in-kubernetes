@@ -66,6 +66,15 @@ include::conf/04-prometheus-service.yaml[]
 include::conf/05-prometheus-ingress.yaml[]
 ----
 
+== 创建集群服务器监控
+
+`prometheus` 部署完成后，导入以下配置开启对 `kubernetes` 集群节点本身的监控。
+
+[source,yaml]
+----
+include::conf/06-node-exporter.yaml[]
+----
+
 == 测试
 
 配置导入完成后，使用如下命令查看结果：
