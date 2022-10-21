@@ -27,3 +27,18 @@ spec:
   resources:
     requests:
       storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-gitlab-postgres
+  namespace: core-app
+  labels:
+    app: gitlab
+spec:
+  storageClassName: '{{var.storage.class.security}}'
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi

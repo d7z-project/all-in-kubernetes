@@ -15,7 +15,8 @@ Gitlab 依赖如下镜像, 如在离线环境请自行导入镜像;同时，Gitl
 [sources,text]
 ----
 docker.io/library/redis:6.2
-docker.io/sameersbn/gitlab:15.2.4
+docker.io/sameersbn/gitlab:15.4.2
+docker.io/sameersbn/postgresql:12-20200524
 ----
 
 == 注意事项
@@ -60,11 +61,11 @@ kubectl exec -it -n core-middle sts-postgres-0 -- psql -U gitlab -d gitlabhq_pro
 
 === 创建 LDAP 用户组
 
-*Gitlab* 被配置为只有归属于 `cn=gitlab` 的用户和管理员才能登陆，需要在 *LDAP* 下创建名为 `gitlab` 的 `groupOfNames` 用户组。
+*Gitlab* 被配置为只有归属于 `cn=develop` 的用户和管理员才能登陆，需要在 *LDAP* 下创建名为 `gitlab` 的 `groupOfNames` 用户组。
 
 [source,text]
 ----
-cn=gitlab,ou=groups,dc=cluster,dc=local
+cn=develop,ou=groups,dc=cluster,dc=local
 ----
 
 == 开始部署

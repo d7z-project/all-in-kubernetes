@@ -11,5 +11,5 @@ pages:
     source_url: 'https://github.com/d7z-project/all-in-kubernetes/tree/{{file.commit.id}}/'
   attr_files:
     - value.properties
-    - value-custom.properties
+#    - value-custom.properties
     - version.properties

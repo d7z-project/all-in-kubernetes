@@ -14,8 +14,8 @@ spec:
   tls:
     - hosts:
         - nexus.internal.{{var.global.pub-host}}
-        - registry.internal.{{var.global.pub-host}}
-        - maven.internal.{{var.global.pub-host}}
+        - registry.{{var.global.pub-host}}
+        - repos.{{var.global.pub-host}}
       secretName: {{var.global.tls-name}}
   rules:
     - host: nexus.internal.{{var.global.pub-host}}
@@ -28,7 +28,7 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-web
-    - host: registry.internal.{{var.global.pub-host}}
+    - host: registry.{{var.global.pub-host}}
       http:
         paths:
           - path: /
@@ -38,30 +38,24 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-docker
-    - host: maven.internal.{{var.global.pub-host}}
+    - host: repos.{{var.global.pub-host}}
       http:
         paths:
-          - path: /
+          - path: /maven
             pathType: Prefix
             backend:
               service:
                 name: svc-nexus
                 port:
                   name: nexus-maven
-    - host: yum.internal.{{var.global.pub-host}}
-      http:
-        paths:
-          - path: /
+          - path: /yum
             pathType: Prefix
             backend:
               service:
                 name: svc-nexus
                 port:
                   name: nexus-yum
-    - host: apt.internal.{{var.global.pub-host}}
-      http:
-        paths:
-          - path: /
+          - path: /apt
             pathType: Prefix
             backend:
               service:
