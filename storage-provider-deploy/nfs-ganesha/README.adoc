@@ -8,6 +8,8 @@
 
 == 说明
 
+WARNING: 此方案存在问题 （主节点关机时会丢失部分数据），请勿使用 ！
+
 项目地址：link:https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner[nfs-ganesha-server-and-external-provisioner]
 
 kubernetes 部署后可选择一个节点的某个目录作为集群数据存储目录。

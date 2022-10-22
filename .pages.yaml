@@ -9,7 +9,14 @@ pages:
     output: '/build'
   conf: # 功能配置
     source_url: 'https://github.com/d7z-project/all-in-kubernetes/tree/{{file.commit.id}}/'
+    attr_ext: # 变量注入的文件后缀
+      - adoc
+      - sh
+      - txt
+      - yaml
+      - yml
+      - ldif
   attr_files:
     - value.properties
-#    - value-custom.properties
+    - value-custom.properties
     - version.properties

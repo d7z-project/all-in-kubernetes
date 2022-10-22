@@ -11,7 +11,7 @@
 
 == 说明
 
-此项目使用 `ldapaccountmanager` 作为 LDAP 管理器。此项目依赖镜像 `ldapaccountmanager/lam:8.0.1` 。
+此项目使用 `ldapaccountmanager` 作为 LDAP 管理器。此项目依赖镜像 `docker.io/ldapaccountmanager/lam:8.1` 。
 
 == 创建 Deployment
 

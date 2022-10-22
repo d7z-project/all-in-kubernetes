@@ -29,4 +29,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./public
-          cname: all-in-kubernetes.docs.d7z.net
