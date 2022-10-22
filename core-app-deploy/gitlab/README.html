@@ -697,7 +697,8 @@ pre.rouge {
 <div class="listingblock">
 <div class="content">
 <pre class="nowrap">docker.io/library/redis:6.2
-docker.io/sameersbn/gitlab:15.2.4</pre>
+docker.io/sameersbn/gitlab:15.4.2
+docker.io/sameersbn/postgresql:12-20200524</pre>
 </div>
 </div>
 </div>
@@ -780,12 +781,12 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
 <div class="sect2">
 <h3 id="_创建_ldap_用户组">3.2. 创建 LDAP 用户组</h3>
 <div class="paragraph">
-<p><strong>Gitlab</strong> 被配置为只有归属于 <code>cn=gitlab</code> 的用户和管理员才能登陆，需要在 <strong>LDAP</strong> 下创建名为 <code>gitlab</code> 的 <code>groupOfNames</code> 用户组。</p>
+<p><strong>Gitlab</strong> 被配置为只有归属于 <code>cn=develop</code> 的用户和管理员才能登陆，需要在 <strong>LDAP</strong> 下创建名为 <code>gitlab</code> 的 <code>groupOfNames</code> 用户组。</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>cn=gitlab,ou=groups,dc=cluster,dc=local
+</pre></td><td class="code"><pre>cn=develop,ou=groups,dc=cluster,dc=local
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -835,11 +836,11 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab</span>
 <span class="na">data</span><span class="pi">:</span>
-  <span class="na">db-name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlabhq_production'</span> <i class="conum" data-value="1"></i><b>(1)</b>
-  <span class="na">db-user</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab'</span>  <i class="conum" data-value="2"></i><b>(2)</b>
-  <span class="na">gitlab-host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
-  <span class="na">gitlab-pages-host</span><span class="pi">:</span> <span class="s">pages.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
-  <span class="na">ldap-user-filter</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=gitlab,ou=groups,dc=cluster,dc=local))'</span> <i class="conum" data-value="4"></i><b>(4)</b>
+  <span class="na">DB_NAME</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlabhq_production'</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">DB_USER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab'</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="na">HOST</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="na">PAGES_HOST</span><span class="pi">:</span> <span class="s">pages.d7z.net</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="na">LDAP_USERS_FILTER</span><span class="pi">:</span> <span class="s1">'</span><span class="s">(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=develop,ou=groups,dc=cluster,dc=local))'</span> <i class="conum" data-value="4"></i><b>(4)</b>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
@@ -849,12 +850,12 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
   <span class="na">labels</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">db-password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">password'</span><i class="conum" data-value="5"></i><b>(5)</b>
-  <span class="na">root-password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab-root-password'</span> <i class="conum" data-value="6"></i><b>(6)</b>
-  <span class="na">db-key-secrets</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span>  <i class="conum" data-value="7"></i><b>(7)</b>
-  <span class="na">session-key-secrets</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span>  <i class="conum" data-value="7"></i><b>(7)</b>
-  <span class="na">otp-key-secrets</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span> <i class="conum" data-value="7"></i><b>(7)</b>
-  <span class="na">pages-key-secrets</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span> <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">DB_PASS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">password'</span><i class="conum" data-value="5"></i><b>(5)</b>
+  <span class="na">ADMIN_PASS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">gitlab-root-password'</span> <i class="conum" data-value="6"></i><b>(6)</b>
+  <span class="na">DB_KEY_SECRETS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span>  <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">SESSION_KEY_SECRETS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span>  <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">OTP_KEY_SECRETS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span> <i class="conum" data-value="7"></i><b>(7)</b>
+  <span class="na">PAGES_KEY_SECRETS</span><span class="pi">:</span> <span class="s1">'</span><span class="s">long-and-random-alpha-numeric-string'</span> <i class="conum" data-value="7"></i><b>(7)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -940,6 +941,21 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
 27
 28
 29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -969,6 +985,21 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
   <span class="na">resources</span><span class="pi">:</span>
     <span class="na">requests</span><span class="pi">:</span>
       <span class="na">storage</span><span class="pi">:</span> <span class="s">20Gi</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">PersistentVolumeClaim</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">pvc-gitlab-postgres</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">storageClassName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">sc-nfs-share'</span>
+  <span class="na">accessModes</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">ReadWriteOnce</span>
+  <span class="na">resources</span><span class="pi">:</span>
+    <span class="na">requests</span><span class="pi">:</span>
+      <span class="na">storage</span><span class="pi">:</span> <span class="s">100Gi</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1139,7 +1170,68 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
 151
 152
 153
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab-pg-init</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">00-init-database.sh</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">#!/usr/bin/env bash</span>
+    <span class="s">set -e</span>
+    <span class="s">psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" &lt;&lt;-END_SQL</span>
+        <span class="s">CREATE EXTENSION pg_trgm;</span>
+    <span class="s">END_SQL</span>
+<span class="s">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">name</span><span class="pi">:</span> <span class="s">sts-gitlab</span>
@@ -1158,13 +1250,38 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
         <span class="na">app</span><span class="pi">:</span> <span class="s">gitlab</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-postgres</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/postgres:14</span>
+          <span class="na">volumeMounts</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/var/lib/postgresql/data</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-init</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/docker-entrypoint-initdb.d/</span>
+          <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POSTGRES_USER</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_USER</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">POSTGRES_PASSWORD</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_PASS</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">POSTGRES_DB'</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">configMapKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_NAME</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">PGDATA'</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">/var/lib/postgresql/data/pgdata"</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
           <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/redis:6.2</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/data</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-server</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/sameersbn/gitlab:15.2.4</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/sameersbn/gitlab:15.4.2</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/home/git/data</span>
@@ -1184,32 +1301,32 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">gitlab-host</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">HOST</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_ROOT_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">root-password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">ADMIN_PASS</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SECRETS_DB_KEY_BASE</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-key-secrets</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_KEY_SECRETS</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SECRETS_SECRET_KEY_BASE</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">session-key-secrets</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">SESSION_KEY_SECRETS</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_SECRETS_OTP_KEY_BASE</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">otp-key-secrets</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">OTP_KEY_SECRETS</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_ACCESS_SECRET</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">pages-key-secrets</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">PAGES_KEY_SECRETS</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PACKAGES_ENABLED</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_REGISTRY_ENABLED</span>
@@ -1220,30 +1337,30 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">gitlab-pages-host</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">PAGES_HOST</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_HTTPS</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">false'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">GITLAB_PAGES_HTTP</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">true'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_HOST</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">svc-postgres.core-middle.svc.cluster.local"</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PORT</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">5432"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_NAME</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-name</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_NAME</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_USER</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-user</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_USER</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">DB_PASS</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-gitlab</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">db-password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">DB_PASS</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">REDIS_HOST</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">127.0.0.1"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">REDIS_PORT</span>
@@ -1255,7 +1372,7 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">LDAP_HOST"</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-host</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_HOST</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PORT</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">389"</span>
@@ -1269,21 +1386,21 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-bind-user-dn</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_PASS</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN_PASSWORD</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-service</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BASE</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-ou</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_USERS_DN</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_USER_FILTER</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-filter</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_USERS_FILTER</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab</span>
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-data</span>
@@ -1292,6 +1409,12 @@ docker.io/sameersbn/gitlab:15.2.4</pre>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-redis</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
             <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-gitlab-redis</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-data</span>
+          <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
+            <span class="na">claimName</span><span class="pi">:</span> <span class="s">pvc-gitlab-postgres</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">postgres-init</span>
+          <span class="na">configMap</span><span class="pi">:</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-gitlab-pg-init</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1613,11 +1736,11 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-05 20:30:07 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-21 19:08:13 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/core-app-deploy/gitlab/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/"
-           target="_blank">#db0e5e</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/core-app-deploy/gitlab/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/"
+           target="_blank">#c7d2d2</a>
         <script>
 
             function toast(msg, duration = 1000) {

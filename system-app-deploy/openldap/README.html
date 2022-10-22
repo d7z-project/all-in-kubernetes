@@ -739,16 +739,16 @@ pre.rouge {
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>
 <span class="na">data</span><span class="pi">:</span>
-  <span class="na">ldap-name</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Kubernetes</span><span class="nv"> </span><span class="s">Cluster</span><span class="nv"> </span><span class="s">LDAP</span><span class="nv"> </span><span class="s">Server"</span>
-  <span class="na">ldap-domain</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cluster.local'</span>
-  <span class="na">ldap-host</span><span class="pi">:</span> <span class="s1">'</span><span class="s">svc-ldap.core-system.svc.cluster.local'</span>
-  <span class="na">ldap-url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ldap://svc-ldap.core-system.svc.cluster.local:389'</span>
-  <span class="na">ldap-short-url</span><span class="pi">:</span> <span class="s1">'</span><span class="s">svc-ldap.core-system.svc.cluster.local:389'</span>
-  <span class="na">ldap-base-dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dc=cluster,dc=local'</span>
-  <span class="na">ldap-user-ou</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=people,dc=cluster,dc=local'</span>
-  <span class="na">ldap-group-ou</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=groups,dc=cluster,dc=local'</span>
-  <span class="na">ldap-bind-user-dn</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cn=service-account,dc=cluster,dc=local'</span>
-  <span class="na">ldap-bind-user</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service-account'</span>
+  <span class="na">LDAP_NAME</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Kubernetes</span><span class="nv"> </span><span class="s">Cluster</span><span class="nv"> </span><span class="s">LDAP</span><span class="nv"> </span><span class="s">Server"</span>
+  <span class="na">LDAP_DOMAIN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cluster.local'</span>
+  <span class="na">LDAP_HOST</span><span class="pi">:</span> <span class="s1">'</span><span class="s">svc-ldap.core-system.svc.cluster.local'</span>
+  <span class="na">LDAP_URL</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ldap://svc-ldap.core-system.svc.cluster.local:389'</span>
+  <span class="na">LDAP_URL_SHORT</span><span class="pi">:</span> <span class="s1">'</span><span class="s">svc-ldap.core-system.svc.cluster.local:389'</span>
+  <span class="na">LDAP_BASE_DN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">dc=cluster,dc=local'</span>
+  <span class="na">LDAP_USERS_DN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=people,dc=cluster,dc=local'</span>
+  <span class="na">LDAP_GROUPS_DN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">ou=groups,dc=cluster,dc=local'</span>
+  <span class="na">LDAP_BIND_DN</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cn=service-account,dc=cluster,dc=local'</span>
+  <span class="na">LDAP_BIND_DN_NAME</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service-account'</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -804,7 +804,7 @@ pre.rouge {
     <span class="na">app</span><span class="pi">:</span> <span class="s">ldap</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">admin'</span> <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="na">LDAP_ADMIN_PASSWORD</span><span class="pi">:</span> <span class="s1">'</span><span class="s">admin'</span> <i class="conum" data-value="1"></i><b>(1)</b>
 <span class="nn">---</span>
 <span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Secret</span>
@@ -820,7 +820,7 @@ pre.rouge {
     <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>
 <span class="na">type</span><span class="pi">:</span> <span class="s">Opaque</span>
 <span class="na">stringData</span><span class="pi">:</span>
-  <span class="na">password</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service-account'</span> <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="na">LDAP_BIND_DN_PASSWORD</span><span class="pi">:</span> <span class="s1">'</span><span class="s">service-account'</span> <i class="conum" data-value="3"></i><b>(3)</b>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1047,6 +1047,7 @@ pre.rouge {
 110
 111
 112
+113
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1083,34 +1084,34 @@ pre.rouge {
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-name</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_NAME</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_DOMAIN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-domain</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_DOMAIN</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_ADMIN_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-admin</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_ADMIN_PASSWORD</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_CONFIG_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-admin</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_ADMIN_PASSWORD</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_READONLY_USER</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_READONLY_USER_USERNAME</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-bind-user</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN_NAME</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_READONLY_USER_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-service</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN_PASSWORD</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_RFC2307BIS_SCHEMA</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_BACKEND</span>
@@ -1123,6 +1124,7 @@ pre.rouge {
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_REMOVE_CONFIG_AFTER_SETUP</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ldap-data</span>
           <span class="na">persistentVolumeClaim</span><span class="pi">:</span>
@@ -1183,6 +1185,9 @@ pre.rouge {
 <div class="paragraph">
 <p>MemberOf 能非常方便的绑定用户和组的关系。进入 LDAP 控制台，执行以下命令：</p>
 </div>
+<details>
+<summary class="title">点击展开指令</summary>
+<div class="content">
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
@@ -1209,7 +1214,70 @@ pre.rouge {
 22
 23
 24
-</pre></td><td class="code"><pre><span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="sh">"</span><span class="no">EOF</span><span class="sh">" &gt; mem.ldif
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+</pre></td><td class="code"><pre><span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="sh">"</span><span class="no">EOF</span><span class="sh">" &gt; schema.ldif
 dn: cn=module{0},cn=config
 changetype: modify
 add: olcModuleLoad
@@ -1231,11 +1299,76 @@ dn: cn=module{0},cn=config
 changetype: modify
 add: olcModuleLoad
 olcModuleLoad: refint.la
+
+
+dn: ou=people,dc=cluster,dc=local
+objectclass: organizationalUnit
+description: 角色分组
+ou: people
+
+dn: ou=groups,dc=cluster,dc=local
+objectclass: organizationalUnit
+description: 用户分组
+ou: groups
+
+dn: cn=users,ou=groups,dc=cluster,dc=local
+cn: users
+description: 默认用户归档
+gidnumber: 10000
+objectclass: posixGroup
+
+dn: uid=admin,ou=people,dc=cluster,dc=local
+cn: admin
+sn: admin
+uid: admin
+description: 系统创建的默认管理员用户
+gidnumber: 10000
+uidnumber: 10000
+homedirectory: /home/admin
+loginshell: /bin/bash
+objectclass: posixAccount
+objectclass: inetOrgPerson
+objectclass: organizationalPerson
+objectclass: person
+mail: admin@cluster.local
+userpassword: {SSHA}XO42j4VtQiJKoqQjViPZCM5c4mbl4rn0
+
+dn: cn=oci,ou=groups,dc=cluster,dc=local
+cn: oci
+description: 镜像操作员角色
+member: uid=admin,ou=people,dc=cluster,dc=local
+objectclass: groupOfNames
+
+dn: cn=admin,ou=groups,dc=cluster,dc=local
+cn: admin
+description: 管理员角色
+member: uid=admin,ou=people,dc=cluster,dc=local
+objectclass: groupOfNames
+
+dn: cn=develop,ou=groups,dc=cluster,dc=local
+cn: develop
+description: 项目开发者角色
+member: uid=admin,ou=people,dc=cluster,dc=local
+objectclass: groupOfNames
+
+dn: cn=library,ou=groups,dc=cluster,dc=local
+cn: library
+description: 依赖库上传者角色
+member: uid=admin,ou=people,dc=cluster,dc=local
+objectclass: groupOfNames
+
+dn: cn=package,ou=groups,dc=cluster,dc=local
+cn: package
+description: 软件包上传者角色
+member: uid=admin,ou=people,dc=cluster,dc=local
+objectclass: groupOfNames
 </span><span class="no">EOF
-</span>ldapadd <span class="nt">-Y</span> EXTERNAL <span class="nt">-H</span> ldapi:/// <span class="nt">-f</span> ./mem.ldif
+</span>ldapadd <span class="nt">-Y</span> EXTERNAL <span class="nt">-H</span> ldapi:/// <span class="nt">-f</span> ./schema.ldif
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
+</div>
+</details>
 </div>
 </div>
 </div>
@@ -1274,6 +1407,9 @@ kubectl get pods,service <span class="nt">-n</span> core-system
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>可进入容器使用 <code>rm -rf /var/lib/ldap/* /etc/ldap/slapd.d/*</code> 命令快速清除数据。</p>
+</div>
 </div>
 </div>
 </div>
@@ -1308,11 +1444,11 @@ kubectl get pods,service <span class="nt">-n</span> core-system
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-02 16:18:33 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-22 22:44:07 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/system-app-deploy/openldap/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c5dfe6705b08939c45ee908ce28aa8dcf2dddc00/"
-           target="_blank">#c5dfe6</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/9ebf271968ebee582de80455c1043c301f498117/system-app-deploy/openldap/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/9ebf271968ebee582de80455c1043c301f498117/"
+           target="_blank">#9ebf27</a>
         <script>
 
             function toast(msg, duration = 1000) {

@@ -42,27 +42,27 @@ spec:
             - name: MINIO_IDENTITY_LDAP_SERVER_ADDR
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-short-url
+                  key: LDAP_URL_SHORT
                   name: conf-ldap
             - name: MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-bind-user-dn
+                  key: LDAP_BIND_DN
                   name: conf-ldap
             - name: MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: LDAP_BIND_DN_PASSWORD
                   name: secret-ldap-service
             - name: MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-user-ou
+                  key: LDAP_USERS_DN
                   name: conf-ldap
             - name: MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-group-ou
+                  key: LDAP_GROUPS_DN
                   name: conf-ldap
           volumeMounts:
             - name: minio-data

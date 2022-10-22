@@ -75,13 +75,18 @@ kubectl exec -it -n core-system pods/sts-ldap-0 -- /bin/bash
 
 MemberOf 能非常方便的绑定用户和组的关系。进入 LDAP 控制台，执行以下命令：
 
+.点击展开指令
+[%collapsible]
+====
 [source,bash]
 ----
-cat << "EOF" > mem.ldif
-include::./conf/05-import-memberof.ldif[]
+cat << "EOF" > schema.ldif
+include::./conf/05-import.ldif[]
 EOF
-ldapadd -Y EXTERNAL -H ldapi:/// -f ./mem.ldif
+ldapadd -Y EXTERNAL -H ldapi:/// -f ./schema.ldif
 ----
+
+====
 
 == 验证
 
@@ -104,3 +109,5 @@ kubectl get pods,service -n core-system
 ----
 curl --user $LDAP_BIND_DN:$LDAP_PASS ldap://$LDAP_HOST/$LDAP_BASE?uid?one?"$LDAP_USER_FILTER"
 ----
+
+可进入容器使用 `rm -rf /var/lib/ldap/* /etc/ldap/slapd.d/*` 命令快速清除数据。

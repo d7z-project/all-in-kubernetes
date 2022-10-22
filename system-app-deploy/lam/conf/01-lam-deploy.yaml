@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: lam
-          image: ldapaccountmanager/lam:8.0.1
+          image: docker.io/ldapaccountmanager/lam:8.1
           ports:
             - containerPort: 80
           env:
@@ -27,31 +27,31 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-domain
+                  key: LDAP_DOMAIN
             - name: LDAP_SERVER
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-url
+                  key: LDAP_URL
             - name: LDAP_BASE_DN
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-base-dn
+                  key: LDAP_BASE_DN
             - name: LDAP_USERS_DN
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-user-ou
+                  key: LDAP_USERS_DN
             - name: LDAP_GROUPS_DN
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-group-ou
+                  key: LDAP_GROUPS_DN
             - name: LAM_LANG
               value: zh_CN
             - name: LAM_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-ldap-admin
-                  key: password
+                  key: LDAP_ADMIN_PASSWORD

@@ -676,6 +676,18 @@ pre.rouge {
 <div class="sect1">
 <h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+此方案存在问题 （主节点关机时会丢失部分数据），请勿使用 ！
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>项目地址：<a target="_blank" href="https://github.com/kubernetes-sigs/nfs-ganesha-server-and-external-provisioner">nfs-ganesha-server-and-external-provisioner</a></p>
 </div>
@@ -1275,10 +1287,10 @@ pre.rouge {
         <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">node-role.kubernetes.io/control-plane</span>
           <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
-        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoExecute</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/not-ready</span>
           <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
-        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoExecute</span>
+        <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
           <span class="na">key</span><span class="pi">:</span> <span class="s">node.kubernetes.io/unreachable</span>
           <span class="na">operator</span><span class="pi">:</span> <span class="s">Exists</span>
         <span class="pi">-</span> <span class="na">effect</span><span class="pi">:</span> <span class="s">NoSchedule</span>
@@ -1687,11 +1699,11 @@ kubectl <span class="nb">exec</span> <span class="s2">"</span><span class="nv">$
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-12 02:42:05 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-22 22:44:07 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/826c7d536e9b522f01483a07e58df96a44d93c2c/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/826c7d536e9b522f01483a07e58df96a44d93c2c/"
-           target="_blank">#826c7d</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/9ebf271968ebee582de80455c1043c301f498117/storage-provider-deploy/nfs-ganesha/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/9ebf271968ebee582de80455c1043c301f498117/"
+           target="_blank">#9ebf27</a>
         <script>
 
             function toast(msg, duration = 1000) {

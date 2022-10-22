@@ -846,9 +846,13 @@ pre.rouge {
 140
 141
 142
+143
+144
 </pre></td><td class="code"><pre><span class="c">#!/usr/bin/env bash</span>
 <span class="nb">set</span> <span class="nt">-e</span>
-<span class="nv">VERSION_KUBEADM</span><span class="o">=</span><span class="s2">"1.25.0"</span>
+<span class="c"># https://github.com/kubernetes/kubernetes/releases</span>
+<span class="nv">VERSION_KUBEADM</span><span class="o">=</span><span class="s2">"1.25.2"</span>
+<span class="c"># https://github.com/kubernetes-sigs/cri-tools/releases</span>
 <span class="nv">VERSION_CRICTL</span><span class="o">=</span><span class="s2">"1.25.0"</span>
 <span class="nv">VERSION_KUBEADM_CONF</span><span class="o">=</span><span class="s2">"0.4.0"</span>
 <span class="nv">ARCH</span><span class="o">=</span><span class="s2">"amd64"</span>
@@ -1009,8 +1013,8 @@ fi
 <pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
 3
-</pre></td><td class="code"><pre><span class="nb">tar </span>Czxvf /tmp kubernetes-1.25.0.tgz
-<span class="nb">cd</span> /tmp/kubernetes-1.25.0 <span class="o">||</span> <span class="nb">exit </span>1
+</pre></td><td class="code"><pre><span class="nb">tar </span>Czxvf /tmp kubernetes-1.25.2.tgz
+<span class="nb">cd</span> /tmp/kubernetes-1.25.2 <span class="o">||</span> <span class="nb">exit </span>1
 bash <span class="nt">-x</span> install.sh
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1076,7 +1080,7 @@ bash <span class="nt">-x</span> install.sh
 kubeadm init <span class="se">\</span>
     <span class="nt">--upload-certs</span> <span class="se">\</span>
     <span class="nt">--pod-network-cidr</span> 10.254.0.0/16 <span class="se">\</span>
-    <span class="nt">--node-name</span> node-master  <span class="nt">--kubernetes-version</span><span class="o">=</span>v1.25.0 | <span class="nb">tee</span> ~/kubectl-installer.log
+    <span class="nt">--node-name</span> node-master  <span class="nt">--kubernetes-version</span><span class="o">=</span>v1.25.2 | <span class="nb">tee</span> ~/kubectl-installer.log
 <span class="nb">export </span><span class="nv">KUBECONFIG</span><span class="o">=</span>/etc/kubernetes/admin.conf
 <span class="c"># 查看节点状态，有输出则表示成功</span>
 kubectl get nodes

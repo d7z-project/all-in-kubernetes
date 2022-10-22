@@ -1052,27 +1052,27 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_SERVER_ADDR</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-short-url</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_URL_SHORT</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-bind-user-dn</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">secretKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">password</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_BIND_DN_PASSWORD</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-service</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-user-ou</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_USERS_DN</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
-                  <span class="na">key</span><span class="pi">:</span> <span class="s">ldap-group-ou</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_GROUPS_DN</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">conf-ldap</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">minio-data</span>

@@ -124,7 +124,7 @@ UserFilter 的内容如下所示
 
 [source,ldif]
 ----
-(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local)(memberOf=cn=maven,ou=groups,dc=cluster,dc=local)(memberOf=cn=yum,ou=groups,dc=cluster,dc=local)(memberOf=cn=apt,ou=groups,dc=cluster,dc=local))
+(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=oci,ou=groups,dc=cluster,dc=local)(memberOf=cn=package,ou=groups,dc=cluster,dc=local)(memberOf=cn=library,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
 ----
 
 配置完成后，点击 `Verify user mapping` , 检查是否找到用户和角色。一切无误后保存即可。
@@ -179,10 +179,10 @@ image::images/03.c-create-docker-group.png[title="归组"]
 [source,bash]
 ----
 # 登陆 docker
-podman login registry.internal.d7z.net
+podman login registry.d7z.net
 podman pull docker.io/library/nginx:1.21.1
 podman tag docker.io/library/nginx:1.21.1 registry.internal.d7z.net/library/nginx:1.21.1
-podman push registry.internal.d7z.net/library/nginx:1.21.1
+podman push registry.d7z.net/library/nginx:1.21.1
 ----
 
 如果推送一切无误，则表明部署成功。

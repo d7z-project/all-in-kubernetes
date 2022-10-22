@@ -28,24 +28,24 @@ spec:
             - name: LDAP_HOST
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-host
+                  key: LDAP_HOST
                   name: conf-ldap
             - name: LDAP_PORT
               value: "389"
             - name: LDAP_BIND_DN
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-bind-user-dn
+                  key: LDAP_BIND_DN
                   name: conf-ldap
             - name: LDAP_BIND_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: LDAP_BIND_DN_PASSWORD
                   name: secret-ldap-service
             - name: LDAP_USER_BASE_DN
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-user-ou
+                  key: LDAP_USERS_DN
                   name: conf-ldap
           volumeMounts:
             - name: grafana-conf

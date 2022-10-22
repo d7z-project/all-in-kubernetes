@@ -861,6 +861,14 @@ pre.rouge {
 103
 104
 105
+106
+107
+108
+109
+110
+111
+112
+113
 </pre></td><td class="code"><pre><span class="c">################# Global ###############################
 # 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
@@ -880,6 +888,8 @@ pre.rouge {
 </span><span class="py">var.storage.class.security</span><span class="p">=</span><span class="s">sc-nfs-share</span>
 <span class="c"># 部署时使用的存储类对象（对数据安全性无太大要求）
 </span><span class="py">var.storage.class.fast</span><span class="p">=</span><span class="s">sc-nfs-share</span>
+<span class="c"># 管理员邮箱
+</span><span class="py">var.info.email</span><span class="p">=</span><span class="s">admin@cluster.local</span>
 <span class="c">#################### Cert Manager #########################
 # 你CF账户的邮箱
 </span><span class="py">var.cloudflare.email</span><span class="p">=</span><span class="s">&lt;请填写你的 CloudFlare 账户邮箱信息&gt;</span>
@@ -915,6 +925,12 @@ pre.rouge {
 <span class="c">################ LDAP ##################################
 # LDAP 管理员密码
 </span><span class="py">var.ldap.admin.password</span><span class="p">=</span><span class="s">admin</span>
+<span class="c"># LDAP 默认用户名
+</span><span class="py">var.ldap.default.user</span><span class="p">=</span><span class="s">admin</span>
+<span class="c"># LDAP 默认密码
+# 使用 slappasswd  -h {SSHA}  命令生成，默认为 admin
+</span><span class="py">var.ldap.default.password</span><span class="p">=</span><span class="s">{SSHA}XO42j4VtQiJKoqQjViPZCM5c4mbl4rn0</span>
+
 <span class="c">################ Grafana ##################################
 # Grafana 管理员账户信息
 </span><span class="py">var.grafana.admin.user</span><span class="p">=</span><span class="s">admin</span>

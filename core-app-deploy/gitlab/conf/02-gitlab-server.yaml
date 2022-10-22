@@ -1,3 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-gitlab-pg-init
+  namespace: core-app
+  labels:
+    app: gitlab
+data:
+  00-init-database.sh: |
+    #!/usr/bin/env bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" --dbname "$POSTGRES_DB" <<-END_SQL
+        CREATE EXTENSION pg_trgm;
+    END_SQL
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -17,13 +32,38 @@ spec:
         app: gitlab
     spec:
       containers:
+        - name: gitlab-postgres
+          image: docker.io/library/postgres:14
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+            - name: postgres-init
+              mountPath: /docker-entrypoint-initdb.d/
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: conf-gitlab
+                  key: DB_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret-gitlab
+                  key: DB_PASS
+            - name: 'POSTGRES_DB'
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_NAME
+                  name: conf-gitlab
+            - name: 'PGDATA'
+              value: "/var/lib/postgresql/data/pgdata"
         - name: gitlab-redis
           image: docker.io/library/redis:6.2
           volumeMounts:
             - name: gitlab-redis
               mountPath: /data
         - name: gitlab-server
-          image: docker.io/sameersbn/gitlab:15.2.4
+          image: docker.io/sameersbn/gitlab:15.4.2
           volumeMounts:
             - name: gitlab-data
               mountPath: /home/git/data
@@ -43,32 +83,32 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: conf-gitlab
-                  key: gitlab-host
+                  key: HOST
             - name: GITLAB_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-gitlab
-                  key: root-password
+                  key: ADMIN_PASS
             - name: GITLAB_SECRETS_DB_KEY_BASE
               valueFrom:
                 secretKeyRef:
                   name: secret-gitlab
-                  key: db-key-secrets
+                  key: DB_KEY_SECRETS
             - name: GITLAB_SECRETS_SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
                   name: secret-gitlab
-                  key: session-key-secrets
+                  key: SESSION_KEY_SECRETS
             - name: GITLAB_SECRETS_OTP_KEY_BASE
               valueFrom:
                 secretKeyRef:
                   name: secret-gitlab
-                  key: otp-key-secrets
+                  key: OTP_KEY_SECRETS
             - name: GITLAB_PAGES_ACCESS_SECRET
               valueFrom:
                 secretKeyRef:
                   name: secret-gitlab
-                  key: pages-key-secrets
+                  key: PAGES_KEY_SECRETS
             - name: GITLAB_PACKAGES_ENABLED
               value: 'false'
             - name: GITLAB_REGISTRY_ENABLED
@@ -79,30 +119,30 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: conf-gitlab
-                  key: gitlab-pages-host
+                  key: PAGES_HOST
             - name: GITLAB_PAGES_HTTPS
               value: 'false'
             - name: GITLAB_PAGES_HTTP
               value: 'true'
             - name: DB_HOST
-              value: "svc-postgres.core-middle.svc.cluster.local"
+              value: "127.0.0.1"
             - name: DB_PORT
               value: "5432"
             - name: DB_NAME
               valueFrom:
                 configMapKeyRef:
                   name: conf-gitlab
-                  key: db-name
+                  key: DB_NAME
             - name: DB_USER
               valueFrom:
                 configMapKeyRef:
                   name: conf-gitlab
-                  key: db-user
+                  key: DB_USER
             - name: DB_PASS
               valueFrom:
                 secretKeyRef:
                   name: secret-gitlab
-                  key: db-password
+                  key: DB_PASS
             - name: REDIS_HOST
               value: "127.0.0.1"
             - name: REDIS_PORT
@@ -114,7 +154,7 @@ spec:
             - name: "LDAP_HOST"
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-host
+                  key: LDAP_HOST
                   name: conf-ldap
             - name: LDAP_PORT
               value: "389"
@@ -128,21 +168,21 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-bind-user-dn
+                  key: LDAP_BIND_DN
             - name: LDAP_PASS
               valueFrom:
                 secretKeyRef:
-                  key: password
+                  key: LDAP_BIND_DN_PASSWORD
                   name: secret-ldap-service
             - name: LDAP_BASE
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-user-ou
+                  key: LDAP_USERS_DN
                   name: conf-ldap
             - name: LDAP_USER_FILTER
               valueFrom:
                 configMapKeyRef:
-                  key: ldap-user-filter
+                  key: LDAP_USERS_FILTER
                   name: conf-gitlab
       volumes:
         - name: gitlab-data
@@ -151,3 +191,9 @@ spec:
         - name: gitlab-redis
           persistentVolumeClaim:
             claimName: pvc-gitlab-redis
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: pvc-gitlab-postgres
+        - name: postgres-init
+          configMap:
+            name: conf-gitlab-pg-init

@@ -22,7 +22,7 @@ TIP: 离线部署需用户在有网络的环境下准备好部署的 OCI 镜像�
 
 项目发布在 link:https://github.com/d7z-project/all-in-kubernetes[d7z-project/all-in-kubernetes]。 有问题可在 link:https://github.com/d7z-project/all-in-kubernetes/issues[Github] 提问。
 
-如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[d7z-project.github.io/all-in-kubernetes] 或者是 link:https://all-in-kubernetes.docs.d7z.net[all-in-kubernetes.docs.d7z.net]。
+如需在线阅读请访问 link:https://d7z-project.github.io/all-in-kubernetes/[d7z-project.github.io/all-in-kubernetes]。
 
 项目默认使用 `d7z.net` 域名作为模板来渲染文档，你可以克隆此项目后修改 link:./value.properties[value.properties] 文件实现自定义配置。
 

@@ -1566,12 +1566,6 @@ docker.io/library/nginx:1.21.1
 62
 63
 64
-65
-66
-67
-68
-69
-70
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1588,8 +1582,8 @@ docker.io/library/nginx:1.21.1
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">nexus.internal.d7z.net</span>
-        <span class="pi">-</span> <span class="s">registry.internal.d7z.net</span>
-        <span class="pi">-</span> <span class="s">maven.internal.d7z.net</span>
+        <span class="pi">-</span> <span class="s">registry.d7z.net</span>
+        <span class="pi">-</span> <span class="s">repos.d7z.net</span>
       <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nexus.internal.d7z.net</span>
@@ -1602,7 +1596,7 @@ docker.io/library/nginx:1.21.1
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-web</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">registry.internal.d7z.net</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">registry.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
@@ -1612,30 +1606,24 @@ docker.io/library/nginx:1.21.1
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-docker</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">maven.internal.d7z.net</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">repos.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/maven</span>
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-maven</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">yum.internal.d7z.net</span>
-      <span class="na">http</span><span class="pi">:</span>
-        <span class="na">paths</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/yum</span>
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-yum</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">apt.internal.d7z.net</span>
-      <span class="na">http</span><span class="pi">:</span>
-        <span class="na">paths</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/apt</span>
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
@@ -1729,7 +1717,7 @@ docker.io/library/nginx:1.21.1
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="ldif"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=docker,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local)(memberOf=cn=maven,ou=groups,dc=cluster,dc=local)(memberOf=cn=yum,ou=groups,dc=cluster,dc=local)(memberOf=cn=apt,ou=groups,dc=cluster,dc=local))
+</pre></td><td class="code"><pre>(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=oci,ou=groups,dc=cluster,dc=local)(memberOf=cn=package,ou=groups,dc=cluster,dc=local)(memberOf=cn=library,ou=groups,dc=cluster,dc=local)(memberOf=cn=deploy,ou=groups,dc=cluster,dc=local))
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1836,10 +1824,10 @@ docker.io/library/nginx:1.21.1
 4
 5
 </pre></td><td class="code"><pre><span class="c"># 登陆 docker</span>
-podman login registry.internal.d7z.net
+podman login registry.d7z.net
 podman pull docker.io/library/nginx:1.21.1
 podman tag docker.io/library/nginx:1.21.1 registry.internal.d7z.net/library/nginx:1.21.1
-podman push registry.internal.d7z.net/library/nginx:1.21.1
+podman push registry.d7z.net/library/nginx:1.21.1
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1913,11 +1901,11 @@ podman push registry.internal.d7z.net/library/nginx:1.21.1
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-15 11:45:45 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-21 19:08:13 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/632edf6ae827b9356c73eb7400aaed55be5121b4/core-app-deploy/nexus3/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/632edf6ae827b9356c73eb7400aaed55be5121b4/"
-           target="_blank">#632edf</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/core-app-deploy/nexus3/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/"
+           target="_blank">#c7d2d2</a>
         <script>
 
             function toast(msg, duration = 1000) {

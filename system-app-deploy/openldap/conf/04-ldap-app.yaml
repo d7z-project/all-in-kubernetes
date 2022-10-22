@@ -34,34 +34,34 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-name
+                  key: LDAP_NAME
             - name: LDAP_DOMAIN
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-domain
+                  key: LDAP_DOMAIN
             - name: LDAP_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-ldap-admin
-                  key: password
+                  key: LDAP_ADMIN_PASSWORD
             - name: LDAP_CONFIG_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-ldap-admin
-                  key: password
+                  key: LDAP_ADMIN_PASSWORD
             - name: LDAP_READONLY_USER
               value: "true"
             - name: LDAP_READONLY_USER_USERNAME
               valueFrom:
                 configMapKeyRef:
                   name: conf-ldap
-                  key: ldap-bind-user
+                  key: LDAP_BIND_DN_NAME
             - name: LDAP_READONLY_USER_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: secret-ldap-service
-                  key: password
+                  key: LDAP_BIND_DN_PASSWORD
             - name: LDAP_RFC2307BIS_SCHEMA
               value: "false"
             - name: LDAP_BACKEND
@@ -74,6 +74,7 @@ spec:
               value: "false"
             - name: LDAP_REMOVE_CONFIG_AFTER_SETUP
               value: "true"
+
       volumes:
         - name: ldap-data
           persistentVolumeClaim:

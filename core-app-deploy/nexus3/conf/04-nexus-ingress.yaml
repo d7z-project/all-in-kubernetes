@@ -14,8 +14,8 @@ spec:
   tls:
     - hosts:
         - nexus.internal.d7z.net
-        - registry.internal.d7z.net
-        - maven.internal.d7z.net
+        - registry.d7z.net
+        - repos.d7z.net
       secretName: tls-d7z-net
   rules:
     - host: nexus.internal.d7z.net
@@ -28,7 +28,7 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-web
-    - host: registry.internal.d7z.net
+    - host: registry.d7z.net
       http:
         paths:
           - path: /
@@ -38,30 +38,24 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-docker
-    - host: maven.internal.d7z.net
+    - host: repos.d7z.net
       http:
         paths:
-          - path: /
+          - path: /maven
             pathType: Prefix
             backend:
               service:
                 name: svc-nexus
                 port:
                   name: nexus-maven
-    - host: yum.internal.d7z.net
-      http:
-        paths:
-          - path: /
+          - path: /yum
             pathType: Prefix
             backend:
               service:
                 name: svc-nexus
                 port:
                   name: nexus-yum
-    - host: apt.internal.d7z.net
-      http:
-        paths:
-          - path: /
+          - path: /apt
             pathType: Prefix
             backend:
               service:

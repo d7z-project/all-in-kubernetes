@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
-VERSION_KUBEADM="1.25.0"
+# https://github.com/kubernetes/kubernetes/releases
+VERSION_KUBEADM="1.25.2"
+# https://github.com/kubernetes-sigs/cri-tools/releases
 VERSION_CRICTL="1.25.0"
 VERSION_KUBEADM_CONF="0.4.0"
 ARCH="amd64"

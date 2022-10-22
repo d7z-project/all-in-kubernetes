@@ -726,7 +726,7 @@ pre.rouge {
 kubeadm init <span class="se">\</span>
     <span class="nt">--upload-certs</span> <span class="se">\</span>
     <span class="nt">--pod-network-cidr</span> 10.254.0.0/16 <span class="se">\</span>
-    <span class="nt">--node-name</span> node-master  <span class="nt">--kubernetes-version</span><span class="o">=</span>v1.25.0 | <span class="nb">tee</span> ~/kubectl-installer.log
+    <span class="nt">--node-name</span> node-master  <span class="nt">--kubernetes-version</span><span class="o">=</span>v1.25.2 | <span class="nb">tee</span> ~/kubectl-installer.log
 <span class="nb">export </span><span class="nv">KUBECONFIG</span><span class="o">=</span>/etc/kubernetes/admin.conf
 <span class="c"># 查看节点状态，有输出则表示成功</span>
 kubectl get nodes
