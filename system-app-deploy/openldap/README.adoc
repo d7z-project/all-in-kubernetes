@@ -8,7 +8,7 @@
 
 == 说明
 
-此项目需要镜像 `osixia/openldap:1.5.0`。
+此项目需要镜像 `bitnami/openldap:2.6`。
 
 == 导入配置
 
@@ -44,7 +44,7 @@ WARNING: 生产环境部署一定要更改为复杂的密码！
 
 == 部署 OpenLDAP
 
-=== 创建 `pvc`
+=== 创建持久化存储
 
 OpenLDAP 运行过程中需要存储数据。使用以下 YAML 创建，注意，此处需要用到之前教程创建的 `StroageClass` 。
 
@@ -54,6 +54,13 @@ include::./conf/03-ldap-pvc.yaml[]
 ----
 
 === 导入初始化配置
+
+使用以下配置初始化 LDAP 服务器，将完成以下功能：
+
+* 支持 memberOf
+* 创建相关服务账户
+* 创建此文档相关联的角色
+
 
 [source,yaml]
 ----
@@ -67,15 +74,6 @@ include::conf/04-ldap-schema.yaml[]
 [source,yaml]
 ----
 include::conf/05-ldap-app.yaml[]
-----
-
-== 导入LDAP配置
-
-使用以下命令登陆 LDAP 控制台，导入LDAP配置。
-
-[source,bash]
-----
-kubectl exec -it -n core-system pods/sts-ldap-0 -- /bin/bash
 ----
 
 == 验证
@@ -99,6 +97,8 @@ kubectl get pods,service -n core-system
 ----
 curl --user $LDAP_BIND_DN:$LDAP_PASS ldap://$LDAP_HOST/$LDAP_BASE?uid?one?"$LDAP_USER_FILTER"
 ----
+
+如遇到 LDAP 出现问题，可使用以下命令快速清除
 
 [source,bash]
 ----
