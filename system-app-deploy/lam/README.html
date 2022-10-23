@@ -752,6 +752,11 @@ pre.rouge {
 55
 56
 57
+58
+59
+60
+61
+62
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Deployment</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -775,6 +780,11 @@ pre.rouge {
           <span class="na">ports</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">80</span>
           <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_USER</span>
+              <span class="na">valueFrom</span><span class="pi">:</span>
+                <span class="na">secretKeyRef</span><span class="pi">:</span>
+                  <span class="na">key</span><span class="pi">:</span> <span class="s">LDAP_ADMIN_DN</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">secret-ldap-admin</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LAM_SKIP_PRCONFIGURE</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">LDAP_DOMAIN</span>

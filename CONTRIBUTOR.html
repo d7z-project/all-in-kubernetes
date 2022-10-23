@@ -865,10 +865,6 @@ pre.rouge {
 107
 108
 109
-110
-111
-112
-113
 </pre></td><td class="code"><pre><span class="c">################# Global ###############################
 # 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
@@ -923,14 +919,10 @@ pre.rouge {
 # Redis 管理员密码
 </span><span class="py">var.redis.password</span><span class="p">=</span><span class="s">redis-password</span>
 <span class="c">################ LDAP ##################################
-# LDAP 管理员密码
+# LDAP 默认用户名
+</span><span class="py">var.ldap.admin.username</span><span class="p">=</span><span class="s">admin</span>
+<span class="c"># LDAP 管理员密码
 </span><span class="py">var.ldap.admin.password</span><span class="p">=</span><span class="s">admin</span>
-<span class="c"># LDAP 默认用户名
-</span><span class="py">var.ldap.default.user</span><span class="p">=</span><span class="s">admin</span>
-<span class="c"># LDAP 默认密码
-# 使用 slappasswd  -h {SSHA}  命令生成，默认为 admin
-</span><span class="py">var.ldap.default.password</span><span class="p">=</span><span class="s">{SSHA}XO42j4VtQiJKoqQjViPZCM5c4mbl4rn0</span>
-
 <span class="c">################ Grafana ##################################
 # Grafana 管理员账户信息
 </span><span class="py">var.grafana.admin.user</span><span class="p">=</span><span class="s">admin</span>

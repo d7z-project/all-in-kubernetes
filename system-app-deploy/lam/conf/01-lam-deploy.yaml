@@ -21,6 +21,11 @@ spec:
           ports:
             - containerPort: 80
           env:
+            - name: LDAP_USER
+              valueFrom:
+                secretKeyRef:
+                  key: LDAP_ADMIN_DN
+                  name: secret-ldap-admin
             - name: LAM_SKIP_PRCONFIGURE
               value: "true"
             - name: LDAP_DOMAIN

@@ -11,13 +11,11 @@ metadata:
     reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
     reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"
 data:
-  LDAP_NAME: "Kubernetes Cluster LDAP Server"
   LDAP_DOMAIN: 'cluster.local'
   LDAP_HOST: 'svc-ldap.core-system.svc.cluster.local'
   LDAP_URL: 'ldap://svc-ldap.core-system.svc.cluster.local:389'
-  LDAP_URL_SHORT: 'svc-ldap.core-system.svc.cluster.local:389'
+  LDAP_ADDRESS_PORT: 'svc-ldap.core-system.svc.cluster.local:389'
   LDAP_BASE_DN: 'dc=cluster,dc=local'
   LDAP_USERS_DN: 'ou=people,dc=cluster,dc=local'
   LDAP_GROUPS_DN: 'ou=groups,dc=cluster,dc=local'
   LDAP_BIND_DN: 'cn=service-account,dc=cluster,dc=local'
-  LDAP_BIND_DN_NAME: 'service-account'

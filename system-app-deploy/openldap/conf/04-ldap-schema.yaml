@@ -1,0 +1,108 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: conf-ldap-schema
+  namespace: core-system
+  labels:
+    app: ldap
+data:
+  bootstrap.sh: |
+    #!/usr/bin/env bash
+    set -e
+    SRC_PATH=/bootstrap
+    DIST_PATH=/workspace
+    mkdir -p $DIST_PATH $DIST_PATH/custom
+    for ldif_path in $(cd $SRC_PATH ; ls *.ldif) ;do
+        cat "$SRC_PATH/$ldif_path" | sed \
+            -e "s|<_BIND_DN_PASSWORD_>|$(slappasswd -h {SSHA} -s ${LDAP_BIND_DN_PASSWORD})|g" \
+            -e "s|<_ADMIN_PASSWORD_>|$(slappasswd -h {SSHA} -s ${LDAP_ADMIN_PASSWORD})|g" | tee "$DIST_PATH/$ldif_path" > /dev/null
+    done 
+    mv $DIST_PATH/*.ldif $DIST_PATH/custom/
+    mv $DIST_PATH/custom/schema.ldif $DIST_PATH/schema.ldif
+    exit 0
+  schema.ldif: |
+    dn: cn=module,cn=config
+    cn: module
+    objectClass: olcModuleList
+    olcModulePath: /opt/bitnami/openldap/lib/openldap
+    olcModuleLoad: memberof.so
+    olcModuleLoad: refint.so
+
+    dn: olcOverlay=memberof,olcDatabase={2}mdb,cn=config
+    objectClass: olcMemberOf
+    objectClass: olcOverlayConfig
+    olcOverlay: memberof
+
+    dn: olcOverlay=refint,olcDatabase={2}mdb,cn=config
+    objectClass: olcConfig
+    objectClass: olcOverlayConfig
+    objectClass: olcRefintConfig
+    objectClass: top
+    olcOverlay: refint
+    olcRefintAttribute: memberof member manager owner
+
+  01-top.ldif: |
+    dn: dc=cluster,dc=local
+    objectClass: top
+    objectClass: dcObject
+    objectClass: organization
+    o: cluster local
+    dc: cluster
+    
+    dn: ou=people,dc=cluster,dc=local
+    objectClass: organizationalUnit
+    description: LDAP系统角色分组
+    ou: people
+    
+    dn: ou=groups,dc=cluster,dc=local
+    objectClass: organizationalUnit
+    description: LDAP集群用户分组
+    ou: groups
+    
+    dn: cn=service-account,dc=cluster,dc=local
+    cn: service-account
+    description: Bind DN 账户，用于查询LDAP服务器内部信息
+    objectClass: simpleSecurityObject
+    objectClass: organizationalRole
+    userPassword: <_BIND_DN_PASSWORD_>
+  02-users-admin.ldif: |
+    dn: uid=admin,ou=people,dc=cluster,dc=local
+    cn: admin
+    sn: admin
+    uid: admin
+    description: 系统自动创建的默认管理员用户
+    objectClass: inetOrgPerson
+    objectClass: organizationalPerson
+    objectClass: person
+    mail: admin@cluster.local
+    userPassword: <_ADMIN_PASSWORD_>
+  03-cluster-groups.ldif: |
+    dn: cn=oci,ou=groups,dc=cluster,dc=local
+    cn: oci
+    description: 镜像操作员角色
+    member: uid=admin,ou=people,dc=cluster,dc=local
+    objectClass: groupOfNames
+    
+    dn: cn=admin,ou=groups,dc=cluster,dc=local
+    cn: admin
+    description: 管理员角色
+    member: uid=admin,ou=people,dc=cluster,dc=local
+    objectClass: groupOfNames
+    
+    dn: cn=develop,ou=groups,dc=cluster,dc=local
+    cn: develop
+    description: 项目开发者角色
+    member: uid=admin,ou=people,dc=cluster,dc=local
+    objectClass: groupOfNames
+    
+    dn: cn=library,ou=groups,dc=cluster,dc=local
+    cn: library
+    description: 依赖库上传者角色
+    member: uid=admin,ou=people,dc=cluster,dc=local
+    objectClass: groupOfNames
+    
+    dn: cn=package,ou=groups,dc=cluster,dc=local
+    cn: package
+    description: 软件包上传者角色
+    member: uid=admin,ou=people,dc=cluster,dc=local
+    objectClass: groupOfNames
