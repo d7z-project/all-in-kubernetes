@@ -1,22 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-ldap-config
-  namespace: core-system
-  labels:
-    app: ldap
-spec:
-  storageClassName: '{{var.storage.class.security}}'
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-ldap-data
+  name: pvc-ldap
   namespace: core-system
   labels:
     app: ldap

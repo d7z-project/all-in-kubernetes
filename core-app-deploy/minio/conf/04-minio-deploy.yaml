@@ -42,7 +42,7 @@ spec:
             - name: MINIO_IDENTITY_LDAP_SERVER_ADDR
               valueFrom:
                 configMapKeyRef:
-                  key: LDAP_URL_SHORT
+                  key: LDAP_ADDRESS_PORT
                   name: conf-ldap
             - name: MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN
               valueFrom:

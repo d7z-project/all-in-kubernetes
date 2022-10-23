@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: svc-ldap
+  namespace: core-system
+spec:
+  ports:
+    - port: 389
+      targetPort: 1389
+  selector:
+    app: ldap
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-ldap
+  namespace: core-system
+  labels:
+    app: ldap
+spec:
+  serviceName: svc-ldap
+  selector:
+    matchLabels:
+      app: ldap
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ldap
+    spec:
+      containers:
+        - name: ldap-core
+          image: bitnami/openldap:2.6
+          volumeMounts:
+            - name: ldap-data
+              mountPath: /bitnami/openldap
+            - name: ldap-workspace
+              mountPath: /workspace
+          ports:
+            - containerPort: 1389
+              name: openldap
+          envFrom:
+            - secretRef:
+                name: secret-ldap-admin
+            - secretRef:
+                name: secret-ldap-service
+          env:
+            - name: LDAP_ROOT
+              valueFrom:
+                configMapKeyRef:
+                  key: LDAP_BASE_DN
+                  name: conf-ldap
+            - name: LDAP_ALLOW_ANON_BINDING
+              value: "no"
+            - name: LDAP_SKIP_DEFAULT_TREE
+              value: "yes"
+            - name: LDAP_CUSTOM_SCHEMA_FILE
+              value: "/workspace/schema.ldif"
+            - name: LDAP_CUSTOM_LDIF_DIR
+              value: "/workspace/custom"
+      initContainers:
+        - name: ldap-pre
+          image: bitnami/openldap:2.6
+          envFrom:
+            - secretRef:
+                name: secret-ldap-admin
+            - secretRef:
+                name: secret-ldap-service
+          command:
+            - bash
+            - /bootstrap/bootstrap.sh
+          volumeMounts:
+            - mountPath: /workspace
+              name: ldap-workspace
+            - mountPath: /bootstrap
+              name: ldap-schema
+
+      volumes:
+        - name: ldap-data
+          persistentVolumeClaim:
+            claimName: pvc-ldap
+        - name: ldap-schema
+          configMap:
+            name: conf-ldap-schema
+        - name: ldap-workspace
+          emptyDir: { }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: ldap
+  name: svc-ldap-lb
+  namespace: core-system
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "primary-ip-share"
+spec:
+  ports:
+    - port: 389
+      targetPort: 1389
+  selector:
+    app: ldap
+  type: LoadBalancer
