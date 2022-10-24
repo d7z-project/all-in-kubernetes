@@ -58,4 +58,4 @@ include::conf/04-alert-manager-ingress.yaml[]
 kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=alert-manager
 ----
 
-待一切完成后，访问 `https://alert-manager.internal.{{var.global.pub-host}}` 查看 web 页面。
+待一切完成后，访问 `https://alert-manager.{{var.global.private.host}}` 查看 web 页面。

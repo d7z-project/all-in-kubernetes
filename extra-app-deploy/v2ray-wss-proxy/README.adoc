@@ -49,4 +49,4 @@ include::conf/v2ray.ingress.yaml[]
 
 == 测试
 
-执行完成后，在相关的客户端软件添加新连接，协议为 `vmess` ，远程地址填入 `{{v2ray.url.name}}.{{var.global.pub-host}}`，端口为 `443`，传输层协议选择 `tls+websocket`，UUID 填入 `{{v2ray.uuid}}`, *Header* 请求头填入 `Host={{v2ray.url.name}}.{{var.global.pub-host}}`,路径填入 `{{v2ray.location}}` ，如无问题，集群内网络连接成功。
+执行完成后，在相关的客户端软件添加新连接，协议为 `vmess` ，远程地址填入 `{{v2ray.url.name}}.{{var.global.public.host}}`，端口为 `443`，传输层协议选择 `tls+websocket`，UUID 填入 `{{v2ray.uuid}}`, *Header* 请求头填入 `Host={{v2ray.url.name}}.{{var.global.public.host}}`,路径填入 `{{v2ray.location}}` ，如无问题，集群内网络连接成功。

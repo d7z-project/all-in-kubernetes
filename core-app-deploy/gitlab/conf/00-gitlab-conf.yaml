@@ -8,8 +8,8 @@ metadata:
 data:
   DB_NAME: 'gitlabhq_production' # <1>
   DB_USER: 'gitlab'  # <2>
-  HOST: gitlab.{{var.global.pub-host}} # <3>
-  PAGES_HOST: pages.{{var.global.pub-host}} # <3>
+  HOST: gitlab.{{var.global.public.host}} # <3>
+  PAGES_HOST: pages.{{var.global.public.host}} # <3>
   LDAP_USERS_FILTER: '(|(memberOf=cn=admin,ou=groups,dc=cluster,dc=local)(memberOf=cn=develop,ou=groups,dc=cluster,dc=local))' # <4>
 ---
 apiVersion: v1

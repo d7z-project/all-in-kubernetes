@@ -9,7 +9,7 @@ ALIAS_LIST=(
     "ghcr.io"
 )
 
-replace_host="registry.internal.{{var.global.pub-host}}"
+replace_host="registry.internal.{{var.global.public.host}}"
 
 mkdir -p /etc/containerd/certs.d/ /etc/containerd/certs.d/$replace_host
 cat << EOF | tee "/etc/containerd/certs.d/$replace_host/hosts.toml" >/dev/null

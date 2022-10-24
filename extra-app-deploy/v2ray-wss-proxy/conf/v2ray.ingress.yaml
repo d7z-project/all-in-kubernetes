@@ -8,13 +8,13 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{var.ingress.class.public}}
   tls:
     - hosts:
-        - {{v2ray.url.name}}.{{var.global.pub-host}}
-      secretName: {{var.global.tls-name}}
+        - {{v2ray.url.name}}.{{var.global.public.host}}
+      secretName: {{var.global.public.tls-name}}
   rules:
-    - host: {{v2ray.url.name}}.{{var.global.pub-host}}
+    - host: {{v2ray.url.name}}.{{var.global.public.host}}
       http:
         paths:
           - path: {{v2ray.location}}

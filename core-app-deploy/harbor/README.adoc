@@ -156,11 +156,11 @@ kubectl get pods,pvc,svc,ingress -n core-app -l app=harbor
 
 == 配置 Harbor
 
-部署完成后，访问 `https://harbor.{{var.global.pub-host}}/` , 使用用户名 `admin` 和配置的密码 `{{var.harbor.admin.password}}` 登陆 *Harbor* 。
+部署完成后，访问 `https://harbor.{{var.global.public.host}}/` , 使用用户名 `admin` 和配置的密码 `{{var.harbor.admin.password}}` 登陆 *Harbor* 。
 
 === 配置 LDAP 管理器
 
-访问 `https://harbor.{{var.global.pub-host}}/harbor/configs/auth`,切换验证模式为 LDAP，按下图填入内容。
+访问 `https://harbor.{{var.global.public.host}}/harbor/configs/auth`,切换验证模式为 LDAP，按下图填入内容。
 
 image::images/harbor-ldap.png[]
 
@@ -186,5 +186,5 @@ image::images/harbor-ldap.png[]
 
 [source,bash]
 ----
-docker login harbor.{{var.global.pub-host}}
+docker login harbor.{{var.global.public.host}}
 ----

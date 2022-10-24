@@ -14,8 +14,8 @@
 
 MinIO 部署完成后将在集群内外暴露如下资源：
 
-* `https://s3.{{var.global.pub-host}}`
-* `https://minio.internal.{{var.global.pub-host}}`
+* `https://s3.{{var.global.public.host}}`
+* `https://minio.{{var.global.private.host}}`
 
 === 依赖
 
@@ -93,7 +93,7 @@ kubectl get pods,pvc,svc,ingress -n core-app -l app=minio
 
 === 访问Web控制台
 
-在浏览器访问地址 `https://minio.internal.{{var.global.pub-host}}`,使用 *LDAP* 配置的用户登陆，如无错误，将登陆成功。
+在浏览器访问地址 `https://minio.{{var.global.private.host}}`,使用 *LDAP* 配置的用户登陆，如无错误，将登陆成功。
 
 === 访问Cli控制台
 

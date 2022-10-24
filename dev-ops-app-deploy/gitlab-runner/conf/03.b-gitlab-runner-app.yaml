@@ -35,7 +35,7 @@ spec:
           projected:
             sources:
               - secret:
-                  name: '{{var.global.tls-name}}'
+                  name: '{{var.global.public.tls-name}}'
                   items:
                     - key: 'tls.crt'
                       path: 'tls.crt'

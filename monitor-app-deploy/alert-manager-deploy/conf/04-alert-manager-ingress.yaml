@@ -9,13 +9,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{var.ingress.class.private}}
   tls:
     - hosts:
-        - alert-manager.internal.{{var.global.pub-host}}
-      secretName: {{var.global.tls-name}}
+        - alert-manager.internal.{{var.global.private.host}}
+      secretName: {{var.global.private.tls-name}}
   rules:
-    - host: alert-manager.internal.{{var.global.pub-host}}
+    - host: alert-manager.{{var.global.private.host}}
       http:
         paths:
           - path: /

@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cert-{{var.global.pub-hostname}}
+  name: cert-{{var.global.public.hostname}}
   namespace: cert-manager
 spec:
   secretTemplate:
@@ -10,15 +10,33 @@ spec:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{var.global.shared-namespace}}"
-  secretName: {{var.global.tls-name}}
+  secretName: {{var.global.public.tls-name}}
   duration: 8760h # 1y
   issuerRef:
     name: self-issuer
   commonName: "Self CA Certificate"
   dnsNames:
-    - '{{var.global.pub-host}}'
-    - '*.{{var.global.pub-host}}' # 通用公开地址
-    - '*.pages.{{var.global.pub-host}}' # gitlab pages 相关地址
-    - '*.gitpod.{{var.global.pub-host}}' # gitpod 相关地址
-    - '*.ws.gitpod.{{var.global.pub-host}}' # gitpod 相关地址
-    - '*.internal.{{var.global.pub-host}}' # 隐私地址
+    - '{{var.global.public.host}}'
+    - '*.{{var.global.public.host}}' # 通用公开地址
+    - '*.pages.{{var.global.public.host}}' # gitlab pages 相关地址
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-{{var.global.private.hostname}}
+  namespace: cert-manager
+spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "{{var.global.shared-namespace}}"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "{{var.global.shared-namespace}}"
+  secretName: {{var.global.private.tls-name}}
+  duration: 8760h # 1y
+  issuerRef:
+    name: self-issuer
+  commonName: "Self CA Certificate"
+  dnsNames:
+    - '{{var.global.private.host}}'
+    - '*.{{var.global.private.host}}' # 通用私有地址

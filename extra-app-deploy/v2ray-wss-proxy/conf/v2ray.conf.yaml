@@ -23,7 +23,7 @@ data:
             "wsSettings": {
               "acceptProxyProtocol": false,
               "headers": {
-                "Host": "api.{{var.global.pub-host}}" 
+                "Host": "api.{{var.global.public.host}}" 
               },
               "path": "/"
             }

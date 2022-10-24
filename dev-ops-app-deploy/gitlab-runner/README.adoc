@@ -32,7 +32,7 @@ include::./conf/00-gitlab-runner-rbac.yaml[]
 
 == 创建Gitlab配置
 
-前往 `https://gitlab.{{var.global.pub-host}}/admin/runners`,点击右上角，复制注册令牌。
+前往 `https://gitlab.{{var.global.public.host}}/admin/runners`,点击右上角，复制注册令牌。
 
 image::images/copy-register-id.png[title="复制注册令牌"]
 

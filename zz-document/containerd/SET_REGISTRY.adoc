@@ -30,7 +30,7 @@ WARNING: 如果你的服务器可联网，则无需配置，否则可能影响 C
 ----
 server = "https://docker.io"
 
-[host."https://registry.{{var.global.pub-host}}"]
+[host."https://registry.{{var.global.public.host}}"]
   capabilities = ["pull", "resolve"]
   skip_verify = true
 ----

@@ -9,13 +9,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{var.ingress.class.public}}
   tls:
     - hosts:
-        - gitlab.{{var.global.pub-host}}
-      secretName: {{var.global.tls-name}}
+        - gitlab.{{var.global.public.host}}
+      secretName: {{var.global.public.tls-name}}
   rules:
-    - host: gitlab.{{var.global.pub-host}}
+    - host: gitlab.{{var.global.public.host}}
       http:
         paths:
           - path: /
@@ -38,14 +38,14 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{var.ingress.class.public}}
   tls:
     - hosts:
-        - pages.{{var.global.pub-host}}
-        - '*.pages.{{var.global.pub-host}}'
-      secretName: {{var.global.tls-name}}
+        - pages.{{var.global.public.host}}
+        - '*.pages.{{var.global.public.host}}'
+      secretName: {{var.global.public.tls-name}}
   rules:
-    - host: pages.{{var.global.pub-host}}
+    - host: pages.{{var.global.public.host}}
       http:
         paths:
           - path: /
@@ -55,7 +55,7 @@ spec:
                 name: svc-gitlab
                 port:
                   name: gitlab-web
-    - host: '*.pages.{{var.global.pub-host}}'
+    - host: '*.pages.{{var.global.public.host}}'
       http:
         paths:
           - path: /

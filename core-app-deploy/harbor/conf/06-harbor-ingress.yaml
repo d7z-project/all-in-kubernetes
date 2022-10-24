@@ -9,11 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: {{var.ingress.class.public}}
   tls:
-    - secretName: '{{var.global.tls-name}}'
+    - secretName: '{{var.global.public.tls-name}}'
       hosts:
-        - harbor.{{var.global.pub-host}}
+        - harbor.{{var.global.public.host}}
   rules:
     - http:
         paths:
@@ -59,4 +59,4 @@ spec:
                 name: svc-harbor-portal
                 port:
                   number: 80
-      host: harbor.{{var.global.pub-host}}
+      host: harbor.{{var.global.public.host}}

@@ -84,4 +84,4 @@ include::conf/06-node-exporter.yaml[]
 kubectl get pods,svc,ingress,configmaps -n monitor-app -l app=prometheus
 ----
 
-待一切完成后，访问 `https://prometheus.internal.{{var.global.pub-host}}` 查看 web 页面。
+待一切完成后，访问 `https://prometheus.{{var.global.private.host}}` 查看 web 页面。

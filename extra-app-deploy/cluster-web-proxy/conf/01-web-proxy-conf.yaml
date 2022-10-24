@@ -10,7 +10,7 @@ data:
     server{
     listen [::]:80;
     listen 80;
-    server_name pve.{{var.global.pub-host}}; # <1>
+    server_name pve.{{var.global.public.host}}; # <1>
     set $proxy_url 'https://10.0.0.254:8006'; # <2>
     location / {
         proxy_http_version 1.1; # <3>

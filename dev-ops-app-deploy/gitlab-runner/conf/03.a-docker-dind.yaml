@@ -15,16 +15,16 @@ spec:
       containers:
         - name: "docker-dind"
           image: "docker.io/library/docker:20-dind"
-          command: [ "dockerd", "--host", "tcp://0.0.0.0:2375" ,"--insecure-registry","registry.{{var.global.pub-host}}","--registry-mirror","https://registry.{{var.global.pub-host}}/" ]
+          command: [ "dockerd", "--host", "tcp://0.0.0.0:2375" ,"--insecure-registry","registry.{{var.global.public.host}}","--registry-mirror","https://registry.{{var.global.public.host}}/" ]
           securityContext:
             privileged: true
           volumeMounts:
-            - mountPath: '/etc/docker/certs.d/registry.{{var.global.pub-host}}/'
+            - mountPath: '/etc/docker/certs.d/registry.{{var.global.public.host}}/'
               name: cluster-certs
       volumes:
         - name: cluster-certs
           secret:
-            secretName: '{{var.global.tls-name}}'
+            secretName: '{{var.global.public.tls-name}}'
   selector:
     matchLabels:
       app: docker-dind

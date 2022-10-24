@@ -50,7 +50,7 @@ data:
   POSTGRESQL_SSLMODE: "disable"
   POSTGRESQL_MAX_IDLE_CONNS: "100"
   POSTGRESQL_MAX_OPEN_CONNS: "900"
-  EXT_ENDPOINT: "https://harbor.{{var.global.pub-host}}"
+  EXT_ENDPOINT: "https://harbor.{{var.global.public.host}}"
   CORE_URL: "http://svc-harbor-core:80"
   JOBSERVICE_URL: "http://svc-harbor-job-service"
   REGISTRY_URL: "http://svc-harbor-registry:5000"

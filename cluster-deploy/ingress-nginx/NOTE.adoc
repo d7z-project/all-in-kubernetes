@@ -26,10 +26,10 @@ kubernetes cluster.local in-addr.arpa ip6.arpa {
    fallthrough in-addr.arpa ip6.arpa
    ttl 30
 }
-rewrite name harbor.{{var.global.pub-host}} ingress-nginx-controller.ingress-nginx.svc.cluster.local
+rewrite name harbor.{{var.global.public.host}} ingress-nginx-controller.ingress-nginx.svc.cluster.local
 ----
 
-TIP: 此处是将 `harbor.{{var.global.pub-host}}` 解析到内部 `nginx-ingress` 上。
+TIP: 此处是将 `harbor.{{var.global.public.host}}` 解析到内部 `nginx-ingress` 上。
 
 修改完成后，使用如下命令查看修改结果:
 
