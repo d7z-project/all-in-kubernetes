@@ -924,11 +924,11 @@ pre.rouge {
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">alert-manager.internal.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+        <span class="pi">-</span> <span class="s">alert-manager.internal.internal.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pri-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">alert-manager.internal.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
@@ -995,11 +995,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-06 09:34:14 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/dab53652de4712c86693ce3d091e2ff71814a211/monitor-app-deploy/alert-manager-deploy/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dab53652de4712c86693ce3d091e2ff71814a211/"
-           target="_blank">#dab536</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/monitor-app-deploy/alert-manager-deploy/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
+           target="_blank">#dfa025</a>
         <script>
 
             function toast(msg, duration = 1000) {

@@ -795,6 +795,24 @@ pre.rouge {
 22
 23
 24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -807,7 +825,7 @@ pre.rouge {
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
       <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>
-  <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
   <span class="na">duration</span><span class="pi">:</span> <span class="s">8760h</span> <span class="c1"># 1y</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">self-issuer</span>
@@ -816,9 +834,27 @@ pre.rouge {
     <span class="pi">-</span> <span class="s1">'</span><span class="s">d7z.net'</span>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">*.d7z.net'</span> <span class="c1"># 通用公开地址</span>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span> <span class="c1"># gitlab pages 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.gitpod.d7z.net'</span> <span class="c1"># gitpod 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.ws.gitpod.d7z.net'</span> <span class="c1"># gitpod 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.internal.d7z.net'</span> <span class="c1"># 隐私地址</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">cert-internal-d7z-net</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">secretTemplate</span><span class="pi">:</span>
+    <span class="na">annotations</span><span class="pi">:</span>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pri-d7z</span>
+  <span class="na">duration</span><span class="pi">:</span> <span class="s">8760h</span> <span class="c1"># 1y</span>
+  <span class="na">issuerRef</span><span class="pi">:</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">self-issuer</span>
+  <span class="na">commonName</span><span class="pi">:</span> <span class="s2">"</span><span class="s">Self</span><span class="nv"> </span><span class="s">CA</span><span class="nv"> </span><span class="s">Certificate"</span>
+  <span class="na">dnsNames</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">internal.d7z.net'</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.internal.d7z.net'</span> <span class="c1"># 通用私有地址</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

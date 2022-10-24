@@ -27,41 +27,10 @@ docker.io/sameersbn/postgresql:12-20200524
 
 *Gitlab* 依赖于 *Postgres* 和 *Redis*，在部署前你需要预先配置其依赖。
 
-=== 配置数据源
-
-TIP: 在生产环境部署建议使用 *Gitlab* 推荐的 *Postgres* 版本，且应将 *Postgres* 单独部署，具体的要求可参考 link:https://github.com/sameersbn/docker-gitlab#external-postgresql-server[sameersbn/docker-gitlab]，在这里我们直接使用之前部署的 *Postgres*。
-
-使用如下命令连接 `Postgres` 控制台。
-
-[source,bash]
-----
-kubectl exec -it -n core-middle sts-postgres-0 -- psql -U postgres
-----
-
-连接建立后，执行如下 *SQL* 语句创建 *Gitlab* 的 *Postgres* 账户和数据库，执行完成后，使用 `\q` 退出。。
-
-[source,sql]
-----
-CREATE ROLE gitlab with LOGIN CREATEDB PASSWORD 'password'; -- <1>
-CREATE DATABASE gitlabhq_production;
-GRANT ALL PRIVILEGES ON DATABASE gitlabhq_production to gitlab;
-----
-
-.注意
-<1> 如果你修改了此处的密码，则需要在接下来的配置中也要同步修改。
-
-创建完成后执行如下命令为数据库 `gitlabhq_production` 增加 `pg_trgm` 扩展。
-
-[source,bash]
-----
-kubectl exec -it -n core-middle sts-postgres-0 -- psql -U gitlab -d gitlabhq_production -c "CREATE EXTENSION pg_trgm;"
-----
-
-至此，数据源配置完成。
 
 === 创建 LDAP 用户组
 
-*Gitlab* 被配置为只有归属于 `cn=develop` 的用户和管理员才能登陆，需要在 *LDAP* 下创建名为 `gitlab` 的 `groupOfNames` 用户组。
+*Gitlab* 被配置为只有归属于 `cn=develop` 的用户和管理员才能登陆，需要在 *LDAP* 下创建名为 `develop` 的 `groupOfNames` 用户组。 (集群已自动创建)
 
 [source,text]
 ----
@@ -159,4 +128,4 @@ kubectl get pods,pvc,service,ingress -n core-app -l app=gitlab
 
 === 测试 LDAP 登陆
 
-创建一个测试用户，并在 `cn=gitlab` 下添加对此用户的绑定，然后在 *Gitlab* 测试登陆，登陆成功后，退出用户并在 *LDAP* 下删除此用户，然后再次测试，如无法登陆则表明部署成功。
+创建一个测试用户，并在 `cn=develop` 下添加对此用户的绑定，然后在 *Gitlab* 测试登陆，登陆成功后，退出用户并在 *LDAP* 下删除此用户，然后再次测试，如无法登陆则表明部署成功。

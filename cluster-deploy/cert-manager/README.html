@@ -871,6 +871,26 @@ quay.io/jetstack/cert-manager-webhook:v1.9.1
 24
 25
 26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -890,13 +910,33 @@ quay.io/jetstack/cert-manager-webhook:v1.9.1
     <span class="pi">-</span> <span class="s1">'</span><span class="s">d7z.net'</span>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">*.d7z.net'</span> <span class="c1"># 通用公开地址</span>
     <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span> <span class="c1"># gitlab pages 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.gitpod.d7z.net'</span> <span class="c1"># gitpod 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.ws.gitpod.d7z.net'</span> <span class="c1"># gitpod 相关地址</span>
-    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.internal.d7z.net'</span> <span class="c1"># 隐私地址</span>
   <span class="na">issuerRef</span><span class="pi">:</span>
     <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
     <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>  <i class="conum" data-value="6"></i><b>(6)</b>
-  <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-pub-d7z'</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">cert-manager.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Certificate</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">cert-internal-d7z-net'</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">cert-manager</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">secretTemplate</span><span class="pi">:</span>
+    <span class="na">annotations</span><span class="pi">:</span>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span> <i class="conum" data-value="1"></i><b>(1)</b>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-allowed</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-enabled</span><span class="pi">:</span> <span class="s2">"</span><span class="s">true"</span>  <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="na">reflector.v1.k8s.emberstack.com/reflection-auto-namespaces</span><span class="pi">:</span> <span class="s2">"</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"</span>  <i class="conum" data-value="4"></i><b>(4)</b>
+  <span class="na">privateKey</span><span class="pi">:</span>
+    <span class="na">algorithm</span><span class="pi">:</span> <span class="s">RSA</span>
+    <span class="na">size</span><span class="pi">:</span> <span class="m">4096</span>
+  <span class="na">dnsNames</span><span class="pi">:</span> <i class="conum" data-value="5"></i><b>(5)</b>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">internal.d7z.net'</span>
+    <span class="pi">-</span> <span class="s1">'</span><span class="s">*.internal.d7z.net'</span> <span class="c1"># 通用私有地址</span>
+  <span class="na">issuerRef</span><span class="pi">:</span>
+    <span class="na">kind</span><span class="pi">:</span> <span class="s">ClusterIssuer</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">issuer-dns01-cloudflare-1</span>  <i class="conum" data-value="6"></i><b>(6)</b>
+  <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-pri-d7z'</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -951,8 +991,10 @@ kubectl get certificate <span class="nt">-n</span> cert-manager
 <div class="content">
 <pre class="rouge highlight nowrap"><code data-lang="text"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
 2
+3
 </pre></td><td class="code"><pre>NAME               READY   SECRET                 AGE
-cert-d7z-net       True    tls-d7z-net            18h
+cert-d7z-net       True    tls-pub-d7z            18h
+cert-{{var.global.private-hostname}}       True    tls-pri-d7z            18h
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
@@ -1003,11 +1045,11 @@ cert-d7z-net       True    tls-d7z-net            18h
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-11 20:27:42 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/e228a8a37546593cdf25b10df8c3a1e92c666c84/cluster-deploy/cert-manager/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/e228a8a37546593cdf25b10df8c3a1e92c666c84/"
-           target="_blank">#e228a8</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/cluster-deploy/cert-manager/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
+           target="_blank">#dfa025</a>
         <script>
 
             function toast(msg, duration = 1000) {

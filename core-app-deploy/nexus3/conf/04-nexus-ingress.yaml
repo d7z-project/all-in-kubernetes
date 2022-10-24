@@ -8,15 +8,12 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
-#    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-private
   tls:
     - hosts:
         - nexus.internal.d7z.net
-        - registry.d7z.net
-        - repos.d7z.net
-      secretName: tls-d7z-net
+      secretName: tls-pri-d7z
   rules:
     - host: nexus.internal.d7z.net
       http:
@@ -28,6 +25,25 @@ spec:
                 name: svc-nexus
                 port:
                   name: nexus-web
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nexus-public
+  namespace: core-app
+  labels:
+    app: nexus
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
+spec:
+  ingressClassName: nginx-private
+  tls:
+    - hosts:
+        - registry.d7z.net
+        - repos.d7z.net
+      secretName: tls-pub-d7z
+  rules:
     - host: registry.d7z.net
       http:
         paths:

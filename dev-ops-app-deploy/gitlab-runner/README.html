@@ -1124,7 +1124,7 @@ docker.io/library/docker:20-dind
       <span class="na">volumes</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">cluster-certs</span>
           <span class="na">secret</span><span class="pi">:</span>
-            <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
+            <span class="na">secretName</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-pub-d7z'</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
       <span class="na">app</span><span class="pi">:</span> <span class="s">docker-dind</span>
@@ -1259,7 +1259,7 @@ docker.io/library/docker:20-dind
           <span class="na">projected</span><span class="pi">:</span>
             <span class="na">sources</span><span class="pi">:</span>
               <span class="pi">-</span> <span class="na">secret</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-d7z-net'</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls-pub-d7z'</span>
                   <span class="na">items</span><span class="pi">:</span>
                     <span class="pi">-</span> <span class="na">key</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls.crt'</span>
                       <span class="na">path</span><span class="pi">:</span> <span class="s1">'</span><span class="s">tls.crt'</span>
@@ -1324,11 +1324,11 @@ docker.io/library/docker:20-dind
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-05 20:30:07 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/dev-ops-app-deploy/gitlab-runner/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/db0e5e25cac9c7fed1409d90cd2a119e6f3598b2/"
-           target="_blank">#db0e5e</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/dev-ops-app-deploy/gitlab-runner/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
+           target="_blank">#dfa025</a>
         <script>
 
             function toast(msg, duration = 1000) {

@@ -1566,6 +1566,22 @@ docker.io/library/nginx:1.21.1
 62
 63
 64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1576,15 +1592,12 @@ docker.io/library/nginx:1.21.1
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span> <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="c1">#    nginx.ingress.kubernetes.io/ssl-redirect: "false"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">nexus.internal.d7z.net</span>
-        <span class="pi">-</span> <span class="s">registry.d7z.net</span>
-        <span class="pi">-</span> <span class="s">repos.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pri-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">nexus.internal.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
@@ -1596,6 +1609,25 @@ docker.io/library/nginx:1.21.1
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-web</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-nexus-public</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">registry.d7z.net</span>
+        <span class="pi">-</span> <span class="s">repos.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
+  <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">registry.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
@@ -1901,11 +1933,11 @@ podman push registry.d7z.net/library/nginx:1.21.1
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-10-21 19:08:13 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/core-app-deploy/nexus3/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/"
-           target="_blank">#c7d2d2</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/core-app-deploy/nexus3/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
+           target="_blank">#dfa025</a>
         <script>
 
             function toast(msg, duration = 1000) {

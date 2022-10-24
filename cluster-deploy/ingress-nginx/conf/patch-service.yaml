@@ -1,0 +1,8 @@
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: "primary-ip-share" # <1>
+spec:
+  externalTrafficPolicy: Local # <2>
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack

@@ -9,11 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-private
   tls:
     - hosts:
         - grafana.internal.d7z.net
-      secretName: tls-d7z-net
+      secretName: tls-pri-d7z
   rules:
     - host: grafana.internal.d7z.net
       http:

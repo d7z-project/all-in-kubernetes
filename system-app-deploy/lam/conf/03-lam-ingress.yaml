@@ -9,13 +9,13 @@ metadata:
     # 重写路径
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-private
   tls:
     - hosts:
-        - lam.internal.d7z.net # <1>
-      secretName: tls-d7z-net  # <2>
+        - ldap.internal.d7z.net # <1>
+      secretName: tls-pri-d7z  # <2>
   rules:
-    - host: lam.internal.d7z.net  # <3>
+    - host: ldap.internal.d7z.net  # <3>
       http:
         paths:
           - path: /

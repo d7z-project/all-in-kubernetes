@@ -865,17 +865,23 @@ pre.rouge {
 107
 108
 109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
 </pre></td><td class="code"><pre><span class="c">################# Global ###############################
 # 代理配置
 </span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
 <span class="c"># 跳过代理
 </span><span class="py">var.network.no-proxy</span><span class="p">=</span><span class="s">10.0.0.2</span>
-<span class="c"># 部署的二级域名
-</span><span class="py">var.global.pub-host</span><span class="p">=</span><span class="s">d7z.net</span>
-<span class="c"># TLS证书名称 (不要超过15个字符)
-</span><span class="py">var.global.tls-name</span><span class="p">=</span><span class="s">tls-d7z-net</span>
-<span class="c"># 域名名称
-</span><span class="py">var.global.pub-hostname</span><span class="p">=</span><span class="s">d7z-net</span>
 <span class="c"># config-map 和 secrets 共享的命名空间
 </span><span class="py">var.global.shared-namespace</span><span class="p">=</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops</span>
 <span class="c"># 使用 NFS 创建 PV 时关联的存储节点
@@ -886,6 +892,24 @@ pre.rouge {
 </span><span class="py">var.storage.class.fast</span><span class="p">=</span><span class="s">sc-nfs-share</span>
 <span class="c"># 管理员邮箱
 </span><span class="py">var.info.email</span><span class="p">=</span><span class="s">admin@cluster.local</span>
+<span class="c">##################### CertManager #################
+# 部署的公开二级域名
+</span><span class="py">var.global.public.host</span><span class="p">=</span><span class="s">d7z.net</span>
+<span class="c"># 公开域名的TLS证书名称 (不要超过15个字符)
+</span><span class="py">var.global.public.tls-name</span><span class="p">=</span><span class="s">tls-pub-d7z</span>
+<span class="c"># 公开的域名名称
+</span><span class="py">var.global.public.hostname</span><span class="p">=</span><span class="s">d7z-net</span>
+<span class="c"># 部署的私有二级域名
+</span><span class="py">var.global.private.host</span><span class="p">=</span><span class="s">internal.d7z.net</span>
+<span class="c"># 私有域名的TLS证书名称 (不要超过15个字符)
+</span><span class="py">var.global.private.tls-name</span><span class="p">=</span><span class="s">tls-pri-d7z</span>
+<span class="c"># 私有的域名名称
+</span><span class="py">var.global.private.hostname</span><span class="p">=</span><span class="s">internal-d7z-net</span>
+<span class="c">##################### Ingress #####################
+# 内部网络使用的 Ingress Class
+</span><span class="py">var.ingress.class.private</span><span class="p">=</span><span class="s">nginx-private</span>
+<span class="c"># 外部网络使用的 Ingress Class
+</span><span class="py">var.ingress.class.public</span><span class="p">=</span><span class="s">nginx-public</span>
 <span class="c">#################### Cert Manager #########################
 # 你CF账户的邮箱
 </span><span class="py">var.cloudflare.email</span><span class="p">=</span><span class="s">&lt;请填写你的 CloudFlare 账户邮箱信息&gt;</span>

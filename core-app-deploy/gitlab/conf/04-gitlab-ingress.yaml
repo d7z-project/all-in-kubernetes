@@ -9,11 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-public
   tls:
     - hosts:
         - gitlab.d7z.net
-      secretName: tls-d7z-net
+      secretName: tls-pub-d7z
   rules:
     - host: gitlab.d7z.net
       http:
@@ -38,12 +38,12 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-public
   tls:
     - hosts:
         - pages.d7z.net
         - '*.pages.d7z.net'
-      secretName: tls-d7z-net
+      secretName: tls-pub-d7z
   rules:
     - host: pages.d7z.net
       http:

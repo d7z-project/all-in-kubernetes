@@ -1159,6 +1159,24 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
 36
 37
 38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1170,12 +1188,12 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-public</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">s3.d7z.net</span>
         <span class="pi">-</span> <span class="s">minio.internal.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">s3.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
@@ -1187,6 +1205,24 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-minio</span>
                 <span class="na">port</span><span class="pi">:</span>
                   <span class="na">name</span><span class="pi">:</span> <span class="s">minio-s3</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-minio-console</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">minio</span>
+  <span class="na">annotations</span><span class="pi">:</span>
+    <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
+    <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
+  <span class="na">tls</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s">minio.internal.d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pri-d7z</span>
+  <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">minio.internal.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
@@ -1282,11 +1318,11 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-09-21 21:37:14 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/ad2d3b07eb63cbe146f6c0466267a2637f342b70/core-app-deploy/minio/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/ad2d3b07eb63cbe146f6c0466267a2637f342b70/"
-           target="_blank">#ad2d3b</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/core-app-deploy/minio/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
+           target="_blank">#dfa025</a>
         <script>
 
             function toast(msg, duration = 1000) {

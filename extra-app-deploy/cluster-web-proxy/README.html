@@ -910,11 +910,11 @@ pre.rouge {
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">pve.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">pve.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>

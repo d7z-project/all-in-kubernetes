@@ -9,9 +9,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-public
   tls:
-    - secretName: 'tls-d7z-net'
+    - secretName: 'tls-pub-d7z'
       hosts:
         - harbor.d7z.net
   rules:

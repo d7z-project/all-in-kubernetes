@@ -35,7 +35,7 @@ spec:
           projected:
             sources:
               - secret:
-                  name: 'tls-d7z-net'
+                  name: 'tls-pub-d7z'
                   items:
                     - key: 'tls.crt'
                       path: 'tls.crt'

@@ -62,7 +62,7 @@ metadata:
     # 重写路径
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-public
   tls:
     - hosts:
         - example.cn

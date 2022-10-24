@@ -52,42 +52,6 @@ include::./conf/03-lam-ingress.yaml[]
 
 == 验证
 
-访问地址 `https://lam.internal.d7z.net` , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明部署正确。
+访问地址 `https://ldap.internal.d7z.net` , 使用 LDAP 配置的管理员密码登陆，如果登陆成功则表明部署正确, 你配置的密码为 `admin`
 
-TIP: 在测试时，你需要将 `lam.internal.d7z.net` 改为实际的地址
-
-== 初始化配置
-
-=== 创建OU
-
-访问 `https://lam.internal.d7z.net` ，输入管理员密码登陆后可看到如下页面：
-
-image::images/01-create-ou.png[]
-
-点击建立即可。
-
-=== 创建默认角色
-
-前往地址 `https://lam.internal.d7z.net/lam/templates/lists/list.php?type=group`，点击创建新组，按如下所示输入保存即可。
-
-image::images/02-create-def-group.png[]
-
-=== 创建管理员用户
-
-前往地址 `https://lam.internal.d7z.net/lam/templates/lists/list.php?type=user` ，点击创建新用户，同时配置密码，按如下所示输入保存即可。注意 RDN 标志需配置为 `UID` 。
-
-image::images/03-create-adm.png[]
-
-=== 创建管理员角色
-
-前往 `https://lam.internal.d7z.net/lam/templates/tools/treeView.php` 页面，在 `ou=groups` 下方新建 `groupOfNames` 对象，按如下所示输入保存即可。
-
-image::images/04-create-adm-group.png[]
-
-=== 创建部署角色
-
-继续添加部署角色，其中，部署角色的相关用户拥有读取各个存储仓库的只读权限，在 `ou=groups` 下方新建 `groupOfNames` 对象，按如下所示输入保存即可。
-
-image::images/05-create-deploy-group.png[]
-
-TIP: 后续相关角色创建流程均参考此流程即可。
+TIP: 在测试时，你需要将 `lam.ldap.internal.d7z.net` 改为实际的地址

@@ -10,7 +10,7 @@ spec:
       reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
       reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"
-  secretName: tls-d7z-net
+  secretName: tls-pub-d7z
   duration: 8760h # 1y
   issuerRef:
     name: self-issuer
@@ -19,6 +19,24 @@ spec:
     - 'd7z.net'
     - '*.d7z.net' # 通用公开地址
     - '*.pages.d7z.net' # gitlab pages 相关地址
-    - '*.gitpod.d7z.net' # gitpod 相关地址
-    - '*.ws.gitpod.d7z.net' # gitpod 相关地址
-    - '*.internal.d7z.net' # 隐私地址
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-internal-d7z-net
+  namespace: cert-manager
+spec:
+  secretTemplate:
+    annotations:
+      reflector.v1.k8s.emberstack.com/reflection-allowed-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"
+      reflector.v1.k8s.emberstack.com/reflection-allowed: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-enabled: "true"
+      reflector.v1.k8s.emberstack.com/reflection-auto-namespaces: "kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops"
+  secretName: tls-pri-d7z
+  duration: 8760h # 1y
+  issuerRef:
+    name: self-issuer
+  commonName: "Self CA Certificate"
+  dnsNames:
+    - 'internal.d7z.net'
+    - '*.internal.d7z.net' # 通用私有地址

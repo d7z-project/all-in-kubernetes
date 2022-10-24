@@ -12,7 +12,7 @@
 
 Nginx Ingress Controller 需要以下镜像：
 
-注意，离线模式导入镜像请去除配置文件中 `image` 定义的 `@sha256` 配置。
+注意，离线模式导入镜像可去除配置文件中 `image` 定义的 `@sha256` 配置。
 
 [source,bash]
 ----
@@ -21,38 +21,66 @@ include::offline/images.txt[]
 
 == 导入配置
 
-=== 导入资源
+为保证网络安全，需对内外网络进行隔离，所以将创建2个 Nginx Ingress
 
-由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/00-ingress-nginx.yaml[conf/ingress-nginx.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
+=== 创建 Nginx Ingress Class
 
-或者你可以使用以下命令在线导入资源：
+由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/nginx-public.yaml[conf/nginx-public.yaml] 和 link:conf/nginx-private.yaml[conf/ingress-nginx-private.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
 
-[source,bash]
-----
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/cloud/deploy.yaml
-----
+或者你可以使用以下位置下载在线资源：
 
-=== 应用修复
-
-由于需要多个 LoadBalancer Service 共享同一个IP,所以需要对 `Ingress` 单独进行配置。
-
-[source,yaml]
-----
-include::./conf/01-patch-service.yaml[]
-----
-
-.其中
-<1> 移除了独占配置，并配置 IP 共享 key ( `metallb` 提供支持 )
-<2> 如果你想保留客户端源 IP,则可添加此参数,此参数会导致 `metallb` 无法共享同IP端口
-
-导入完成后使用以下命令查看结果：
 
 [source,bash]
 ----
-kubectl get service,pods -n ingress-nginx -o wide
+wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/cloud/deploy.yaml -O nginx.yaml
+mkdir new
+cp nginx.yaml new/nginx-public.yaml
+cp nginx.yaml new/nginx-private.yaml
+----
+
+下载完成后使用如下 Patch 更新配置
+
+.点击展开 Patch
+[%collapsible]
+====
+
+.nginx.diff
+[source,patch]
+----
+include::./patch/nginx.patch[]
+----
+
+====
+
+.patch.sh
+[source,bash]
+----
+patch -p1 < nginx.diff
+----
+
+导入完成以下命令查看结果：
+
+[source,bash]
+----
+kubectl get service,pods -n ingress-nginx-private -o wide
+kubectl get service,pods -n ingress-nginx-public -o wide
 ----
 
 如果一切无误，则会启动 `ingress-nginx-controller`,同时如果配置了 *LoadBalancer* ，则此时 *LoadBalancer* 也将绑定外部地址 。
+
+=== 应用 Metallb 配置
+
+如果你需要将 Ingress Nginx  Service 的 IP 同时给其他 Service 使用，可应用此 Patch
+
+[source,yaml]
+----
+cat << EOF | tee patch.yaml > /dev/null
+include::conf/patch-service.yaml[]
+EOF
+kubectl patch service -n ingress-nginx-private ingress-nginx-controller --type merge --patch-file patch.yaml
+kubectl patch service -n ingress-nginx-public ingress-nginx-controller --type merge --patch-file patch.yaml
+----
+
 
 == 测试
 

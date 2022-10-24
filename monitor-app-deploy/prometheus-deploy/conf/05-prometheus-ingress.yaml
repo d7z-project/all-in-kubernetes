@@ -9,13 +9,13 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
 spec:
-  ingressClassName: nginx
+  ingressClassName: nginx-private
   tls:
     - hosts:
-        - prometheus.internal.d7z.net
-      secretName: tls-d7z-net
+        - prometheus.internal.internal.d7z.net
+      secretName: tls-pri-d7z
   rules:
-    - host: prometheus.internal.d7z.net
+    - host: prometheus.internal.internal.d7z.net
       http:
         paths:
           - path: /

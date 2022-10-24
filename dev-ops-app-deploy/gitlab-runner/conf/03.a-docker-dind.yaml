@@ -24,7 +24,7 @@ spec:
       volumes:
         - name: cluster-certs
           secret:
-            secretName: 'tls-d7z-net'
+            secretName: 'tls-pub-d7z'
   selector:
     matchLabels:
       app: docker-dind

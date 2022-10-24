@@ -662,8 +662,7 @@ pre.rouge {
 <li><a href="#_注意事项">2. 注意事项</a></li>
 <li><a href="#_部署前准备">3. 部署前准备</a>
 <ul class="sectlevel2">
-<li><a href="#_配置数据源">3.1. 配置数据源</a></li>
-<li><a href="#_创建_ldap_用户组">3.2. 创建 LDAP 用户组</a></li>
+<li><a href="#_创建_ldap_用户组">3.1. 创建 LDAP 用户组</a></li>
 </ul>
 </li>
 <li><a href="#_开始部署">4. 开始部署</a>
@@ -718,70 +717,9 @@ docker.io/sameersbn/postgresql:12-20200524</pre>
 <p><strong>Gitlab</strong> 依赖于 <strong>Postgres</strong> 和 <strong>Redis</strong>，在部署前你需要预先配置其依赖。</p>
 </div>
 <div class="sect2">
-<h3 id="_配置数据源">3.1. 配置数据源</h3>
-<div class="admonitionblock tip">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-tip" title="Tip"></i>
-</td>
-<td class="content">
-在生产环境部署建议使用 <strong>Gitlab</strong> 推荐的 <strong>Postgres</strong> 版本，且应将 <strong>Postgres</strong> 单独部署，具体的要求可参考 <a target="_blank" href="https://github.com/sameersbn/docker-gitlab#external-postgresql-server">sameersbn/docker-gitlab</a>，在这里我们直接使用之前部署的 <strong>Postgres</strong>。
-</td>
-</tr>
-</table>
-</div>
+<h3 id="_创建_ldap_用户组">3.1. 创建 LDAP 用户组</h3>
 <div class="paragraph">
-<p>使用如下命令连接 <code>Postgres</code> 控制台。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle sts-postgres-0 <span class="nt">--</span> psql <span class="nt">-U</span> postgres
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>连接建立后，执行如下 <strong>SQL</strong> 语句创建 <strong>Gitlab</strong> 的 <strong>Postgres</strong> 账户和数据库，执行完成后，使用 <code>\q</code> 退出。。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="sql"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-2
-3
-</pre></td><td class="code"><pre><span class="k">CREATE</span> <span class="k">ROLE</span> <span class="n">gitlab</span> <span class="k">with</span> <span class="n">LOGIN</span> <span class="k">CREATEDB</span> <span class="n">PASSWORD</span> <span class="s1">'password'</span><span class="p">;</span> <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">gitlabhq_production</span><span class="p">;</span>
-<span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="k">DATABASE</span> <span class="n">gitlabhq_production</span> <span class="k">to</span> <span class="n">gitlab</span><span class="p">;</span>
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<div class="title">注意</div>
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>如果你修改了此处的密码，则需要在接下来的配置中也要同步修改。</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>创建完成后执行如下命令为数据库 <code>gitlabhq_production</code> 增加 <code>pg_trgm</code> 扩展。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl <span class="nb">exec</span> <span class="nt">-it</span> <span class="nt">-n</span> core-middle sts-postgres-0 <span class="nt">--</span> psql <span class="nt">-U</span> gitlab <span class="nt">-d</span> gitlabhq_production <span class="nt">-c</span> <span class="s2">"CREATE EXTENSION pg_trgm;"</span>
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>至此，数据源配置完成。</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_创建_ldap_用户组">3.2. 创建 LDAP 用户组</h3>
-<div class="paragraph">
-<p><strong>Gitlab</strong> 被配置为只有归属于 <code>cn=develop</code> 的用户和管理员才能登陆，需要在 <strong>LDAP</strong> 下创建名为 <code>gitlab</code> 的 <code>groupOfNames</code> 用户组。</p>
+<p><strong>Gitlab</strong> 被配置为只有归属于 <code>cn=develop</code> 的用户和管理员才能登陆，需要在 <strong>LDAP</strong> 下创建名为 <code>develop</code> 的 <code>groupOfNames</code> 用户组。 (集群已自动创建)</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1618,11 +1556,11 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-public</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">gitlab.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">gitlab.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
@@ -1647,12 +1585,12 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
     <span class="na">nginx.ingress.kubernetes.io/ssl-redirect</span><span class="pi">:</span> <span class="s2">"</span><span class="s">false"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-public</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">pages.d7z.net</span>
         <span class="pi">-</span> <span class="s1">'</span><span class="s">*.pages.d7z.net'</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-d7z-net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">pages.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
@@ -1699,7 +1637,7 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
 <div class="sect2">
 <h3 id="_测试_ldap_登陆">6.2. 测试 LDAP 登陆</h3>
 <div class="paragraph">
-<p>创建一个测试用户，并在 <code>cn=gitlab</code> 下添加对此用户的绑定，然后在 <strong>Gitlab</strong> 测试登陆，登陆成功后，退出用户并在 <strong>LDAP</strong> 下删除此用户，然后再次测试，如无法登陆则表明部署成功。</p>
+<p>创建一个测试用户，并在 <code>cn=develop</code> 下添加对此用户的绑定，然后在 <strong>Gitlab</strong> 测试登陆，登陆成功后，退出用户并在 <strong>LDAP</strong> 下删除此用户，然后再次测试，如无法登陆则表明部署成功。</p>
 </div>
 </div>
 </div>
@@ -1736,11 +1674,11 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-10-21 19:08:13 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/core-app-deploy/gitlab/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/c7d2d277d614463154f3b3c8df1494224ce7ce9d/"
-           target="_blank">#c7d2d2</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/core-app-deploy/gitlab/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
+           target="_blank">#dfa025</a>
         <script>
 
             function toast(msg, duration = 1000) {
