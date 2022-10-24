@@ -102,7 +102,7 @@ kubectl get certificate -n cert-manager
 ----
 NAME               READY   SECRET                 AGE
 cert-{{var.global.public.hostname}}       True    {{var.global.public.tls-name}}            18h
-cert-{{var.global.private-hostname}}       True    {{var.global.private.tls-name}}            18h
+cert-{{var.global.private.hostname}}       True    {{var.global.private.tls-name}}            18h
 ----
 
 WARNING: 注意，需要填充的内容必须真实有效，否则将导致签发失败。如果没有可用的域名可参考 link:NOTE.adoc[笔记] 中的自签名证书。
