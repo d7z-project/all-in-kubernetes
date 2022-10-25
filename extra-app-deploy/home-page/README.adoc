@@ -1,0 +1,35 @@
+= 配置集群导航站
+:experimental:
+:icons: font
+:toc: right
+:toc-title: 目录
+:toclevels: 4
+:source-highlighter: rouge
+
+== 说明
+
+当集群下内容足够多时，需要一个网站帮你快速跳转，可导入如下配置快速创建一个基于 gitlab pages 的导航站点，依赖 Gitlab Pages 自动渲染内容。
+
+创建完成后，你需要在 `https://gitlab.{{var.global.public.host}}/docs/home` 下创建项目，并生成 Gitlab Page 页面，此导航站将在如下地址提供服务：
+
+* {{var.global.public.host}}
+* home.{{var.global.public.host}}
+* www.{{var.global.public.host}}
+
+此导航站点依赖如下镜像：
+
+[source,bash]
+----
+docker.io/library/nginx:1.21.1
+----
+
+== 部署
+
+导入如下配置即可
+
+[source,yaml]
+----
+include::conf/01-conf.home.yaml[]
+---
+include::conf/02-service.home.yaml[]
+----
