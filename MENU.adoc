@@ -9,13 +9,13 @@
 . 部署容器运行时
 * 部署 Containerd
 ** link:./cluster-deploy/cri-runtime/containerd-offline/README.adoc[离线部署]
-** link:./cluster-deploy/cri-runtime/containerd-online/README.adoc[在线部署]
+// ** link:./cluster-deploy/cri-runtime/containerd-online/README.adoc[在线部署]
 ** link:./zz-document/containerd/SET_REGISTRY.adoc[镜像配置]
 * 部署 CRI-O
 //* [.line-through]#link:./cluster-deploy/cri-runtime/cri-o-offline/README.online.adoc[部署 CRI-O]# (暂不可用)
 . 部署 Kubernetes
 ** 使用 kubeadm
-*** link:./cluster-deploy/kubernetes/kubeadm/README.online.adoc[在线部署]
+// *** link:./cluster-deploy/kubernetes/kubeadm/README.online.adoc[在线部署]
 *** link:./cluster-deploy/kubernetes/kubeadm/README.offline.adoc[离线部署]
 . link:cluster-deploy/metallb/README.adoc[部署 LoadBalancer 实现]
 . link:cluster-deploy/ingress-nginx/README.adoc[部署 Nginx Ingress] | link:cluster-deploy/ingress-nginx/NOTE.adoc[相关笔记]
@@ -65,6 +65,7 @@
 . link:./extra-app-deploy/README.adoc[扩展软件部署准备]
 . link:./extra-app-deploy/cluster-web-proxy/README.adoc[转发集群外部 HTTP 请求]
 . link:./extra-app-deploy/v2ray-wss-proxy/README.adoc[V2fly 转发集群内部网络]
+. link:./extra-app-deploy/home-page/README.adoc[创建导航站点]
 
 == 运维指南
 
