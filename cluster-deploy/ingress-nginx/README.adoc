@@ -27,37 +27,6 @@ include::offline/images.txt[]
 
 由于 Nginx Ingress Controller 的配置过于庞大，不便于在此展示，可将文件 link:conf/nginx-public.yaml[conf/nginx-public.yaml] 和 link:conf/nginx-private.yaml[conf/ingress-nginx-private.yaml] 推送到控制节点，再使用 `kubectl apply -f ingress-nginx.yaml` 导入资源。
 
-或者你可以使用以下位置下载在线资源：
-
-
-[source,bash]
-----
-wget https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/cloud/deploy.yaml -O nginx.yaml
-mkdir new
-cp nginx.yaml new/nginx-public.yaml
-cp nginx.yaml new/nginx-private.yaml
-----
-
-下载完成后使用如下 Patch 更新配置
-
-.点击展开 Patch
-[%collapsible]
-====
-
-.nginx.diff
-[source,patch]
-----
-include::./patch/nginx.patch[]
-----
-
-====
-
-.patch.sh
-[source,bash]
-----
-patch -p1 < nginx.diff
-----
-
 导入完成以下命令查看结果：
 
 [source,bash]
@@ -70,17 +39,19 @@ kubectl get service,pods -n ingress-nginx-public -o wide
 
 === 应用 Metallb 配置
 
-如果你需要将 Ingress Nginx  Service 的 IP 同时给其他 Service 使用，可应用此 Patch
+如果你需要将 Ingress Nginx Service 的 IP 同时给其他 Service 使用，可应用此 Patch
 
 [source,yaml]
 ----
 cat << EOF | tee patch.yaml > /dev/null
 include::conf/patch-service.yaml[]
 EOF
-kubectl patch service -n ingress-nginx-private ingress-nginx-controller --type merge --patch-file patch.yaml
-kubectl patch service -n ingress-nginx-public ingress-nginx-controller --type merge --patch-file patch.yaml
-----
+cat patch.yaml | sed -e "s|<_metallb_tag_>|public-ip-share|g" | tee patch-public.yaml > /dev/null
+cat patch.yaml | sed -e "s|<_metallb_tag_>|private-ip-share|g" | tee patch-private.yaml > /dev/null
 
+kubectl patch service -n ingress-nginx-public ingress-nginx-controller --type merge --patch-file patch-public.yaml
+kubectl patch service -n ingress-nginx-private ingress-nginx-controller --type merge --patch-file patch-private.yaml
+----
 
 == 测试
 

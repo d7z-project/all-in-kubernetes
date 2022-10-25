@@ -1448,7 +1448,7 @@ Gitlab 需要暴露 <code>22</code> 端口以便使用 <code>ssh</code> 提交�
   <span class="na">name</span><span class="pi">:</span> <span class="s">svc-gitlab-lb</span>
   <span class="na">namespace</span><span class="pi">:</span> <span class="s">core-app</span>
   <span class="na">annotations</span><span class="pi">:</span>
-    <span class="na">metallb.universe.tf/allow-shared-ip</span><span class="pi">:</span> <span class="s2">"</span><span class="s">primary-ip-share"</span>
+    <span class="na">metallb.universe.tf/allow-shared-ip</span><span class="pi">:</span> <span class="s2">"</span><span class="s">public-ip-share"</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">gitlab-ssh</span>

@@ -877,12 +877,9 @@ pre.rouge {
 119
 120
 121
+122
 </pre></td><td class="code"><pre><span class="c">################# Global ###############################
-# 代理配置
-</span><span class="py">var.network.proxy</span><span class="p">=</span><span class="s">http://10.0.0.2:8080</span>
-<span class="c"># 跳过代理
-</span><span class="py">var.network.no-proxy</span><span class="p">=</span><span class="s">10.0.0.2</span>
-<span class="c"># config-map 和 secrets 共享的命名空间
+# config-map 和 secrets 共享的命名空间
 </span><span class="py">var.global.shared-namespace</span><span class="p">=</span><span class="s">kube-system,default,core-system,core-middleware,core-app,share-app,monitor-app,dev-ops</span>
 <span class="c"># 使用 NFS 创建 PV 时关联的存储节点
 </span><span class="py">var.nfs.local-path.node-name</span><span class="p">=</span><span class="s">node-master</span>
@@ -915,6 +912,11 @@ pre.rouge {
 </span><span class="py">var.cloudflare.email</span><span class="p">=</span><span class="s">&lt;请填写你的 CloudFlare 账户邮箱信息&gt;</span>
 <span class="c"># 你CF账户的 API Token值
 </span><span class="py">var.cloudflare.api.token</span><span class="p">=</span><span class="s">&lt;请填写你的 CloudFlare 账户的Token值&gt;</span>
+<span class="c">###################### Metallb #########################
+# Metallb 标记的 public 共享IP标记
+</span><span class="py">var.load-balancer.public-ip-tag</span><span class="p">=</span><span class="s">public-ip-share</span>
+<span class="c"># Metallb 标记的 private 共享IP标记
+</span><span class="py">var.load-balancer.private-ip-tag</span><span class="p">=</span><span class="s">private-ip-share</span>
 <span class="c"># LoadBalancer 可用的地址
 </span><span class="py">var.load-balancer.addrs</span><span class="p">=</span><span class="s">10.0.0.5-10.0.0.9</span>
 <span class="c">################### Gitlab ###############################
