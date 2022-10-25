@@ -16,7 +16,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx
+  name: ingress-nginx-private
   namespace: ingress-nginx-private
 ---
 apiVersion: v1
@@ -28,7 +28,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
   namespace: ingress-nginx-private
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -40,7 +40,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx
+  name: ingress-nginx-private
   namespace: ingress-nginx-private
 rules:
 - apiGroups:
@@ -137,7 +137,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
   namespace: ingress-nginx-private
 rules:
 - apiGroups:
@@ -156,7 +156,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx
+  name: ingress-nginx-private
 rules:
 - apiGroups:
   - ""
@@ -230,7 +230,7 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
 rules:
 - apiGroups:
   - admissionregistration.k8s.io
@@ -249,15 +249,15 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx
+  name: ingress-nginx-private
   namespace: ingress-nginx-private
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: ingress-nginx
+  name: ingress-nginx-private
 subjects:
 - kind: ServiceAccount
-  name: ingress-nginx
+  name: ingress-nginx-private
   namespace: ingress-nginx-private
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -269,15 +269,15 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
   namespace: ingress-nginx-private
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
 subjects:
 - kind: ServiceAccount
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
   namespace: ingress-nginx-private
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -288,14 +288,14 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx
+  name: ingress-nginx-private
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ingress-nginx
+  name: ingress-nginx-private
 subjects:
 - kind: ServiceAccount
-  name: ingress-nginx
+  name: ingress-nginx-private
   namespace: ingress-nginx-private
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -307,14 +307,14 @@ metadata:
     app.kubernetes.io/name: ingress-nginx
     app.kubernetes.io/part-of: ingress-nginx
     app.kubernetes.io/version: 1.3.1
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
 subjects:
 - kind: ServiceAccount
-  name: ingress-nginx-admission
+  name: ingress-nginx-admission-private
   namespace: ingress-nginx-private
 ---
 apiVersion: v1
@@ -492,7 +492,7 @@ spec:
       dnsPolicy: ClusterFirst
       nodeSelector:
         kubernetes.io/os: linux
-      serviceAccountName: ingress-nginx
+      serviceAccountName: ingress-nginx-private
       terminationGracePeriodSeconds: 300
       volumes:
       - name: webhook-cert
@@ -544,7 +544,7 @@ spec:
         fsGroup: 2000
         runAsNonRoot: true
         runAsUser: 2000
-      serviceAccountName: ingress-nginx-admission
+      serviceAccountName: ingress-nginx-admission-private
 ---
 apiVersion: batch/v1
 kind: Job
@@ -593,7 +593,7 @@ spec:
         fsGroup: 2000
         runAsNonRoot: true
         runAsUser: 2000
-      serviceAccountName: ingress-nginx-admission
+      serviceAccountName: ingress-nginx-admission-private
 ---
 apiVersion: networking.k8s.io/v1
 kind: IngressClass

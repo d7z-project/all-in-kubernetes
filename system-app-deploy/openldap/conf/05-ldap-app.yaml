@@ -95,7 +95,7 @@ metadata:
   name: svc-ldap-lb
   namespace: core-system
   annotations:
-    metallb.universe.tf/allow-shared-ip: "primary-ip-share"
+    metallb.universe.tf/allow-shared-ip: "{{var.load-balancer.private-ip-tag}}"
 spec:
   ports:
     - port: 389

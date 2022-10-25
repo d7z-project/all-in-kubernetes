@@ -24,7 +24,7 @@ metadata:
   name: svc-gitlab-lb
   namespace: core-app
   annotations:
-    metallb.universe.tf/allow-shared-ip: "primary-ip-share"
+    metallb.universe.tf/allow-shared-ip: "{{var.load-balancer.public-ip-tag}}"
 spec:
   ports:
     - name: gitlab-ssh
