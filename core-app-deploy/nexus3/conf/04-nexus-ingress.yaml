@@ -37,7 +37,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
 spec:
-  ingressClassName: {{var.ingress.class.private}}
+  ingressClassName: {{var.ingress.class.public}}
   tls:
     - hosts:
         - registry.{{var.global.public.host}}
