@@ -4,7 +4,6 @@ pages:
   before_script:
     - "curl $CUSTOM_CONFIG_PATH -o value-custom.properties 1>/dev/null 2>&1 ||:"
   script:
-    - git checkout -b pages
     - pages --output public
   artifacts:
     paths:

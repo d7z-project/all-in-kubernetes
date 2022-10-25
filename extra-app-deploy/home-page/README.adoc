@@ -12,9 +12,9 @@
 
 创建完成后，你需要在 `https://gitlab.{{var.global.public.host}}/docs/home` 下创建项目，并生成 Gitlab Page 页面，此导航站将在如下地址提供服务：
 
-* {{var.global.public.host}}
-* home.{{var.global.public.host}}
-* www.{{var.global.public.host}}
+* https://{{var.global.public.host}}
+* https://home.{{var.global.public.host}}
+* https://www.{{var.global.public.host}}
 
 此导航站点依赖如下镜像：
 
