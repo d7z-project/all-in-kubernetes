@@ -22,21 +22,29 @@ docker.io/library/nginx:1.21.1
 
 * 私有镜像仓库
 * 私有 *Maven* 仓库
+* 私有 *YUM/DEB* 仓库
 
 其他功能可自行添加
 
-== 创建持久卷
+== 部署 Nexus3
+
+=== 创建持久卷
 
 导入以下配置，创建持久卷;由于 *Nexus* 要存储 *Docker* 镜像和 *Maven* 编译结果以及 *RPM*/*DEB* 镜像包，可适当调大容量。
+
+.点击展开配置
+[%collapsible]
+====
 
 [source,yaml]
 ----
 include::conf/00-nexus-pvc.yaml[]
 ----
+====
 
-== 创建 Nexus3 Nginx 反向代理配置
+=== 创建 Nexus3 Nginx 反向代理配置
 
-由于要配置复杂的分流规则，需要 Nginx ，使用以下配置导入 Nginx 配置。
+由于要配置复杂的分流规则，需要 Nginx 容器完成流量 ，使用以下配置导入 Nginx 配置。
 
 .点击展开配置
 [%collapsible]
@@ -54,27 +62,43 @@ include::./conf/01-nexus-conf-nginx.yaml[]
 
 ====
 
-== 创建 Nexus3 启动配置
+=== 创建 Nexus3 启动配置
 
 使用以下配置创建 Nexus3 启动配置。
+
+.点击展开配置
+[%collapsible]
+====
 
 [source,yaml]
 ----
 include::conf/02-nexus-deploy.yaml[]
 ----
 
-== 暴露 Nexus3 Service
+====
+
+=== 暴露 Nexus3 Service
 
 使用以下配置创建 Nexus3 Service。
+
+.点击展开配置
+[%collapsible]
+====
 
 [source,yaml]
 ----
 include::conf/03-nexus-service.yaml[]
 ----
 
-== 创建 Ingress 映射
+====
+
+=== 创建 Ingress 映射
 
 创建 Service 完成后，将其映射到 Ingress 上。
+
+.点击展开配置
+[%collapsible]
+====
 
 [source,yaml]
 ----
@@ -83,6 +107,9 @@ include::conf/04-nexus-ingress.yaml[]
 
 .其中
 <1> 配置Nginx不限制最大上传镜像大小
+
+
+====
 
 == 管理 Nexus3
 
@@ -116,7 +143,7 @@ WARNING: 请将 nexus 的管理员密码设置的足够复杂，以防止被暴�
 
 image::images/01.a-bind-ldap.png[title="配置LDAP连接"]
 
-其中，密码为 LDAP 用户 `service-account` 的密码。点击按钮验证输入是否正确，验证完成后开始添加绑定。在添加绑定前，你需要在 *LDAP* 下添加 `cn=docker,ou=groups,dc=cluster,dc=local` 的角色，类型为 `groupOfNames` 。
+其中，密码为 LDAP 用户 `service-account` 的密码。点击按钮验证输入是否正确，验证完成后开始添加绑定。
 
 image::images/01.b-bind-ldap.png[title="配置LDAP用户"]
 
@@ -133,30 +160,32 @@ UserFilter 的内容如下所示
 
 前往 `https://nexus.internal.d7z.net/#admin/security/roles` 页面，对LDAP相关的角色进行管理。
 
-==== 绑定管理员
+==== 绑定管理员角色
 
-绑定管理员的参考如下，注意配置权限：
+绑定管理员角色的参考如下，注意配置权限：
 
 image::images/02.a-bind-admin-roles.png[title="绑定管理员角色"]
 
-==== 绑定Docker用户组
+==== 绑定镜像操作员角色
 
-绑定Docker管理员的参考如下，注意配置权限：
+具有镜像操作员角色的用户可向 Nexus 推送OCI镜像，按如下配置添加即可：
 
-image::images/02.b-bind-docker-roles.png[title="绑定Docker角色"]
+.绑定镜像操作员角色
+image::images/02.b-bind-oci-roles.png[]
 
-==== 绑定Deploy用户组
+==== 绑定依赖库操作员角色
 
-绑定Deploy角色的参考如下，注意配置权限：
+具有依赖库操作员角色的用户可向 Nexus 推送相关的依赖包，按如下配置添加即可：
 
-image::images/02.c-bind-deploy-roles.png[title="绑定Deploy角色"]
+.绑定依赖库操作员
+image::images/02.c-bind-library-roles.png[]
 
+==== 绑定软件包仓库操作员角色
 
-==== 绑定Maven用户组
+具有软件包仓库操作员角色的用户可向 Nexus 推送相关的软件包，按如下配置添加即可：
 
-绑定Maven角色的参考如下，注意配置权限：
-
-image::images/02.d-bind-maven-roles.png[title="绑定Maven角色"]
+.绑定软件包仓库操作员
+image::images/02.d-bind-package-roles.png[]
 
 == 创建仓库
 
@@ -181,24 +210,48 @@ image::images/03.c-create-docker-group.png[title="归组"]
 # 登陆 docker
 podman login registry.d7z.net
 podman pull docker.io/library/nginx:1.21.1
-podman tag docker.io/library/nginx:1.21.1 registry.internal.d7z.net/library/nginx:1.21.1
+podman tag docker.io/library/nginx:1.21.1 registry.d7z.net/library/nginx:1.21.1
 podman push registry.d7z.net/library/nginx:1.21.1
 ----
 
 如果推送一切无误，则表明部署成功。
 
-== 创建 Maven 仓库
+=== 创建 Maven 仓库
 
-前往 `https://nexus.internal.d7z.net/#admin/repository/repositories`，点击新建，选择 `maven2 (hosted)`, 创建本地私有仓库。具体配置如下：
+前往 `https://nexus.internal.d7z.net/#admin/repository/repositories`，点击新建，选择 `maven2 (hosted)`, 创建本地 snapshots 仓库。具体配置如下：
 
-image::images/04.a-create-m2-host.png[]
+image::images/04.b-create-m2-host-snapshots.png[]
 
-本地仓库创建完成后，即可开始创建仓库代理，这里使用的是官方 `maven` 仓库。
+本地 snapshots 仓库创建完成后，即可开始创建本地 releases 仓库。
 
-image::images/04.b-create-m2-proxy-default.png[]
+image::images/04.a-create-m2-host-releases.png[]
+
+本地 snapshots 仓库创建完成后，即可开始创建仓库代理，这里使用的是官方 `maven` 仓库。
+
+image::images/04.c-create-m2-proxy-default.png[]
 
 最后，组合所有仓库到同一个 Group。
 
-image::images/04.c-create-m2-group.png[]
+image::images/04.d-create-m2-group.png[]
 
 至此，Maven 仓库配置完成。
+
+=== 添加 yum 仓库
+
+前往 `https://nexus.internal.d7z.net/#admin/repository/repositories`，然后点击新建，选择 `yum (hosted)`, 创建本地仓库。具体配置如下：
+
+image::images/05.a-create-yum-host.png[]
+
+然后重复之前的步骤，创建 `yum(group)` ( ``yum(proxy)`` 可自行创建)：
+
+image::images/05.b-create-yum-group.png[]
+
+其中，需要的 gpg 密钥配置可参考 link:http://links.sonatype.com/products/nxrm3/docs/gpg-signatures-for-yum-proxy-group[Nexus 文档]。
+
+=== 添加 apt 仓库
+
+前往 `https://nexus.internal.d7z.net/#admin/repository/repositories`，然后点击新建，选择 `apt (hosted)`, 创建本地仓库。具体配置如下：
+
+image::images/06.a-create-apt-host.png[]
+
+其中，需要的 gpg 密钥配置可参考 link:http://links.sonatype.com/products/nxrm3/docs/gpg-signatures-for-yum-proxy-group[Nexus 文档]。

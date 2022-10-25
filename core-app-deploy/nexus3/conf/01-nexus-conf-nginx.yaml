@@ -61,20 +61,26 @@ data:
 
   maven.conf: |
     
-    upstream nexus_maven_hosted {
-    server 127.0.0.1:12000;
+    upstream nexus_maven_releases {
+    server 127.0.0.1:12002;
+    }
+    upstream nexus_maven_snapshots {
+    server 127.0.0.1:12001;
     }
     upstream nexus_maven_group {
-    server 127.0.0.1:12001;
+    server 127.0.0.1:12000;
     }
     server{
     listen 82;
     listen  [::]:82;
     client_max_body_size 10G;
     chunked_transfer_encoding on;
-    set $upstream "nexus_maven_hosted";
+    set $upstream "nexus_maven_releases";
     if ( $request_method ~* 'GET') {
     set $upstream "nexus_maven_group";
+    }
+    if ($uri !~ "^(.*)/(SNAPSHOT|-SNAPSHOT)(.*)"){
+    set $upstream "nexus_maven_snapshots";
     }
     location / {
     proxy_pass http://$upstream;
@@ -91,8 +97,8 @@ data:
     }
     }
     server{
-    listen 12001;
-    listen  [::]:12001;
+    listen 12000;
+    listen  [::]:12000;
     client_max_body_size 10G;
     chunked_transfer_encoding on;
     location / {
@@ -107,12 +113,28 @@ data:
     }
     }
     server{
-    listen 12000;
-    listen  [::]:12000;
+    listen 12001;
+    listen  [::]:12001;
     client_max_body_size 10G;
     chunked_transfer_encoding on;
     location / {
-    proxy_pass http://127.0.0.1/repository/maven-host/;
+    proxy_pass http://127.0.0.1/repository/maven-snapshots/;
+    proxy_set_header Host $host;
+    proxy_buffering off;
+    client_max_body_size 0;
+    send_timeout 3600s;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_request_buffering off;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    }    
+    server{
+    listen 12002;
+    listen  [::]:12002;
+    client_max_body_size 10G;
+    chunked_transfer_encoding on;
+    location / {
+    proxy_pass http://127.0.0.1/repository/maven-releases/;
     proxy_set_header Host $host;
     proxy_buffering off;
     client_max_body_size 0;
@@ -187,54 +209,9 @@ data:
     }
 
   apt.conf: |
-    upstream nexus_apt_hosted {
-    server 127.0.0.1:14000;
-    }
-    upstream nexus_apt_group {
-    server 127.0.0.1:14001;
-    }
     server{
     listen 84;
-    listen  [::]:83;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    set $upstream "nexus_apt_hosted";
-    if ( $request_method ~* 'GET') {
-    set $upstream "nexus_apt_group";
-    }
-    location / {
-    proxy_pass http://$upstream;
-    proxy_connect_timeout 3600s;
-    proxy_read_timeout 3600s;
-    proxy_send_timeout 3600s;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-    server{
-    listen 14001;
-    listen  [::]:14001;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/apt-group/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-    server{
-    listen 14000;
-    listen  [::]:14000;
+    listen  [::]:84;
     client_max_body_size 10G;
     chunked_transfer_encoding on;
     location / {

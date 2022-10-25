@@ -37,7 +37,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
     nginx.ingress.kubernetes.io/proxy-body-size: "0" # <1>
 spec:
-  ingressClassName: nginx-private
+  ingressClassName: nginx-public
   tls:
     - hosts:
         - registry.d7z.net
