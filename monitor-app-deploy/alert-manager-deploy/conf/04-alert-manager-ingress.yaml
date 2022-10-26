@@ -12,7 +12,7 @@ spec:
   ingressClassName: {{var.ingress.class.private}}
   tls:
     - hosts:
-        - alert-manager.internal.{{var.global.private.host}}
+        - alert-manager.{{var.global.private.host}}
       secretName: {{var.global.private.tls-name}}
   rules:
     - host: alert-manager.{{var.global.private.host}}

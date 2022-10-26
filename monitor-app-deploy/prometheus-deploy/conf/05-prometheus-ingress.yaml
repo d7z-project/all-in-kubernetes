@@ -12,10 +12,10 @@ spec:
   ingressClassName: {{var.ingress.class.private}}
   tls:
     - hosts:
-        - prometheus.internal.{{var.global.private.host}}
+        - prometheus.{{var.global.private.host}}
       secretName: {{var.global.private.tls-name}}
   rules:
-    - host: prometheus.internal.{{var.global.private.host}}
+    - host: prometheus.{{var.global.private.host}}
       http:
         paths:
           - path: /
