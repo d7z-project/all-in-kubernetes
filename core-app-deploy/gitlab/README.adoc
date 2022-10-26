@@ -16,7 +16,7 @@ Gitlab 依赖如下镜像, 如在离线环境请自行导入镜像;同时，Gitl
 ----
 docker.io/library/redis:6.2
 docker.io/sameersbn/gitlab:15.4.2
-docker.io/sameersbn/postgresql:12-20200524
+docker.io/library/postgres:14
 ----
 
 == 注意事项

@@ -29,7 +29,7 @@ spec:
     spec:
       containers:
         - name: v2ray
-          image: "docker.io/v2fly/v2fly-core:v4.44.0"
+          image: "docker.io/v2fly/v2fly-core:v4.45.2"
           args:
             - v2ray
             - -c
