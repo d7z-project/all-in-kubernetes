@@ -16,8 +16,8 @@ WARNING: 注意：在集群内使用 `Gitlab Runner` 可能会导致内部网络
 
 [source,text]
 ----
-registry.gitlab.com/gitlab-org/gitlab-runner:alpine-v15.2.1
-registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-32fc1585
+registry.gitlab.com/gitlab-org/gitlab-runner:alpine-v15.5.0
+registry.gitlab.com/gitlab-org/gitlab-runner/gitlab-runner-helper:x86_64-0d4137b8
 docker.io/library/docker:20-dind
 ----
 
