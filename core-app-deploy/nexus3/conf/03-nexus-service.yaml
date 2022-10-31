@@ -13,14 +13,9 @@ spec:
     - name: nexus-docker
       protocol: TCP
       port: 81
-    - name: nexus-maven
+    - name: nexus-repos
       protocol: TCP
       port: 82
-    - name: nexus-yum
-      protocol: TCP
-      port: 83
-    - name: nexus-apt
-      protocol: TCP
-      port: 84
+
   selector:
     app: nexus

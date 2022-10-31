@@ -57,24 +57,10 @@ spec:
     - host: repos.{{var.global.public.host}}
       http:
         paths:
-          - path: /maven
+          - path: /
             pathType: Prefix
             backend:
               service:
                 name: svc-nexus
                 port:
-                  name: nexus-maven
-          - path: /yum
-            pathType: Prefix
-            backend:
-              service:
-                name: svc-nexus
-                port:
-                  name: nexus-yum
-          - path: /apt
-            pathType: Prefix
-            backend:
-              service:
-                name: svc-nexus
-                port:
-                  name: nexus-apt
+                  name: nexus-repos
