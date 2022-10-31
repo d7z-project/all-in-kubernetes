@@ -12,7 +12,7 @@ spec:
   ingressClassName: nginx-private
   tls:
     - hosts:
-        - alert-manager.internal.internal.d7z.net
+        - alert-manager.internal.d7z.net
       secretName: tls-pri-d7z
   rules:
     - host: alert-manager.internal.d7z.net

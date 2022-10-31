@@ -893,128 +893,6 @@ docker.io/library/nginx:1.21.1
 103
 104
 105
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115
-116
-117
-118
-119
-120
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135
-136
-137
-138
-139
-140
-141
-142
-143
-144
-145
-146
-147
-148
-149
-150
-151
-152
-153
-154
-155
-156
-157
-158
-159
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176
-177
-178
-179
-180
-181
-182
-183
-184
-185
-186
-187
-188
-189
-190
-191
-192
-193
-194
-195
-196
-197
-198
-199
-200
-201
-202
-203
-204
-205
-206
-207
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1026,20 +904,20 @@ docker.io/library/nginx:1.21.1
   <span class="na">default.conf</span><span class="pi">:</span> <span class="pi">|</span>
     <span class="s">server_tokens off;</span>
   <span class="na">web-panel.conf</span><span class="pi">:</span> <span class="pi">|</span>
-    <span class="s">server{</span>
-    <span class="s">listen       80;</span>
-    <span class="s">listen  [::]:80;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_http_version 1.1;</span>
-    <span class="s">proxy_pass http://127.0.0.1:8081; </span><i class="conum" data-value="1"></i><b>(1)</b>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">proxy_connect_timeout 3600s;</span>
-    <span class="s">proxy_read_timeout 3600s;</span>
-    <span class="s">proxy_send_timeout 3600s;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">}</span>
+    <span class="s">server {</span>
+        <span class="s">listen       80;</span>
+        <span class="s">listen  [::]:80;</span>
+        <span class="s">location / {</span>
+            <span class="s">proxy_http_version 1.1;</span>
+            <span class="s">proxy_pass http://127.0.0.1:8081; </span><i class="conum" data-value="1"></i><b>(1)</b>
+            <span class="s">proxy_buffering off;</span>
+            <span class="s">client_max_body_size 0;</span>
+            <span class="s">proxy_connect_timeout 3600s;</span>
+            <span class="s">proxy_read_timeout 3600s;</span>
+            <span class="s">proxy_send_timeout 3600s;</span>
+            <span class="s">send_timeout 3600s;</span>
+            <span class="s">proxy_request_buffering off;</span>
+        <span class="s">}</span>
     <span class="s">}</span>
   <span class="na">docker-public.conf</span><span class="pi">:</span> <span class="pi">|</span>
     <span class="s">upstream nexus_public_docker_hosted {</span>
@@ -1048,7 +926,7 @@ docker.io/library/nginx:1.21.1
     <span class="s">upstream nexus_public_docker_group {</span>
     <span class="s">server 127.0.0.1:11001; </span><i class="conum" data-value="3"></i><b>(3)</b>
     <span class="s">}</span>
-    <span class="s">server{</span>
+    <span class="s">server {</span>
     <span class="s">listen 81;</span>
     <span class="s">listen  [::]:81;</span>
     <span class="s">client_max_body_size 10G;</span>
@@ -1072,175 +950,53 @@ docker.io/library/nginx:1.21.1
     <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
     <span class="s">proxy_request_buffering off;</span>
     <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-
     <span class="s">}</span>
     <span class="s">}</span>
 
-  <span class="na">maven.conf</span><span class="pi">:</span> <span class="pi">|</span>
-    
-    <span class="s">upstream nexus_maven_releases {</span>
-    <span class="s">server 127.0.0.1:12002;</span>
-    <span class="s">}</span>
-    <span class="s">upstream nexus_maven_snapshots {</span>
-    <span class="s">server 127.0.0.1:12001;</span>
-    <span class="s">}</span>
-    <span class="s">upstream nexus_maven_group {</span>
-    <span class="s">server 127.0.0.1:12000;</span>
-    <span class="s">}</span>
-    <span class="s">server{</span>
-    <span class="s">listen 82;</span>
-    <span class="s">listen  [::]:82;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">set $upstream "nexus_maven_releases";</span>
-    <span class="s">if ( $request_method ~* 'GET') {</span>
-    <span class="s">set $upstream "nexus_maven_group";</span>
-    <span class="s">}</span>
-    <span class="s">if ($uri !~ "^(.*)/(SNAPSHOT|-SNAPSHOT)(.*)"){</span>
-    <span class="s">set $upstream "nexus_maven_snapshots";</span>
-    <span class="s">}</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://$upstream;</span>
-    <span class="s">proxy_connect_timeout 3600s;</span>
-    <span class="s">proxy_read_timeout 3600s;</span>
-    <span class="s">proxy_send_timeout 3600s;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}</span>
-    <span class="s">server{</span>
-    <span class="s">listen 12000;</span>
-    <span class="s">listen  [::]:12000;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://127.0.0.1/repository/maven-group/;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}</span>
-    <span class="s">server{</span>
-    <span class="s">listen 12001;</span>
-    <span class="s">listen  [::]:12001;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://127.0.0.1/repository/maven-snapshots/;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}    </span>
-    <span class="s">server{</span>
-    <span class="s">listen 12002;</span>
-    <span class="s">listen  [::]:12002;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://127.0.0.1/repository/maven-releases/;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}</span>
+  <span class="na">repos.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">server {</span>
+        <span class="s">listen 82;</span>
+        <span class="s">listen  [::]:82;</span>
+        <span class="s">client_max_body_size 10G;</span>
+        <span class="s">chunked_transfer_encoding on;</span>
 
-  <span class="na">yum.conf</span><span class="pi">:</span> <span class="pi">|</span>
-    <span class="s">upstream nexus_yum_hosted {</span>
-    <span class="s">server 127.0.0.1:13000;</span>
-    <span class="s">}</span>
-    <span class="s">upstream nexus_yum_group {</span>
-    <span class="s">server 127.0.0.1:13001;</span>
-    <span class="s">}</span>
-    <span class="s">server{</span>
-    <span class="s">listen 83;</span>
-    <span class="s">listen  [::]:83;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">set $upstream "nexus_yum_hosted";</span>
-    <span class="s">if ( $request_method ~* 'GET') {</span>
-    <span class="s">set $upstream "nexus_yum_group";</span>
-    <span class="s">}</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://$upstream;</span>
-    <span class="s">proxy_connect_timeout 3600s;</span>
-    <span class="s">proxy_read_timeout 3600s;</span>
-    <span class="s">proxy_send_timeout 3600s;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}</span>
-    <span class="s">server{</span>
-    <span class="s">listen 13001;</span>
-    <span class="s">listen  [::]:13001;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://127.0.0.1/repository/yum-group/;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}</span>
-    <span class="s">server{</span>
-    <span class="s">listen 13000;</span>
-    <span class="s">listen  [::]:13000;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://127.0.0.1/repository/yum-host/;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
-    <span class="s">}</span>
-
-  <span class="na">apt.conf</span><span class="pi">:</span> <span class="pi">|</span>
-    <span class="s">server{</span>
-    <span class="s">listen 84;</span>
-    <span class="s">listen  [::]:84;</span>
-    <span class="s">client_max_body_size 10G;</span>
-    <span class="s">chunked_transfer_encoding on;</span>
-    <span class="s">location / {</span>
-    <span class="s">proxy_pass http://127.0.0.1/repository/apt-host/;</span>
-    <span class="s">proxy_set_header Host $host;</span>
-    <span class="s">proxy_buffering off;</span>
-    <span class="s">client_max_body_size 0;</span>
-    <span class="s">send_timeout 3600s;</span>
-    <span class="s">proxy_set_header X-Real-IP $remote_addr;</span>
-    <span class="s">proxy_request_buffering off;</span>
-    <span class="s">proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</span>
-    <span class="s">}</span>
+        <span class="s">location  ~ ^/maven(.*)$ {</span>
+            <span class="s">set $matched_url http://127.0.0.1:8081/repository/maven-releases/;</span>
+            <span class="s">if ($uri ~ "SNAPSHOT") {</span>
+                <span class="s">set $matched_url http://127.0.0.1:8081/repository/maven-snapshots/;</span>
+            <span class="s">}</span>
+            <span class="s">if ( $request_method ~* 'GET') {</span>
+                <span class="s">set $matched_url http://127.0.0.1:8081/repository/maven-group/;</span>
+            <span class="s">}</span>
+            <span class="s">rewrite ^/maven(.*)$ /$1 break;</span>
+            <span class="s">proxy_pass $matched_url$1;</span>
+            <span class="s">proxy_set_header Host $host;</span>
+            <span class="s">proxy_buffering off;</span>
+            <span class="s">proxy_http_version 1.1;</span>
+            <span class="s">client_max_body_size 0;</span>
+            <span class="s">proxy_request_buffering off;</span>
+        <span class="s">}</span>
+        <span class="s">location  ~ ^/yum(.*)$ {</span>
+            <span class="s">set $matched_url http://127.0.0.1:8081/repository/yum-host/;</span>
+            <span class="s">if ( $request_method ~* 'GET') {</span>
+                <span class="s">set $matched_url http://127.0.0.1:8081/repository/yum-group/;</span>
+            <span class="s">}</span>
+            <span class="s">rewrite ^/yum(.*)$ /$1 break;</span>
+            <span class="s">proxy_pass $matched_url$1;</span>
+            <span class="s">proxy_set_header Host $host;</span>
+            <span class="s">proxy_buffering off;</span>
+            <span class="s">proxy_http_version 1.1;</span>
+            <span class="s">client_max_body_size 0;</span>
+            <span class="s">proxy_request_buffering off;</span>
+        <span class="s">}</span>
+        <span class="s">location  ~ ^/apt(.*)$ {</span>
+            <span class="s">rewrite ^/apt(.*)$ /$1 break;</span>
+            <span class="s">proxy_pass http://127.0.0.1/repository/apt-host$1;</span>
+            <span class="s">proxy_set_header Host $host;</span>
+            <span class="s">proxy_buffering off;</span>
+            <span class="s">proxy_http_version 1.1;</span>
+            <span class="s">proxy_request_buffering off;</span>
+        <span class="s">}</span>
     <span class="s">}</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
@@ -1430,11 +1186,6 @@ docker.io/library/nginx:1.21.1
 19
 20
 21
-22
-23
-24
-25
-26
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1450,15 +1201,10 @@ docker.io/library/nginx:1.21.1
     <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-docker</span>
       <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
       <span class="na">port</span><span class="pi">:</span> <span class="m">81</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-maven</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-repos</span>
       <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
       <span class="na">port</span><span class="pi">:</span> <span class="m">82</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-yum</span>
-      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
-      <span class="na">port</span><span class="pi">:</span> <span class="m">83</span>
-    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-apt</span>
-      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
-      <span class="na">port</span><span class="pi">:</span> <span class="m">84</span>
+
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">app</span><span class="pi">:</span> <span class="s">nexus</span>
 </pre></td></tr></tbody></table></code></pre>
@@ -1543,20 +1289,6 @@ docker.io/library/nginx:1.21.1
 64
 65
 66
-67
-68
-69
-70
-71
-72
-73
-74
-75
-76
-77
-78
-79
-80
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1616,27 +1348,13 @@ docker.io/library/nginx:1.21.1
     <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">repos.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/maven</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
                 <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
                 <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-maven</span>
-          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/yum</span>
-            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
-            <span class="na">backend</span><span class="pi">:</span>
-              <span class="na">service</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
-                <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-yum</span>
-          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/apt</span>
-            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
-            <span class="na">backend</span><span class="pi">:</span>
-              <span class="na">service</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-nexus</span>
-                <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-apt</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">nexus-repos</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>

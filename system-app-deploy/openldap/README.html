@@ -1022,6 +1022,12 @@ pre.rouge {
 106
 107
 108
+109
+110
+111
+112
+113
+114
 </pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
 <span class="na">metadata</span><span class="pi">:</span>
@@ -1128,6 +1134,12 @@ pre.rouge {
     <span class="s">dn: cn=package,ou=groups,dc=cluster,dc=local</span>
     <span class="s">cn: package</span>
     <span class="s">description: 软件包上传者角色</span>
+    <span class="s">member: uid=admin,ou=people,dc=cluster,dc=local</span>
+    <span class="s">objectClass: groupOfNames</span>
+    
+    <span class="s">dn: cn=monitor,ou=groups,dc=cluster,dc=local</span>
+    <span class="s">cn: monitor</span>
+    <span class="s">description: 集群监控监控管理角色</span>
     <span class="s">member: uid=admin,ou=people,dc=cluster,dc=local</span>
     <span class="s">objectClass: groupOfNames</span>
 </pre></td></tr></tbody></table></code></pre>

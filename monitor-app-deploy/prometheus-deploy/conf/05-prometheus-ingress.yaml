@@ -12,10 +12,10 @@ spec:
   ingressClassName: nginx-private
   tls:
     - hosts:
-        - prometheus.internal.internal.d7z.net
+        - prometheus.internal.d7z.net
       secretName: tls-pri-d7z
   rules:
-    - host: prometheus.internal.internal.d7z.net
+    - host: prometheus.internal.d7z.net
       http:
         paths:
           - path: /

@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sts-home-page
+  namespace: share-app
+  labels:
+    app: home-page
+spec:
+  serviceName: svc-home-page
+  selector:
+    matchLabels:
+      app: home-page
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: home-page
+    spec:
+      containers:
+        - name: nginx
+          image: docker.io/library/nginx:1.21.1
+          volumeMounts:
+            - name: nginx-data
+              mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: nginx-data
+          configMap:
+            name: conf-home-page
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: home-page
+  name: svc-home-page
+  namespace: share-app
+spec:
+  ports:
+    - name: web
+      protocol: TCP
+      port: 80
+  selector:
+    app: home-page
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-home-page
+  namespace: share-app
+  labels:
+    app: home-page
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/proxy-body-size: "0"
+spec:
+  ingressClassName: nginx-public
+  tls:
+    - hosts:
+        - www.d7z.net
+        - home.d7z.net
+        - d7z.net
+      secretName: tls-pub-d7z
+  rules:
+    - host: www.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-home-page
+                port:
+                  name: web
+    - host: home.d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-home-page
+                port:
+                  name: web
+    - host: d7z.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-home-page
+                port:
+                  name: web

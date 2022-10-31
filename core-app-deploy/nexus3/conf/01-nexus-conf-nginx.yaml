@@ -9,20 +9,20 @@ data:
   default.conf: |
     server_tokens off;
   web-panel.conf: |
-    server{
-    listen       80;
-    listen  [::]:80;
-    location / {
-    proxy_http_version 1.1;
-    proxy_pass http://127.0.0.1:8081; # <1>
-    proxy_buffering off;
-    client_max_body_size 0;
-    proxy_connect_timeout 3600s;
-    proxy_read_timeout 3600s;
-    proxy_send_timeout 3600s;
-    send_timeout 3600s;
-    proxy_request_buffering off;
-    }
+    server {
+        listen       80;
+        listen  [::]:80;
+        location / {
+            proxy_http_version 1.1;
+            proxy_pass http://127.0.0.1:8081; # <1>
+            proxy_buffering off;
+            client_max_body_size 0;
+            proxy_connect_timeout 3600s;
+            proxy_read_timeout 3600s;
+            proxy_send_timeout 3600s;
+            send_timeout 3600s;
+            proxy_request_buffering off;
+        }
     }
   docker-public.conf: |
     upstream nexus_public_docker_hosted {
@@ -31,7 +31,7 @@ data:
     upstream nexus_public_docker_group {
     server 127.0.0.1:11001; # <3>
     }
-    server{
+    server {
     listen 81;
     listen  [::]:81;
     client_max_body_size 10G;
@@ -55,173 +55,51 @@ data:
     proxy_set_header X-Real-IP $remote_addr;
     proxy_request_buffering off;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
     }
     }
 
-  maven.conf: |
-    
-    upstream nexus_maven_releases {
-    server 127.0.0.1:12002;
-    }
-    upstream nexus_maven_snapshots {
-    server 127.0.0.1:12001;
-    }
-    upstream nexus_maven_group {
-    server 127.0.0.1:12000;
-    }
-    server{
-    listen 82;
-    listen  [::]:82;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    set $upstream "nexus_maven_releases";
-    if ( $request_method ~* 'GET') {
-    set $upstream "nexus_maven_group";
-    }
-    if ($uri !~ "^(.*)/(SNAPSHOT|-SNAPSHOT)(.*)"){
-    set $upstream "nexus_maven_snapshots";
-    }
-    location / {
-    proxy_pass http://$upstream;
-    proxy_connect_timeout 3600s;
-    proxy_read_timeout 3600s;
-    proxy_send_timeout 3600s;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-    server{
-    listen 12000;
-    listen  [::]:12000;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/maven-group/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-    server{
-    listen 12001;
-    listen  [::]:12001;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/maven-snapshots/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }    
-    server{
-    listen 12002;
-    listen  [::]:12002;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/maven-releases/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
+  repos.conf: |
+    server {
+        listen 82;
+        listen  [::]:82;
+        client_max_body_size 10G;
+        chunked_transfer_encoding on;
 
-  yum.conf: |
-    upstream nexus_yum_hosted {
-    server 127.0.0.1:13000;
-    }
-    upstream nexus_yum_group {
-    server 127.0.0.1:13001;
-    }
-    server{
-    listen 83;
-    listen  [::]:83;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    set $upstream "nexus_yum_hosted";
-    if ( $request_method ~* 'GET') {
-    set $upstream "nexus_yum_group";
-    }
-    location / {
-    proxy_pass http://$upstream;
-    proxy_connect_timeout 3600s;
-    proxy_read_timeout 3600s;
-    proxy_send_timeout 3600s;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-    server{
-    listen 13001;
-    listen  [::]:13001;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/yum-group/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-    server{
-    listen 13000;
-    listen  [::]:13000;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/yum-host/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
-    }
-
-  apt.conf: |
-    server{
-    listen 84;
-    listen  [::]:84;
-    client_max_body_size 10G;
-    chunked_transfer_encoding on;
-    location / {
-    proxy_pass http://127.0.0.1/repository/apt-host/;
-    proxy_set_header Host $host;
-    proxy_buffering off;
-    client_max_body_size 0;
-    send_timeout 3600s;
-    proxy_set_header X-Real-IP $remote_addr;
-    proxy_request_buffering off;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    }
+        location  ~ ^/maven(.*)$ {
+            set $matched_url http://127.0.0.1:8081/repository/maven-releases/;
+            if ($uri ~ "SNAPSHOT") {
+                set $matched_url http://127.0.0.1:8081/repository/maven-snapshots/;
+            }
+            if ( $request_method ~* 'GET') {
+                set $matched_url http://127.0.0.1:8081/repository/maven-group/;
+            }
+            rewrite ^/maven(.*)$ /$1 break;
+            proxy_pass $matched_url$1;
+            proxy_set_header Host $host;
+            proxy_buffering off;
+            proxy_http_version 1.1;
+            client_max_body_size 0;
+            proxy_request_buffering off;
+        }
+        location  ~ ^/yum(.*)$ {
+            set $matched_url http://127.0.0.1:8081/repository/yum-host/;
+            if ( $request_method ~* 'GET') {
+                set $matched_url http://127.0.0.1:8081/repository/yum-group/;
+            }
+            rewrite ^/yum(.*)$ /$1 break;
+            proxy_pass $matched_url$1;
+            proxy_set_header Host $host;
+            proxy_buffering off;
+            proxy_http_version 1.1;
+            client_max_body_size 0;
+            proxy_request_buffering off;
+        }
+        location  ~ ^/apt(.*)$ {
+            rewrite ^/apt(.*)$ /$1 break;
+            proxy_pass http://127.0.0.1/repository/apt-host$1;
+            proxy_set_header Host $host;
+            proxy_buffering off;
+            proxy_http_version 1.1;
+            proxy_request_buffering off;
+        }
     }

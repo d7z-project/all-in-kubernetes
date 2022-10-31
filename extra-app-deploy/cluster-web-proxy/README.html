@@ -836,7 +836,7 @@ pre.rouge {
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">nginx:1.21.1</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/nginx:1.21.1</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
               <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/conf.d/</span>
@@ -910,7 +910,7 @@ pre.rouge {
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-public</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s">pve.d7z.net</span>

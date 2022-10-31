@@ -23,9 +23,6 @@
 <p><a href="./cluster-deploy/cri-runtime/containerd-offline/README.adoc">离线部署</a></p>
 </li>
 <li>
-<p><a href="./cluster-deploy/cri-runtime/containerd-online/README.adoc">在线部署</a></p>
-</li>
-<li>
 <p><a href="./zz-document/containerd/SET_REGISTRY.adoc">镜像配置</a></p>
 </li>
 </ul>
@@ -45,9 +42,6 @@
 <p>使用 kubeadm</p>
 <div class="ulist">
 <ul>
-<li>
-<p><a href="./cluster-deploy/kubernetes/kubeadm/README.online.adoc">在线部署</a></p>
-</li>
 <li>
 <p><a href="./cluster-deploy/kubernetes/kubeadm/README.offline.adoc">离线部署</a></p>
 </li>
@@ -189,6 +183,9 @@
 </li>
 <li>
 <p><a href="./extra-app-deploy/v2ray-wss-proxy/README.adoc">V2fly 转发集群内部网络</a></p>
+</li>
+<li>
+<p><a href="./extra-app-deploy/home-page/README.adoc">创建导航站点</a></p>
 </li>
 </ol>
 </div>

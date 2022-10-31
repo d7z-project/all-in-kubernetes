@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.17">
-<title>Alert Manager 部署</title>
+<title>配置集群导航站</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -654,16 +654,12 @@ pre.rouge {
 </head>
 <body class="article toc2 toc-right">
 <div id="header">
-<h1>Alert Manager 部署</h1>
+<h1>配置集群导航站</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">目录</div>
 <ul class="sectlevel1">
 <li><a href="#_说明">1. 说明</a></li>
-<li><a href="#_创建配置">2. 创建配置</a></li>
-<li><a href="#_导入启动配置">3. 导入启动配置</a></li>
-<li><a href="#_创建_service">4. 创建 Service</a></li>
-<li><a href="#_创建_ingress">5. 创建 Ingress</a></li>
-<li><a href="#_测试">6. 测试</a></li>
+<li><a href="#_部署">2. 部署</a></li>
 </ul>
 </div>
 </div>
@@ -672,294 +668,284 @@ pre.rouge {
 <h2 id="_说明">1. 说明</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>此项目使用镜像 <code>docker.io/prom/alertmanager:v0.24.0</code> ，离线环境请在部署前将其导入至 <code>containerd</code> 或私有镜像源地址中。</p>
+<p>当集群下内容足够多时，需要一个网站帮你快速跳转，可导入如下配置快速创建一个基于 gitlab pages 的导航站点，依赖 Gitlab Pages 自动渲染内容。</p>
 </div>
 <div class="paragraph">
-<p><strong>AlertManager</strong> 配置放在 <code>configmap/conf-alert-manager</code> 中。</p>
+<p>创建完成后，你需要在 <code><a target="_blank" href="https://gitlab.d7z.net/docs/home" class="bare">https://gitlab.d7z.net/docs/home</a></code> 下创建项目，并生成 Gitlab Page 页面，此导航站将在如下地址提供服务：</p>
 </div>
+<div class="ulist">
+<ul>
+<li>
+<p><a target="_blank" href="https://d7z.net" class="bare">https://d7z.net</a></p>
+</li>
+<li>
+<p><a target="_blank" href="https://home.d7z.net" class="bare">https://home.d7z.net</a></p>
+</li>
+<li>
+<p><a target="_blank" href="https://www.d7z.net" class="bare">https://www.d7z.net</a></p>
+</li>
+</ul>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_创建配置">2. 创建配置</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>使用以下配置创建 <strong>AlertManager</strong> 需要的相关的配置文件.</p>
+<p>此导航站点依赖如下镜像：</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
-<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
-<span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-alert-manager</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
-  <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
-<span class="na">data</span><span class="pi">:</span>
-  <span class="na">alertmanager.yml</span><span class="pi">:</span> <span class="pi">|</span>
-    <span class="s">global:</span>
-      <span class="s">resolve_timeout: 30s</span>
-    <span class="s">route:</span>
-      <span class="s">group_by: [ 'instance' ]</span>
-      <span class="s">group_wait: 30s</span>
-      <span class="s">group_interval: 2m</span>
-      <span class="s">repeat_interval: 6h</span>
-      <span class="s">receiver: 'webhook'</span>
-    <span class="s">receivers:</span>
-      <span class="s">- name: 'webhook'</span>
-        <span class="s">webhook_configs:</span>
-          <span class="s">- url: 'http://172.16.63.51:8000/power-monitor/receive/receiveAlarmManagerAlarm.shtml'</span>
-    <span class="s">inhibit_rules:</span>
-      <span class="s">- source_matchers: [ severity="disaster" ]</span>
-        <span class="s">target_matchers: [ severity=~"normal|critical" ]</span>
-        <span class="s">equal: [ instanceIp ]</span>
-      <span class="s">- source_matchers: [ severity="critical" ]</span>
-        <span class="s">target_matchers: [ severity="normal" ]</span>
-        <span class="s">equal: [ instanceIp,project ]</span>
-      <span class="s">- source_matchers: [ priority="4" ]</span>
-        <span class="s">target_matchers: [ priority=~"3|2|1" ]</span>
-        <span class="s">equal: [ instance ]</span>
-      <span class="s">- source_matchers: [ priority="3" ]</span>
-        <span class="s">target_matchers: [ priority=~"2|1" ]</span>
-        <span class="s">equal: [ instance ]</span>
-      <span class="s">- source_matchers: [ priority="2" ]</span>
-        <span class="s">target_matchers: [ priority="1" ]</span>
-        <span class="s">equal: [ instance ]</span>
+<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
+</pre></td><td class="code"><pre>docker.io/library/nginx:1.21.1
 </pre></td></tr></tbody></table></code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_导入启动配置">3. 导入启动配置</h2>
+<h2 id="_部署">2. 部署</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>使用以下配置创建 <strong>AlertManager</strong> 启动配置。</p>
+<p>导入如下配置即可</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
+<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ConfigMap</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">labels</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">conf-home-page</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
+<span class="na">data</span><span class="pi">:</span>
+  <span class="na">home.conf</span><span class="pi">:</span> <span class="pi">|</span>
+    <span class="s">resolver kube-dns.kube-system.svc.cluster.local valid=10s;</span>
+      <span class="s">server{</span>
+      <span class="s">listen [::]:80 default_server;</span>
+      <span class="s">listen 80 default_server;</span>
+      <span class="s">location / {</span>
+      <span class="s">proxy_http_version 1.1;</span>
+      <span class="s">proxy_pass http://docs.pages.d7z.net/home/;</span>
+      <span class="s">proxy_buffering off;</span>
+      <span class="s">proxy_set_header Host docs.pages.d7z.net;</span>
+      <span class="s">client_max_body_size 0;</span>
+      <span class="s">proxy_connect_timeout 3600s;</span>
+      <span class="s">proxy_read_timeout 3600s;</span>
+      <span class="s">proxy_send_timeout 3600s;</span>
+      <span class="s">send_timeout 3600s;</span>
+      <span class="s">}</span>
+    <span class="s">}</span>
+<span class="s">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">apps/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">StatefulSet</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-alert-manager</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">sts-home-page</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-alert-manager</span>
+  <span class="na">serviceName</span><span class="pi">:</span> <span class="s">svc-home-page</span>
   <span class="na">selector</span><span class="pi">:</span>
     <span class="na">matchLabels</span><span class="pi">:</span>
-      <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
+      <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
   <span class="na">replicas</span><span class="pi">:</span> <span class="m">1</span>
   <span class="na">template</span><span class="pi">:</span>
     <span class="na">metadata</span><span class="pi">:</span>
       <span class="na">labels</span><span class="pi">:</span>
-        <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
     <span class="na">spec</span><span class="pi">:</span>
       <span class="na">containers</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">alert-manager</span>
-          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/prom/alertmanager:v0.24.0</span>
-          <span class="na">args</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="s2">"</span><span class="s">--config.file=/etc/alertmanager/alertmanager.yml"</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx</span>
+          <span class="na">image</span><span class="pi">:</span> <span class="s">docker.io/library/nginx:1.21.1</span>
           <span class="na">volumeMounts</span><span class="pi">:</span>
-            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">alert-manager-conf</span>
-              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/alertmanager/</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
+              <span class="na">mountPath</span><span class="pi">:</span> <span class="s">/etc/nginx/conf.d/</span>
       <span class="na">volumes</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">alert-manager-conf</span>
+        <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">nginx-data</span>
           <span class="na">configMap</span><span class="pi">:</span>
-            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-alert-manager</span>
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_创建_service">4. 创建 Service</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>使用以下配置，创建对应的 <strong>Service</strong> 配置</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+            <span class="na">name</span><span class="pi">:</span> <span class="s">conf-home-page</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Service</span>
 <span class="na">metadata</span><span class="pi">:</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-alert-manager</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">svc-home-page</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
 <span class="na">spec</span><span class="pi">:</span>
   <span class="na">ports</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">port</span><span class="pi">:</span> <span class="m">9093</span>
-      <span class="na">name</span><span class="pi">:</span> <span class="s">alert-manager</span>
+    <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+      <span class="na">port</span><span class="pi">:</span> <span class="m">80</span>
   <span class="na">selector</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_创建_ingress">5. 创建 Ingress</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Service</strong> 创建完成后，使用以下配置将对应的 <strong>Service</strong> 暴露到 <strong>Ingress</strong> 中。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="yaml"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno"> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-</pre></td><td class="code"><pre><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
+<span class="nn">---</span>
+<span class="na">apiVersion</span><span class="pi">:</span> <span class="s">networking.k8s.io/v1</span>
 <span class="na">kind</span><span class="pi">:</span> <span class="s">Ingress</span>
 <span class="na">metadata</span><span class="pi">:</span>
-  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-alert-manager</span>
-  <span class="na">namespace</span><span class="pi">:</span> <span class="s">monitor-app</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">ingress-home-page</span>
+  <span class="na">namespace</span><span class="pi">:</span> <span class="s">share-app</span>
   <span class="na">labels</span><span class="pi">:</span>
-    <span class="na">app</span><span class="pi">:</span> <span class="s">alert-manager</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">home-page</span>
   <span class="na">annotations</span><span class="pi">:</span>
     <span class="na">nginx.ingress.kubernetes.io/rewrite-target</span><span class="pi">:</span> <span class="s">/</span>
     <span class="na">nginx.ingress.kubernetes.io/proxy-body-size</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0"</span>
 <span class="na">spec</span><span class="pi">:</span>
-  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-private</span>
+  <span class="na">ingressClassName</span><span class="pi">:</span> <span class="s">nginx-public</span>
   <span class="na">tls</span><span class="pi">:</span>
     <span class="pi">-</span> <span class="na">hosts</span><span class="pi">:</span>
-        <span class="pi">-</span> <span class="s">alert-manager.internal.d7z.net</span>
-      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pri-d7z</span>
+        <span class="pi">-</span> <span class="s">www.d7z.net</span>
+        <span class="pi">-</span> <span class="s">home.d7z.net</span>
+        <span class="pi">-</span> <span class="s">d7z.net</span>
+      <span class="na">secretName</span><span class="pi">:</span> <span class="s">tls-pub-d7z</span>
   <span class="na">rules</span><span class="pi">:</span>
-    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">alert-manager.internal.d7z.net</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">www.d7z.net</span>
       <span class="na">http</span><span class="pi">:</span>
         <span class="na">paths</span><span class="pi">:</span>
           <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
             <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
             <span class="na">backend</span><span class="pi">:</span>
               <span class="na">service</span><span class="pi">:</span>
-                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-alert-manager</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-home-page</span>
                 <span class="na">port</span><span class="pi">:</span>
-                  <span class="na">name</span><span class="pi">:</span> <span class="s">alert-manager</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">home.d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-home-page</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
+    <span class="pi">-</span> <span class="na">host</span><span class="pi">:</span> <span class="s">d7z.net</span>
+      <span class="na">http</span><span class="pi">:</span>
+        <span class="na">paths</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">path</span><span class="pi">:</span> <span class="s">/</span>
+            <span class="na">pathType</span><span class="pi">:</span> <span class="s">Prefix</span>
+            <span class="na">backend</span><span class="pi">:</span>
+              <span class="na">service</span><span class="pi">:</span>
+                <span class="na">name</span><span class="pi">:</span> <span class="s">svc-home-page</span>
+                <span class="na">port</span><span class="pi">:</span>
+                  <span class="na">name</span><span class="pi">:</span> <span class="s">web</span>
 </pre></td></tr></tbody></table></code></pre>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_测试">6. 测试</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>配置导入完成后，使用如下命令查看结果：</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight nowrap"><code data-lang="bash"><table class="linenotable"><tbody><tr><td class="linenos gl"><pre class="lineno">1
-</pre></td><td class="code"><pre>kubectl get pods,svc,ingress,configmaps <span class="nt">-n</span> monitor-app <span class="nt">-l</span> <span class="nv">app</span><span class="o">=</span>alert-manager
-</pre></td></tr></tbody></table></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>待一切完成后，访问 <code><a target="_blank" href="https://alert-manager.internal.d7z.net" class="bare">https://alert-manager.internal.d7z.net</a></code> 查看 web 页面。</p>
 </div>
 </div>
 </div>
@@ -995,11 +981,11 @@ pre.rouge {
         }
     </style>
     <p class="custom-footer">
-        代码双击可复制 | 最后编辑于 2022-10-24 14:06:27 UTC+8 |
+        代码双击可复制 | 最后编辑于 2022-10-25 19:05:25 UTC+8 |
         <a target="_blank"
-           href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/monitor-app-deploy/alert-manager-deploy/README.adoc">查看源码</a> |
-        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/dfa025dcbde51dc40d8c40b6840d0d6f088911e6/"
-           target="_blank">#dfa025</a>
+           href="https://github.com/d7z-project/all-in-kubernetes/tree/d6035e1965979900726f8795105a7f942a43c7f1/extra-app-deploy/home-page/README.adoc">查看源码</a> |
+        <a target="_blank" href="https://github.com/d7z-project/all-in-kubernetes/tree/d6035e1965979900726f8795105a7f942a43c7f1/"
+           target="_blank">#d6035e</a>
         <script>
 
             function toast(msg, duration = 1000) {

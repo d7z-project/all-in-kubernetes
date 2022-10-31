@@ -106,3 +106,9 @@ data:
     description: 软件包上传者角色
     member: uid=admin,ou=people,dc=cluster,dc=local
     objectClass: groupOfNames
+    
+    dn: cn=monitor,ou=groups,dc=cluster,dc=local
+    cn: monitor
+    description: 集群监控监控管理角色
+    member: uid=admin,ou=people,dc=cluster,dc=local
+    objectClass: groupOfNames
