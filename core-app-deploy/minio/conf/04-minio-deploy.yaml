@@ -31,14 +31,14 @@ spec:
             - secretRef:
                 name: secret-minio
           env:
+            - name: MINIO_SERVER_URL
+              value: 'https://s3.{{var.global.public.host}}'
             - name: MINIO_DOMAIN
               value: 's3.{{var.global.public.host}}'
             - name: MINIO_BROWSER_REDIRECT_URL
               value: 'https://minio.{{var.global.private.host}}'
             - name: MINIO_IDENTITY_LDAP_SERVER_INSECURE
               value: 'on'
-            - name: MINIO_IDENTITY_LDAP_STS_EXPIRY
-              value: '6h'
             - name: MINIO_IDENTITY_LDAP_SERVER_ADDR
               valueFrom:
                 configMapKeyRef:
