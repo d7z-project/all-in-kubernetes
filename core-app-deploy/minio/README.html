@@ -1041,14 +1041,14 @@ quay.io/minio/mc:RELEASE.2022-08-23T05-45-20Z
             <span class="pi">-</span> <span class="na">secretRef</span><span class="pi">:</span>
                 <span class="na">name</span><span class="pi">:</span> <span class="s">secret-minio</span>
           <span class="na">env</span><span class="pi">:</span>
+            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_SERVER_URL</span>
+              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://s3.d7z.net'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_DOMAIN</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">s3.d7z.net'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_BROWSER_REDIRECT_URL</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://minio.internal.d7z.net'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_SERVER_INSECURE</span>
               <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">on'</span>
-            <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_STS_EXPIRY</span>
-              <span class="na">value</span><span class="pi">:</span> <span class="s1">'</span><span class="s">6h'</span>
             <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">MINIO_IDENTITY_LDAP_SERVER_ADDR</span>
               <span class="na">valueFrom</span><span class="pi">:</span>
                 <span class="na">configMapKeyRef</span><span class="pi">:</span>
